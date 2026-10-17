@@ -9,7 +9,8 @@ import PartnershipComparison from "@/components/couple/PartnershipComparison";
 import WorkProfilePanel from "@/components/couple/WorkProfilePanel";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
-import { Handshake, Sparkles, ShieldCheck, User, Users } from "lucide-react";
+import { Handshake, ShieldCheck, User, UserPlus, Users } from "lucide-react";
+import TeamComparison from "@/components/couple/TeamComparison";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -36,6 +37,12 @@ function isValidDate(dateStr: string): boolean {
 }
 
 type Mode = "compare" | "solo";
+type Socio = { date: string; name: string };
+
+const SLOTS = ["a", "b", "c", "d", "e"] as const;
+const MIN_SOCIOS = 2;
+const MAX_SOCIOS = SLOTS.length;
+const socioLabel = (i: number) => `Socio ${String.fromCharCode(65 + i)}`;
 
 export default function SociosClient() {
   const searchParams = useSearchParams();
@@ -80,55 +87,48 @@ export default function SociosClient() {
     }
   };
 
-  const urlDateA = parseDateParam(searchParams.get("a"));
-  const urlDateB = parseDateParam(searchParams.get("b"));
-  const urlNameA = searchParams.get("na") || "";
-  const urlNameB = searchParams.get("nb") || "";
-
-  const [dateA, setDateA] = useState(urlDateA);
-  const [dateB, setDateB] = useState(urlDateB);
-  const [nameA, setNameA] = useState(urlNameA);
-  const [nameB, setNameB] = useState(urlNameB);
+  // Modo comparar — de 2 a 5 socios. En la URL van como a..e (fecha) y
+  // na..ne (nombre); a/b/na/nb son los parámetros de siempre, así que los
+  // links viejos de dos personas siguen abriendo igual. En modo solo "d" y
+  // "n" son la fecha y el nombre de esa persona: no se leen como socios.
+  const urlSocios: Socio[] = mode === "solo"
+    ? []
+    : SLOTS.map((k) => ({ date: parseDateParam(searchParams.get(k)), name: searchParams.get(`n${k}`) || "" }))
+        .filter((socio, i) => i < MIN_SOCIOS || socio.date);
+  const [socios, setSocios] = useState<Socio[]>(
+    urlSocios.length >= MIN_SOCIOS ? urlSocios : [{ date: "", name: "" }, { date: "", name: "" }]
+  );
   const [isComparing, setIsComparing] = useState(
-    Boolean(urlDateA && urlDateB && isValidDate(urlDateA) && isValidDate(urlDateB))
+    urlSocios.length >= MIN_SOCIOS && urlSocios.every((socio) => isValidDate(socio.date))
   );
 
-  useEffect(() => {
-    if (urlDateA && urlDateB && isValidDate(urlDateA) && isValidDate(urlDateB)) {
-      setDateA(urlDateA);
-      setDateB(urlDateB);
-      setIsComparing(true);
-    }
-  }, [urlDateA, urlDateB]);
+  const profiles = useMemo<(UserProfile | null)[]>(
+    () =>
+      socios.map(({ date, name }) => {
+        if (!date || !isValidDate(date)) return null;
+        try {
+          return calculateUserProfile(name.trim(), date);
+        } catch {
+          return null;
+        }
+      }),
+    [socios]
+  );
+  const allValid = profiles.every(Boolean);
 
-  const profileA = useMemo<UserProfile | null>(() => {
-    if (!dateA || !isValidDate(dateA)) return null;
-    try {
-      return calculateUserProfile(nameA.trim(), dateA);
-    } catch {
-      return null;
-    }
-  }, [dateA, nameA]);
-
-  const profileB = useMemo<UserProfile | null>(() => {
-    if (!dateB || !isValidDate(dateB)) return null;
-    try {
-      return calculateUserProfile(nameB.trim(), dateB);
-    } catch {
-      return null;
-    }
-  }, [dateB, nameB]);
+  const updateSocio = (index: number, patch: Partial<Socio>) =>
+    setSocios((prev) => prev.map((socio, i) => (i === index ? { ...socio, ...patch } : socio)));
 
   const handleCompare = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profileA || !profileB) return;
+    if (!allValid) return;
 
     setIsComparing(true);
     const query = new URLSearchParams();
-    query.set("a", dateA);
-    query.set("b", dateB);
-    if (nameA.trim()) query.set("na", nameA.trim());
-    if (nameB.trim()) query.set("nb", nameB.trim());
+    socios.forEach((socio, i) => {
+      query.set(SLOTS[i], socio.date);
+      if (socio.name.trim()) query.set(`n${SLOTS[i]}`, socio.name.trim());
+    });
 
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", `/socios?${query.toString()}`);
@@ -137,10 +137,7 @@ export default function SociosClient() {
 
   const handleReset = () => {
     setIsComparing(false);
-    setDateA("");
-    setDateB("");
-    setNameA("");
-    setNameB("");
+    setSocios([{ date: "", name: "" }, { date: "", name: "" }]);
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", "/socios");
     }
@@ -152,18 +149,18 @@ export default function SociosClient() {
         <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
             <Handshake className="w-3.5 h-3.5 text-accent" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="text-sm text-accent font-bold label-caps">
               Modo Socios · Afinidad de Trabajo
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground label-caps">
             Comparativa de Sociedad
           </h1>
           <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
-            Para socios, empleador y empleado, o cualquier par armando un proyecto juntos: ingresá dos
-            fechas de nacimiento y vean cómo se complementan sus caminos de vida, signos solares,
-            zodíaco chino y química elemental trabajando en equipo. También podés analizar una sola
+            Para socios, empleador y empleado, o un equipo armando un proyecto juntos: ingresá de dos a
+            cinco fechas de nacimiento y vean cómo se complementan, de a pares, sus caminos de vida,
+            signos solares, zodíaco chino y química elemental trabajando en equipo. También podés analizar una sola
             fecha para ver el perfil de trabajo de esa persona.
           </p>
 
@@ -171,17 +168,17 @@ export default function SociosClient() {
             <button
               type="button"
               onClick={() => setMode("compare")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-semibold transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors label-caps ${
                 mode === "compare" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
               }`}
             >
               <Users className="w-3.5 h-3.5" />
-              Comparar dos
+              Comparar equipo
             </button>
             <button
               type="button"
               onClick={() => setMode("solo")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-semibold transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors label-caps ${
                 mode === "solo" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
               }`}
             >
@@ -227,7 +224,7 @@ export default function SociosClient() {
                     <div>
                       <label
                         htmlFor="name-solo"
-                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
+                        className="block text-sm text-muted mb-1.5 font-semibold label-caps"
                       >
                         Nombre o apodo (opcional)
                       </label>
@@ -241,7 +238,7 @@ export default function SociosClient() {
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
                         Fecha de Nacimiento
                       </label>
                       <DateInput value={dateSolo} onChange={setDateSolo} />
@@ -256,7 +253,6 @@ export default function SociosClient() {
                       disabled={!isValidDate(dateSolo)}
                       className="w-full sm:w-auto min-w-[240px] text-base py-4"
                     >
-                      <Sparkles className="w-4 h-4 mr-2" />
                       Ver perfil de trabajo
                     </Button>
                   </div>
@@ -271,7 +267,7 @@ export default function SociosClient() {
           </AnimatePresence>
         ) : (
         <AnimatePresence mode="wait">
-          {isComparing && profileA && profileB ? (
+          {isComparing && allValid ? (
             <motion.div
               key="comparison"
               initial={{ opacity: 0, y: 16 }}
@@ -279,7 +275,16 @@ export default function SociosClient() {
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35 }}
             >
-              <PartnershipComparison profileA={profileA} profileB={profileB} onReset={handleReset} />
+              {profiles.length === 2 ? (
+                <PartnershipComparison profileA={profiles[0]!} profileB={profiles[1]!} onReset={handleReset} />
+              ) : (
+                <TeamComparison profiles={profiles as UserProfile[]} labels={socios.map((s, i) => s.name.trim() || socioLabel(i))} />
+              )}
+              <div className="text-center mt-8">
+                <button type="button" onClick={handleReset} className="text-sm text-muted hover:text-accent transition-colors">
+                  Comparar otras fechas
+                </button>
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -292,82 +297,72 @@ export default function SociosClient() {
             >
               <form onSubmit={handleCompare} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="rounded-xl border border-amber-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 font-bold">
-                        Socio A
-                      </span>
-                      <span className="font-mono text-xs text-muted">Primer mapa</span>
-                    </div>
+                  {socios.map((socio, i) => (
+                    <div key={i} className="rounded-xl border border-ink/15 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold label-caps">
+                          {socioLabel(i)}
+                        </span>
+                        {socios.length > MIN_SOCIOS && (
+                          <button
+                            type="button"
+                            onClick={() => setSocios((prev) => prev.filter((_, j) => j !== i))}
+                            className="text-sm text-muted hover:text-foreground transition-colors"
+                            aria-label={`Quitar ${socioLabel(i)}`}
+                          >
+                            Quitar
+                          </button>
+                        )}
+                      </div>
 
-                    <div>
-                      <label
-                        htmlFor="name-a"
-                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
-                      >
-                        Nombre o apodo (opcional)
-                      </label>
-                      <input
-                        id="name-a"
-                        type="text"
-                        placeholder="Ej. Alex"
-                        value={nameA}
-                        onChange={(e) => setNameA(e.target.value)}
-                        className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
-                      />
-                    </div>
+                      <div>
+                        <label
+                          htmlFor={`name-${SLOTS[i]}`}
+                          className="block text-sm text-muted mb-1.5 font-semibold label-caps"
+                        >
+                          Nombre o apodo (opcional)
+                        </label>
+                        <input
+                          id={`name-${SLOTS[i]}`}
+                          type="text"
+                          placeholder={["Ej. Alex", "Ej. Sam", "Ej. Lu", "Ej. Fran", "Ej. Juli"][i]}
+                          value={socio.name}
+                          onChange={(e) => updateSocio(i, { name: e.target.value })}
+                          className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
+                        />
+                      </div>
 
-                    <div>
-                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
-                        Fecha de Nacimiento
-                      </label>
-                      <DateInput value={dateA} onChange={setDateA} />
+                      <div>
+                        <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
+                          Fecha de Nacimiento
+                        </label>
+                        <DateInput value={socio.date} onChange={(date) => updateSocio(i, { date })} />
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="rounded-xl border border-blue-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 font-bold">
-                        Socio B
-                      </span>
-                      <span className="font-mono text-xs text-muted">Segundo mapa</span>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="name-b"
-                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
-                      >
-                        Nombre o apodo (opcional)
-                      </label>
-                      <input
-                        id="name-b"
-                        type="text"
-                        placeholder="Ej. Sam"
-                        value={nameB}
-                        onChange={(e) => setNameB(e.target.value)}
-                        className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
-                        Fecha de Nacimiento
-                      </label>
-                      <DateInput value={dateB} onChange={setDateB} />
-                    </div>
-                  </div>
+                  ))}
                 </div>
+
+                {socios.length < MAX_SOCIOS && (
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setSocios((prev) => [...prev, { date: "", name: "" }])}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 border border-ink/20 text-sm text-foreground hover:border-ink transition-colors"
+                    >
+                      <UserPlus className="w-4 h-4" aria-hidden="true" />
+                      Agregar socio ({socios.length} de {MAX_SOCIOS})
+                    </button>
+                  </div>
+                )}
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                   <Button
                     type="submit"
                     variant="accent"
                     size="lg"
-                    disabled={!isValidDate(dateA) || !isValidDate(dateB)}
+                    disabled={!allValid}
                     className="w-full sm:w-auto min-w-[240px] text-base py-4"
                   >
-                    <Sparkles className="w-4 h-4 mr-2" />
                     Comparar mapas
                   </Button>
                 </div>
@@ -380,7 +375,7 @@ export default function SociosClient() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-accent font-bold block mb-1 label-caps">
                     01 · Numerología
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -389,7 +384,7 @@ export default function SociosClient() {
                 </div>
 
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-amber-700 font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-amber-700 font-bold block mb-1 label-caps">
                     02 · Astrología & Elementos
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -398,7 +393,7 @@ export default function SociosClient() {
                 </div>
 
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-emerald-400 font-bold block mb-1 label-caps">
                     03 · Zodíaco Chino
                   </span>
                   <p className="text-xs text-muted leading-relaxed">

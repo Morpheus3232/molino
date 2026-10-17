@@ -189,7 +189,7 @@ export default function MethodReductionLoader({
       <div className="flex items-center justify-between pb-4 mb-6 border-b border-border">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
+          <span className="text-sm text-muted label-caps">
             REDUCCIÓN TEOSÓFICA LOCAL
           </span>
         </div>
@@ -201,7 +201,7 @@ export default function MethodReductionLoader({
       {/* Visor central del cálculo en vivo */}
       <div className="min-h-[170px] flex flex-col justify-center items-center text-center">
         {/* Label de la fase actual */}
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-3">
+        <p className="text-sm text-muted mb-3 label-caps">
           {currentStep.label}
         </p>
 

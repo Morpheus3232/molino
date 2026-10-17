@@ -112,8 +112,8 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         <div className="relative flex flex-col h-full p-7">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em]">Mapa personal</span>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted">Atlas</span>
+            <span className="font-heading text-sm font-semibold label-caps">Mapa personal</span>
+            <span className="text-sm text-muted label-caps">Atlas</span>
           </div>
 
           {/* Center — entity visual + copy */}

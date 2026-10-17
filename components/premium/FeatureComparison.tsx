@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 import { motion } from "framer-motion";
-import { Check, X, Sparkles, Shield, Zap, Lock, Unlock } from "lucide-react";
+import { Check, X, Shield, Zap, Lock, Unlock } from "lucide-react";
 
 interface FeatureItem {
   name: string;
@@ -121,12 +121,12 @@ export default function FeatureComparison({ className = "" }: { className?: stri
     <section className={`py-12 ${className}`} aria-labelledby="feature-comparison-title">
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         <div className="text-center mb-10">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Transparencia Total
           </span>
           <h2
             id="feature-comparison-title"
-            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground uppercase tracking-tight mt-1"
+            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground mt-1 label-caps"
           >
             Gratis vs Premium
           </h2>
@@ -141,15 +141,14 @@ export default function FeatureComparison({ className = "" }: { className?: stri
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-ink/10 bg-background/50">
-                <th className="py-4 px-6 text-xs font-mono uppercase tracking-wider text-muted w-1/2">
+                <th className="py-4 px-6 text-sm text-muted w-1/2 label-caps">
                   Funcionalidad
                 </th>
-                <th className="py-4 px-6 text-xs font-mono uppercase tracking-wider text-muted text-center w-1/4">
+                <th className="py-4 px-6 text-sm text-muted text-center w-1/4 label-caps">
                   Gratis ($0)
                 </th>
-                <th className="py-4 px-6 text-xs font-mono uppercase tracking-wider text-accent text-center w-1/4 bg-accent/5 border-l border-accent/20">
+                <th className="py-4 px-6 text-sm text-accent text-center w-1/4 bg-accent/5 border-l border-accent/20 label-caps">
                   <span className="flex items-center justify-center gap-1 font-bold">
-                    <Sparkles className="w-3.5 h-3.5" />
                     Premium ($8 USD)
                   </span>
                 </th>
@@ -163,7 +162,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                     <tr className="border-b border-ink/10">
                       <td
                         colSpan={3}
-                        className="py-2.5 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-gold bg-ink/[0.03] border-y border-ink/10 font-bold"
+                        className="py-2.5 px-6 text-sm text-gold bg-ink/[0.03] border-y border-ink/10 font-bold label-caps"
                       >
                         {category}
                       </td>
@@ -215,7 +214,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                 key={category}
                 className="rounded-xl border border-ink/10 bg-card p-5 space-y-4"
               >
-                <h3 className="font-mono text-xs uppercase tracking-wider text-gold font-bold border-b border-ink/10 pb-2">
+                <h3 className="text-sm text-gold font-bold border-b border-ink/10 pb-2 label-caps">
                   {category}
                 </h3>
                 <div className="space-y-3.5">
@@ -234,7 +233,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                       </div>
                       <div className="flex items-center gap-1.5 flex-shrink-0">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                          className={`px-2 py-0.5 rounded text-xs font-bold ${
                             f.free
                               ? "bg-success/10 text-success border border-success/30"
                               : "bg-ink/5 text-muted/60"
@@ -243,7 +242,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                           Free
                         </span>
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                          className={`px-2 py-0.5 rounded text-xs font-bold ${
                             f.premium
                               ? "bg-accent text-background"
                               : "bg-ink/5 text-muted/60"

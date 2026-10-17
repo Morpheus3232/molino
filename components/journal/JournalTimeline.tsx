@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import type { JournalEntry, JournalMood } from "@/types/journal";
 import { MOOD_CONFIG } from "@/types/journal";
 import JournalInsights from "@/components/journal/JournalInsights";
-import { Search, Tag, Trash2, Edit2, Compass, TrendingUp, ChevronDown } from "lucide-react";
+import { Search, Tag, Trash2, Edit2, ChevronDown } from "lucide-react";
 
 // recharts is heavy; keep it out of the initial client bundle by loading the
 // mood chart lazily (ssr:false). The rest of the timeline renders immediately.
@@ -105,15 +105,12 @@ export default function JournalTimeline({
     <div className={`space-y-6 ${className}`}>
       {/* Mood vs Time Chart Card */}
       {chartData.length >= 2 && (
-        <div className="rounded-xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-accent" />
-              <h3 className="font-heading text-sm sm:text-base font-bold text-foreground">
-                Evolución de Energía & Estado de Ánimo
-              </h3>
-            </div>
-            <span className="font-mono text-[10px] text-muted uppercase tracking-wider">
+        <div className="border-y border-ink/10 py-6">
+          <div className="flex items-baseline justify-between gap-3 mb-4">
+            <h3 className="font-display italic font-normal text-2xl text-foreground">
+              Cómo vino el ánimo
+            </h3>
+            <span className="text-sm text-muted label-caps">
               {chartData.length} registros
             </span>
           </div>
@@ -127,17 +124,17 @@ export default function JournalTimeline({
       <JournalInsights entries={entries} />
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-card border border-ink/10">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted" />
           <input
             type="text"
-            placeholder="Buscar por palabra, tag o energía..."
+            placeholder="Buscar en el diario…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-background border border-ink/10 text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus-visible:ring-1 focus-visible:ring-accent"
-            aria-label="Buscar en las entradas del journal"
+            className="w-full pl-9 pr-3 py-2 bg-transparent border-0 border-b border-ink/20 text-base text-foreground placeholder:italic placeholder:text-muted/60 focus:outline-none focus:border-foreground"
+            aria-label="Buscar en las entradas del diario"
           />
           {searchQuery && (
             <button
@@ -222,9 +219,9 @@ export default function JournalTimeline({
       )}
 
       {/* Entries List */}
-      <div className="space-y-4">
+      <div>
         {filteredEntries.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-ink/15 p-8 text-center text-xs text-muted font-mono">
+          <div className="py-12 text-center text-base italic text-muted">
             No se encontraron entradas con los filtros seleccionados.
           </div>
         ) : (
@@ -235,39 +232,30 @@ export default function JournalTimeline({
             return (
               <motion.article
                 key={entry.id}
+                aria-label={formatDate(entry.date)}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0, margin: "50px" }}
                 transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.25), ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="rounded-xl border border-ink/10 bg-card p-5 sm:p-6 hover:border-ink/20 transition-colors flex flex-col justify-between"
+                className="group flex flex-col"
               >
+                {/* Entre página y página, el asterismo de los libros. */}
+                {index > 0 && (
+                  <p className="text-center text-muted text-lg my-8 select-none" aria-hidden="true">⁂</p>
+                )}
                 <div>
-                  {/* Card Header: Mood + Date + Actions */}
-                  <div className="flex items-start justify-between gap-3 pb-3 border-b border-ink/5">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      <span
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-bold border"
-                        style={{
-                          backgroundColor: moodCfg.bg,
-                          color: moodCfg.color,
-                          borderColor: moodCfg.border,
-                        }}
-                      >
-                        <span className="text-sm">{moodCfg.emoji}</span>
-                        <span>{moodCfg.label}</span>
-                      </span>
+                  {/* La fecha es el título de la página; el ánimo, una nota al lado. */}
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h3 className="font-display italic font-normal text-2xl sm:text-3xl text-foreground first-letter:uppercase">
+                      {formatDate(entry.date)}
+                    </h3>
 
-                      <span className="font-mono text-xs text-muted">
-                        {formatDate(entry.date)}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
                       {onEditEntry && (
                         <button
                           type="button"
                           onClick={() => onEditEntry(entry)}
-                          className="p-1.5 text-muted hover:text-foreground rounded-md hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                          className="p-1.5 text-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                           aria-label="Editar entrada"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -281,7 +269,7 @@ export default function JournalTimeline({
                               onDeleteEntry(entry.id);
                             }
                           }}
-                          className="p-1.5 text-muted hover:text-red-400 rounded-md hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 transition-colors"
+                          className="p-1.5 text-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                           aria-label="Eliminar entrada"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -289,9 +277,12 @@ export default function JournalTimeline({
                       )}
                     </div>
                   </div>
+                  <p className="mt-1 text-sm italic text-muted">
+                    <span aria-hidden="true">{moodCfg.emoji}</span> {moodCfg.label.toLowerCase()}
+                  </p>
 
                   {/* Body Content — truncado con toggle de expandir */}
-                  <div className="my-4 text-sm sm:text-base text-foreground leading-relaxed whitespace-pre-wrap font-sans">
+                  <div className="my-5 text-lg text-foreground leading-relaxed whitespace-pre-wrap font-sans first-letter:float-left first-letter:font-display first-letter:text-[3.4em] first-letter:leading-[0.8] first-letter:mr-2 first-letter:mt-1">
                     {entry.content}
                   </div>
 
@@ -299,10 +290,7 @@ export default function JournalTimeline({
                   {entry.tags && entry.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {entry.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="font-mono text-[11px] text-muted bg-background border border-ink/10 px-2 py-0.5 rounded-sm"
-                        >
+                        <span key={t} className="text-sm italic text-muted">
                           #{t}
                         </span>
                       ))}
@@ -310,28 +298,18 @@ export default function JournalTimeline({
                   )}
                 </div>
 
-                {/* Footer: Astrological & Numerological Cycle Badge */}
+                {/* El día, como nota al pie de la página. */}
                 {cycle && (cycle.dayEnergy || cycle.yearCycle) && (
-                  <div className="pt-3 border-t border-ink/10 flex items-center justify-between flex-wrap gap-2 text-xs">
-                    <div className="flex items-center gap-2 text-muted">
-                      <Compass className="w-3.5 h-3.5 text-accent" />
-                      <span className="font-mono text-[10px] sm:text-[11px]">
-                        {cycle.dayEnergy?.personalDay
-                          ? `Día Personal ${cycle.dayEnergy.personalDay} · `
-                          : ""}
-                        {cycle.dayEnergy?.theme ? (
-                          <strong className="text-accent">{cycle.dayEnergy.theme}</strong>
-                        ) : null}
-                        {cycle.dayEnergy?.moonPhase ? ` · ${cycle.dayEnergy.moonPhase}` : ""}
-                      </span>
-                    </div>
-
-                    {cycle.yearCycle?.personalYear && (
-                      <span className="font-mono text-[10px] text-accent bg-accent/5 border border-accent/20 px-2 py-0.5 rounded-sm">
-                        Año {cycle.yearCycle.personalYear}
-                      </span>
-                    )}
-                  </div>
+                  <p className="text-sm italic text-muted">
+                    {[
+                      cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
+                      cycle.dayEnergy?.theme,
+                      cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase()}`,
+                      cycle.yearCycle?.personalYear && `año ${cycle.yearCycle.personalYear}`,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
                 )}
               </motion.article>
             );

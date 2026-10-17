@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { DayForecast } from "@/lib/hooks/useDailyEnergy";
-import { CalendarDays, ArrowRight, Sparkles } from "lucide-react";
+import { CalendarDays, ArrowRight, Asterisk } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { getScoreLabel } from "@/lib/utils/score";
 
@@ -34,7 +34,7 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
 
         <Link
           href="/calendario"
-          className="hidden sm:inline-flex items-center gap-1 font-mono text-xs text-accent hover:underline"
+          className="hidden sm:inline-flex items-center gap-1 font-mono text-xs text-accent hover:underline py-1.5 -my-1.5"
         >
           <span>Ver mes completo</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -79,7 +79,7 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
       </div>
 
       <div className="sm:hidden text-center pt-2">
-        <Link href="/calendario" className="inline-flex items-center gap-1 font-mono text-xs text-accent">
+        <Link href="/calendario" className="inline-flex items-center gap-1 font-mono text-xs text-accent py-1.5 -my-1.5">
           <span>Ver calendario mensual completo</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>

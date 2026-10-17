@@ -185,7 +185,7 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3"
+                    className="text-sm text-accent font-medium mb-3 label-caps"
                   >
                     Compatibilidad
                   </motion.p>

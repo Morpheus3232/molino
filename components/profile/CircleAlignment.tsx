@@ -39,7 +39,7 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
     <section className="py-16 sm:py-24" aria-labelledby="circle-heading">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div ref={ref} {...reveal}>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
+          <p className="text-sm text-muted mb-4 label-caps">
             03 · Tu círculo
           </p>
           <h2 id="circle-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">
@@ -106,7 +106,7 @@ function AnimalCard({ animal }: { animal: Animal }) {
         <ZodiacAnimalIcon animal={animal} size={20} className="text-accent" />
         <span className="font-medium">{display.name}</span>
       </div>
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1.5">
+      <p className="text-sm text-muted mb-1.5 label-caps">
         Años de nacimiento
       </p>
       <p className="font-mono text-xs text-muted leading-relaxed">{years.join(" · ")}</p>

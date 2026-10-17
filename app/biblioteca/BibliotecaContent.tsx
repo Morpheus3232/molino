@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
 import Chip from "@/components/ui/Chip";
-import { BookOpen, Sparkles, Compass, ArrowRight } from "lucide-react";
+import { BookOpen, Asterisk, Compass, ArrowRight } from "lucide-react";
 import Card from "@/components/ui/Card";
 import {
   SOURCES,
@@ -90,7 +90,7 @@ export default function BibliotecaContent() {
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca de Fuentes</p>
+          <p className="text-sm text-muted font-medium mb-4 label-caps">Biblioteca de Fuentes</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Fuentes, Autores & Contexto
           </h1>
@@ -103,7 +103,7 @@ export default function BibliotecaContent() {
         <section className="mb-14">
           <div className="flex items-center gap-2 mb-4">
             <Compass className="w-4 h-4 text-accent" />
-            <h2 className="font-heading text-sm font-bold uppercase tracking-wider text-accent">
+            <h2 className="font-heading text-sm font-bold text-accent label-caps">
               Tu mapa en contexto: cómo orientar tu lectura
             </h2>
           </div>
@@ -178,7 +178,7 @@ export default function BibliotecaContent() {
               <section key={catKey} className="mb-14">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
+                  <h2 className="text-sm text-muted font-medium label-caps">
                     {CATEGORY_LABELS[catKey]}
                   </h2>
                   <span className="font-mono text-xs text-muted">{sources.length}</span>
@@ -204,7 +204,7 @@ export default function BibliotecaContent() {
                               {source.title}
                             </Link>
                             <span
-                              className="font-mono text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full shrink-0"
+                              className="text-sm font-semibold px-2 py-0.5 rounded-full shrink-0 label-caps"
                               style={{ backgroundColor: `${meta.color}20`, color: meta.color }}
                             >
                               {meta.label}

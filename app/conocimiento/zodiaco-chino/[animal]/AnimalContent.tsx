@@ -55,7 +55,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           </div>
 
           <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 lg:pt-24">
-            <nav className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-10" aria-label="Breadcrumb">
+            <nav className="text-sm text-muted mb-10 label-caps" aria-label="Breadcrumb">
               <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
               <span className="mx-2" aria-hidden="true">/</span>
               <Link href="/conocimiento/zodiaco-chino" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">
@@ -66,7 +66,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
             </nav>
 
             <motion.div {...fadeUp} className="border-t border-ink/10 pt-10 lg:pt-14">
-              <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-6">
+              <p className="text-sm font-semibold text-accent mb-6 label-caps">
                 ZODÍACO CHINO · SIGNO {String(currentIndex + 1).padStart(2, "0")} DE 12
               </p>
 
@@ -74,7 +74,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 <div className="text-accent shrink-0">
                   <ZodiacAnimalIcon animal={animal.name} size={96} />
                 </div>
-                <h1 className="font-display text-[clamp(3rem,10vw,8rem)] leading-[0.85] tracking-tight text-foreground uppercase">
+                <h1 className="font-display text-[clamp(3rem,10vw,8rem)] leading-[0.85] text-foreground label-caps">
                   {animal.name}
                 </h1>
               </div>
@@ -106,7 +106,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
               <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
             </div>
             <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
-              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent-light mb-6">
+              <p className="text-sm font-semibold text-accent-light mb-6 label-caps">
                 HISTORIA Y SIMBOLISMO
               </p>
               <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
@@ -135,7 +135,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 <span className="font-display text-5xl lg:text-6xl leading-none text-ink/15 block mb-8" aria-hidden="true">
                   {block.numeral}
                 </span>
-                <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-6">
+                <p className="text-sm font-semibold text-accent mb-6 label-caps">
                   {block.label}
                 </p>
                 <ul className="space-y-3">
@@ -159,14 +159,14 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
         >
           <div className="flex flex-wrap">
             <div className={`w-full md:w-1/2 ${cellPad} md:border-r border-paper/20`}>
-              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper/85 mb-6">
+              <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
                 COMPATIBLES
               </p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.friendly.map((f) => (
                   <span
                     key={f}
-                    className="font-heading text-sm uppercase tracking-wider text-paper border border-paper/40 rounded-sm px-3 py-1.5"
+                    className="font-heading text-sm text-paper border border-paper/40 rounded-sm px-3 py-1.5 label-caps"
                   >
                     {f}
                   </span>
@@ -174,14 +174,14 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
               </div>
             </div>
             <div className={`w-full md:w-1/2 ${cellPad} border-t md:border-t-0 border-paper/20`}>
-              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper/85 mb-6">
+              <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
                 DESAFIANTES
               </p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.challenging.map((c) => (
                   <span
                     key={c}
-                    className="font-heading text-sm uppercase tracking-wider text-paper/85 border border-paper/20 rounded-sm px-3 py-1.5"
+                    className="font-heading text-sm text-paper/85 border border-paper/20 rounded-sm px-3 py-1.5 label-caps"
                   >
                     {c}
                   </span>
@@ -242,7 +242,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
             </motion.div>
 
             <motion.div {...fadeUp} className="mt-12 border border-border rounded-md bg-card shadow-sm p-8">
-              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-muted mb-4">
+              <p className="text-sm font-semibold text-muted mb-4 label-caps">
                 AVISO IMPORTANTE
               </p>
               <p className="text-sm text-muted leading-relaxed">{animal.scientificNote}</p>
@@ -259,11 +259,11 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   href={`/conocimiento/zodiaco-chino/${prev.name.toLowerCase()}`}
                   className="group flex items-center gap-4 flex-1 min-w-[14rem]"
                 >
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:-translate-x-1 transition-transform">
+                  <span className="text-sm text-muted group-hover:-translate-x-1 transition-transform label-caps">
                     ←
                   </span>
                   <span>
-                    <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Anterior</span>
+                    <span className="block text-sm text-muted label-caps">Anterior</span>
                     <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center gap-2">
                       <ZodiacAnimalIcon animal={prev.name} size={20} className="text-accent" /> {prev.name}
                     </span>
@@ -279,12 +279,12 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   className="group flex items-center justify-end gap-4 flex-1 min-w-[14rem] text-right"
                 >
                   <span>
-                    <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Siguiente</span>
+                    <span className="block text-sm text-muted label-caps">Siguiente</span>
                     <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center justify-end gap-2">
                       {next.name} <ZodiacAnimalIcon animal={next.name} size={20} className="text-accent" />
                     </span>
                   </span>
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:translate-x-1 transition-transform">
+                  <span className="text-sm text-muted group-hover:translate-x-1 transition-transform label-caps">
                     →
                   </span>
                 </Link>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Gift, ShieldCheck, Sparkles, Check, MessageCircle, Heart } from "lucide-react";
+import { Gift, ShieldCheck, Check, MessageCircle, Heart } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 export default function RegalarClient() {
@@ -30,12 +30,12 @@ export default function RegalarClient() {
       <div className="mx-auto max-w-2xl px-4 sm:px-8 text-center">
         <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-full bg-accent/15 border border-accent/30 shadow-sm">
           <Gift className="w-4 h-4 text-accent" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Regalo Especial · Molino Pro
           </span>
         </span>
 
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
           Regalale su mapa <br className="hidden sm:inline" />
           <span className="text-gradient-warm">personal y completo</span>
         </h1>
@@ -48,11 +48,10 @@ export default function RegalarClient() {
 
         <div className="mt-10 rounded-xl border border-accent/30 bg-card p-7 sm:p-9 text-left max-w-lg mx-auto shadow-xl relative overflow-hidden">
           <div className="flex items-center justify-between gap-2 mb-4">
-            <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
               Lectura Pro de Regalo
             </div>
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-mono font-bold uppercase">
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-sm font-bold label-caps">
               Pago Único
             </span>
           </div>

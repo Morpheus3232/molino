@@ -292,24 +292,28 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 ## Convenciones
 
 - Español rioplatense (vos), `lang="es-AR"` en todo el sitio
-- **Blanco y negro (2026-10-17).** Paper `#FFFFFF`, ink `#0A0A0A`, muted
+- **Línea de diseño (2026-10-17): libro de Penguin + el Quijote de la
+  portada.** Base blanco y negro: paper `#FFFFFF`, ink `#0A0A0A`, muted
   `#5C5C5C`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son
-  tinta: los tokens siguen existiendo para no tocar ~1000 usos, pero no hay
-  color de marca. Las paletas con tono de Tailwind (`emerald-600`, `red-500`…)
-  se convierten en `tailwind.config.ts` al gris de la misma luminancia, así
-  que el contraste de cada texto queda igual que antes. No agregar colores
-  nuevos; la única excepción son datos que SON un color (los swatches de
-  `zodiacElementColorEngine.ts`: un "Rojo" no puede verse gris).
-- Tipografía: `font-display` Archivo Narrow (titulares, números grandes),
-  `font-heading` Archivo (títulos chicos, botones), `font-sans` Source Serif 4
-  (lectura), `font-mono` IBM Plex Mono (datos/etiquetas). Emoji en Noto Emoji
-  monocromo (va en cada pila antes del emoji del sistema): no usar el selector
-  U+FE0F, que fuerza el emoji a color. Sin gradientes de texto, sin grain.
-- Radio: estructura filosa (0), detalle apenas suave. 4 tokens en
-  `app/globals.css` (`--radius-sm` 2px, `md` 4px, `lg` 6px, `xl` 8px) — no usar
-  `rounded-2xl`/`rounded-3xl` (bloqueados por `lib/__tests__/radius-tokens.test.ts`).
-  Sombras: `sm`/`md` no existen (borde de 1px); `lg`/`xl` solo para lo que
-  flota (modales, menús).
+  tinta (los tokens siguen para no tocar ~1000 usos). **Un solo color**:
+  `vermilion` (`#CC2E24`, el rojo de la ilustración `public/home/quijote-sancho.jpg`
+  un punto más oscuro para pasar AA con texto blanco). Va SOLO en el botón
+  principal (`Button variant="accent"`, "Crear mi mapa" del header, CTAs de la
+  portada), la ilustración y un detalle por página — nunca en `accent`. La
+  ilustración es licenciada por el dueño del producto. Las paletas con tono de
+  Tailwind se convierten en `tailwind.config.ts` al gris de igual luminancia
+  (`red` incluido: por eso el token se llama `vermilion`). Excepción de datos:
+  los swatches de `zodiacElementColorEngine.ts`.
+- Tipografía: una sola familia, **EB Garamond**, para display/heading/sans/mono
+  (las cuatro variables apuntan a `--font-garamond`). Jerarquía por tamaño,
+  itálica y versalitas. Las etiquetas son `label-caps` (versalitas con
+  `all-small-caps`), no `uppercase` + `tracking-*` + `font-mono`. Sin el ícono
+  `Sparkles`/✨ (donde un ícono es estructural, `Asterisk`). Emoji en Noto
+  Emoji monocromo; no usar el selector U+FE0F. Sin gradientes de texto ni
+  grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
+- Radio 0 en los 4 tokens (página impresa); `rounded-full` sigue para pastillas.
+  No usar `rounded-2xl`/`rounded-3xl` (`lib/__tests__/radius-tokens.test.ts`).
+  Sombras: `sm`/`md` no existen; `lg`/`xl` solo para lo que flota.
 - `"use client"` solo en componentes que realmente necesitan interactividad
 - Motores de cálculo (`lib/engines/`) son funciones puras: misma fecha de entrada → mismo resultado, sin I/O
 - Sin servidor de estado para el perfil del usuario: todo vive en localStorage, URL, o sesión efímera — no agregar una base de datos para esto sin justificarlo explícitamente

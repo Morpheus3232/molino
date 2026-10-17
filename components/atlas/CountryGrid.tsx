@@ -36,7 +36,7 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
               }`}
             >
               {isUserCountry && (
-                <span className="absolute top-2 right-3 font-mono text-[10px] uppercase tracking-wider text-accent">
+                <span className="absolute top-2 right-3 text-sm text-accent label-caps">
                   Tu país
                 </span>
               )}
@@ -46,7 +46,7 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
               <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
                 {country.name}
               </span>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
+              <span className="text-sm text-muted label-caps">
                 {country.count} entidades
               </span>
             </Link>

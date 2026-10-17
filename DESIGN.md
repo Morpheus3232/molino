@@ -1,9 +1,10 @@
 # DESIGN.md — Sistema de Diseño y Contrato Visual de Molino.app
 
 > **2026-10-17 — la paleta y la tipografía de este documento quedaron
-> reemplazadas**: el sitio es blanco y negro (Archivo Narrow / Archivo /
-> Source Serif 4 / IBM Plex Mono). Los valores vigentes están en
-> `app/globals.css`, `app/layout.tsx` y la sección "Convenciones" de
+> reemplazadas**: blanco y negro con un único rojo (`vermilion`, el de la
+> ilustración del Quijote de la portada) y una sola familia, EB Garamond, con
+> versalitas — la editorial de un libro de Penguin. Los valores vigentes están
+> en `app/globals.css`, `app/layout.tsx` y la sección "Convenciones" de
 > `CLAUDE.md`. Los principios de la sección 1 siguen valiendo.
 
 **Versión:** 2.0 (Almanaque Cálido & Geometría Determinística)  

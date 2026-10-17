@@ -45,7 +45,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
               <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.1]">{num.title}</h1>
               <div className="flex flex-wrap gap-2 mt-3">
                 {num.keywords.map(kw => (
-                  <span key={kw} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
+                  <span key={kw} className="text-sm text-muted font-medium px-2 py-0.5 rounded-md border border-border label-caps">{kw}</span>
                 ))}
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         {MASTER_NUMBERS.includes(num.number) && (
           <motion.section {...fadeUp} className="mb-12 sm:mb-16">
             <div className="p-6 border border-accent/20 bg-accent/[0.03]">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Número maestro</p>
+              <p className="text-sm text-accent font-medium mb-2 label-caps">Número maestro</p>
               <p className="text-sm text-foreground leading-relaxed">{MASTER_NUMBERS_NOTE}</p>
             </div>
           </motion.section>
@@ -117,15 +117,15 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           </div>
           <div className="space-y-6 max-w-3xl">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Impulso central</p>
+              <p className="text-sm text-accent font-medium mb-2 label-caps">Impulso central</p>
               <p className="text-sm text-foreground leading-relaxed">{num.coreDrive}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Cómo suele expresarse</p>
+              <p className="text-sm text-muted font-medium mb-2 label-caps">Cómo suele expresarse</p>
               <p className="text-sm text-foreground leading-relaxed">{num.behaviorPattern}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Potencial</p>
+              <p className="text-sm text-muted font-medium mb-3 label-caps">Potencial</p>
               <ul className="space-y-2">
                 {num.potential.map(p => (
                   <li key={p} className="text-sm text-foreground flex items-start gap-2">
@@ -136,11 +136,11 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
               </ul>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Sombra o desequilibrio</p>
+              <p className="text-sm text-muted font-medium mb-2 label-caps">Sombra o desequilibrio</p>
               <p className="text-sm text-muted leading-relaxed">{num.shadow}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué suele necesitar desarrollar</p>
+              <p className="text-sm text-muted font-medium mb-2 label-caps">Qué suele necesitar desarrollar</p>
               <p className="text-sm text-foreground leading-relaxed">{num.growthEdge}</p>
             </div>
           </div>
@@ -154,15 +154,15 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="p-6 border border-ink/10">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Decisiones</h3>
+              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Decisiones</h3>
               <p className="text-sm text-foreground leading-relaxed">{num.manifestation.decisions}</p>
             </div>
             <div className="p-6 border border-ink/10">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Relaciones</h3>
+              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Relaciones</h3>
               <p className="text-sm text-foreground leading-relaxed">{num.manifestation.relationships}</p>
             </div>
             <div className="p-6 border border-ink/10">
-              <h3 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Trabajo</h3>
+              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Trabajo</h3>
               <p className="text-sm text-foreground leading-relaxed">{num.manifestation.work}</p>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Relación con otros números</h2>
+            <h2 className="text-sm text-muted font-medium label-caps">Relación con otros números</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
         </motion.section>
@@ -200,7 +200,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 border border-ink/10">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{num.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
@@ -209,7 +209,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         {/* Herramienta relacionada */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-6 border border-ink/10">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Generá tu mapa</p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">Generá tu mapa</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Descubrí tus números: Camino de Vida, Expresión y Personalidad.
             </p>

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { scaleUpMount, staggerContainer } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
-import { BookOpen, Sparkles, Zap, Clock, Users, ArrowRight } from "lucide-react";
+import { BookOpen, Zap, Clock, Users, ArrowRight } from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -281,7 +281,7 @@ function KnowledgeNode({
         aria-expanded={isExpanded}
         className="w-full text-left group"
       >
-        <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
+        <p className="text-sm text-accent font-medium mb-1 label-caps">{node.era}</p>
         <h3 className="font-heading text-xl font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">{node.title}</h3>
         <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
       </button>
@@ -307,11 +307,11 @@ function KnowledgeNode({
           >
             <div className="mt-4 p-6 rounded-lg border border-border bg-gradient-to-br from-card to-card/50 space-y-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-1">Origen</p>
+                <p className="text-sm text-muted font-semibold mb-1 label-caps">Origen</p>
                 <p className="text-sm text-foreground">{node.origin}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-2">Influencia en Molino</p>
+                <p className="text-sm text-muted font-semibold mb-2 label-caps">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
                     <span key={inf} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
@@ -321,7 +321,7 @@ function KnowledgeNode({
                 </div>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-1">Cómo se usa</p>
+                <p className="text-sm text-muted font-semibold mb-1 label-caps">Cómo se usa</p>
                 <p className="text-sm text-foreground">{node.molino}</p>
               </div>
             </div>
@@ -347,7 +347,7 @@ export default function AcademyContent() {
         <motion.section {...scaleUpMount} className="mb-20">
           <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
             <BookOpen className="w-4 h-4 text-accent" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">Academia de Molino</span>
+            <span className="text-sm text-accent font-bold label-caps">Academia de Molino</span>
           </div>
 
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl tracking-tight text-foreground leading-[1.05] mb-6">
@@ -368,7 +368,7 @@ export default function AcademyContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...scaleUpMount} className="mb-20">
           <div className="mb-8">
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-3">Empezá por acá</p>
+            <p className="text-sm text-accent font-bold mb-3 label-caps">Empezá por acá</p>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
               Entendé Molino en 10 minutos
             </h2>
@@ -399,7 +399,7 @@ export default function AcademyContent() {
             sin modificar contenido ni arquitectura.
             ═══════════════════════════════════════════════ */}
         <motion.section {...staggerContainer} className="mb-8">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold mb-3">Explorar</p>
+          <p className="text-sm text-muted font-bold mb-3 label-caps">Explorar</p>
           <div className="flex flex-wrap gap-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -507,7 +507,7 @@ export default function AcademyContent() {
                       <p className="text-sm text-muted mb-6 leading-relaxed">{course.description}</p>
 
                       <div className="flex items-center justify-between pt-6 border-t border-border">
-                        <span className="text-xs font-mono uppercase tracking-[0.15em] text-muted">Inicia aquí</span>
+                        <span className="text-sm text-muted label-caps">Inicia aquí</span>
                         <Link
                           href={`/academy/${course.pieces[0]?.slug || "babilonia"}`}
                           className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors group/link"
@@ -585,7 +585,6 @@ export default function AcademyContent() {
             CTA — Ir a generar tu mapa
             ═══════════════════════════════════════════════ */}
         <motion.section {...staggerContainer} className="py-16 px-8 sm:px-12 rounded-xl border border-border bg-gradient-to-br from-accent/10 to-accent/5 text-center">
-          <Sparkles className="w-8 h-8 text-accent mx-auto mb-4" />
           <h2 className="font-heading text-3xl font-bold text-foreground mb-3">Listo para tu mapa</h2>
           <p className="text-muted max-w-2xl mx-auto mb-6">
             Ahora que conocés la historia y la teoría, generá tu mapa personal en segundos y descubrí cómo estos sistemas ancestrales hablan de vos.

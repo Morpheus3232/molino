@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
 import MapHighlightText from "./MapHighlightText";
-import { Sparkles, CornerDownRight, ArrowRight, HelpCircle } from "lucide-react";
+import { Asterisk, CornerDownRight, ArrowRight, HelpCircle } from "lucide-react";
 
 export interface ChatTurnData {
   question: string;
@@ -40,7 +40,7 @@ export default function ChatTurnItem({
           aria-hidden="true"
         />
         <div className="min-w-0">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-paper/50 mb-1">
+          <p className="text-sm text-paper/50 mb-1 label-caps">
             Tu pregunta
           </p>
           <p className="text-base sm:text-lg font-medium text-paper leading-relaxed">
@@ -89,7 +89,7 @@ export default function ChatTurnItem({
               className="h-2 w-2 rounded-full bg-accent-light animate-pulse"
               aria-hidden="true"
             />
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light font-bold">
+            <span className="text-sm text-accent-light font-bold label-caps">
               Molino
             </span>
           </div>
@@ -128,7 +128,7 @@ export default function ChatTurnItem({
           {/* Sugerencias contextuales de seguimiento */}
           {turn.answer.suggestedQuestions && turn.answer.suggestedQuestions.length > 0 && (
             <div className="mt-6 pt-5 border-t border-paper/10 space-y-2.5">
-              <div className="flex items-center gap-1.5 text-paper/60 font-mono text-[11px] uppercase tracking-[0.2em]">
+              <div className="flex items-center gap-1.5 text-paper/60 text-sm label-caps">
                 <HelpCircle className="w-3.5 h-3.5 text-accent-light" />
                 <span>Profundizar en este punto</span>
               </div>

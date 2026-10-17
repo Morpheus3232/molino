@@ -1,6 +1,5 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
 import { MOOD_CONFIG, type JournalEntry, type JournalMood } from "@/types/journal";
 import { computeMoodInsights, type MoodInsightGroup } from "@/lib/utils/journalInsights";
 
@@ -13,7 +12,7 @@ function InsightGroup({ title, groups }: { title: string; groups: MoodInsightGro
   if (groups.length === 0) return null;
   return (
     <div>
-      <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">{title}</p>
+      <p className="text-sm text-muted mb-2 label-caps">{title}</p>
       <div className="space-y-1.5">
         {groups.slice(0, 4).map((g) => (
           <div key={g.label} className="flex items-center justify-between gap-3 text-xs">
@@ -43,17 +42,14 @@ export default function JournalInsights({ entries }: { entries: JournalEntry[] }
   if (!hasAnyInsight) return null;
 
   return (
-    <div className="rounded-xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-4">
-        <Sparkles className="w-4 h-4 text-accent" />
-        <h3 className="font-heading text-sm sm:text-base font-bold text-foreground">Tus patrones de energía</h3>
-      </div>
+    <div className="border-b border-ink/10 pb-6">
+      <h3 className="font-display italic font-normal text-2xl text-foreground mb-4">Lo que se repite</h3>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <InsightGroup title="Por tema del día" groups={insights.byTheme} />
         <InsightGroup title="Por fase lunar" groups={insights.byMoonPhase} />
         <InsightGroup title="Por Año Personal" groups={insights.byPersonalYear} />
       </div>
-      <p className="text-[11px] text-muted/70 mt-4 pt-4 border-t border-ink/10">
+      <p className="text-sm italic text-muted mt-4">
         Promedios simples sobre tus propias entradas — cuantas más registres, más se afina.
       </p>
     </div>

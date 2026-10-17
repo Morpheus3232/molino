@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { JournalEntry } from "@/types/journal";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
@@ -11,10 +10,7 @@ import { useJournal } from "@/lib/hooks/useJournal";
 import { computeJournalStreak } from "@/lib/utils/journalStreak";
 import JournalEditor from "@/components/journal/JournalEditor";
 import JournalTimeline from "@/components/journal/JournalTimeline";
-import CountUp from "@/components/ui/CountUp";
-import { BookOpen, Flame } from "lucide-react";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 
 function loadUser(): UserProfile | null {
   const stored = loadProfileFromStorage();
@@ -91,77 +87,40 @@ export default function JournalClient() {
         <header className="mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-ink/10">
             <div className="max-w-2xl">
-              <div className="flex items-center gap-2 mb-3">
-                <BookOpen className="w-4 h-4 text-accent" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-                  Registro & Autoconocimiento
-                </span>
-              </div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground tracking-tight">
-                Journal
+              <h1 className="font-display italic font-normal text-5xl sm:text-6xl lg:text-7xl text-foreground tracking-tight">
+                Diario
               </h1>
-              <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
-                Privado en tu navegador.
+              <p className="text-base sm:text-lg text-muted mt-3 leading-relaxed">
+                Lo que escribís acá queda en este navegador. Nadie más lo lee.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 shrink-0">
               {journalStreak >= 2 && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 text-xs font-mono font-bold">
-                  <Flame className="w-3.5 h-3.5" />
-                  {journalStreak} días seguidos
+                <span className="text-base italic text-muted">
+                  {journalStreak} días seguidos escribiendo
                 </span>
               )}
             </div>
           </div>
 
           {!profile && (
-            <div className="mt-4 p-4 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3 text-xs">
-              <span className="text-muted">
-                Para cruzar automáticamente tus entradas con tu Camino de Vida y año personal, calculá tu mapa.
-              </span>
-              <Link href="/onboarding">
-                <Button variant="accent" size="sm">
-                  Calcular mi mapa
-                </Button>
+            <p className="mt-4 text-sm text-muted">
+              Si creás tu mapa, cada página anota sola tu día y tu año personal.{" "}
+              <Link href="/onboarding" className="text-foreground underline underline-offset-4 hover:no-underline">
+                Crear mi mapa
               </Link>
-            </div>
+            </p>
           )}
         </header>
 
-        {/* Stats strip — Wrapped style, dinámico desde entradas reales */}
+        {/* Lo que va del cuaderno, en una frase — sin tablero de métricas. */}
         {stats && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-12"
-          >
-            <div className="p-5 rounded-xl bg-card border border-ink/10">
-              <p className="font-mono text-[9px] uppercase tracking-wider text-muted block mb-1">Entradas</p>
-              <p className="font-heading text-2xl font-bold text-foreground">
-                <CountUp target={stats.total} />
-              </p>
-            </div>
-            <div className="p-5 rounded-xl bg-card border border-ink/10">
-              <p className="font-mono text-[9px] uppercase tracking-wider text-muted mb-1">Energía media</p>
-              <p className="font-heading text-2xl font-bold text-foreground">
-                <CountUp target={stats.avgMood} format={(n) => n.toFixed(1)} />
-              </p>
-            </div>
-            <div className="p-5 rounded-xl bg-card border border-ink/10">
-              <p className="font-mono text-[9px] uppercase tracking-wider text-muted mb-1">Días únicos</p>
-              <p className="font-heading text-2xl font-bold text-foreground">
-                <CountUp target={stats.uniqueDates} />
-              </p>
-            </div>
-            <div className="p-5 rounded-xl bg-card border border-ink/10">
-              <p className="font-mono text-[9px] uppercase tracking-wider text-muted mb-1">Tema destacado</p>
-              <p className="font-heading text-lg font-bold text-foreground truncate">
-                {stats.topTheme || "—"}
-              </p>
-            </div>
-          </motion.div>
+          <p className="mb-12 text-base italic text-muted">
+            {stats.total} {stats.total === 1 ? "página" : "páginas"} en {stats.uniqueDates}{" "}
+            {stats.uniqueDates === 1 ? "día" : "días"} · ánimo medio {stats.avgMood.toFixed(1)} de 5
+            {stats.topTheme ? ` · lo que más aparece: ${stats.topTheme}` : ""}
+          </p>
         )}
 
         {/* Main Grid: Editor on left, Timeline on right */}
@@ -175,17 +134,11 @@ export default function JournalClient() {
               contextualPrompt={contextualPrompt}
             />
 
-            {/* Reflection Tip Card */}
-            <div className="p-4 bg-card text-xs text-muted space-y-1">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-muted font-bold">
-                Consejo
-              </p>
-              <p>Una frase alcanza.</p>
-            </div>
+            <p className="text-sm italic text-muted">Una frase alcanza.</p>
 
             <Link
               href="/hoy"
-              className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-foreground underline underline-offset-4 hover:no-underline"
             >
               Ver mi energía de hoy →
             </Link>

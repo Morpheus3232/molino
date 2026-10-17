@@ -161,7 +161,7 @@ export default function AffinityQuickEntryForm({
 
   return (
     <>
-      <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4 text-center">
+      <p className="text-sm text-accent font-medium mb-4 text-center label-caps">
         Cómo resuena · {meta.label}
       </p>
 
@@ -187,7 +187,7 @@ export default function AffinityQuickEntryForm({
 
               <div className="grid grid-cols-3 gap-3 mb-4">
                 <div>
-                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-day">Día</label>
                   <select
                     id="qa-day"
                     value={day}
@@ -201,7 +201,7 @@ export default function AffinityQuickEntryForm({
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-month">Mes</label>
                   <select
                     id="qa-month"
                     value={month}
@@ -214,7 +214,7 @@ export default function AffinityQuickEntryForm({
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-year">Año</label>
                   <select
                     id="qa-year"
                     value={year}
@@ -261,7 +261,7 @@ export default function AffinityQuickEntryForm({
               <div className="p-6 border border-ink/10 bg-transparent">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
+                    <p className="text-sm text-muted font-medium mb-1 label-caps">Guardá tu resultado</p>
                     <p className="text-sm text-muted leading-relaxed">
                       {saved
                         ? "Tu resonancia con esta entidad está guardada."

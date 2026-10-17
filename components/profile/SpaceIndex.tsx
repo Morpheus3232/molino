@@ -52,7 +52,7 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
       aria-label="Explorá tu mapa"
     >
       <div className="max-w-3xl mb-10 lg:mb-12">
-        <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted block mb-3">
+        <span className="text-sm text-muted block mb-3 label-caps">
           También con tus coordenadas
         </span>
         <p className="text-base text-muted leading-relaxed max-w-xl">

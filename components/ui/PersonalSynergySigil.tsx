@@ -273,7 +273,7 @@ export default function PersonalSynergySigil({
 
       {/* 8. Leyenda Mínima de Visualización */}
       {showLegend && (
-        <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+        <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8 text-sm text-muted label-caps">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full border border-current opacity-40 inline-block" />
             <span>Afinidad</span>

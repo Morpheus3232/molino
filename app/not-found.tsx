@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Compass, Sparkles, Sun, Heart, BookOpen, ArrowRight, Home } from "lucide-react";
+import { Compass, Asterisk, Sun, Heart, BookOpen, ArrowRight, Home } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "404 — Coordenada Fuera de Órbita",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const SUGGESTED_ROUTES = [
   { href: "/", label: "Inicio", icon: Home, desc: "Instrumento principal" },
   { href: "/hoy", label: "Energía de Hoy", icon: Sun, desc: "Foco y ciclo diario" },
-  { href: "/onboarding", label: "Calcular Mapa", icon: Sparkles, desc: "Tu mapa en 30 seg" },
+  { href: "/onboarding", label: "Calcular Mapa", icon: Asterisk, desc: "Tu mapa en 30 seg" },
   { href: "/pareja", label: "Modo Pareja", icon: Heart, desc: "Sinergia de dos mapas" },
   { href: "/journal", label: "Journal", icon: BookOpen, desc: "Registro reflexivo" },
 ];
@@ -21,7 +21,7 @@ export default function NotFound() {
       <div className="text-center max-w-xl relative z-10 w-full">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-6">
           <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "12s" }} />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+          <span className="text-sm font-bold label-caps">
             Error 404 · Coordenada No Mapeada
           </span>
         </div>
@@ -65,7 +65,7 @@ export default function NotFound() {
 
         <Link
           href="/"
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-gold-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors shadow-md"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gold text-gold-foreground font-heading text-sm font-bold rounded-xl hover:bg-gold-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors shadow-md label-caps"
         >
           Volver al Inicio
         </Link>

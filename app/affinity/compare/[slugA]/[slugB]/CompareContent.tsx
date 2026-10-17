@@ -222,7 +222,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
                   <div className="text-center mb-6">
                     <span
-                      className="text-xs font-medium uppercase tracking-wider px-3 py-1 rounded-sm"
+                      className="text-sm font-medium px-3 py-1 rounded-sm label-caps"
                       style={{ color: compTier.color, backgroundColor: `${compTier.color}15` }}
                     >
                       {entityComparison.relationship}
@@ -307,7 +307,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {/* Disclaimer */}
               <motion.section {...fadeUp} className="mb-12">
                 <div className="p-6 border border-ink/10 bg-transparent">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+                  <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
                   <p className="text-xs text-muted leading-relaxed">
                     La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
                     Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.
@@ -431,7 +431,7 @@ function PersonalCard({
           <span className="text-lg shrink-0">{emoji ?? "·"}</span>
           <span className="text-sm font-medium text-foreground truncate">{entityName}</span>
         </div>
-        <span className="font-heading text-sm font-bold shrink-0 uppercase tracking-[0.08em]" style={{ color: tierMeta.color }}>
+        <span className="font-heading text-sm font-bold shrink-0 label-caps" style={{ color: tierMeta.color }}>
           {tierMeta.label}
         </span>
       </div>

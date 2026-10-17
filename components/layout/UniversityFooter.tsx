@@ -37,7 +37,6 @@ const FOOTER_COLUMNS = [
     title: "Proyecto",
     links: [
       { href: "/filosofia", label: "Filosofía" },
-      { href: "/transparencia", label: "Transparencia" },
       { href: "/metodos-y-fuentes", label: "Métodos y fuentes" },
       { href: "/changelog", label: "Changelog" },
       { href: "/docs", label: "API / Docs" },
@@ -71,7 +70,7 @@ export default async function UniversityFooter() {
               <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-md">
                 <Logo className="w-6 h-6" />
               </span>
-              <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-paper group-hover:text-accent-light transition-colors">
+              <span className="font-heading text-sm font-semibold text-paper group-hover:text-accent-light transition-colors label-caps">
                 Molino
               </span>
             </Link>
@@ -90,7 +89,7 @@ export default async function UniversityFooter() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start md:items-end">
             {FOOTER_COLUMNS.map((col) => (
               <nav key={col.title} aria-label={col.title} className="flex flex-col gap-1">
-                <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-paper/60 mb-2">
+                <h4 className="text-sm text-paper/60 mb-2 label-caps">
                   {col.title}
                 </h4>
                 <ul className="list-none">
@@ -114,7 +113,7 @@ export default async function UniversityFooter() {
         <section className="mt-12 pt-8 border-t border-paper/20 text-center" aria-label="Contacto">
           <div className="flex flex-col items-center gap-3 text-sm text-paper/70">
             <p className="flex items-center gap-2">
-              <span className="font-mono text-xs uppercase tracking-wider text-paper/80">¿Hablamos?</span>
+              <span className="text-sm text-paper/80 label-caps">¿Hablamos?</span>
             </p>
             <p className="text-paper/70">
               Escribinos a{" "}

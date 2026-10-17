@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createRouteMetadata } from "@/lib/seo";
-import { ShieldCheck, Users, Sparkles, BookOpen, Lock, Compass, CheckCircle2, ArrowRight, XCircle } from "lucide-react";
+import { ShieldCheck, Users, BookOpen, Lock, Compass, CheckCircle2, ArrowRight, XCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
@@ -50,8 +50,7 @@ export default function ProfesionalesPage() {
         {/* Hero */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+            <span className="text-sm font-bold label-caps">
               Herramienta de Reflexión para Profesionales
             </span>
           </div>
@@ -67,13 +66,13 @@ export default function ProfesionalesPage() {
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <Link
               href="/onboarding"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-gold-foreground font-heading text-sm font-bold hover:bg-gold-hover transition-colors shadow-sm label-caps"
             >
               Probar cálculo en vivo
             </Link>
             <Link
               href="/pareja"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground font-heading text-xs uppercase tracking-wider font-semibold transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground font-heading text-sm font-semibold transition-colors label-caps"
             >
               Comparativa vincular
             </Link>
@@ -81,7 +80,7 @@ export default function ProfesionalesPage() {
 
           <Link
             href="/premium"
-            className="inline-flex items-center gap-1.5 mt-5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+            className="inline-flex items-center gap-1.5 mt-5 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
           >
             Ver planes y precios →
           </Link>
@@ -152,7 +151,7 @@ export default function ProfesionalesPage() {
         {/* How to use in sessions */}
         <div className="rounded-xl border border-ink/10 bg-card/60 p-8 sm:p-12 max-w-4xl mx-auto space-y-8">
           <div className="border-b border-ink/10 pb-6">
-            <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">
+            <span className="text-sm text-accent font-bold label-caps">
               Metodología de Aplicación
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mt-1">

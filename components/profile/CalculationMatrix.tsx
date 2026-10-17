@@ -158,10 +158,10 @@ export default function CalculationMatrix({
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-8">
       <div className="w-full max-w-xl">
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+        <p className="text-sm text-accent label-caps">
           La cuenta
         </p>
-        <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.25rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+        <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.25rem)] leading-[0.95] text-foreground label-caps">
           Antes de interpretar
           <br />
           nada, la aritmética.
@@ -187,7 +187,7 @@ export default function CalculationMatrix({
               </span>
               <span className="flex items-baseline gap-3 shrink-0">
                 {row.system && (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/30 hidden sm:inline">
+                  <span className="text-sm text-ink/30 hidden sm:inline label-caps">
                     {row.system}
                   </span>
                 )}
@@ -210,11 +210,11 @@ export default function CalculationMatrix({
             href={FORMULA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs uppercase tracking-wide text-accent hover:underline underline-offset-4"
+            className="text-sm text-accent hover:underline underline-offset-4 label-caps"
           >
             Ver la fórmula en GitHub →
           </a>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted">
+          <span className="text-sm text-muted label-caps">
             {done ? "Abriendo tu mapa" : "Calculando"}
           </span>
         </div>

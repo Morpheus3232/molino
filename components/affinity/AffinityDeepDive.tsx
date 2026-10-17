@@ -49,13 +49,13 @@ export default function AffinityDeepDive({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Tu año */}
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
+                <p className="text-sm text-muted font-medium mb-3 label-caps">Tu año</p>
                 <p className="font-heading text-3xl font-bold text-foreground">{result.userYear}</p>
                 <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.userAnimal)}</p>
               </div>
               {/* Evento de la entidad */}
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">
+                <p className="text-sm text-muted font-medium mb-3 label-caps">
                   {primaryEvent.label}
                 </p>
                 <p className="font-heading text-3xl font-bold text-foreground">{result.entityYear}</p>
@@ -117,7 +117,7 @@ export default function AffinityDeepDive({
               {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
             </p>
             <span
-              className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
+              className="text-sm font-medium px-2 py-0.5 rounded-sm label-caps"
               style={{ color: tierMeta?.color, backgroundColor: `${tierMeta?.color}15` }}
             >
               {result.relationship}
@@ -138,7 +138,7 @@ export default function AffinityDeepDive({
           vive ahora en /lectura. El puente correcto es hacia la lectura. */}
       <motion.section {...fadeUp} className="mb-12">
         <div className="p-6 border border-accent/20 bg-accent/[0.03]">
-          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu mapa completo</p>
+          <p className="text-sm text-accent font-medium mb-2 label-caps">Tu mapa completo</p>
           <p className="text-sm text-muted leading-relaxed mb-3">
             Esta afinidad usa la regla signo contra signo. La lectura que cruza tus tres sistemas
             —numerología, astrología y zodíaco chino— vive en tu Lectura.
@@ -235,7 +235,7 @@ export default function AffinityDeepDive({
       {/* Disclaimer */}
       <motion.section {...fadeUp} className="mb-12">
         <div className="p-6 border border-ink/10 bg-transparent">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+          <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
           <p className="text-xs text-muted leading-relaxed">
             La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
             Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.
@@ -270,7 +270,7 @@ export default function AffinityDeepDive({
             <div className="flex items-center gap-2 mb-4">
               <span className="text-lg">{getRelationIcon(story.relationType)}</span>
               <span
-                className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
+                className="text-sm font-medium px-2 py-0.5 rounded-sm label-caps"
                 style={{ color: getRelationColor(story.relationType), backgroundColor: `${getRelationColor(story.relationType)}15` }}
               >
                 {story.relationLabel}

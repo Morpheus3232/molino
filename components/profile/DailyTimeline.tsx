@@ -294,7 +294,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
           transition={{ delay: 0.3, duration: 0.4 }}
           className="mt-6 p-5 border border-accent/20 rounded-lg bg-accent/5"
         >
-          <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent mb-2">
+          <p className="text-sm text-accent mb-2 label-caps">
             Mañana
           </p>
           <p className="text-sm font-medium text-foreground">

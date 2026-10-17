@@ -15,7 +15,6 @@ function buildConfirmationEmailHtml(paymentId: string, claimUrl: string): string
     <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F9F9F9; color: #1A1A1A; margin: 0; padding: 32px 16px; line-height: 1.5;">
       <div style="max-width: 520px; margin: 0 auto; background: #FFFFFF; border-radius: 16px; border: 1px solid #E5E5E5; padding: 36px 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.04);">
         <div style="text-align: center; margin-bottom: 28px;">
-          <div style="font-size: 32px; margin-bottom: 8px;">✨</div>
           <h1 style="font-size: 22px; font-weight: 700; color: #111111; margin: 0 0 8px 0; letter-spacing: -0.02em;">¡Tu Lectura Pro está lista!</h1>
           <p style="font-size: 14px; color: #666666; margin: 0;">Tu pago con Mercado Pago se acreditó con éxito. Ya tenés acceso permanente.</p>
         </div>
@@ -78,7 +77,7 @@ export async function sendPremiumConfirmationEmail({
         // molino.app no recibe mails (sin MX): las respuestas van al contacto real.
         replyTo: 'versionlimitada@proton.me',
         to: [to],
-        subject: '✨ Tu Lectura Pro está lista — Acceso permanente a tu mapa',
+        subject: 'Tu Lectura Pro está lista — Acceso permanente a tu mapa',
         html: buildConfirmationEmailHtml(paymentId, claimUrl),
       },
       { idempotencyKey: `premium-confirmation/${paymentId}` },

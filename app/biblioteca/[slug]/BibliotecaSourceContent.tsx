@@ -33,19 +33,19 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <span
-              className="font-mono text-xs font-semibold tracking-wider uppercase px-2 py-0.5"
+              className="text-sm font-semibold px-2 py-0.5 label-caps"
               style={{ background: `${meta.color}15`, color: meta.color }}
             >
               {meta.label}
             </span>
             <span
-              className={`font-mono text-xs tracking-wider uppercase px-2 py-0.5 ${
+              className={`text-sm px-2 py-0.5 label-caps ${
                 source.era === "ancestral" ? "bg-accent/10 text-accent" : "bg-ink/5 text-muted"
               }`}
             >
               {source.era === "ancestral" ? "Tradición ancestral" : "Contemporáneo"}
             </span>
-            <span className="font-mono text-xs uppercase tracking-wider text-muted px-2 py-0.5 border border-ink/10">
+            <span className="text-sm text-muted px-2 py-0.5 border border-ink/10 label-caps">
               {CATEGORY_LABELS[source.category] || source.category}
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
               {(source.tags || []).map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-xs tracking-wider uppercase bg-background border border-ink/10 px-2 py-0.5 text-muted"
+                  className="text-sm bg-background border border-ink/10 px-2 py-0.5 text-muted label-caps"
                 >
                   #{tag}
                 </span>
@@ -103,7 +103,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
                   href={source.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-xs tracking-wider uppercase px-2 py-0.5 text-accent hover:text-accent/80 border border-accent/30 transition-colors"
+                  className="text-sm px-2 py-0.5 text-accent hover:text-accent/80 border border-accent/30 transition-colors label-caps"
                 >
                   Fuente externa ↗
                 </a>
@@ -130,7 +130,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         {/* Relacionadas */}
         {related.length > 0 && (
           <motion.section {...fadeUpMount} className="pt-8 border-t border-border">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-4">
+            <p className="text-sm text-muted font-medium mb-4 label-caps">
               Seguir explorando · {CATEGORY_LABELS[source.category] || source.category}
             </p>
             <div className="space-y-2">

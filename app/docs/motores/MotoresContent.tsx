@@ -104,7 +104,7 @@ export default function MotoresContent() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.1] label-caps">
             Motores de cálculo
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
@@ -143,9 +143,9 @@ export default function MotoresContent() {
                 <table className="w-full text-left border border-border rounded-lg overflow-hidden">
                   <thead>
                     <tr className="bg-muted/50 border-b border-border">
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Fórmula</th>
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Descripción</th>
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Ejemplo</th>
+                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Fórmula</th>
+                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Descripción</th>
+                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Ejemplo</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -164,7 +164,7 @@ export default function MotoresContent() {
               <div className="rounded-md border border-border overflow-hidden bg-muted/30">
                 <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/20">
                   <Code className="w-4 h-4 text-foreground" aria-hidden="true" />
-                  <span className="font-mono text-xs text-foreground uppercase tracking-wider">TypeScript — Implementación de referencia</span>
+                  <span className="text-sm text-foreground label-caps">TypeScript — Implementación de referencia</span>
                 </div>
                 <pre className="p-4 overflow-x-auto text-sm"><code className="text-foreground">{engine.codeExample}</code></pre>
               </div>

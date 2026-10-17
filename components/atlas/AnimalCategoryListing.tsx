@@ -63,12 +63,12 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
         />
 
         <motion.header className="mb-12" {...fadeUp}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-3">
+          <p className="text-sm text-accent font-semibold mb-3 label-caps">
             {animal}
           </p>
 
           <div className="flex items-end gap-4">
-            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground leading-[0.95] label-caps">
               {catLabel}
             </h1>
             <ZodiacAnimalIcon animal={animal} size={28} className="text-accent/40 shrink-0" />

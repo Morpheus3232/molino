@@ -77,7 +77,7 @@ export const BRANDS: BrandData[] = [
   { name: "Clinique", logo: "💚", year: 1968, country: "Estados Unidos", animal: "Mono", element: "Tierra", category: "Belleza" },
   { name: "Glossier", logo: "🩷", year: 2014, country: "Estados Unidos", animal: "Caballo", element: "Madera", category: "Belleza" },
   { name: "Dyson", logo: "💨", year: 1991, country: "Reino Unido", animal: "Cabra", element: "Metal", category: "Belleza" },
-  { name: "Olaplex", logo: "✨", year: 2014, country: "Estados Unidos", animal: "Caballo", element: "Madera", category: "Belleza" },
+  { name: "Olaplex", logo: "*", year: 2014, country: "Estados Unidos", animal: "Caballo", element: "Madera", category: "Belleza" },
   { name: "Fenty Beauty", logo: "💄", year: 2017, country: "Estados Unidos", animal: "Gallo", element: "Fuego", category: "Belleza" },
   { name: "Charlotte Tilbury", logo: "💄", year: 2013, country: "Reino Unido", animal: "Serpiente", element: "Agua", category: "Belleza" },
   { name: "Kiehl's", logo: "🧴", year: 1851, country: "Estados Unidos", animal: "Cerdo", element: "Metal", category: "Belleza" },
@@ -120,7 +120,7 @@ export const BRANDS: BrandData[] = [
   { name: "DreamWorks", logo: "🌙", year: 1994, country: "Estados Unidos", animal: "Perro", element: "Madera", category: "Entretenimiento" },
   { name: "Hulu", logo: "📺", year: 2007, country: "Estados Unidos", animal: "Cerdo", element: "Fuego", category: "Entretenimiento" },
   { name: "Amazon Prime", logo: "📦", year: 2006, country: "Estados Unidos", animal: "Perro", element: "Fuego", category: "Entretenimiento" },
-  { name: "Disney+", logo: "✨", year: 2019, country: "Estados Unidos", animal: "Cerdo", element: "Tierra", category: "Entretenimiento" },
+  { name: "Disney+", logo: "*", year: 2019, country: "Estados Unidos", animal: "Cerdo", element: "Tierra", category: "Entretenimiento" },
   { name: "Crunchyroll", logo: "🧡", year: 2006, country: "Estados Unidos", animal: "Perro", element: "Fuego", category: "Entretenimiento" },
   { name: "Hasbro", logo: "🎲", year: 1923, country: "Estados Unidos", animal: "Cerdo", element: "Agua", category: "Entretenimiento" },
   { name: "Mattel", logo: "🧸", year: 1945, country: "Estados Unidos", animal: "Gallo", element: "Madera", category: "Entretenimiento" },
@@ -194,7 +194,7 @@ export const BRANDS: BrandData[] = [
   { name: "ASICS", logo: "👟", year: 1949, country: "Japón", animal: "Buey", element: "Tierra", category: "Ropa y Moda" },
   { name: "Coach", logo: "👜", year: 1941, country: "Estados Unidos", animal: "Serpiente", element: "Metal", category: "Ropa y Moda" },
   { name: "Fendi", logo: "🧣", year: 1925, country: "Italia", animal: "Buey", element: "Madera", category: "Ropa y Moda" },
-  { name: "Yves Saint Laurent", logo: "✨", year: 1961, country: "Francia", animal: "Buey", element: "Metal", category: "Ropa y Moda" },
+  { name: "Yves Saint Laurent", logo: "*", year: 1961, country: "Francia", animal: "Buey", element: "Metal", category: "Ropa y Moda" },
   { name: "Lululemon", logo: "🧘", year: 1998, country: "Canadá", animal: "Tigre", element: "Tierra", category: "Ropa y Moda" },
 
   // Música (15)

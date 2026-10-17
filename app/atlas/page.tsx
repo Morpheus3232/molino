@@ -6,9 +6,9 @@ import { createRouteMetadata } from "@/lib/seo";
 export const metadata = createRouteMetadata({
   title: "Atlas — Tu mundo según el Zodiaco Chino",
   description:
-    "Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu animal del zodíaco chino, organizados por categoría y país.",
+    "Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu signo del zodíaco chino, organizados por categoría y país.",
   path: "/atlas",
-  ogDescription: "El Atlas de Molino: exploración personal por animal del zodíaco chino.",
+  ogDescription: "El Atlas de Molino: exploración personal por signo del zodíaco chino.",
 });
 
 /**

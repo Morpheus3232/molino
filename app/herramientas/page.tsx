@@ -89,7 +89,7 @@ export default function HerramientasPage() {
                     aria-hidden="true"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs uppercase tracking-[0.2em] font-medium mb-1" style={{ color: tool.labelColor }}>
+                    <p className="text-sm font-medium mb-1 label-caps" style={{ color: tool.labelColor }}>
                       {tool.subtitle}
                     </p>
                     <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">

@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  /* Una sola familia (ver app/layout.tsx). */
+  --font-display: var(--font-garamond);
+  --font-heading: var(--font-garamond);
+  --font-sans: var(--font-garamond);
+  --font-mono: var(--font-garamond);
   /* ═══════════════════════════════════════════════════════════════
      ALMANAQUE CÁLIDO — base clara editorial (reemplaza la base oscura
      "panel de instrumento"). "ink" es el color de texto/marca oscuro,
@@ -38,6 +43,14 @@
      en varias secciones del sitio. Ver tailwind.config.ts. */
   --color-ink-rgb: 10 10 10;
   --color-paper-rgb: 255 255 255;
+  /* Único acento de color (2026-10-17): el rojo de la ilustración del Quijote
+     de la portada, un punto más oscuro para pasar AA con texto blanco encima
+     (#CC2E24 → 5.3:1 sobre blanco, 4.8:1 sobre #F4F4F4). El rojo original,
+     #E8392F, vive solo dentro de la ilustración. Usarlo poco: botón
+     principal, ilustración, un detalle por página — no es el `accent`. */
+  --color-vermilion: #CC2E24;
+  --color-vermilion-hover: #A8251D;
+  --color-vermilion-rgb: 204 46 36;
   --color-accent-rgb: 10 10 10;
   --color-accent-light-rgb: 207 207 207;
   --color-gold-rgb: 10 10 10;
@@ -72,10 +85,10 @@
    *   - Detalle (botones, inputs, tarjetas, chips, badges, modales): estos
    *     radios. Es lo que hace que la interfaz se sienta amable al usarla.
    */
-  --radius-sm: 0.125rem;  /* 2px  — chips, badges, tags */
-  --radius-md: 0.25rem;   /* 4px  — botones, inputs, tarjetas */
-  --radius-lg: 0.375rem;  /* 6px  — modales, tarjetas grandes */
-  --radius-xl: 0.5rem;    /* 8px  — contenedores destacados */
+  --radius-sm: 0;  /* página impresa: sin redondeo */
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
 
   --section-padding: 4rem;
   --card-padding: 1.5rem;
@@ -412,7 +425,7 @@
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0.15em;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
   }
 
   .type-data {
@@ -431,7 +444,7 @@
     font-family: var(--font-mono), var(--font-emoji);
     font-size: 0.75rem;
     line-height: 1rem;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
     letter-spacing: 0.2em;
     color: var(--color-muted);
   }
@@ -743,7 +756,7 @@
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     color: var(--color-muted);
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
   }
 
   .divider-ornament::before,
@@ -784,7 +797,7 @@
     font-family: var(--font-heading), var(--font-emoji);
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
     letter-spacing: 0.15em;
     border: 1px solid currentColor;
     background: transparent;
@@ -988,7 +1001,7 @@
     font-size: 0.875rem;
     line-height: 1;
     letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
     border-radius: var(--radius-md);
     transition: all 200ms ease;
     cursor: pointer;
@@ -1064,7 +1077,7 @@
     font-family: var(--font-heading), var(--font-emoji);
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
     letter-spacing: 0.15em;
     color: var(--color-accent-foreground);
     background: var(--color-accent);
@@ -1344,5 +1357,53 @@
 
   .btn-shimmer::after {
     display: none;
+  }
+}
+
+/* Versalitas de libro: reemplaza el patrón "mono + MAYÚSCULAS + tracking
+   ancho" de las etiquetas. all-small-caps convierte también el texto que ya
+   viene en mayúsculas en el código. */
+@layer utilities {
+  .label-caps {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.06em;
+    font-feature-settings: "c2sc", "smcp";
+  }
+}
+
+/* Cifras: elzevirianas en el texto corrido, tabulares donde se alinean datos. */
+body { font-variant-numeric: oldstyle-nums proportional-nums; }
+.font-mono { font-variant-numeric: lining-nums tabular-nums; }
+
+/* Diario: hoja de cuaderno. Los renglones caen en la base de cada línea
+   (padding-top = desplazamiento del fondo) y se mueven con el texto al
+   scrollear el textarea (background-attachment: local). La línea de margen
+   a la izquierda es la del cuaderno escolar. */
+.diary-paper {
+  --diary-line: 2.125rem;
+  --diary-pad: 0.375rem;
+  line-height: var(--diary-line);
+  padding: var(--diary-pad) 0 0 1.25rem;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--diary-line) - 1px),
+    var(--color-border) calc(var(--diary-line) - 1px),
+    var(--color-border) var(--diary-line)
+  );
+  background-position: 0 var(--diary-pad);
+  background-attachment: local;
+  border-left: 1px solid rgb(var(--color-ink-rgb) / 0.25);
+}
+
+/* Migas de pan (27 instancias, todas con aria-label="Breadcrumb"): en
+   pantallas táctiles los enlaces de 13px quedaban de 17px de alto, pegados
+   entre sí. Se agranda el área táctil sin mover el texto. */
+@media (pointer: coarse) {
+  nav[aria-label="Breadcrumb"] a {
+    display: inline-block;
+    padding-block: 0.375rem;
+    margin-block: -0.375rem;
   }
 }

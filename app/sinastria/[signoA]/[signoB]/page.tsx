@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Sparkles, Heart, ArrowRight, ShieldCheck, Flame, Droplets, Wind, Mountain, Compass } from "lucide-react";
+import { Heart, ArrowRight, ShieldCheck, Flame, Droplets, Wind, Mountain, Compass } from "lucide-react";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import { siteUrl, SITE_URL } from "@/lib/seo";
@@ -171,12 +171,12 @@ export default async function SinastriaPage({ params }: PageProps) {
         <header className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
             <Heart className="w-3.5 h-3.5 animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+            <span className="text-sm font-bold label-caps">
               Sinastría Solar & Elementos
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
             {signA.name} <span className="text-accent">&</span> {signB.name}
           </h1>
 
@@ -187,7 +187,7 @@ export default async function SinastriaPage({ params }: PageProps) {
 
         {/* Synergy Score Hero Card */}
         <div className="p-6 sm:p-10 rounded-xl bg-gradient-to-b from-card via-card to-background border border-accent/25 shadow-xl text-center mb-10 relative overflow-hidden">
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
+          <span className="text-sm text-accent font-bold block mb-2 label-caps">
             Índice de Afinidad Elemental
           </span>
           <div className="font-display text-4xl sm:text-5xl font-bold text-foreground my-2 leading-tight">
@@ -200,9 +200,8 @@ export default async function SinastriaPage({ params }: PageProps) {
           <div className="mt-6 pt-6 border-t border-ink/10 flex flex-wrap justify-center gap-3">
             <Link
               href="/pareja"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-gold-hover transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-gold-foreground font-heading text-sm font-bold rounded-xl hover:bg-gold-hover transition-colors shadow-md label-caps"
             >
-              <Sparkles className="w-4 h-4" />
               <span>Calcular con fechas exactas en Modo Pareja</span>
             </Link>
           </div>
@@ -214,7 +213,7 @@ export default async function SinastriaPage({ params }: PageProps) {
           <Card padding="lg" className="border-amber-500/30 bg-card space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-3xl">{signA.symbol}</span>
-              <span className="font-mono text-[10px] uppercase bg-amber-500/10 text-amber-700 px-2.5 py-1 rounded-full font-bold">
+              <span className="text-sm bg-amber-500/10 text-amber-700 px-2.5 py-1 rounded-full font-bold label-caps">
                 {signA.dates}
               </span>
             </div>
@@ -240,7 +239,7 @@ export default async function SinastriaPage({ params }: PageProps) {
           <Card padding="lg" className="border-blue-500/30 bg-card space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-3xl">{signB.symbol}</span>
-              <span className="font-mono text-[10px] uppercase bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full font-bold">
+              <span className="text-sm bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full font-bold label-caps">
                 {signB.dates}
               </span>
             </div>

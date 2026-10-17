@@ -34,7 +34,7 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
       <button
         type="button"
         onClick={handleRedo}
-        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-paper-alt border border-border text-xs font-mono uppercase tracking-wider text-foreground hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all"
+        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-paper-alt border border-border text-sm text-foreground hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all label-caps"
         title="Borrar este mapa y crear uno nuevo (por ejemplo, si pusiste mal la fecha de nacimiento)"
       >
         <RotateCcw className="w-3.5 h-3.5 text-accent" />

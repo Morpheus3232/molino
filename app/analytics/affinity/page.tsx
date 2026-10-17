@@ -224,7 +224,7 @@ export default function AffinityAnalyticsPage() {
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-                      <div className="text-xs text-muted mt-1 uppercase tracking-wider">
+                      <div className="text-sm text-muted mt-1 label-caps">
                         {EVENT_LABELS[
                           key === "profile_cta" ? "affinity_profile_cta_clicked"
                           : key === "recommendation_clicked" ? "affinity_recommendation_clicked"
@@ -270,7 +270,7 @@ export default function AffinityAnalyticsPage() {
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-                      <div className="text-xs text-muted mt-1 uppercase tracking-wider">usuarios</div>
+                      <div className="text-sm text-muted mt-1 label-caps">usuarios</div>
                     </motion.div>
                   ))}
                 </div>
@@ -334,7 +334,7 @@ function RatioCard({ label, value, desc }: { label: string; value: string; desc:
   return (
     <div className="p-4 rounded-md border border-border bg-card shadow-sm text-center">
       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-      <div className="text-xs text-muted mt-1 uppercase tracking-wider">{label}</div>
+      <div className="text-sm text-muted mt-1 label-caps">{label}</div>
       <div className="text-xs text-muted mt-0.5">{desc}</div>
     </div>
   );

@@ -48,7 +48,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {[sign.element, sign.modality, sign.polarity, sign.rulingPlanet].map((tag) => (
-              <span key={tag} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 border border-ink/10">{tag}</span>
+              <span key={tag} className="text-sm text-muted font-medium px-2 py-0.5 border border-ink/10 label-caps">{tag}</span>
             ))}
           </div>
         </motion.section>

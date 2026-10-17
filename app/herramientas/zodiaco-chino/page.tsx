@@ -85,7 +85,7 @@ export default function ZodiacoChinoCalcPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="max-w-md space-y-4">
             <div>
-              <label className="block text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
+              <label className="block text-sm text-muted font-medium mb-2 label-caps">Fecha de nacimiento</label>
               <div className="flex gap-3">
                 <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
                   <option value="">Día</option>
@@ -133,7 +133,7 @@ export default function ZodiacoChinoCalcPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4"
+                    className="text-sm text-accent font-medium mb-4 label-caps"
                   >
                     Tu Animal del Zodiaco Chino
                   </motion.p>

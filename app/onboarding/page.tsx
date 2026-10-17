@@ -117,7 +117,7 @@ export default function OnboardingPage() {
             {STEPS.map((s, i) => (
               <span
                 key={s.id}
-                className={`font-mono text-xs font-semibold tracking-[0.2em] uppercase transition-colors ${
+                className={`text-sm font-semibold transition-colors label-caps ${
                   i <= currentStepIndex ? "text-accent" : "text-muted/70"
                 }`}
               >

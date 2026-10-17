@@ -73,7 +73,7 @@ export const MOOD_CONFIG: Record<
   },
   5: {
     label: "En sintonía",
-    emoji: "✨",
+    emoji: "🎵",
     color: "#9D9D9D",
     bg: "rgba(157,157,157, 0.12)",
     border: "rgba(157,157,157, 0.25)",

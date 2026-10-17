@@ -110,19 +110,19 @@ export default function ProfileHub({
 
         <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-16 sm:pb-24">
           <div className="max-w-4xl text-left">
-            <span className="block font-mono text-xs uppercase tracking-[0.25em] text-accent mb-4">
+            <span className="block text-sm text-accent mb-4 label-caps">
               MAPA PERSONAL SIMBÓLICO
             </span>
 
             {/* Tríada simbólica en tipografía display grande */}
             <div className="space-y-1 sm:space-y-2">
-              <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.0] uppercase">
+              <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
                 Camino de Vida {lifePath} · {archetypeName}
               </h1>
-              <p className="font-display text-3xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.0] uppercase">
+              <p className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
                 Sol en {profile.sunSign}
               </p>
-              <p className="font-display text-3xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.0] uppercase">
+              <p className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
                 {display.name} · {chineseElement} · {polarity}
               </p>
             </div>
@@ -149,7 +149,7 @@ export default function ProfileHub({
                   <span className="w-px h-3.5 bg-border" aria-hidden="true" />
                   <Link
                     href={`/atlas/explorar/${userAnimal}`}
-                    className="text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4"
+                    className="text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1.5 -my-1.5"
                   >
                     {atlasEntityCount} afinidades en tu Atlas
                   </Link>

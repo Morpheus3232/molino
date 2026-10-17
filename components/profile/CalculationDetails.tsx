@@ -68,14 +68,14 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
   return (
     <section className="border border-ink/10 rounded-md bg-background/50 px-4 py-5 sm:px-5 sm:py-6">
-      <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-5">
+      <h2 className="text-sm text-muted mb-5 label-caps">
         ¿Cómo se calculó esto?
       </h2>
 
       <div className="space-y-5 text-sm text-muted">
         {/* Camino de Vida */}
         <section>
-          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
+          <h3 className="text-sm text-foreground label-caps">
             Camino de Vida
           </h3>
           <p className="mt-2">
@@ -107,7 +107,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
         {/* Signo Solar */}
         <section>
-          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
+          <h3 className="text-sm text-foreground label-caps">
             Signo solar
           </h3>
           <p className="mt-2">
@@ -124,7 +124,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
         {/* Zodíaco Chino */}
         <section>
-          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
+          <h3 className="text-sm text-foreground label-caps">
             Zodíaco chino
           </h3>
           <p className="mt-2">
@@ -143,7 +143,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           href={FORMULA_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wide text-accent hover:text-accent-hover"
+          className="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover label-caps"
         >
           Ver fórmula en GitHub →
         </a>

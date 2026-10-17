@@ -444,7 +444,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Mono
   {
     id: "pagani-autos", name: "Pagani", type: "brand",
-    country: "Italia", emoji: "✨",
+    country: "Italia", emoji: "*",
     category: "autos",
     description: "Del argentino que soñaba con esculturas a toda velocidad, Pagani fabrica hiperautos de fibra de carbono que son galerías de arte en movimiento.",
     keyThemes: ["Arte", "Lujo", "Innovación", "Exclusividad"],

@@ -33,7 +33,7 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
 
   return (
     <div className="rounded-xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 shadow-xl">
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">
+      <p className="text-sm text-accent font-semibold mb-4 label-caps">
         Tu año personal
       </p>
       <div className="flex items-center gap-3 mb-4">
@@ -41,7 +41,7 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
           <CalendarRange className="w-4 h-4" />
         </span>
         <div className="min-w-0">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+          <span className="text-sm text-muted block label-caps">
             Año Personal {daily.personalYear}
           </span>
           <span className="font-semibold text-sm text-foreground truncate block">{yearMeaning.theme}</span>
@@ -54,7 +54,7 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
       </div>
       <Link
         href="/blog/numerologia-ano-personal"
-        className="inline-block mt-4 text-xs font-mono text-accent hover:underline underline-offset-2"
+        className="inline-block mt-4 py-1.5 -my-1.5 text-xs font-mono text-accent hover:underline underline-offset-2"
       >
         Cómo se calcula el Año Personal →
       </Link>

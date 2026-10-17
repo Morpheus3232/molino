@@ -94,7 +94,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
+          <p className="text-sm text-accent font-medium mb-4 label-caps">
             Recomendaciones Simbólicas
           </p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
@@ -133,7 +133,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
+          <p className="text-sm text-accent font-medium mb-4 label-caps">
             Recomendaciones Simbólicas · {TYPE_LABEL[entityType] ?? entityType}
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
@@ -213,7 +213,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-12 border-t border-ink/10 pt-8">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
               No constituyen predicción científica ni determinan resultados reales.
@@ -251,7 +251,7 @@ function RecommendationGroup({
     >
       <div className="flex items-center gap-3 mb-2">
         <div className="w-8 h-px" style={{ backgroundColor: accentColor }} aria-hidden="true" />
-        <h2 className="text-xs uppercase tracking-[0.2em] font-medium" style={{ color: accentColor }}>{title}</h2>
+        <h2 className="text-sm font-medium label-caps" style={{ color: accentColor }}>{title}</h2>
       </div>
       <p className="text-xs text-muted mb-4 ml-11">{subtitle}</p>
       <motion.div {...staggerContainer} className="space-y-3">
@@ -304,7 +304,7 @@ function RecommendationCard({
               {rec.name}
             </h3>
             {rec.tier === "resonancia-alta" && (
-              <span className="text-xs font-medium uppercase tracking-wider text-accent">
+              <span className="text-sm font-medium text-accent label-caps">
                 triple alineación
               </span>
             )}

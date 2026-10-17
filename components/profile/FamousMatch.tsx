@@ -12,7 +12,7 @@ import { PERSON_IMAGE_URLS } from "@/lib/data/person-images";
 import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import { Sparkles, Users, Star } from "lucide-react";
+import { Asterisk, Users, Star } from "lucide-react";
 import EntityIcon from "@/components/ui/EntityIcon";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
@@ -123,7 +123,7 @@ function MatchCard({
   const badge = featured
     ? { label: "Principal", Icon: Star }
     : matchCount >= 2
-      ? { label: matchCount === 3 ? "Triple" : "Doble", Icon: Sparkles }
+      ? { label: matchCount === 3 ? "Triple" : "Doble", Icon: Asterisk }
       : null;
 
   // La tarjeta principal va apaisada y al doble de ancho: la foto ocupa su
@@ -143,7 +143,7 @@ function MatchCard({
             className="h-56 sm:h-full sm:min-h-[19rem]"
           />
           {badge && (
-            <span className="absolute top-0 left-0 inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2.5 py-1 rounded-br-lg bg-accent text-background font-bold shadow-sm">
+            <span className="absolute top-0 left-0 inline-flex items-center gap-1 text-sm px-2.5 py-1 rounded-br-lg bg-accent text-background font-bold shadow-sm label-caps">
               <badge.Icon className="w-3 h-3" />
               {badge.label}
             </span>
@@ -154,7 +154,7 @@ function MatchCard({
           <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight">
             {person.name}
           </h3>
-          <p className="font-mono text-xs uppercase tracking-wider text-muted mt-1.5">
+          <p className="text-sm text-muted mt-1.5 label-caps">
             {person.field} · {person.country}
             {birthYear ? ` · ${birthYear}` : ""}
           </p>
@@ -194,7 +194,7 @@ function MatchCard({
       <div className="relative">
         <Portrait name={person.name} id={person.id} className="h-44 w-full" />
         {badge && (
-          <span className="absolute top-0 left-0 inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-br-lg bg-accent text-background font-bold shadow-sm">
+          <span className="absolute top-0 left-0 inline-flex items-center gap-1 text-sm px-2 py-0.5 rounded-br-lg bg-accent text-background font-bold shadow-sm label-caps">
             <badge.Icon className="w-2.5 h-2.5" />
             {badge.label}
           </span>
@@ -205,7 +205,7 @@ function MatchCard({
         <h3 className="font-heading text-base font-bold text-foreground leading-tight">
           {person.name}
         </h3>
-        <p className="font-mono text-xs uppercase tracking-wider text-muted mt-1">
+        <p className="text-sm text-muted mt-1 label-caps">
           {person.field} · {person.country}
           {birthYear ? ` · ${birthYear}` : ""}
         </p>
@@ -250,13 +250,13 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-accent" />
-              <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold">
+              <span className="text-sm text-accent font-semibold label-caps">
                 Sincronicidad Histórica
               </span>
             </div>
             <h2
               id="famous-match-title"
-              className="font-heading text-3xl sm:text-4xl font-bold text-foreground uppercase tracking-tight"
+              className="font-heading text-3xl sm:text-4xl font-bold text-foreground label-caps"
             >
               ¿Con quién compartís tu mapa?
             </h2>

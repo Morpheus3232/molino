@@ -56,11 +56,11 @@ export default function LecturaClient({ catalog }: Props) {
         <header className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-12 border-b border-ink/10">
           <Link
             href="/profile"
-            className="font-mono text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+            className="text-sm text-muted hover:text-accent transition-colors label-caps"
           >
             ← Tu mapa
           </Link>
-          <h1 className="mt-8 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+          <h1 className="mt-8 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] text-foreground label-caps">
             ¿Qué significa
             <br />
             tu mapa?
@@ -71,7 +71,7 @@ export default function LecturaClient({ catalog }: Props) {
             tus sistemas, la sincronicidad y una conversación abierta con tu
             mapa.
           </p>
-          <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.15em] text-muted/70">
+          <p className="mt-8 text-sm text-muted/70 label-caps">
             Tu lectura
           </p>
         </header>

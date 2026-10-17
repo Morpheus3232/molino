@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Sparkles, ArrowRight, ShieldCheck, Copy, Check, Code2, Sliders, ExternalLink } from "lucide-react";
+import { Asterisk, ArrowRight, ShieldCheck, Copy, Check, Code2, Sliders, ExternalLink } from "lucide-react";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -80,7 +80,7 @@ export default function EmbedWidgetPage() {
         <div className="flex items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="text-sm text-accent font-bold label-caps">
               Molino Widget
             </span>
           </div>
@@ -110,7 +110,7 @@ export default function EmbedWidgetPage() {
         {showConfig ? (
           <div className="text-left bg-background/50 p-4 rounded-lg border border-ink/10 space-y-4 mb-2">
             <div className="space-y-2">
-              <span className="text-[10px] font-mono uppercase text-muted font-bold block">
+              <span className="text-sm text-muted font-bold block label-caps">
                 Opciones del Widget
               </span>
               <div className="flex gap-2">
@@ -152,7 +152,7 @@ export default function EmbedWidgetPage() {
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono uppercase text-muted font-bold">
+                <span className="text-sm text-muted font-bold label-caps">
                   Código iframe HTML
                 </span>
                 <button
@@ -183,9 +183,9 @@ export default function EmbedWidgetPage() {
               onClick={handleGenerate}
               disabled={!isDateValid}
               className={`
-                w-full py-3.5 px-6 rounded-xl font-heading text-sm uppercase tracking-wider font-bold
-                transition-all duration-200 inline-flex items-center justify-center gap-2
-                ${
+ w-full py-3.5 px-6 rounded-xl font-heading text-sm font-bold
+ transition-all duration-200 inline-flex items-center justify-center gap-2
+ label-caps                ${
                   isDateValid
                     ? "bg-gold text-gold-foreground hover:bg-gold-hover shadow-md"
                     : "bg-ink/10 text-muted cursor-not-allowed"

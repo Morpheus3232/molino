@@ -64,12 +64,12 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-md bg-accent/10 border border-accent/25">
           <Ticket className="w-3.5 h-3.5 text-accent" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Código de acceso
           </span>
         </span>
 
-        <h1 className="font-display text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
+        <h1 className="font-display text-2xl sm:text-3xl text-foreground label-caps">
           Canjeá tu código
         </h1>
         <p className="text-sm text-muted mt-3 leading-relaxed">
@@ -84,7 +84,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
           <div>
             <label
               htmlFor="canjear-codigo"
-              className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold"
+              className="block text-sm text-muted mb-1.5 font-semibold label-caps"
             >
               Tu código
             </label>
@@ -98,13 +98,13 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
               autoComplete="off"
               spellCheck={false}
               placeholder="EJEMPLO"
-              className="w-full rounded-md bg-background border border-ink/10 p-3 font-mono text-sm uppercase tracking-[0.12em] text-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+              className="w-full rounded-md bg-background border border-ink/10 p-3 text-sm text-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent label-caps"
             />
           </div>
           <div>
             <label
               htmlFor="canjear-fecha"
-              className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold"
+              className="block text-sm text-muted mb-1.5 font-semibold label-caps"
             >
               Tu fecha de nacimiento
             </label>
@@ -120,7 +120,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
           <div>
             <label
               htmlFor="canjear-nombre"
-              className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold"
+              className="block text-sm text-muted mb-1.5 font-semibold label-caps"
             >
               Tu nombre (opcional)
             </label>

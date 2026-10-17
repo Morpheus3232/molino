@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
@@ -22,7 +22,7 @@ const EXPLORE_COPY: Record<EntityType, string> = {
 };
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
-  brand: Sparkles,
+  brand: Asterisk,
   city: Building2,
   country: Globe2,
   university: GraduationCap,
@@ -95,7 +95,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-                <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
+                <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.1] max-w-3xl label-caps">
                   Lo que resuena con tu mapa
                 </h1>
                 <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
@@ -122,12 +122,12 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
               <section>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
-                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Explorar por categoría</h2>
+                  <h2 className="text-sm text-muted font-medium label-caps">Explorar por categoría</h2>
                 </div>
                 <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableTypes.map((type, i) => {
                     const meta = typeMeta[type] || { label: type, plural: type, icon: "", description: "" };
-                    const Icon = TYPE_ICONS[type] ?? Sparkles;
+                    const Icon = TYPE_ICONS[type] ?? Asterisk;
 
                     return (
                       <motion.button

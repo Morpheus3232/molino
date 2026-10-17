@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { RefreshCw, Sparkles } from "lucide-react";
+import { RefreshCw, } from "lucide-react";
 
 export default function ProfileError({
   error,
@@ -18,9 +18,6 @@ export default function ProfileError({
   return (
     <div className="min-h-screen bg-background pt-24 pb-20 px-4 flex items-center justify-center">
       <div className="max-w-md w-full text-center p-8 rounded-xl bg-card border border-ink/10 shadow-lg">
-        <div className="w-14 h-14 rounded-lg bg-accent/10 text-accent mx-auto flex items-center justify-center mb-5">
-          <Sparkles className="w-7 h-7" />
-        </div>
 
         <h1 className="font-display text-2xl font-bold text-foreground mb-2">
           No pudimos calcular tu mapa en el servidor
@@ -34,14 +31,14 @@ export default function ProfileError({
           <button
             type="button"
             onClick={() => reset()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground text-sm font-bold hover:bg-gold-hover transition-colors label-caps"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Reintentar
           </button>
           <Link
             href="/onboarding"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground text-xs uppercase tracking-wider font-semibold hover:bg-ink/10 transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground text-sm font-semibold hover:bg-ink/10 transition-colors label-caps"
           >
             Ingresar fecha de nuevo
           </Link>

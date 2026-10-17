@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles, Building2, Trophy, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, Trophy, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 
 const CATEGORY_ICONS: Record<EntityType, LucideIcon> = {
-  brand: Sparkles,
+  brand: Asterisk,
   city: Building2,
   team: Trophy,
   university: GraduationCap,
@@ -26,7 +26,7 @@ export default function CategoryGrid({ countryISO, categories }: CategoryGridPro
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {categories.map((category, i) => {
-        const Icon = CATEGORY_ICONS[category.type] ?? Sparkles;
+        const Icon = CATEGORY_ICONS[category.type] ?? Asterisk;
         return (
           <motion.div
             key={category.type}
@@ -43,7 +43,7 @@ export default function CategoryGrid({ countryISO, categories }: CategoryGridPro
                 <h3 className="font-heading text-xl font-semibold text-foreground group-hover:text-accent transition-colors">
                   {category.plural}
                 </h3>
-                <p className="font-mono text-[11px] uppercase tracking-wider text-muted mt-1">
+                <p className="text-sm text-muted mt-1 label-caps">
                   {category.count} {category.count === 1 ? "entidad" : "entidades"}
                 </p>
               </div>

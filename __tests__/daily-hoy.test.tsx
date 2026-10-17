@@ -140,7 +140,7 @@ describe("Daily Energy & Retention System", () => {
 
     expect(screen.getByText(/Consejo del Momento/i)).toBeDefined();
     expect(screen.getByText(/Aprovechá la claridad de hoy/i)).toBeDefined();
-    expect(screen.getByText(/Anotar en mi Journal/i)).toBeDefined();
+    expect(screen.getByText(/Anotar en mi diario/i)).toBeDefined();
   });
 
   it("renders WeekPreview with forecast cards", () => {

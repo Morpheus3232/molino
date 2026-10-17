@@ -14,7 +14,7 @@ import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEng
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Sparkles, Check, PenLine, Tag, RefreshCw, Zap, Moon, Compass, Plus, ChevronDown } from "lucide-react";
+import { Check, Tag, RefreshCw, Plus, ChevronDown } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface JournalEditorProps {
@@ -175,7 +175,7 @@ export default function JournalEditor({
   const cycle = cycleContext;
 
   return (
-    <div className={`relative overflow-hidden rounded-md border border-border bg-card p-6 sm:p-8 shadow-sm transition-all ${className}`}>
+    <div className={`relative ${className}`}>
       {/* Toast de persistencia local */}
       <AnimatePresence>
         {savedSuccess && (
@@ -192,53 +192,32 @@ export default function JournalEditor({
         )}
       </AnimatePresence>
 
-      {/* Header — Título claro + Fecha + Contexto sutil */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-border/80">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
-            <PenLine className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-              {editingEntry ? "Editar Entrada" : "Nuevo Registro"}
-            </h3>
-            <p className="text-xs text-muted capitalize mt-0.5">
-              {formattedDisplayDate}
-            </p>
-          </div>
-        </div>
-
-        {/* Badges de ciclo en vivo — discretos */}
-        {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.yearCycle?.personalYear) && (
-          <div className="flex flex-wrap items-center gap-1.5">
-            {cycle.dayEnergy?.theme && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
-                <Zap className="w-3 h-3 text-accent" />
-                <span>{cycle.dayEnergy.theme}</span>
-              </span>
-            )}
-            {cycle.dayEnergy?.personalDay && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono bg-background border border-border text-foreground">
-                <Compass className="w-3 h-3 text-muted" />
-                Día {cycle.dayEnergy.personalDay}
-              </span>
-            )}
-            {cycle.dayEnergy?.moonPhase && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono bg-background border border-border text-foreground">
-                <Moon className="w-3 h-3 text-muted" />
-                {cycle.dayEnergy.moonPhase}
-              </span>
-            )}
-          </div>
+      {/* Encabezado de diario: la fecha es el título de la página, y el
+          contexto del día va como una nota al margen, no como badges. */}
+      <header>
+        <p className="text-sm text-muted label-caps">
+          {editingEntry ? "Corrigiendo una página" : "Página de hoy"}
+        </p>
+        <h2 className="mt-1 font-display italic font-normal text-3xl sm:text-4xl text-foreground first-letter:uppercase">
+          {formattedDisplayDate}
+        </h2>
+        {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.dayEnergy?.moonPhase) && (
+          <p className="mt-2 text-sm italic text-muted">
+            {[
+              cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
+              cycle.dayEnergy?.theme,
+              cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase()}`,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
         )}
-      </div>
+      </header>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         {/* 1. ¿Cómo te sentís? — Escala horizontal minimalista (5 estados) */}
         <div>
-          <label className="block font-mono text-xs uppercase tracking-[0.2em] text-muted mb-2.5">
-            ¿Cómo te sentís?
-          </label>
+          <p className="text-base italic text-muted mb-2">Hoy me siento…</p>
           {/* Dos bugs de layout acá, los dos por lo mismo: cinco palabras de
               hasta 11 caracteres no entran en una fila angosta.
 
@@ -254,7 +233,7 @@ export default function JournalEditor({
               label del estado elegido se confirma debajo. Funciona igual a
               312px que a 1440px, sin recortes. El nombre completo de cada
               opción sigue disponible en su aria-label. */}
-          <div className="flex items-stretch gap-1 p-1 rounded-md bg-background border border-border">
+          <div className="flex items-stretch gap-1 border-y border-border py-1">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
               const isSelected = mood === m;
@@ -265,8 +244,8 @@ export default function JournalEditor({
                   onClick={() => setMood(m)}
                   className={`flex-1 min-w-0 flex items-center justify-center rounded-sm transition-colors min-h-[44px] border text-xl leading-none ${
                     isSelected
-                      ? "bg-accent/10 border-accent"
-                      : "border-transparent opacity-60 hover:opacity-100 hover:bg-ink/[0.03]"
+                      ? "border-transparent border-b-foreground opacity-100"
+                      : "border-transparent opacity-40 hover:opacity-90"
                   }`}
                   aria-pressed={isSelected}
                   aria-label={cfg.label}
@@ -276,7 +255,7 @@ export default function JournalEditor({
               );
             })}
           </div>
-          <p className="mt-2 text-center font-mono text-xs text-accent" aria-live="polite">
+          <p className="mt-2 text-center italic text-base text-foreground" aria-live="polite">
             {MOOD_CONFIG[mood].label}
           </p>
         </div>
@@ -284,21 +263,18 @@ export default function JournalEditor({
         {/* 2. ¿Qué querés registrar? — Textarea como protagonista absoluto */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label
-              htmlFor="journal-content"
-              className="block font-mono text-xs uppercase tracking-wider text-muted font-semibold"
-            >
-              ¿Qué querés registrar?
+            <label htmlFor="journal-content" className="sr-only">
+              Lo que querés escribir hoy
             </label>
           </div>
 
           <textarea
             id="journal-content"
-            rows={5}
+            rows={9}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Escribí tus pensamientos, decisiones, intuiciones o lo que viviste hoy..."
-            className="w-full rounded-md bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
+            placeholder="Querido diario…"
+            className="diary-paper w-full text-lg text-foreground placeholder:italic placeholder:text-muted/60 focus:outline-none resize-y font-sans"
             required
           />
 
@@ -309,16 +285,15 @@ export default function JournalEditor({
                 <button
                   type="button"
                   onClick={usePrompt}
-                  className="min-w-0 text-left text-muted/80 hover:text-accent transition-colors flex items-center gap-1"
+                  className="min-w-0 text-left text-muted/80 hover:text-accent transition-colors flex items-center gap-1 py-1.5 -my-1.5"
                   title="Usar como punto de partida"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
                   <span className="truncate italic">&ldquo;{currentPrompt}&rdquo;</span>
                 </button>
                 <button
                   type="button"
                   onClick={nextPrompt}
-                  className="p-1 text-muted hover:text-accent rounded transition-colors shrink-0"
+                  className="p-2 -m-1 text-muted hover:text-accent rounded transition-colors shrink-0"
                   aria-label="Ver otra sugerencia"
                   title="Cambiar sugerencia"
                 >
@@ -328,7 +303,7 @@ export default function JournalEditor({
             )}
 
             <span className="text-xs text-muted font-mono ml-auto shrink-0">
-              {content.length} caracteres
+              {content.trim() ? content.trim().split(/\s+/).length : 0} palabras
             </span>
           </div>
         </div>
@@ -354,7 +329,7 @@ export default function JournalEditor({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Tag className="w-3.5 h-3.5 text-muted" />
-                  <span className="font-mono text-xs uppercase tracking-wider text-muted font-semibold">
+                  <span className="text-sm text-muted font-semibold label-caps">
                     Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
                   </span>
                 </div>
@@ -391,7 +366,7 @@ export default function JournalEditor({
         </div>
 
         {/* 4. Guardar registro — CTA principal claro */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/80">
+        <div className="flex items-center justify-end gap-3 pt-2">
           {editingEntry && onCancelEdit && (
             <Button
               type="button"
@@ -419,8 +394,7 @@ export default function JournalEditor({
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4" />
-                {editingEntry ? "Actualizar registro" : "Guardar registro"}
+                {editingEntry ? "Guardar la corrección" : "Guardar en el diario"}
               </>
             )}
           </Button>

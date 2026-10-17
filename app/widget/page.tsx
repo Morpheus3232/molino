@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, Sparkles, Palette, Globe, Gift, ArrowRight } from "lucide-react";
+import { ShieldCheck, Asterisk, Palette, Globe, Gift, ArrowRight } from "lucide-react";
 import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import Card from "@/components/ui/Card";
 import CopyEmbedCode from "./CopyEmbedCode";
@@ -23,7 +23,7 @@ const BENEFITS = [
     desc: "El cálculo corre en el navegador de tu visitante. No pedimos email, no ponemos cookies, no armamos perfiles.",
   },
   {
-    icon: Sparkles,
+    icon: Asterisk,
     title: "Gratis, sin letra chica",
     desc: "No hay plan pago del widget ni límite de usos. Solo pedimos que mantengas la atribución a Molino.app en el pie.",
   },
@@ -83,8 +83,7 @@ export default function WidgetPage() {
         {/* Hero */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+            <span className="text-sm font-bold label-caps">
               Widget gratuito para coaches y sitios de bienestar
             </span>
           </div>
@@ -115,7 +114,7 @@ export default function WidgetPage() {
         {/* Demo en vivo */}
         <div className="mb-16">
           <div className="mb-6 text-center">
-            <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">Demo en vivo</span>
+            <span className="text-sm text-accent font-bold label-caps">Demo en vivo</span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mt-1">
               Así se ve instalado
             </h2>
@@ -135,7 +134,7 @@ export default function WidgetPage() {
         {/* Instalación */}
         <div className="mb-16">
           <div className="mb-6">
-            <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">Instalación</span>
+            <span className="text-sm text-accent font-bold label-caps">Instalación</span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mt-1">
               3 pasos, 2 minutos
             </h2>
@@ -164,7 +163,7 @@ export default function WidgetPage() {
         {/* FAQ */}
         <div className="mb-16">
           <div className="mb-8">
-            <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">Preguntas frecuentes</span>
+            <span className="text-sm text-accent font-bold label-caps">Preguntas frecuentes</span>
           </div>
           <div className="space-y-px bg-ink/10 rounded-lg overflow-hidden">
             {FAQ.map((item) => (
@@ -184,13 +183,13 @@ export default function WidgetPage() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href="#top"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-gold-foreground font-heading text-sm font-bold hover:bg-gold-hover transition-colors shadow-sm label-caps"
             >
               Copiar código del widget
             </a>
             <Link
               href="/profesionales"
-              className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
             >
               Ver Molino para profesionales <ArrowRight className="w-3.5 h-3.5" />
             </Link>

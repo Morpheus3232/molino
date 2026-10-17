@@ -11,7 +11,7 @@ import PremiumPreview from "@/components/premium/PremiumPreview";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { PREMIUM_FAQS } from "@/components/pricing/pricing-data";
-import { Sparkles, ShieldCheck, ArrowDown, Compass, Heart, Gift } from "lucide-react";
+import { ShieldCheck, ArrowDown, Compass, Heart, Gift } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
@@ -39,15 +39,14 @@ export default function PremiumClient() {
         {/* Hero Section */}
         <header className="mb-14 sm:mb-16 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/25 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-accent animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="text-sm text-accent font-bold label-caps">
               Molino Premium · Síntesis Profunda
             </span>
           </div>
 
           {hook ? (
             <>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
                 {hook.question}
               </h1>
               <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
@@ -56,7 +55,7 @@ export default function PremiumClient() {
             </>
           ) : (
             <>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
                 Explorá tu mapa completo <br className="hidden sm:inline" />
                 <span className="text-accent">sin determinismo</span>
               </h1>
@@ -73,7 +72,6 @@ export default function PremiumClient() {
               onClick={scrollToCheckout}
               className="flex items-center gap-2 px-8 py-4 text-base font-bold shadow-xl"
             >
-              <Sparkles className="w-4 h-4" />
               Desbloquear por $8 USD
             </Button>
 
@@ -115,7 +113,7 @@ export default function PremiumClient() {
         <div className="pb-12 max-w-2xl mx-auto">
           <div className="rounded-xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
             <div className="space-y-2 text-center sm:text-left">
-              <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-accent">
+              <span className="inline-flex items-center gap-1.5 text-sm font-bold text-accent label-caps">
                 <Gift className="w-3.5 h-3.5" />
                 ¿Querés regalarle la Lectura a alguien?
               </span>
@@ -128,7 +126,7 @@ export default function PremiumClient() {
             </div>
             <Link
               href="/regalar"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-sm font-bold uppercase tracking-wider hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-sm font-bold hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md label-caps"
             >
               <Gift className="w-4 h-4" />
               Regalar mapa · $8 USD

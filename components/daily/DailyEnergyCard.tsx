@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { StreakBadge } from "@/lib/hooks/useStreak";
-import { Sparkles, Flame, Share2, ShieldCheck, ArrowRight } from "lucide-react";
+import { Flame, Share2, ShieldCheck, ArrowRight } from "lucide-react";
 import { getCalendarDayContent, getDateNumberBreakdown, formatDateNumberBreakdown } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import Link from "next/link";
@@ -43,7 +43,7 @@ export default function DailyEnergyCard({
       <div className="px-6 sm:px-8 py-4 border-b border-border/70 flex flex-wrap items-center justify-between gap-3 bg-background/50">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-wider text-muted capitalize">
+          <span className="text-sm text-muted capitalize label-caps">
             {formattedToday}
           </span>
         </div>
@@ -63,7 +63,7 @@ export default function DailyEnergyCard({
           {/* Número Gigante */}
           <div className="shrink-0 flex md:flex-col items-center md:items-start gap-4 md:gap-1">
             <div className="text-left">
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold block">
+              <span className="text-sm text-muted font-bold block label-caps">
                 Hoy es día
               </span>
               <span className="font-display text-6xl sm:text-7xl lg:text-8xl font-black text-accent leading-none block mt-1 tracking-tight">
@@ -83,7 +83,7 @@ export default function DailyEnergyCard({
           {/* Arquetipo del día & Explicación */}
           <div className="min-w-0 flex-1 space-y-3 pt-1">
             <div className="inline-flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold px-2 py-0.5 rounded bg-accent/10">
+              <span className="text-sm text-accent font-bold px-2 py-0.5 rounded bg-accent/10 label-caps">
                 Arquetipo del día
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function DailyEnergyCard({
         <div className="mt-6 pt-4 border-t border-border/40 flex justify-end">
           <Link
             href="/calendario"
-            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-accent transition-colors"
+            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-accent transition-colors py-1.5 -my-1.5"
           >
             <span>Ver calendario numerológico</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -129,7 +129,6 @@ export default function DailyEnergyCard({
         <div className="p-6 rounded-xl bg-card border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-accent" />
               <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
                 Energía de {daily.theme}
               </h3>
@@ -141,7 +140,7 @@ export default function DailyEnergyCard({
 
           {daily.isPersonalized && (
             <div className="shrink-0 p-3.5 rounded-xl bg-background/80 border border-border/70 text-right sm:text-left self-start sm:self-center">
-              <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+              <span className="text-sm text-muted font-semibold block label-caps">
                 Ciclo en curso
               </span>
               <span className="font-heading text-sm font-bold text-accent">
@@ -157,7 +156,7 @@ export default function DailyEnergyCard({
           <div className="p-3.5 rounded-xl bg-card border border-border/70 flex items-center gap-3">
             <span className="text-xl">{daily.moonPhase?.emoji || "🌙"}</span>
             <div className="min-w-0">
-              <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+              <span className="text-sm text-muted font-semibold block label-caps">
                 Fase Lunar
               </span>
               <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
@@ -174,7 +173,7 @@ export default function DailyEnergyCard({
                   <Flame className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+                  <span className="text-sm text-muted font-semibold block label-caps">
                     Elemento
                   </span>
                   <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
@@ -189,7 +188,7 @@ export default function DailyEnergyCard({
                   <Share2 className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                  <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+                  <span className="text-sm text-muted font-semibold block label-caps">
                     Tu Arquetipo
                   </span>
                   <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
@@ -204,7 +203,7 @@ export default function DailyEnergyCard({
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div className="min-w-0">
-                <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+                <span className="text-sm text-muted font-semibold block label-caps">
                   Fortaleza del día
                 </span>
                 <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">

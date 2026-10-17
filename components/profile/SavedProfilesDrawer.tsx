@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Check,
   Plus,
-  Sparkles,
   Lock,
   Gift,
 } from "lucide-react";
@@ -368,7 +367,7 @@ export default function SavedProfilesDrawer({
                               {item.label}
                             </span>
                             {isCurrent && (
-                              <span className="text-xs font-mono uppercase bg-accent text-background px-1.5 py-0.5 rounded font-bold">
+                              <span className="text-sm bg-accent text-background px-1.5 py-0.5 rounded font-bold label-caps">
                                 Activo
                               </span>
                             )}
@@ -383,7 +382,7 @@ export default function SavedProfilesDrawer({
                               que uno equivocado. */}
                           {hasLectura !== undefined && (
                             <span
-                              className={`mt-1.5 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 rounded ${
+                              className={`mt-1.5 inline-flex items-center gap-1 text-sm px-1.5 py-0.5 rounded label-caps ${
                                 hasLectura
                                   ? "bg-gold/15 border border-gold/40"
                                   : "text-muted/80 border border-ink/10"
@@ -392,7 +391,6 @@ export default function SavedProfilesDrawer({
                             >
                               {hasLectura ? (
                                 <>
-                                  <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
                                   Lectura incluida
                                 </>
                               ) : (

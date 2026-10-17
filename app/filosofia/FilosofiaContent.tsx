@@ -92,7 +92,7 @@ export default function FilosofiaContent() {
           </p>
           <Link
             href="/nosotros"
-            className="inline-flex items-center gap-1.5 mt-4 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+            className="inline-flex items-center gap-1.5 mt-4 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
           >
             Conocé más sobre nuestro equipo →
           </Link>
@@ -198,7 +198,7 @@ export default function FilosofiaContent() {
 
           {/* Ancient traditions */}
           <div className="mb-10">
-            <span className="inline-block font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-4 px-3 py-1 border border-accent/20">
+            <span className="inline-block text-sm font-semibold text-accent mb-4 px-3 py-1 border border-accent/20 label-caps">
               Tradición ancestral
             </span>
             <div className="flex flex-wrap gap-3" role="list" aria-label="Tradiciones ancestrales">
@@ -219,7 +219,7 @@ export default function FilosofiaContent() {
 
           {/* Contemporary systems */}
           <div>
-            <span className="inline-block font-mono text-xs font-semibold tracking-[0.2em] uppercase text-ink/50 mb-4 px-3 py-1 border border-ink/10">
+            <span className="inline-block text-sm font-semibold text-ink/50 mb-4 px-3 py-1 border border-ink/10 label-caps">
               Sistema contemporáneo
             </span>
             <div className="flex flex-wrap gap-3" role="list" aria-label="Sistemas contemporáneos">

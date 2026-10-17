@@ -5,7 +5,7 @@ export default function RootLoading() {
         <div className="w-12 h-12 rounded-full border-2 border-accent/20 border-t-accent animate-spin" />
         <span className="absolute text-accent text-sm font-serif">✦</span>
       </div>
-      <p className="font-mono text-xs text-muted tracking-widest uppercase animate-pulse">
+      <p className="text-sm text-muted animate-pulse label-caps">
         Calculando patrones…
       </p>
     </div>

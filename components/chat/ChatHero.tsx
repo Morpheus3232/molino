@@ -51,13 +51,13 @@ export default function ChatHero({
       {/* Contenido frontal */}
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         {/* Micro-etiqueta superior */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-paper/10 border border-paper/15 text-accent-light text-[11px] font-mono uppercase tracking-[0.25em] mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-paper/10 border border-paper/15 text-accent-light text-sm mb-6 label-caps">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-light animate-ping" />
           Tu mapa, listo para usar
         </div>
 
         {/* Display Title */}
-        <h2 className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[0.94] tracking-tight uppercase text-paper max-w-2xl mx-auto">
+        <h2 className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[0.94] text-paper max-w-2xl mx-auto label-caps">
           Tu mapa ya está
           <br />
           <span className="text-accent-light italic font-normal">
@@ -99,7 +99,7 @@ export default function ChatHero({
         {/* Preguntas de inicio rápido sugeridas si se requiere */}
         {!compact && onSelectStarter && (
           <div className="mt-8 pt-6 border-t border-paper/10 text-left">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-paper/50 text-center mb-3">
+            <p className="text-sm text-paper/50 text-center mb-3 label-caps">
               Para qué querés usarlo
             </p>
             <div className="flex flex-wrap justify-center gap-2">

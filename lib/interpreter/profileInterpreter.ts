@@ -21,7 +21,7 @@ export class ProfileInterpreter {
     const signFact = SIGN_FACTS[data.sunSign] || SIGN_FACTS.Aries;
     const signInterpretation = SIGN_INTERPRETATIONS_ES[data.sunSign] || SIGN_INTERPRETATIONS_ES.Aries;
     const animalInterpretation = ANIMAL_INTERPRETATIONS_ES[data.chineseZodiac] || ANIMAL_INTERPRETATIONS_ES.Rata;
-    const animalEmoji = ANIMAL_EMOJIS[data.chineseZodiac] || "✨";
+    const animalEmoji = ANIMAL_EMOJIS[data.chineseZodiac] || "*";
 
     const baseStrength =
       archetypeData.strengths?.length > 0

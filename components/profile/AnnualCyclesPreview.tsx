@@ -65,7 +65,7 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
             <div>
               <div className="flex items-center justify-between text-xs text-muted font-mono mb-2">
                 <span className="font-bold text-foreground">{c.year}</span>
-                <span aria-hidden="true">{ANIMAL_EMOJIS[c.yearAnimal as ChineseAnimal] || "✨"}</span>
+                <span aria-hidden="true">{ANIMAL_EMOJIS[c.yearAnimal as ChineseAnimal] || "*"}</span>
               </div>
 
               <div className="flex items-baseline gap-1.5 my-1">

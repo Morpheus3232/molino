@@ -102,7 +102,6 @@ const KNOWLEDGE_LINKS_WITH_PROFILE: NavLink[] = [
 // "Proyecto" — la identidad open-source deja de vivir solo en el footer.
 const PROJECT_LINKS: NavLink[] = [
   { href: "/filosofia", label: "Filosofía" },
-  { href: "/transparencia", label: "Transparencia" },
   { href: "/metodos-y-fuentes", label: "Métodos y fuentes" },
   { href: "/changelog", label: "Changelog" },
 ];
@@ -288,7 +287,7 @@ export default function UniversityHeader() {
   const vaultLabel = vaultCount > 0 ? "Guardados" : "Guardar";
 
   const navButtonClass = (active: boolean) =>
-    `px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+    `px-3 py-1.5 text-sm font-semibold transition-colors rounded-xl whitespace-nowrap label-caps ${
       active
         ? "text-foreground bg-ink/[0.06] font-bold"
         : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
@@ -298,7 +297,7 @@ export default function UniversityHeader() {
   // texto plano; una acción lleva borde o relleno, así se sabe qué navega y
   // qué abre algo antes de clickear.
   const actionClass =
-    "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors";
+    "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps";
 
   return (
     <>
@@ -420,7 +419,7 @@ export default function UniversityHeader() {
             {!hasProfile ? (
               <Link
                 href="/onboarding"
-                className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold whitespace-nowrap rounded-xl bg-vermilion text-paper hover:bg-vermilion-hover transition-opacity label-caps"
               >
                 Crear mi mapa
               </Link>
@@ -430,13 +429,13 @@ export default function UniversityHeader() {
                   <>
                     <Link
                       href="/profile"
-                      className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
                     >
                       Mi Mapa
                     </Link>
                     <Link
                       href={lecturaHref}
-                      className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors"
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors label-caps"
                     >
                       Mi Lectura
                     </Link>
@@ -447,7 +446,7 @@ export default function UniversityHeader() {
                   onClick={() => {
                     handleNewProfile();
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
                 >
                   <Plus className="w-3.5 h-3.5" aria-hidden="true" focusable="false" />
                   Crear nuevo mapa
@@ -488,7 +487,7 @@ export default function UniversityHeader() {
                         es lo único que un usuario nuevo necesita decidir. */}
                     <Link
                       href="/onboarding"
-                      className="flex items-center justify-center min-h-[44px] mb-3 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
+                      className="flex items-center justify-center min-h-[44px] mb-3 px-4 py-2.5 text-sm font-semibold bg-vermilion text-paper hover:bg-vermilion-hover transition-opacity text-center rounded-xl label-caps"
                       onClick={() => setMenuOpen(false)}
                     >
                       CREAR MI MAPA
@@ -654,7 +653,7 @@ function NavDropdown({
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-controls={menuId}
-        className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+        className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold transition-colors rounded-xl whitespace-nowrap label-caps ${
           isActive
             ? "text-foreground bg-ink/[0.06] font-bold"
             : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
@@ -678,7 +677,7 @@ function NavDropdown({
             {groups.map((group, i) => (
               <div key={group.heading ?? i} className={i > 0 ? "mt-1.5 pt-1.5 border-t border-ink/10" : ""}>
                 {group.heading && (
-                  <p className="px-4 pt-1 pb-1 text-[10px] font-mono uppercase tracking-[0.15em] text-muted/70">
+                  <p className="px-4 pt-1 pb-1 text-sm text-muted/70 label-caps">
                     {group.heading}
                   </p>
                 )}
@@ -741,7 +740,7 @@ function MobileGroups({
 }) {
   return (
     <>
-      <p className="px-3 pt-4 pb-1 text-[11px] font-mono uppercase tracking-[0.15em] text-muted/70">
+      <p className="px-3 pt-4 pb-1 text-sm text-muted/70 label-caps">
         {heading}
       </p>
       {groups.flatMap((g) => g.links).map((link) => (

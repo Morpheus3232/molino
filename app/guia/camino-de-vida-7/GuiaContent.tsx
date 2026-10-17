@@ -5,12 +5,12 @@ export default function GuiaContent() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[700px] px-6 sm:px-8 py-16 sm:py-28" id="main-content">
         <nav className="mb-12">
-          <Link href="/guia" className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium hover:text-accent/80 transition-colors">
+          <Link href="/guia" className="text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps">
             ← volver a la guía
           </Link>
         </nav>
 
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Camino de Vida</p>
+        <p className="text-sm text-accent font-medium mb-4 label-caps">Camino de Vida</p>
         <h1 className="font-heading text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
           7
         </h1>
@@ -120,10 +120,10 @@ export default function GuiaContent() {
         </div>
 
         <div className="mt-16 pt-10 border-t border-neutral-200/60">
-          <Link href="/guia" className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors">
+          <Link href="/guia" className="group inline-flex items-center gap-2 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps">
             ← Todos los artículos
           </Link>
-          <Link href="/onboarding" className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors ml-8">
+          <Link href="/onboarding" className="group inline-flex items-center gap-2 text-sm text-accent font-medium hover:text-accent/80 transition-colors ml-8 label-caps">
             Calcular mi Camino de Vida →
           </Link>
         </div>
@@ -134,7 +134,7 @@ export default function GuiaContent() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold text-gold-foreground font-heading text-sm font-bold hover:bg-gold-hover transition-colors label-caps"
           >
             Crear mi mapa
           </Link>

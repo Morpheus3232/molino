@@ -5,13 +5,13 @@ import "@testing-library/jest-dom";
 import JournalEditor from "@/components/journal/JournalEditor";
 
 describe("JournalEditor component (Fase 2)", () => {
-  it("renderiza la jerarquía limpia: ¿Cómo te sentís?, ¿Qué querés registrar?, y botón Guardar", () => {
+  it("renderiza la página del diario: fecha, ánimo, hoja y botón Guardar", () => {
     render(<JournalEditor profile={null} onSaveEntry={vi.fn()} />);
 
-    expect(screen.getByText("Nuevo Registro")).toBeInTheDocument();
-    expect(screen.getByText("¿Cómo te sentís?")).toBeInTheDocument();
-    expect(screen.getByText("¿Qué querés registrar?")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Guardar registro/i })).toBeInTheDocument();
+    expect(screen.getByText("Página de hoy")).toBeInTheDocument();
+    expect(screen.getByText("Hoy me siento…")).toBeInTheDocument();
+    expect(screen.getByLabelText("Lo que querés escribir hoy")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Guardar en el diario/i })).toBeInTheDocument();
   });
 
   it("oculta los tags por defecto y los despliega al hacer clic en 'Agregar tema'", async () => {
@@ -46,19 +46,19 @@ describe("JournalEditor component (Fase 2)", () => {
 
     render(<JournalEditor profile={null} onSaveEntry={vi.fn()} editingEntry={editingEntry} />);
 
-    expect(screen.getByText("Editar Entrada")).toBeInTheDocument();
+    expect(screen.getByText("Corrigiendo una página")).toBeInTheDocument();
     expect(screen.getByText("#Trabajo")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Actualizar registro/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Guardar la corrección/i })).toBeInTheDocument();
   });
 
   it("permite escribir en el textarea y enviar el formulario", async () => {
     const onSave = vi.fn().mockResolvedValue(undefined);
     render(<JournalEditor profile={null} onSaveEntry={onSave} />);
 
-    const textarea = screen.getByPlaceholderText(/Escribí tus pensamientos/i);
+    const textarea = screen.getByPlaceholderText(/Querido diario/i);
     fireEvent.change(textarea, { target: { value: "Hoy fue un día de claridad y avances." } });
 
-    const submitBtn = screen.getByRole("button", { name: /Guardar registro/i });
+    const submitBtn = screen.getByRole("button", { name: /Guardar en el diario/i });
     expect(submitBtn).not.toBeDisabled();
 
     fireEvent.click(submitBtn);

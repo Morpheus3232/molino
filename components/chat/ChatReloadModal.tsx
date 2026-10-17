@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, ArrowRight, ShieldCheck } from "lucide-react";
+import { X, ArrowRight, ShieldCheck } from "lucide-react";
 import { RELOAD_PACK_PRICE_USD, RELOAD_PACK_QUESTIONS } from "@/lib/session/chatCredits";
 
 interface ChatReloadModalProps {
@@ -56,15 +56,14 @@ export default function ChatReloadModal({
           </button>
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-accent-light/10 border border-accent-light/20 text-accent-light font-mono text-xs uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-accent-light/10 border border-accent-light/20 text-accent-light text-sm mb-4 label-caps">
             Saldo Molino
           </div>
 
           {/* Título y descripción */}
           <h3
             id="reload-modal-title"
-            className="font-display text-2xl sm:text-3xl text-paper uppercase tracking-tight leading-tight"
+            className="font-display text-2xl sm:text-3xl text-paper leading-tight label-caps"
           >
             Te quedaste sin saldo Molino
           </h3>
@@ -105,7 +104,7 @@ export default function ChatReloadModal({
             <button
               type="button"
               onClick={onClose}
-              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[--radius-md] border border-paper/25 text-paper font-heading text-sm font-bold uppercase tracking-wider hover:bg-paper/10 transition-all"
+              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[--radius-md] border border-paper/25 text-paper font-heading text-sm font-bold hover:bg-paper/10 transition-all label-caps"
             >
               <span>Volver a mi mapa</span>
               <ArrowRight className="w-4 h-4" />

@@ -56,7 +56,7 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
 
       {resonanceStyle && resonance && (
         <span
-          className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium uppercase tracking-wider border ${resonanceStyle.className}`}
+          className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-sm font-medium border label-caps ${resonanceStyle.className}`}
           title={resonance.label}
         >
           {resonanceStyle.label}

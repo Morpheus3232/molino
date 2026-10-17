@@ -34,14 +34,14 @@ export default function BlogArticleError({
           <button
             type="button"
             onClick={() => reset()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground text-sm font-bold hover:bg-gold-hover transition-colors label-caps"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Reintentar
           </button>
           <Link
             href="/blog"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground text-xs uppercase tracking-wider font-semibold hover:bg-ink/10 transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground text-sm font-semibold hover:bg-ink/10 transition-colors label-caps"
           >
             Volver al blog
           </Link>

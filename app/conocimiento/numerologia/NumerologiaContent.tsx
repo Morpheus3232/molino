@@ -74,7 +74,7 @@ export default function NumerologiaContent() {
               <strong>Es importante aclarar:</strong> la numerología no es una ciencia. No existe evidencia empírica que respalde la idea de que los números determinen rasgos de personalidad o destinos. Lo que sí existe es una tradición cultural de más de 2500 años que Molino utiliza como herramienta de reflexión.
             </p>
             <div className="p-6 border border-ink/10 mt-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
+              <p className="text-sm text-accent font-medium mb-2 label-caps">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
                 La numerología es un lenguaje simbólico. Molino la usa como una lente de autoconocimiento, no como una métrica objetiva.
               </p>
@@ -100,7 +100,7 @@ export default function NumerologiaContent() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <div className="p-6 border border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
+                <p className="text-sm text-accent font-medium mb-2 label-caps">Diferencia clave</p>
                 <p className="text-sm text-muted leading-relaxed">
                   <strong>Pitagorismo histórico:</strong> Escuela filosófica que veía los números como principios matemáticos del universo.
                 </p>
@@ -109,7 +109,7 @@ export default function NumerologiaContent() {
                 </p>
               </div>
               <div className="p-6 border border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
+                <p className="text-sm text-accent font-medium mb-2 label-caps">Lo que dice la evidencia</p>
                 <p className="text-sm text-muted leading-relaxed">
                   No existe evidencia científica que respalde que los números determinen rasgos de personalidad. La investigación en psicología no ha encontrado correlaciones válidas entre fechas de nacimiento y características psicológicas.
                 </p>
@@ -129,7 +129,7 @@ export default function NumerologiaContent() {
               La numerología pitagórica es el sistema más utilizado en occidente. Asigna valores numéricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo dígito.
             </p>
             <div className="p-6 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
+              <p className="text-sm text-accent font-medium mb-3 label-caps">Tabla de correspondencia</p>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-foreground">
                 {["A=1", "B=2", "C=3", "D=4", "E=5", "F=6", "G=7", "H=8", "I=9", "J=1", "K=2", "L=3", "M=4", "N=5", "O=6", "P=7", "Q=8", "R=9", "S=1", "T=2", "U=3", "V=4", "W=5", "X=6", "Y=7", "Z=8"].map((v) => (
                   <span key={v} className="text-center py-1 px-2 rounded bg-background text-xs">{v}</span>
@@ -179,7 +179,7 @@ export default function NumerologiaContent() {
                     <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {num.keywords.map((kw) => (
-                        <span key={kw} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
+                        <span key={kw} className="text-sm text-muted font-medium px-2 py-0.5 rounded-md border border-border label-caps">{kw}</span>
                       ))}
                     </div>
                   </div>

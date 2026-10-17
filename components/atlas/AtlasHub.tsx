@@ -43,7 +43,7 @@ function CategoryPreview({
 
   return (
     <motion.div className="group" {...fadeUp}>
-      <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground uppercase mb-3">
+      <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-3 label-caps">
         {label}
       </h3>
 
@@ -97,8 +97,8 @@ function AnimalSelector({
 }) {
   return (
     <div>
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
-        {selected ? "Cambiar animal" : "Elegí tu animal para explorar"}
+      <p className="text-sm text-muted font-medium mb-3 label-caps">
+        {selected ? "Cambiar signo" : "Elegí tu signo para explorar"}
       </p>
       <div className="grid grid-cols-3 gap-2">
         {ANIMALS.map((animal) => {
@@ -197,7 +197,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
       {/* ═══════════ HERO ═══════════ */}
       <section aria-label="Atlas — tu mapa de afinidades" className="relative mb-20 sm:mb-28">
         <motion.p
-          className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-8"
+          className="text-sm text-accent font-semibold mb-8 label-caps"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
@@ -208,21 +208,33 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
           <div className="flex-1">
             <motion.h1
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.92]"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             >
               Tu mapa de afinidades
             </motion.h1>
-            <motion.p
-              className="text-sm sm:text-base text-muted mt-4 max-w-lg leading-relaxed"
+            {/* Qué es esta sección, para quien llega sin contexto: la regla
+                completa en dos párrafos, sin vender nada. */}
+            <motion.div
+              className="mt-5 max-w-xl space-y-3 text-base sm:text-lg text-muted leading-relaxed"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             >
-              Explorá el mundo a través de tu animal del Zodiaco Chino.
-            </motion.p>
+              <p>
+                El Atlas reúne países, ciudades, marcas, equipos, universidades y
+                personas. Cada uno tiene una fecha de origen —el día en que se
+                fundó o nació— y esa fecha le da un signo del zodíaco chino, igual
+                que tu fecha de nacimiento te da el tuyo.
+              </p>
+              <p>
+                Acá ves primero lo que comparte tu signo y, aparte, lo del signo
+                opuesto: lo que conviene mirar con más cuidado. Elegí tu signo
+                para empezar, o más abajo recorré todo el Atlas por país.
+              </p>
+            </motion.div>
           </div>
 
           <motion.div
@@ -284,10 +296,10 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">
+              <p className="text-sm text-muted font-medium mb-2 label-caps">
                 Energía opuesta
               </p>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground/60 uppercase">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground/60 label-caps">
                 {enemyName}
               </h2>
             </div>
@@ -313,14 +325,14 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         {...fadeUp}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium">
+          <h2 className="text-sm text-muted font-medium label-caps">
             Explorar todo el Atlas
           </h2>
           {!countriesExpanded && (
             <button
               type="button"
               onClick={() => setCountriesExpanded(true)}
-              className="text-xs text-muted hover:text-accent transition-colors"
+              className="text-sm text-muted hover:text-accent transition-colors py-2 -my-2"
             >
               {countries.length} países →
             </button>

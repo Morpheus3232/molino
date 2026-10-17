@@ -54,7 +54,7 @@ describe("Header — navegación sin perfil", () => {
   test("Proyecto sube la identidad open-source al header (no solo al footer)", () => {
     const src = header();
     expect(src).toContain("PROJECT_GROUPS");
-    for (const href of ["/filosofia", "/transparencia", "/metodos-y-fuentes", "/changelog"]) {
+    for (const href of ["/filosofia", "/metodos-y-fuentes", "/changelog"]) {
       expect(src).toContain(`href: "${href}"`);
     }
   });
@@ -216,7 +216,7 @@ describe("Footer — 4 columnas alineadas a las 4 puertas conceptuales (Fase 3)"
 
   test("la columna Proyecto expone la identidad open-source", () => {
     const src = footer();
-    for (const href of ["/filosofia", "/transparencia", "/metodos-y-fuentes", "/changelog", "/docs", "/nosotros"]) {
+    for (const href of ["/filosofia", "/metodos-y-fuentes", "/changelog", "/docs", "/nosotros"]) {
       expect(src).toContain(`href: "${href}"`);
     }
   });

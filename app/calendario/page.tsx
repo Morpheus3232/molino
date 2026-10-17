@@ -28,7 +28,7 @@ export default function CalendarioPage() {
         <div className="mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <Calendar className="w-5 h-5 text-accent" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">Herramienta interactiva</span>
+            <span className="text-sm text-accent font-bold label-caps">Herramienta interactiva</span>
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.9] tracking-tight mb-5">
@@ -45,7 +45,7 @@ export default function CalendarioPage() {
             <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-4 h-4 text-accent" />
-                <p className="text-xs font-mono uppercase tracking-[0.15em] text-muted">Números 1-9</p>
+                <p className="text-sm text-muted label-caps">Números 1-9</p>
               </div>
               <p className="font-heading text-lg font-bold text-foreground">9 arquetipos</p>
               <p className="text-xs text-muted mt-1">Cada uno con su propósito</p>
@@ -54,7 +54,7 @@ export default function CalendarioPage() {
             <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
               <div className="flex items-center gap-2 mb-2">
                 <Lightbulb className="w-4 h-4 text-accent" />
-                <p className="text-xs font-mono uppercase tracking-[0.15em] text-muted">Maestros</p>
+                <p className="text-sm text-muted label-caps">Maestros</p>
               </div>
               <p className="font-heading text-lg font-bold text-foreground">11, 22, 28, 33</p>
               <p className="text-xs text-muted mt-1">Energía amplificada</p>
@@ -63,7 +63,7 @@ export default function CalendarioPage() {
             <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar className="w-4 h-4 text-accent" />
-                <p className="text-xs font-mono uppercase tracking-[0.15em] text-muted">Desde hoy</p>
+                <p className="text-sm text-muted label-caps">Desde hoy</p>
               </div>
               <p className="font-heading text-lg font-bold text-foreground">30-31 días</p>
               <p className="text-xs text-muted mt-1">De descubrimiento</p>

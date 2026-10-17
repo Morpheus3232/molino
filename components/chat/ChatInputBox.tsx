@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { ArrowUp, CornerDownLeft, Sparkles } from "lucide-react";
+import { ArrowUp, CornerDownLeft, } from "lucide-react";
 
 interface ChatInputBoxProps {
   input: string;
@@ -74,9 +74,8 @@ export default function ChatInputBox({
           <button
             type="button"
             onClick={onOpenReloadModal}
-            className="shrink-0 min-h-[40px] px-4 rounded-[--radius-md] bg-accent-light text-ink font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-light/90 transition-colors flex items-center gap-1.5"
+            className="shrink-0 min-h-[40px] px-4 rounded-[--radius-md] bg-accent-light text-ink font-heading text-sm font-bold hover:bg-accent-light/90 transition-colors flex items-center gap-1.5 label-caps"
           >
-            <Sparkles className="w-3.5 h-3.5" />
             <span>Recargar</span>
           </button>
         ) : (

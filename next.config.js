@@ -48,6 +48,8 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/principios', destination: '/filosofia', permanent: true },
+      // /transparencia se eliminó (2026-10-17); lo que importa de ella vive en /filosofia.
+      { source: '/transparencia', destination: '/filosofia', permanent: true },
       { source: '/patterns', destination: '/profile', permanent: true },
       { source: '/synthesis', destination: '/profile', permanent: true },
       // Ids que descarta el dedup del atlas → la ficha que sobrevivió (generado,

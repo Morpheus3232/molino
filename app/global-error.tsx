@@ -23,7 +23,7 @@ export default function RootGlobalError({
             <AlertCircle className="w-7 h-7" />
           </div>
 
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
+          <span className="text-sm text-amber-700 font-semibold label-caps">
             Error Crítico
           </span>
 
@@ -39,7 +39,7 @@ export default function RootGlobalError({
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A0A0A] text-ink text-xs uppercase tracking-wider font-bold hover:bg-[#333333] transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A0A0A] text-ink text-sm font-bold hover:bg-[#333333] transition-colors label-caps"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Recargar Aplicación
@@ -47,7 +47,7 @@ export default function RootGlobalError({
 
             <Link
               href="/"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-ink text-xs uppercase tracking-wider font-semibold hover:bg-ink/10 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-ink text-sm font-semibold hover:bg-ink/10 transition-colors label-caps"
             >
               <Home className="w-3.5 h-3.5" />
               Inicio

@@ -11,7 +11,6 @@ import Button from "@/components/ui/Button";
 import { buildInviteMessage } from "@/lib/viral/invite";
 import {
   Heart,
-  Sparkles,
   Users,
   Compass,
   ArrowRight,
@@ -133,12 +132,12 @@ export default function ParejaClient() {
         <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
             <Heart className="w-3.5 h-3.5 text-accent animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="text-sm text-accent font-bold label-caps">
               Modo Pareja · Sinergia Simbólica
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground label-caps">
             Comparativa de Mapas
           </h1>
           <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
@@ -175,7 +174,6 @@ export default function ParejaClient() {
               {/* Quick Sample Demo Banner */}
               <div className="mb-6 p-4 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-accent flex-shrink-0" />
                   <p className="text-xs text-muted">
                     ¿Querés ver cómo funciona sin ingresar fechas?
                   </p>
@@ -194,7 +192,6 @@ export default function ParejaClient() {
                   }}
                   className="px-3 py-1.5 rounded-lg bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
                   Cargar ejemplo (Ana & Lucas)
                 </button>
               </div>
@@ -205,7 +202,7 @@ export default function ParejaClient() {
                   {/* Card 1: Persona A */}
                   <div className="rounded-xl border border-gold/30 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-gold/10 text-foreground font-bold">
+                      <span className="text-sm px-2.5 py-1 rounded-full bg-gold/10 text-foreground font-bold label-caps">
                         Persona A
                       </span>
                       <span className="font-mono text-xs text-muted">Primer mapa</span>
@@ -214,7 +211,7 @@ export default function ParejaClient() {
                     <div>
                       <label
                         htmlFor="name-a"
-                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
+                        className="block text-sm text-muted mb-1.5 font-semibold label-caps"
                       >
                         Nombre o apodo (opcional)
                       </label>
@@ -229,7 +226,7 @@ export default function ParejaClient() {
                     </div>
 
                     <div>
-                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
                         Fecha de Nacimiento
                       </label>
                       <DateInput value={dateA} onChange={setDateA} />
@@ -239,7 +236,7 @@ export default function ParejaClient() {
                   {/* Card 2: Persona B */}
                   <div className="rounded-xl border border-ink/20 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold">
+                      <span className="text-sm px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold label-caps">
                         Persona B
                       </span>
                       <span className="font-mono text-xs text-muted">Segundo mapa</span>
@@ -248,7 +245,7 @@ export default function ParejaClient() {
                     <div>
                       <label
                         htmlFor="name-b"
-                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
+                        className="block text-sm text-muted mb-1.5 font-semibold label-caps"
                       >
                         Nombre o apodo (opcional)
                       </label>
@@ -263,7 +260,7 @@ export default function ParejaClient() {
                     </div>
 
                     <div>
-                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
                         Fecha de Nacimiento
                       </label>
                       <DateInput value={dateB} onChange={setDateB} />
@@ -280,7 +277,6 @@ export default function ParejaClient() {
                     disabled={!isValidDate(dateA) || !isValidDate(dateB)}
                     className="w-full sm:w-auto min-w-[240px] text-base py-4"
                   >
-                    <Sparkles className="w-4 h-4 mr-2" />
                     Comparar mapas
                   </Button>
 
@@ -321,7 +317,7 @@ export default function ParejaClient() {
               {/* Explanatory Pills Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-accent font-bold block mb-1 label-caps">
                     01 · Numerología
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -330,7 +326,7 @@ export default function ParejaClient() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-foreground font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">
                     02 · Astrología & Elementos
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -339,7 +335,7 @@ export default function ParejaClient() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-foreground font-bold uppercase tracking-wider block mb-1">
+                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">
                     03 · Zodíaco Chino
                   </span>
                   <p className="text-xs text-muted leading-relaxed">

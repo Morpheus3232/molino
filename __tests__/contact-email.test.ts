@@ -14,7 +14,6 @@ const FILES_WITH_CONTACT_EMAIL = [
   "components/layout/UniversityFooter.tsx",
   "app/nosotros/page.tsx",
   "app/nosotros/NosotrosContent.tsx",
-  "app/transparencia/page.tsx",
   "app/api/mp/verify/route.ts",
   "app/api/mp/coupon/route.ts",
   "app/api/mp/recover/route.ts",

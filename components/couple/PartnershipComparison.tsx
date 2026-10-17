@@ -8,20 +8,24 @@ import {
   type PartnershipCompatibilityResult,
 } from "@/lib/engines/partnershipEngine";
 import { PersonCard } from "@/components/couple/CoupleComparison";
-import { Sparkles, Handshake, AlertTriangle, Compass } from "lucide-react";
+import { Handshake, AlertTriangle, Compass } from "lucide-react";
 
 interface PartnershipComparisonProps {
   profileA: UserProfile;
   profileB: UserProfile;
   onReset?: () => void;
   className?: string;
+  /** Etiquetas de cada persona (en un equipo, el par puede ser C y E). */
+  labelA?: string;
+  labelB?: string;
 }
 
 export default function PartnershipComparison({
   profileA,
   profileB,
-  onReset,
   className = "",
+  labelA = "Socio A",
+  labelB = "Socio B",
 }: PartnershipComparisonProps) {
   const result = useMemo<PartnershipCompatibilityResult>(
     () => calculatePartnershipCompatibility(profileA, profileB),
@@ -39,7 +43,7 @@ export default function PartnershipComparison({
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Handshake className="w-4 h-4 text-accent" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Afinidad de Sociedad
           </span>
         </div>
@@ -57,8 +61,8 @@ export default function PartnershipComparison({
 
       {/* Side-by-side Maps */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-        <PersonCard profile={profileA} badgeLabel="Socio A" colorScheme="gold" />
-        <PersonCard profile={profileB} badgeLabel="Socio B" colorScheme="blue" />
+        <PersonCard profile={profileA} badgeLabel={labelA} colorScheme="gold" />
+        <PersonCard profile={profileB} badgeLabel={labelB} colorScheme="blue" />
       </div>
 
       {/* Connection Points */}
@@ -69,9 +73,6 @@ export default function PartnershipComparison({
         className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-lg bg-success/10 text-success flex items-center justify-center">
-            <Sparkles className="w-4 h-4" />
-          </div>
           <div>
             <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
               Puntos de Conexión & Sinergia
@@ -90,7 +91,7 @@ export default function PartnershipComparison({
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
+                  <span className="text-sm text-accent font-semibold label-caps">
                     {c.system}
                   </span>
                   {c.score && (
@@ -132,7 +133,7 @@ export default function PartnershipComparison({
           {result.challenges.map((ch) => (
             <div key={ch.id} className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-warning font-semibold">
+                <span className="text-sm text-warning font-semibold label-caps">
                   Área: {ch.area}
                 </span>
               </div>

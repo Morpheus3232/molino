@@ -666,7 +666,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "givenchy", name: "Givenchy", type: "brand",
-    country: "Francia", emoji: "✨",
+    country: "Francia", emoji: "*",
     category: "ropa",
     description: "Marca de lujo francesa conocida por su elegancia aristocrática.",
     keyThemes: ["Elegancia", "Lujo", "París", "Arte"],

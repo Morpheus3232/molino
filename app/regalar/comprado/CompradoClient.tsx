@@ -42,7 +42,7 @@ export default function CompradoClient() {
     }
   };
 
-  const shareMessage = `Te regalé un mapa personal de Molino ✨ Canjealo acá: ${shareUrl}`;
+  const shareMessage = `Te regalé un mapa personal de Molino. Canjealo acá: ${shareUrl}`;
 
   const share = async () => {
     if (typeof navigator !== "undefined" && navigator.share) {
@@ -61,15 +61,15 @@ export default function CompradoClient() {
       <div className="mx-auto max-w-xl px-4 sm:px-8 text-center">
         <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25">
           <Check className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400 font-bold">Regalo pago</span>
+          <span className="text-sm text-emerald-400 font-bold label-caps">Regalo pago</span>
         </span>
 
-        <h1 className="font-display text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
+        <h1 className="font-display text-2xl sm:text-3xl text-foreground label-caps">
           ¡Listo! Tu regalo está pago.
         </h1>
 
         <div className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left">
-          <p className="text-xs font-mono uppercase tracking-wider text-muted mb-2">Tu código</p>
+          <p className="text-sm text-muted mb-2 label-caps">Tu código</p>
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-background border border-ink/10">
             <span className="font-mono text-lg sm:text-xl font-bold text-foreground tracking-wider">{code}</span>
             <button
@@ -82,7 +82,7 @@ export default function CompradoClient() {
             </button>
           </div>
 
-          <p className="text-xs font-mono uppercase tracking-wider text-muted mt-6 mb-2">Enviale este link</p>
+          <p className="text-sm text-muted mt-6 mb-2 label-caps">Enviale este link</p>
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-background border border-ink/10">
             <span className="font-mono text-xs text-foreground truncate">{shareUrl}</span>
             <button

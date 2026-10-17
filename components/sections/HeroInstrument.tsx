@@ -88,7 +88,7 @@ export default function HeroInstrument() {
         <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 pt-12 pb-8 sm:pt-16 sm:pb-10 text-center w-full">
           <motion.div {...fadeUpMount} className="space-y-10">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6">
+              <p className="text-sm text-muted mb-6 label-caps">
                 {eyebrowText}
               </p>
               <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(3rem,8vw,5.5rem)]">
@@ -100,7 +100,7 @@ export default function HeroInstrument() {
             <motion.div {...fadeUpMountDelayed(0.15)} className="flex justify-center pt-2">
               <Link
                 href="/profile"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-vermilion text-paper rounded-lg font-heading font-bold transition-colors duration-200 hover:bg-vermilion-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vermilion label-caps"
               >
                 Ver mi mapa
                 <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
@@ -126,7 +126,7 @@ export default function HeroInstrument() {
 
         <motion.div {...fadeUpMount} className="space-y-10">
           {/* Eyebrow */}
-          <p className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+          <p className="flex items-center justify-center gap-3 text-sm text-muted label-caps">
             <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
             Tres sistemas, una fecha
             <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
@@ -167,9 +167,9 @@ export default function HeroInstrument() {
                 type="submit"
                 aria-busy={isSubmitting}
                 disabled={!isDateValid || isSubmitting}
-                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-4 text-base sm:text-lg font-heading font-bold uppercase tracking-[0.08em] rounded-lg transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] ${
+                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-4 text-base sm:text-lg font-heading font-bold rounded-lg transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] label-caps ${
                   isDateValid && !isSubmitting
-                    ? "bg-accent text-paper hover:bg-accent-hover active:scale-[0.98]"
+                    ? "bg-vermilion text-paper hover:bg-vermilion-hover active:scale-[0.98]"
                     : "border-2 border-accent/40 text-accent cursor-not-allowed"
                 }`}
               >

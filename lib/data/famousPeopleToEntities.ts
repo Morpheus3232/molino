@@ -237,7 +237,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Música",
     country: "Estados Unidos",
     shortBio: "Cantautora prolífica y fenómeno discográfico de la era contemporánea.",
-    emoji: "✨",
+    emoji: "*",
   },
   {
     name: "Lady Gaga",
@@ -377,7 +377,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Cine",
     country: "Reino Unido / Bélgica",
     shortBio: "Actriz icónica de la época dorada de Hollywood y embajadora de UNICEF.",
-    emoji: "✨",
+    emoji: "*",
   },
   {
     name: "Marilyn Monroe",

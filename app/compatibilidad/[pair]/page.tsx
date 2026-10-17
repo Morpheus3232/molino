@@ -85,10 +85,10 @@ export default async function CompatibilidadPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-4xl px-4 sm:px-8">
         <header className="text-center mb-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-3">
+          <p className="text-sm text-accent font-bold mb-3 label-caps">
             Compatibilidad Astrológica
           </p>
-          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
             {nameA} & {nameB}
           </h1>
           <p className="text-sm text-muted mt-3">
@@ -97,7 +97,7 @@ export default async function CompatibilidadPage({ params }: Props) {
         </header>
 
         <div className="p-6 rounded-xl bg-gradient-to-b from-card to-background border border-accent/25 text-center mb-10">
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
+          <span className="text-sm text-accent font-bold block mb-2 label-caps">
             Índice de Afinidad Elemental
           </span>
           <div className="font-display text-4xl font-bold my-2 leading-tight">{synergy.level}</div>

@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import {
-  Sparkles,
   Check,
   CreditCard,
   KeyRound,
@@ -172,8 +171,7 @@ export default function PremiumCheckout({
       <div className="max-w-xl mx-auto text-center space-y-6">
         {/* Top Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/25">
-          <Sparkles className="w-3.5 h-3.5 text-accent" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Acceso Permanente de por Vida
           </span>
         </div>
@@ -245,7 +243,7 @@ export default function PremiumCheckout({
                 setShowRecover(true);
                 setShowCoupon(false);
               }}
-              className="hover:text-accent transition-colors underline"
+              className="hover:text-accent transition-colors underline py-2"
             >
               ¿Ya compraste? Recuperar acceso
             </button>
@@ -258,7 +256,7 @@ export default function PremiumCheckout({
                 setShowCoupon(true);
                 setShowRecover(false);
               }}
-              className="hover:text-accent transition-colors underline"
+              className="hover:text-accent transition-colors underline py-2"
             >
               ¿Tenés un cupón?
             </button>
@@ -340,7 +338,7 @@ export default function PremiumCheckout({
                   placeholder="Ingresá tu código"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground uppercase font-mono focus:outline-none focus:border-accent"
+                  className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent label-caps"
                 />
                 <Button type="submit" variant="primary" size="sm" disabled={isApplyingCoupon}>
                   {isApplyingCoupon ? "..." : "Aplicar"}

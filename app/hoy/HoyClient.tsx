@@ -54,7 +54,7 @@ export default function HoyClient() {
             Mapa de <strong className="text-foreground">{profile.name || profile.archetype}</strong> · todo queda en tu navegador
           </p>
         ) : (
-          <Link href="/onboarding" className="inline-flex items-center gap-2 font-mono text-xs text-accent hover:underline">
+          <Link href="/onboarding" className="inline-flex items-center gap-2 font-mono text-xs text-accent hover:underline py-1.5 -my-1.5">
             Creá tu mapa para sumar tu Año Personal →
           </Link>
         )}
@@ -91,7 +91,7 @@ export default function HoyClient() {
       <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2">
         <Link
           href="/evolution"
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors py-1.5 -my-1.5"
         >
           <TrendingUp className="w-3.5 h-3.5" />
           Ver tus patrones →

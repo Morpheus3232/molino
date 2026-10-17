@@ -126,7 +126,7 @@ export default function EditorialSection({
           >
             {eyebrow && (
               <p
-                className={`font-mono text-xs font-semibold tracking-[0.3em] uppercase mb-6 ${t.eyebrow}`}
+                className={`text-sm font-semibold mb-6 label-caps ${t.eyebrow}`}
               >
                 {eyebrow}
               </p>

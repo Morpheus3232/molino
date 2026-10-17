@@ -51,13 +51,13 @@ function CategoryBlock({
         <Heading
           className={
             Heading === "h3"
-              ? "font-display text-xl font-bold tracking-tight text-foreground uppercase"
-              : "font-display text-base font-bold tracking-tight text-foreground/80 uppercase"
+              ? "font-display text-xl font-bold text-foreground label-caps"
+              : "font-display text-base font-bold text-foreground/80 label-caps"
           }
         >
           {label ?? CATEGORY_LABEL[group.category] ?? group.category}
         </Heading>
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] text-muted border border-ink/10 rounded-full px-2.5 py-1">
+        <span className="shrink-0 text-sm text-muted border border-ink/10 rounded-full px-2.5 py-1 label-caps">
           {LEVEL_LABEL[group.level]}
         </span>
       </div>
@@ -87,7 +87,7 @@ function FootballPlayerBlock({ group }: { group: PersonalAtlasGroup }) {
 
   return (
     <div>
-      <h4 className="font-display text-base font-bold tracking-tight text-foreground/80 uppercase mb-6">
+      <h4 className="font-display text-base font-bold text-foreground/80 mb-6 label-caps">
         {CATEGORY_LABEL.football_player}
       </h4>
       <div className="space-y-6 sm:pl-6 sm:border-l border-ink/10">
@@ -164,10 +164,10 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
         <div className="h-px flex-1 bg-ink/10" />
       </div>
 
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-2">
+      <p className="text-sm text-accent font-semibold mb-2 label-caps">
         Tu Atlas
       </p>
-      <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground uppercase mb-10">
+      <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-10 label-caps">
         {animal}
       </h2>
 
@@ -176,7 +176,7 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
 
         {hasFootball && (
           <div>
-            <h3 className="font-display text-xl font-bold tracking-tight text-foreground uppercase mb-6">
+            <h3 className="font-display text-xl font-bold text-foreground mb-6 label-caps">
               Fútbol
             </h3>
             <div className="space-y-8 sm:pl-6 sm:border-l border-ink/10">

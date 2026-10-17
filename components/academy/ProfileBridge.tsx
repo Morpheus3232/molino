@@ -33,7 +33,7 @@ export default function ProfileBridge({ cta }: ProfileBridgeProps) {
   return (
     <div className="rounded-md border border-border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-semibold mb-1">En tu mapa</p>
+        <p className="text-sm text-muted font-semibold mb-1 label-caps">En tu mapa</p>
         <p className="text-sm text-foreground font-medium">{parts.join(" · ")}</p>
       </div>
       {cta && (

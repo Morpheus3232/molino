@@ -101,7 +101,7 @@ export default function AffinityEditorialContent({
 
       {entity.keyThemes.length > 0 && (
         <p className="text-xs text-muted mb-8">
-          <span className="uppercase tracking-[0.15em]">Temas clave</span>
+          <span className=" label-caps">Temas clave</span>
           <span aria-hidden="true"> · </span>
           {entity.keyThemes.join(", ")}
         </p>

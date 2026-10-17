@@ -132,10 +132,10 @@ function SemanaContent() {
                   isTodayCell ? "ring-2 ring-accent" : ""
                 }`}
               >
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{dayName}</span>
+                <span className="text-sm text-muted label-caps">{dayName}</span>
                 <span className={`font-heading text-2xl mt-1 ${isTodayCell ? "text-accent" : "text-foreground"}`}>{dayNum}</span>
                 {isTodayCell && (
-                  <span className="mt-0.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">HOY</span>
+                  <span className="mt-0.5 text-sm text-accent font-semibold label-caps">HOY</span>
                 )}
                 <span
                   className="mt-2 w-10 h-10 rounded-full flex items-center justify-center font-mono text-sm font-bold border-2"
@@ -173,7 +173,7 @@ function SemanaContent() {
               <div className="flex items-center gap-3 mb-3">
                 <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground">Tu día de hoy</h3>
                 <span
-                  className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-ink/10"
+                  className="text-sm px-2 py-0.5 border border-ink/10 label-caps"
                   style={{ color: getScoreColor(todayResult.overallScore) }}
                 >
                   Día {todayResult.personalDay} · {todayResult.theme}

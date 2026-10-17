@@ -126,7 +126,7 @@ export default function WorldConnections({ profile, catalog }: WorldConnectionsP
             : { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-100px" } as const })}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
         >
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
+          <p className="text-sm text-muted mb-4 label-caps">
             02 · Tu mundo
           </p>
           <div className="flex items-end justify-between gap-4 mb-8">

@@ -107,10 +107,10 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/25">
           <Gift className="w-3.5 h-3.5 text-accent" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">Regalo de Molino</span>
+          <span className="text-sm text-accent font-bold label-caps">Regalo de Molino</span>
         </span>
 
-        <h1 className="font-display text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
+        <h1 className="font-display text-2xl sm:text-3xl text-foreground label-caps">
           ¡Te regalaron un mapa!
         </h1>
         <p className="text-sm text-muted mt-3 leading-relaxed">
@@ -119,7 +119,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
 
         <form onSubmit={handleRedeem} className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left space-y-4">
           <div>
-            <label htmlFor="gift-birthdate" className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold">
+            <label htmlFor="gift-birthdate" className="block text-sm text-muted mb-1.5 font-semibold label-caps">
               Tu fecha de nacimiento
             </label>
             <input
@@ -132,7 +132,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
             />
           </div>
           <div>
-            <label htmlFor="gift-name" className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold">
+            <label htmlFor="gift-name" className="block text-sm text-muted mb-1.5 font-semibold label-caps">
               Tu nombre (opcional)
             </label>
             <input

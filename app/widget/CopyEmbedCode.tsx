@@ -24,7 +24,7 @@ export default function CopyEmbedCode() {
   return (
     <div className="rounded-lg border border-ink/10 bg-card overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-ink/10">
-        <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-bold">
+        <span className="text-sm text-muted font-bold label-caps">
           Código para pegar en tu sitio
         </span>
         <button

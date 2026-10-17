@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, X, Sparkles } from "lucide-react";
+import { Download, X, } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -98,9 +98,6 @@ export default function PWAProvider({ children }: { children?: React.ReactNode }
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-4 h-4" />
-                </div>
                 <div>
                   <h4 className="font-heading text-xs font-bold text-foreground">
                     Instalá Molino en tu dispositivo

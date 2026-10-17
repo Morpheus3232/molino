@@ -22,7 +22,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-10 sm:mb-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">Guía · Aprender</p>
+          <p className="text-sm text-accent font-medium mb-4 label-caps">Guía · Aprender</p>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
             {guide.title}
           </h1>
@@ -31,7 +31,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
 
         {/* Qué vas a aprender */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16 p-6 rounded-md border border-border bg-card">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Qué vas a aprender</p>
+          <p className="text-sm text-muted font-medium mb-3 label-caps">Qué vas a aprender</p>
           <ul className="space-y-2">
             {guide.whatYouLearn.map((item) => (
               <li key={item} className="text-sm text-foreground leading-relaxed flex gap-2">
@@ -94,15 +94,15 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           </div>
           <div className="space-y-4">
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-2">Dato</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">Dato</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.dato}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-2">Tradición</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">Tradición</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.tradicion}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-2">Lectura de Molino</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">Lectura de Molino</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.molino}</p>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         {/* Qué NO significa */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Qué NO significa</p>
+            <p className="text-sm text-muted font-medium mb-3 label-caps">Qué NO significa</p>
             <ul className="space-y-2">
               {guide.whatItDoesNotMean.map((item) => (
                 <li key={item.slice(0, 40)} className="text-sm text-muted leading-relaxed flex gap-2">
@@ -177,7 +177,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
 
         {/* Volver a la Academia */}
         <motion.section {...fadeUp} className="flex justify-center pt-8 border-t border-border">
-          <Link href="/academy" className="text-xs uppercase tracking-[0.2em] text-muted font-medium hover:text-accent transition-colors">
+          <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">
             La Academia
           </Link>
         </motion.section>

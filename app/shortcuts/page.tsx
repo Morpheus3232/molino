@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteUrl, SITE_URL, createRouteMetadata } from "@/lib/seo";
-import { Sparkles, ArrowRight, Zap, Sun, Heart, Smartphone, Moon, ExternalLink, Check, Copy } from "lucide-react";
+import { Asterisk, ArrowRight, Zap, Sun, Heart, Smartphone, Moon, ExternalLink, Check, Copy } from "lucide-react";
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
@@ -45,12 +45,12 @@ export default function ShortcutsPage() {
         <header className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
             <Smartphone className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+            <span className="text-sm font-bold label-caps">
               iOS Shortcuts & Siri
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
             Atajos & Automatizaciones
           </h1>
 

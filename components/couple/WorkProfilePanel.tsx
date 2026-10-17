@@ -24,7 +24,7 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
     >
       <div className="flex items-center gap-2 justify-center">
         <Briefcase className="w-4 h-4 text-accent" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent font-bold">
+        <span className="text-sm text-accent font-bold label-caps">
           Perfil de Trabajo
         </span>
       </div>
@@ -40,14 +40,14 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
 
       {result.animal && (
         <div className="pt-6 border-t border-ink/10 text-center">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-muted mb-2">
+          <p className="text-sm text-muted mb-2 label-caps">
             Signo del zodíaco chino: {result.animal}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             {result.animalTraits.map((trait) => (
               <span
                 key={trait}
-                className="font-mono text-xs uppercase tracking-[0.1em] px-2.5 py-1 border border-ink/10 text-foreground"
+                className="text-sm px-2.5 py-1 border border-ink/10 text-foreground label-caps"
               >
                 {trait}
               </span>

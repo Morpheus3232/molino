@@ -114,7 +114,7 @@ test.describe("Navegación — sin perfil", () => {
     const nav = page.getByRole("navigation", { name: "Navegación principal" });
     await nav.getByRole("button", { name: "Proyecto" }).click();
     const menu = page.locator("#project-menu");
-    for (const label of ["Filosofía", "Transparencia", "Métodos y fuentes", "Changelog"]) {
+    for (const label of ["Filosofía", "Métodos y fuentes", "Changelog"]) {
       await expect(menu.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
   });
@@ -289,7 +289,6 @@ test.describe("Footer — enlaces actualizados", () => {
     await page.goto("/");
     const footer = page.locator("footer");
     await expect(footer.getByRole("link", { name: "Filosofía" })).toBeVisible();
-    await expect(footer.getByRole("link", { name: "Transparencia" })).toBeVisible();
     await expect(footer.getByRole("link", { name: "Changelog" })).toBeVisible();
     await expect(footer.getByRole("link", { name: "Privacidad" })).toBeVisible();
     await expect(footer.getByRole("link", { name: "Términos" })).toBeVisible();

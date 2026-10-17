@@ -364,7 +364,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
       {/* Labels: <label> real asociado por htmlFor, no solo aria-label —
           así el lector de pantalla anuncia "Día, edit text" al enfocar,
           en vez de depender de un atributo que un futuro edit podría borrar. */}
-      <div className="flex items-center mt-2 px-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="flex items-center mt-2 px-2 text-sm text-muted-foreground label-caps">
         <label htmlFor={`${id}-dd`} className="w-16 sm:w-20 text-center">Día</label>
         <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
         <label htmlFor={`${id}-mm`} className="w-16 sm:w-20 text-center">Mes</label>

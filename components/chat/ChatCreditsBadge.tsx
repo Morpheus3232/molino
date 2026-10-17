@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, PlusCircle } from "lucide-react";
+import { Asterisk, PlusCircle } from "lucide-react";
 
 interface ChatCreditsBadgeProps {
   remaining: number;
@@ -21,11 +21,11 @@ export default function ChatCreditsBadge({
     <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
       <div className="flex items-center gap-2 flex-wrap">
         {isExhausted ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] font-mono text-xs font-bold uppercase tracking-wider bg-red-500/15 text-red-300 border border-red-500/30">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-bold bg-red-500/15 text-red-300 border border-red-500/30 label-caps">
             Sin preguntas restantes
           </span>
         ) : isLow ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] font-mono text-xs font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse label-caps">
             Te quedan {remaining} {remaining === 1 ? "pregunta" : "preguntas"}
           </span>
         ) : null}

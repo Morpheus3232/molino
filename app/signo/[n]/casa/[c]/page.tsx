@@ -75,10 +75,10 @@ export default async function SignoCasaPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-3xl px-4 sm:px-8">
         <header className="mb-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-3">
+          <p className="text-sm text-accent font-bold mb-3 label-caps">
             Numerología × Astrología
           </p>
-          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
             Número {num} en la Casa {house.number}
           </h1>
           <p className="text-sm text-muted mt-3">
@@ -88,12 +88,12 @@ export default async function SignoCasaPage({ params }: Props) {
 
         <div className="grid grid-cols-2 gap-4 mb-8 text-center">
           <div className="p-5 rounded-lg bg-card border border-ink/10">
-            <h2 className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold mb-2">Número</h2>
+            <h2 className="text-sm text-accent font-bold mb-2 label-caps">Número</h2>
             <div className="font-display text-5xl font-bold">{num}</div>
             <p className="text-xs text-muted font-mono mt-2">{fact.keywords.join(" · ")}</p>
           </div>
           <div className="p-5 rounded-lg bg-card border border-ink/10">
-            <h2 className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold mb-2">Casa</h2>
+            <h2 className="text-sm text-accent font-bold mb-2 label-caps">Casa</h2>
             <div className="font-display text-5xl font-bold">{house.number}</div>
             <p className="text-xs text-muted font-mono mt-2">{house.name}</p>
           </div>

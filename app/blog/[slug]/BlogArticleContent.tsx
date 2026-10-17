@@ -45,7 +45,7 @@ function Toc({ post }: { post: BlogPost }) {
 
   return (
     <nav aria-label="Tabla de contenidos" className="mb-8">
-      <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-4">En este artículo</p>
+      <p className="text-sm text-muted mb-4 label-caps">En este artículo</p>
       <ul className="space-y-2.5 border-l border-border pl-4">
         {post.sections.map((section) => {
           const active = activeId === section.id;
@@ -78,7 +78,7 @@ function RelatedArticles({ post }: { post: BlogPost }) {
 
   return (
     <div className="mb-8">
-      <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-4">Artículos relacionados</p>
+      <p className="text-sm text-muted mb-4 label-caps">Artículos relacionados</p>
       <ul className="space-y-3">
         {related.map((rel) => (
           <li key={rel.slug}>
@@ -86,7 +86,7 @@ function RelatedArticles({ post }: { post: BlogPost }) {
               href={`/blog/${rel.slug}`}
               className="group block p-4 rounded-md border border-border hover:border-accent/50 transition-colors"
             >
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-accent block mb-1">
+              <span className="text-sm text-accent block mb-1 label-caps">
                 {rel.category}
               </span>
               <span className="text-sm text-foreground group-hover:text-accent transition-colors font-medium">
@@ -109,7 +109,7 @@ function SidebarCta() {
       </p>
       <Link
         href="/profile"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-4 py-3 text-xs bg-accent text-accent-foreground hover:opacity-90 min-h-[44px] transition-opacity"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-md font-heading font-semibold px-4 py-3 text-sm bg-accent text-accent-foreground hover:opacity-90 min-h-[44px] transition-opacity label-caps"
       >
         Crear mi mapa
       </Link>
@@ -141,7 +141,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
           <div className="min-w-0">
             {/* Hero — above the fold, dispara al montar (no whileInView, ver fadeUpMount) */}
             <motion.header {...fadeUpMount} className="mb-10">
-              <span className="inline-block text-xs font-mono uppercase tracking-[0.2em] text-accent mb-4">
+              <span className="inline-block text-sm text-accent mb-4 label-caps">
                 {post.category}
               </span>
               <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.08] mb-5">
@@ -233,7 +233,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               <motion.section {...fadeUp} className="mb-12">
                 <div className="p-6 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 hover:border-accent/40 transition-all">
                   <div className="flex items-start gap-4">
-                    <div className="text-2xl shrink-0">✨</div>
+                    <div className="text-2xl shrink-0">*</div>
                     <div className="flex-1">
                       <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
                         Verlo en tu mapa
@@ -265,7 +265,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                 </p>
                 <Link
                   href="/profile"
-                  className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 rounded-md font-heading font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors label-caps"
                 >
                   Crear mi mapa →
                 </Link>

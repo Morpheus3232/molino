@@ -30,18 +30,20 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-display)", "var(--font-emoji)", "Arial Narrow", "sans-serif"],
-        heading: ["var(--font-heading)", "var(--font-emoji)", "Arial", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-emoji)", "Georgia", "serif"],
+        heading: ["var(--font-heading)", "var(--font-emoji)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "var(--font-emoji)", "Georgia", "serif"],
-        mono: ["var(--font-mono)", "var(--font-emoji)", "ui-monospace", "monospace"],
+        mono: ["var(--font-mono)", "var(--font-emoji)", "Georgia", "serif"],
       },
       fontSize: {
         // Escala tipográfica — alineada con DESIGN.md.
         // Monotónica y coherente: cada nivel crece sobre el anterior.
-        xs: "0.75rem",      // 12px — labels pequeños
-        sm: "0.875rem",     // 14px — Caption
-        base: "1rem",       // 16px — Body
-        lg: "1.125rem",     // 18px — Body Large
+        // Garamond tiene el ojo medio chico: los tamaños de texto suben medio
+        // escalón para leerse como Source Serif/Inter se leían antes.
+        xs: "0.8125rem",    // 13px — labels pequeños
+        sm: "0.9375rem",    // 15px — Caption
+        base: "1.0625rem",  // 17px — Body
+        lg: "1.1875rem",    // 19px — Body Large
         xl: "1.25rem",      // 20px
         "2xl": "1.5rem",    // 24px
         "3xl": "1.75rem",   // 28px — H3
@@ -117,6 +119,10 @@ const config: Config = {
         error: {
           DEFAULT: "var(--color-error)",
           foreground: "var(--color-error-foreground)",
+        },
+        vermilion: {
+          DEFAULT: "rgb(var(--color-vermilion-rgb) / <alpha-value>)",
+          hover: "var(--color-vermilion-hover)",
         },
         ink: "rgb(var(--color-ink-rgb) / <alpha-value>)",
         paper: "rgb(var(--color-paper-rgb) / <alpha-value>)",

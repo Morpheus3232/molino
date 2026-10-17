@@ -13,7 +13,6 @@ import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import PersonalSynergySigil from "@/components/ui/PersonalSynergySigil";
 import {
-  Sparkles,
   Heart,
   AlertTriangle,
   Compass,
@@ -55,7 +54,7 @@ export function PersonCard({
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
           <span
-            className={`font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full font-bold ${accentBg}`}
+            className={`text-sm px-2.5 py-0.5 rounded-full font-bold label-caps ${accentBg}`}
           >
             {badgeLabel}
           </span>
@@ -66,7 +65,7 @@ export function PersonCard({
           )}
         </div>
 
-        <h3 className="font-display text-xl sm:text-2xl text-foreground uppercase tracking-tight">
+        <h3 className="font-display text-xl sm:text-2xl text-foreground label-caps">
           {name}
         </h3>
         <p className="text-xs text-muted mt-0.5 italic">
@@ -77,7 +76,7 @@ export function PersonCard({
         <div className="grid grid-cols-3 gap-2 mt-5">
           {/* Life Path */}
           <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+            <span className="text-sm text-muted block label-caps">
               Camino
             </span>
             <span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>
@@ -87,7 +86,7 @@ export function PersonCard({
 
           {/* Sun Sign */}
           <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+            <span className="text-sm text-muted block label-caps">
               Solar
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
@@ -97,7 +96,7 @@ export function PersonCard({
 
           {/* Chinese Zodiac */}
           <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+            <span className="text-sm text-muted block label-caps">
               Zodíaco
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
@@ -137,7 +136,7 @@ export default function CoupleComparison({
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Heart className="w-4 h-4 text-accent animate-pulse" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Resonancia de la Pareja
           </span>
         </div>
@@ -183,9 +182,6 @@ export default function CoupleComparison({
         className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-lg bg-success/10 text-success flex items-center justify-center">
-            <Sparkles className="w-4 h-4" />
-          </div>
           <div>
             <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
               Puntos de Conexión & Sinergia
@@ -204,7 +200,7 @@ export default function CoupleComparison({
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
+                  <span className="text-sm text-accent font-semibold label-caps">
                     {c.system}
                   </span>
                   {c.score && (
@@ -253,7 +249,7 @@ export default function CoupleComparison({
               className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-warning font-semibold">
+                <span className="text-sm text-warning font-semibold label-caps">
                   Área: {ch.area}
                 </span>
               </div>

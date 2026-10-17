@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Archivo_Narrow, Source_Serif_4, IBM_Plex_Mono, Noto_Emoji } from "next/font/google";
+import { EB_Garamond, Noto_Emoji } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import SiteIntro from "@/components/ui/SiteIntro";
@@ -17,12 +17,11 @@ import MotionFailsafe from "@/components/ui/MotionFailsafe";
 import { SITE_URL, SITE_NAME, OG_IMAGE, siteUrl } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 
-// Blanco y negro, tipografía de almanaque impreso: titulares en grotesca
-// angosta (como las hojas de calendario), lectura en serif, datos en mono.
-const sourceSerif = Source_Serif_4({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-sans" });
-const archivoNarrow = Archivo_Narrow({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-display" });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--font-mono" });
-const archivo = Archivo({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
+// Editorial de libro (Penguin): una sola familia, Garamond, para todo. La
+// jerarquía sale del tamaño, la itálica, las versalitas y el centrado — no
+// de cambiar de tipografía. Las cuatro variables apuntan a la misma fuente
+// para no tocar los ~2000 usos de font-display/heading/sans/mono.
+const garamond = EB_Garamond({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-garamond" });
 // Emoji monocromo: va en cada pila tipográfica antes que el emoji a color del
 // sistema, así los íconos del Atlas (⚽ 🎓 🚗…) quedan en blanco y negro sin
 // tocar los datos. Sin preload: solo se baja en páginas que muestran emoji.
@@ -176,7 +175,7 @@ export default function RootLayout({
       lang="es-AR"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${sourceSerif.variable} ${archivoNarrow.variable} ${plexMono.variable} ${archivo.variable} ${notoEmoji.variable}`}
+      className={`${garamond.variable} ${notoEmoji.variable}`}
     >
       <head>
         {jsonLd.map((schema, i) => (

@@ -40,7 +40,7 @@ export default function RelationBar({ score, label, className = "" }: RelationBa
       aria-label={ariaLabel}
     >
       {/* Etiqueta principal */}
-      <span className="font-heading text-sm sm:text-base font-bold tracking-tight text-foreground uppercase">
+      <span className="font-heading text-sm sm:text-base font-bold text-foreground label-caps">
         {label}
       </span>
 
@@ -55,7 +55,7 @@ export default function RelationBar({ score, label, className = "" }: RelationBa
 
         {/* Indicador numérico discreto en tipografía mono */}
         <span
-          className={`font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border font-semibold ${tierClass}`}
+          className={`text-sm px-1.5 py-0.5 rounded border font-semibold label-caps ${tierClass}`}
         >
           {normalizedScore >= 90 ? "Alta" : normalizedScore >= 70 ? "Buena" : normalizedScore <= 35 ? "Opuesta" : "Base"}
         </span>

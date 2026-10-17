@@ -52,7 +52,7 @@ export default function AffinityHero({
       </p>
 
       {/* Framing — conexión, no comparación */}
-      <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-3">
+      <p className="text-sm text-accent font-medium mb-3 label-caps">
         Una conexión con vos
       </p>
       <p className="text-sm text-foreground font-medium mb-8">

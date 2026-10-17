@@ -289,7 +289,7 @@ function ResultRow({
             </p>
           </div>
           <div className="text-left sm:text-right shrink-0">
-            <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierLabel}</p>
+            <p className="text-sm font-display font-semibold label-caps" style={{ color: tierColor }}>{tierLabel}</p>
           </div>
         </div>
       </div>

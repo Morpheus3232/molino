@@ -10,7 +10,6 @@ import {
   AlertOctagon,
   Compass,
   BookOpen,
-  Sparkles,
   ArrowRight,
   Flame,
   Briefcase,
@@ -84,7 +83,7 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
   return (
     <div className={`rounded-xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${className}`}>
       <div className="space-y-2 flex-1">
-        <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
           <Compass className="w-4 h-4" />
           <span>Consejo del Momento</span>
         </div>
@@ -110,17 +109,20 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
 
       {/* Journal CTA */}
       <div className="flex-shrink-0">
-        <Link href={journalHref}>
-          <Button
-            variant="accent"
-            size="md"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
-          >
+        {/* El link ES el botón (asChild): un <button> dentro de un <a> es HTML
+            inválido y los lectores de pantalla lo anuncian como dos controles. */}
+        <Button
+          asChild
+          variant="accent"
+          size="md"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
+        >
+          <Link href={journalHref}>
             <BookOpen className="w-4 h-4" />
-            <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi Journal"}</span>
+            <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi diario"}</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </div>
   );
@@ -133,7 +135,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
         {/* Card 1: Focus */}
         <div className="rounded-xl border border-success/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-success font-mono text-xs font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-success text-sm font-bold label-caps">
             <Target className="w-4 h-4" />
             <span>Favorable hoy</span>
           </div>
@@ -147,7 +149,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
 
         {/* Card 2: Avoid */}
         <div className="rounded-xl border border-error/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-error font-mono text-xs font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-error text-sm font-bold label-caps">
             <AlertOctagon className="w-4 h-4" />
             <span>Observar hoy</span>
           </div>
@@ -163,8 +165,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
       {/* Favorece Hoy: desglose por área — daily.areas ya lo calculaba el
           motor (calculateAreaScores) pero no se renderizaba en ningún lado. */}
       <div className="rounded-xl border border-ink/10 bg-card p-6 sm:p-7 space-y-4">
-        <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
-          <Sparkles className="w-4 h-4" />
+        <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
           <span>Áreas del día</span>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -179,7 +180,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
                   <span className="font-heading text-xs font-bold text-foreground">{name}</span>
                 </div>
                 <span
-                  className="inline-block text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  className="inline-block text-sm font-semibold px-2 py-0.5 rounded-full label-caps"
                   style={{ backgroundColor: `${getScoreColor(area.score)}20`, color: getScoreColor(area.score) }}
                 >
                   {area.label}

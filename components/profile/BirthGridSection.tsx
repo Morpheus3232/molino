@@ -48,7 +48,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
       <div className="pt-4">
         {/* 1 — El insumo, en crudo y antes que nada. */}
         <div className="mb-10 pb-8 border-b border-ink/10">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+          <p className="text-sm text-muted mb-3 label-caps">
             Los dígitos de tu fecha
           </p>
           <p className="font-mono text-3xl sm:text-4xl text-foreground tracking-[0.28em] tabular-nums">
@@ -104,7 +104,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
           </div>
 
           <div className="min-w-0">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
+            <p className="text-sm text-muted mb-4 label-caps">
               Qué aparece y qué falta
             </p>
             <ul className="border-t border-ink/10">
@@ -148,7 +148,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
         {/* 3 — La lectura, ya interpretada, al final. */}
         {lines.length > 0 && (
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
+            <p className="text-sm text-muted mb-4 label-caps">
               Líneas de la grilla
             </p>
             <ul className="border-t border-ink/10">
@@ -165,7 +165,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                     <span className="font-heading text-base font-bold text-foreground">
                       {l.name}
                     </span>
-                    <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                    <span className="text-sm text-muted label-caps">
                       {l.state === "full" ? "completa" : "vacía"} · {l.kind}
                     </span>
                   </div>

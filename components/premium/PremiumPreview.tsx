@@ -8,7 +8,6 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import {
-  Sparkles,
   Lock,
   Unlock,
   MessageSquare,
@@ -56,12 +55,12 @@ export default function PremiumPreview({
     <section className={`py-12 ${className}`} aria-labelledby="premium-preview-title">
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         <div className="text-center mb-10">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             Preview Interactivo
           </span>
           <h2
             id="premium-preview-title"
-            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground uppercase tracking-tight mt-1"
+            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground mt-1 label-caps"
           >
             Así se ve tu lectura desbloqueada
           </h2>
@@ -108,7 +107,7 @@ export default function PremiumPreview({
             <div className="flex items-center gap-3">
               <span className="w-3 h-3 rounded-full bg-accent" />
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted block">
+                <span className="text-sm text-muted block label-caps">
                   Perfil Activo
                 </span>
                 <span className="font-heading text-sm sm:text-base font-bold text-foreground">
@@ -118,7 +117,7 @@ export default function PremiumPreview({
             </div>
 
             <span className="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full font-bold">
-              {isUnlockedPreview ? "✨ Modo Pro Desbloqueado" : "🔒 Modo Free"}
+              {isUnlockedPreview ? "Modo Pro Desbloqueado" : "🔒 Modo Free"}
             </span>
           </div>
 
@@ -126,8 +125,7 @@ export default function PremiumPreview({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
             {/* Section 1: Síntesis de Convergencia */}
             <div className="p-6 rounded-lg bg-background border border-ink/10 space-y-3">
-              <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
                 <span>Síntesis de Convergencia</span>
               </div>
               <h3 className="font-heading text-lg font-bold text-foreground">
@@ -146,7 +144,7 @@ export default function PremiumPreview({
 
             {/* Section 2: Oráculo Molino AI */}
             <div className="p-6 rounded-lg bg-background border border-ink/10 space-y-3">
-              <div className="flex items-center gap-2 text-[#A2A2A2] font-mono text-xs font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-[#A2A2A2] text-sm font-bold label-caps">
                 <MessageSquare className="w-4 h-4" />
                 <span>Preguntale a Molino (AI)</span>
               </div>
@@ -193,7 +191,6 @@ export default function PremiumPreview({
                     }}
                     className="flex items-center gap-2 px-6 shadow-lg"
                   >
-                    <Sparkles className="w-4 h-4" />
                     Desbloquear por $8 USD (Pago único)
                   </Button>
                 </motion.div>

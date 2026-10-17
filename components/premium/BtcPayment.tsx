@@ -246,7 +246,7 @@ function BtcPanel({
       {quote && (
         <>
           <div className="space-y-1">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted">
+            <p className="text-sm text-muted label-caps">
               Monto a enviar
             </p>
             <p className="font-heading text-2xl font-bold text-foreground tabular-nums">
@@ -258,7 +258,7 @@ function BtcPanel({
           </div>
 
           <div className="space-y-1.5">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted">
+            <p className="text-sm text-muted label-caps">
               Dirección
             </p>
             <div className="flex items-stretch gap-2">
@@ -295,7 +295,7 @@ function BtcPanel({
           <form onSubmit={handleVerify} className="space-y-2">
             <label
               htmlFor="btc-txid"
-              className="block font-mono text-xs uppercase tracking-wider text-muted"
+              className="block text-sm text-muted label-caps"
             >
               Ya pagué — ID de transacción
             </label>

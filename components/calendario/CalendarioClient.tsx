@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Zap, Target, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Zap, Target, } from "lucide-react";
 import { getCalendarDayContent } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { fadeUp } from "@/lib/utils/motion";
@@ -111,7 +111,6 @@ export default function CalendarioClient() {
           className="mb-8 p-4 rounded-lg bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20"
         >
           <div className="flex items-start gap-2">
-            <Sparkles className="w-5 h-5 text-accent shrink-0 mt-0.5" />
             <div>
               <p className="font-heading text-sm font-bold text-foreground mb-1">
                 Números maestros este mes
@@ -145,7 +144,7 @@ export default function CalendarioClient() {
         {/* Header de días */}
         <div className="grid grid-cols-7 mb-1">
           {DAY_NAMES.map((d) => (
-            <div key={d} className="py-3 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted font-semibold">
+            <div key={d} className="py-3 text-center text-sm text-muted font-semibold label-caps">
               {d}
             </div>
           ))}
@@ -224,9 +223,6 @@ export default function CalendarioClient() {
                   <p className="font-display text-2xl sm:text-3xl tracking-tight text-foreground font-bold">
                     {selectedContent.title}
                   </p>
-                  {selectedContent.master && (
-                    <Sparkles className="w-5 h-5 text-accent" />
-                  )}
                 </div>
                 <p className="text-sm text-muted">
                   {selected.getDate()} de {MONTH_NAMES[selected.getMonth()]} de {selected.getFullYear()}
@@ -254,7 +250,7 @@ export default function CalendarioClient() {
               {selectedContent.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-xs uppercase tracking-[0.15em] px-3 py-1.5 border border-border bg-background text-muted hover:border-accent/50 hover:text-accent transition-colors"
+                  className="text-sm px-3 py-1.5 border border-border bg-background text-muted hover:border-accent/50 hover:text-accent transition-colors label-caps"
                 >
                   {tag}
                 </span>
@@ -266,7 +262,7 @@ export default function CalendarioClient() {
               <div className="pt-6 border-t border-border">
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="w-4 h-4 text-accent" />
-                  <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted font-semibold">
+                  <p className="text-sm text-muted font-semibold label-caps">
                     Recomendado para hoy
                   </p>
                 </div>

@@ -46,7 +46,7 @@ function ChapterNumber({
 }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent" aria-hidden="true">
+      <span className="text-sm text-accent label-caps" aria-hidden="true">
         {number}
       </span>
       <span className="h-px flex-1 bg-accent/15" aria-hidden="true" />
@@ -77,7 +77,7 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
   if (hits.length === 0) return null;
   return (
     <div className="mt-10 pt-8 border-t border-ink/10">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-1.5">
+      <p className="text-sm text-accent mb-1.5 label-caps">
         ✦ Tus números maestros
       </p>
       <p className="text-xs text-muted mb-5 max-w-md">
@@ -91,7 +91,7 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
               <span className="font-display text-2xl sm:text-3xl text-accent">
                 {hit.number}
               </span>
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
+              <span className="text-sm text-muted label-caps">
                 {MASTER_POSITION_LABELS_ES[hit.position]}
               </span>
             </div>
@@ -103,7 +103,7 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
       </div>
       <Link
         href="/guia/numeros-maestros"
-        className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:underline underline-offset-4"
+        className="mt-6 inline-flex items-center gap-2 text-sm text-accent hover:underline underline-offset-4 label-caps"
       >
         Profundizá en los números maestros →
       </Link>
@@ -127,10 +127,10 @@ function PatronCentral({
       <ChapterNumber number="01 · TU PATRÓN CENTRAL" elementDot={elementDot} />
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-2">
+        <p className="text-sm text-muted mb-2 label-caps">
           {pattern.label}
         </p>
-        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] tracking-tight text-accent uppercase mb-4">
+        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] text-accent mb-4 label-caps">
           {pattern.keyword}
         </p>
         <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
@@ -140,7 +140,7 @@ function PatronCentral({
         {/* Tensión — el pliegue del patrón */}
         {tension && (
           <div className="mt-10 pt-8 border-t border-ink/10">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1">Tu tensión</p>
+            <p className="text-sm text-muted mb-1 label-caps">Tu tensión</p>
             <p className="text-xs text-muted mb-3 max-w-lg">
               El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.
             </p>
@@ -155,7 +155,7 @@ function PatronCentral({
 
         {/* Patrones secundarios — evidencia, no nuevas piezas */}
         <div className="mt-6 text-xs text-muted leading-relaxed">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Evidencias · </span>
+          <span className="text-sm text-accent label-caps">Evidencias · </span>
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
         </div>
 
@@ -205,7 +205,7 @@ function TuMomento({
         <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight text-accent">
           {personalYear}
         </p>
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-2">
+        <p className="text-sm text-muted mt-2 label-caps">
           Año personal · {yearTheme ?? "—"}
         </p>
         <p className="mt-4 text-sm text-muted leading-relaxed max-w-md">
@@ -228,7 +228,7 @@ function TuMomento({
               return (
                 <div key={key} className="py-4 border-b border-ink/10">
                   <div className="flex items-baseline justify-between gap-4 mb-2">
-                    <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                    <span className="text-sm text-muted label-caps">
                       {nombre}
                     </span>
                     <span
@@ -362,7 +362,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="font-mono text-xs uppercase tracking-[0.2em] text-accent hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="text-sm text-accent hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent label-caps"
       >
         {open ? "Ocultar conexiones" : "Ver conexiones"}
       </button>
@@ -376,7 +376,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
                   className="absolute -left-[1.6rem] top-1 w-2 h-2 rounded-full bg-accent"
                   aria-hidden="true"
                 />
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/80">{n.kind}</p>
+                <p className="text-sm text-accent/80 label-caps">{n.kind}</p>
                 <p className="text-sm text-foreground/90 leading-relaxed mt-1">{n.label}</p>
               </li>
             ))}
@@ -478,7 +478,7 @@ function LecturaProfundaDesbloqueada({
           href={`/lectura#${encodeProfileData(profile)}`}
           target="_blank"
           rel="noopener"
-          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-accent-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-accent-foreground font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
         >
           Abrir mi lectura →
         </a>

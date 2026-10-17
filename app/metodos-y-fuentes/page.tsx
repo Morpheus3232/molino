@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
-import { BookMarked, Compass, Github, Sparkles } from "lucide-react";
+import { BookMarked, Compass, Github, Asterisk } from "lucide-react";
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
@@ -91,7 +91,7 @@ const SECTIONS = [
     ),
   },
   {
-    icon: Sparkles,
+    icon: Asterisk,
     title: "Reflexión, no predicción",
     body: (
       <>
@@ -114,7 +114,7 @@ export default function MetodosYFuentesPage() {
       <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
         <div className="mx-auto max-w-3xl px-4 sm:px-8">
           <header className="mb-10">
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-3">
+            <p className="text-sm text-accent font-bold mb-3 label-caps">
               Metodología
             </p>
             <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground">

@@ -43,7 +43,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             <span className="text-2xl">
               {Icon ? <Icon className="w-7 h-7" /> : null}
             </span>
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">{piece.era}</p>
+            <p className="text-sm text-accent font-medium label-caps">{piece.era}</p>
           </div>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
             {piece.title}
@@ -91,7 +91,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {/* Cómo lo usa Molino */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Cómo lo usa Molino</p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">Cómo lo usa Molino</p>
             <p className="text-sm text-foreground leading-relaxed">{piece.molino}</p>
           </div>
         </motion.section>
@@ -114,7 +114,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {/* Transparencia */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
+            <p className="text-sm text-muted font-medium mb-3 label-caps">Transparencia</p>
             <p className="text-sm text-foreground leading-relaxed mb-3">
               Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.
             </p>
@@ -147,7 +147,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
               &larr; {prev.title}
             </Link>
           ) : <div />}
-          <Link href="/academy" className="text-xs uppercase tracking-[0.2em] text-muted font-medium hover:text-accent transition-colors">
+          <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">
             La Academia
           </Link>
           {next ? (

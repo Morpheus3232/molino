@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteUrl, SITE_URL, createRouteMetadata } from "@/lib/seo";
-import { Code2, ArrowRight, ShieldCheck, Terminal, Sparkles, Cpu, Layers, Heart, Sun } from "lucide-react";
+import { Code2, ArrowRight, ShieldCheck, Terminal, Asterisk, Cpu, Layers, Heart, Sun } from "lucide-react";
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
@@ -82,12 +82,12 @@ export default function DocsPage() {
         <header className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
             <Code2 className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+            <span className="text-sm font-bold label-caps">
               Desarrolladores & API v1
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
             API Pública de Molino
           </h1>
 
@@ -157,7 +157,7 @@ export default function DocsPage() {
 
               {/* Parameters Table */}
               <div>
-                <h4 className="font-mono text-xs uppercase tracking-wider text-foreground font-bold mb-3">
+                <h4 className="text-sm text-foreground font-bold mb-3 label-caps">
                   Parámetros de consulta (Query Params)
                 </h4>
                 <div className="overflow-x-auto">
@@ -222,7 +222,7 @@ export default function DocsPage() {
             className="p-6 rounded-xl bg-accent/5 border border-accent/20 hover:border-accent/40 transition-all flex items-center justify-between group"
           >
             <div>
-              <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
+              <span className="text-sm text-accent font-bold block mb-1 label-caps">
                 Widget Embebible
               </span>
               <h4 className="font-heading text-base font-bold text-foreground">
@@ -240,7 +240,7 @@ export default function DocsPage() {
             className="p-6 rounded-xl bg-card border border-ink/10 hover:border-accent/40 transition-all flex items-center justify-between group"
           >
             <div>
-              <span className="font-mono text-xs text-muted font-bold uppercase tracking-wider block mb-1">
+              <span className="text-sm text-muted font-bold block mb-1 label-caps">
                 Fórmulas & Algoritmos
               </span>
               <h4 className="font-heading text-base font-bold text-foreground">

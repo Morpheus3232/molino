@@ -22,7 +22,7 @@ export default function GlobalError({
           <AlertCircle className="w-7 h-7" />
         </div>
 
-        <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
+        <span className="text-sm text-amber-700 font-semibold label-caps">
           Error Temporal
         </span>
 
@@ -38,7 +38,7 @@ export default function GlobalError({
           <button
             type="button"
             onClick={() => reset()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors shadow-sm"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground font-heading text-sm font-bold hover:bg-gold-hover transition-colors shadow-sm label-caps"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Reintentar
@@ -46,7 +46,7 @@ export default function GlobalError({
 
           <Link
             href="/"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground font-heading text-xs uppercase tracking-wider font-semibold hover:bg-ink/10 transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground font-heading text-sm font-semibold hover:bg-ink/10 transition-colors label-caps"
           >
             <Home className="w-3.5 h-3.5" />
             Ir al Inicio

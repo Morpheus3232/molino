@@ -34,7 +34,7 @@ export const ENERGY_TYPES: Record<number, any> = {
   7: { name: "Introspección", color: "#545454", icon: "🔍", insights: ["Tu energía está orientada hacia adentro.", "Escuchá más de lo que hablás."] },
   8: { name: "Manifestación", color: "#585858", icon: "👑", insights: ["Tu poder de manifestación está activado.", "Asumí liderazgo en proyectos."] },
   9: { name: "Compasión", color: "#595959", icon: "💙", insights: ["Tu corazón está abierto.", "Perdoná para liberar tu energía."] },
-  11: { name: "Iluminación", color: "#7B7B7B", icon: "✨", insights: ["Tu intuición está en su punto más alto.", "Prestá atención a las señales."] },
+  11: { name: "Iluminación", color: "#7B7B7B", icon: "*", insights: ["Tu intuición está en su punto más alto.", "Prestá atención a las señales."] },
   22: { name: "Construcción Divina", color: "#7D7D7D", icon: "🏛", insights: ["Soñá en grande.", "Tu visión puede materializarse."] },
   33: { name: "Amor Universal", color: "#8F8F8F", icon: "❤", insights: ["Tu energía sanadora está al máximo.", "Serví a otros sin esperar nada."] }
 };
@@ -134,7 +134,7 @@ export function getCompatibilityScore(userAnimal: string, targetAnimal: string):
 }
 
 export function getCompatibilityDescription(score: number, animal: string): string {
-  if (score >= 80) return `✨ Excelente compatibilidad con ${animal}. Energías complementarias.`;
+  if (score >= 80) return `Excelente compatibilidad con ${animal}. Energías complementarias.`;
   if (score >= 60) return `👍 Buena compatibilidad con ${animal}. Potencial de crecimiento.`;
   if (score >= 40) return `🔄 Compatibilidad moderada con ${animal}. Requiere esfuerzo.`;
   return `🔴 Compatibilidad baja con ${animal}. Dinámicas desafiantes.`;

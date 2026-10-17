@@ -79,18 +79,18 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
 
         <motion.header className="mb-16" {...fadeUp}>
           {isEnemy ? (
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
+            <p className="text-sm text-muted font-medium mb-3 label-caps">
               Energía opuesta
             </p>
           ) : (
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-3">
+            <p className="text-sm text-accent font-semibold mb-3 label-caps">
               Explorar
             </p>
           )}
 
           <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10">
             <div className="flex-1">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.92]">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps">
                 {animal}
               </h1>
               <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -113,7 +113,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
             {grouped.map((g, i) => (
               <motion.div key={g.type} {...fadeUpDelayed(i * 0.05)}>
                 <div className="flex items-end justify-between mb-4">
-                  <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground uppercase">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground label-caps">
                     {g.label}
                   </h2>
                   <span className="font-mono text-[11px] text-muted">

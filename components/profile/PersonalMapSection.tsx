@@ -21,7 +21,7 @@ import {
   Clapperboard,
   ArrowRight,
   BookOpen,
-  Sparkles,
+  Asterisk,
   ExternalLink,
 } from "lucide-react";
 import {
@@ -186,7 +186,7 @@ function EntityRow({
         {entity.originNote && (
           <span className="mt-2 block pl-12 sm:pl-13 text-xs sm:text-sm text-muted leading-relaxed font-serif">
             {entity.originLabel && (
-              <span className="font-mono uppercase tracking-[0.14em] text-muted/70 text-[11px]">
+              <span className="text-muted/70 text-sm label-caps">
                 {entity.originLabel} ·{" "}
               </span>
             )}
@@ -221,14 +221,14 @@ function GroupBlock({
     <div className="pt-8 first:pt-0">
       <div className="flex items-baseline gap-3 flex-wrap">
         <span className={`h-2.5 w-2.5 shrink-0 self-center ${tone.bar}`} aria-hidden="true" />
-        <h4 className="font-heading text-base sm:text-lg font-bold text-foreground uppercase tracking-tight">
+        <h4 className="font-heading text-base sm:text-lg font-bold text-foreground label-caps">
           {group.title}
         </h4>
         {group.chinese && (
           <span className={`font-mono text-xs ${tone.accent}`}>{group.chinese}</span>
         )}
         {group.kind === "enemigo" && (
-          <span className="ml-2 font-mono text-[10px] uppercase tracking-wider bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold">
+          <span className="ml-2 text-sm bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold label-caps">
             Evitar
           </span>
         )}
@@ -302,7 +302,7 @@ function DomainBlock({
     >
       <div className="flex items-center justify-between gap-4 flex-wrap pb-2">
         <span
-          className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold"
+          className="text-sm text-accent font-semibold label-caps"
           aria-hidden="true"
         >
           {numeral} / {domain.label}
@@ -325,7 +325,7 @@ function DomainBlock({
 
       <h3
         id={`dominio-${domain.id}`}
-        className="mt-3 font-display text-2xl sm:text-4xl font-bold tracking-tight text-foreground uppercase leading-[1.05]"
+        className="mt-3 font-display text-2xl sm:text-4xl font-bold text-foreground leading-[1.05] label-caps"
       >
         {domain.question}
       </h3>
@@ -365,7 +365,7 @@ function DomainBlock({
       {/* Casilla opuesta (enemigo) */}
       {opuesta && (
         <div className="mt-12 sm:mt-16 border-t border-border pt-8 sm:pt-10">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-6">
+          <p className="text-sm text-accent font-semibold mb-6 label-caps">
             Lo que conviene evitar (六冲)
           </p>
           <div className="max-w-3xl">
@@ -383,7 +383,7 @@ function DomainBlock({
       <div className="mt-8 pt-4 flex items-center justify-between flex-wrap gap-4 border-t border-border/60">
         <Link
           href={`/affinity/${domain.id === "territorio" ? "country" : domain.id === "autos" || domain.id === "vestimenta" ? "brand" : domain.id === "aula" ? "university" : domain.id === "cancha" ? "team" : domain.id === "gente" ? "artist" : "movie"}?animal=${encodeURIComponent(userAnimal)}`}
-          className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-accent hover:text-foreground transition-colors label-caps"
         >
           <span>Abrir sección completa de {domain.label} en Atlas</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -398,7 +398,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
   return (
     <motion.div {...editorialReveal} className="border-t border-border pt-8 pb-4">
       <div className="max-w-3xl mb-4">
-        <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-2">
+        <h3 className="text-sm text-accent font-semibold mb-2 label-caps">
           El ciclo entero, leído desde {animal}
         </h3>
         <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">
@@ -431,7 +431,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
                 {e.animal}
               </span>
               <span
-                className={`ml-auto font-mono text-[10px] uppercase tracking-wide shrink-0 ${
+                className={`ml-auto text-sm shrink-0 label-caps ${
                   propio
                     ? "text-accent"
                     : amigo
@@ -495,14 +495,14 @@ export default function PersonalMapSection({
         {/* ── Encabezado Resumido ───────────────────────────────────── */}
         <motion.div {...editorialRevealMount} className="pt-16 lg:pt-24 pb-10">
           <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
-            <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase text-accent">
+            <p className="text-sm font-semibold text-accent label-caps">
               EL MAPA APLICADO
             </p>
 
             {/* Acceso rápido a Lectura */}
             <Link
               href={lecturaHref}
-              className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4"
+              className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1.5 -my-1.5"
             >
               <BookOpen className="w-3.5 h-3.5 text-accent" />
               <span>Ver tu Lectura interpretativa →</span>
@@ -511,7 +511,7 @@ export default function PersonalMapSection({
 
           <h2
             id="mapa-aplicado-heading"
-            className="font-display text-3xl sm:text-5xl lg:text-6xl tracking-tight max-w-4xl text-foreground uppercase leading-[0.95]"
+            className="font-display text-3xl sm:text-5xl lg:text-6xl max-w-4xl text-foreground leading-[0.95] label-caps"
           >
             DÓNDE TU SIGNO
             <br />

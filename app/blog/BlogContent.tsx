@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUpMount, staggerContainer, staggerDelay } from "@/lib/utils/motion";
 import { BLOG_POSTS, BLOG_CATEGORIES, getReadingTime, type BlogCategory, type BlogPost } from "@/lib/data/blog-content";
-import { Sparkles, Users, Moon, Compass } from "lucide-react";
+import { Asterisk, Users, Moon, Compass } from "lucide-react";
 
 type Filter = BlogCategory | "Todos";
 const FILTERS: Filter[] = ["Todos", ...BLOG_CATEGORIES];
@@ -19,7 +19,7 @@ const CATEGORY_META: Record<Filter, { icon: React.ComponentType<{ className?: st
     color: "text-accent",
   },
   Numerología: {
-    icon: Sparkles,
+    icon: Asterisk,
     description: "Los números de tu fecha de nacimiento",
     color: "text-terracota",
   },
@@ -67,8 +67,8 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
       </Link>
       <div className="flex flex-col flex-1 p-6">
         <div className="flex items-center gap-3 mb-3">
-          <span className="text-xs font-mono uppercase tracking-[0.2em] text-accent">{post.category}</span>
-          <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70">{readTime} min de lectura</span>
+          <span className="text-sm text-accent label-caps">{post.category}</span>
+          <span className="text-sm text-muted/70 label-caps">{readTime} min de lectura</span>
         </div>
         <h2 className="font-heading text-xl font-semibold text-foreground leading-snug mb-2">
           <Link href={`/blog/${post.slug}`} className="hover:text-accent transition-colors">
@@ -77,7 +77,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
         </h2>
         <p className="text-sm text-muted leading-relaxed mb-4 flex-1">{post.excerpt}</p>
         <div className="flex items-center justify-between pt-4 border-t border-border">
-          <time dateTime={post.date} className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70">
+          <time dateTime={post.date} className="text-sm text-muted/70 label-caps">
             {formatDate(post.date)}
           </time>
           <Link href={`/blog/${post.slug}`} className="text-accent hover:text-accent-hover font-medium">
@@ -154,13 +154,13 @@ export default function BlogContent() {
                   }`}
                 >
                   <CategoryIcon className={`w-6 h-6 sm:w-7 sm:h-7 mb-2 ${active ? categoryMeta.color : "text-muted"} transition-colors`} />
-                  <span className={`text-xs sm:text-sm font-heading font-bold uppercase tracking-[0.1em] text-center leading-tight ${
+                  <span className={`text-sm sm:text-sm font-heading font-bold text-center leading-tight label-caps ${
                     active ? "text-foreground" : "text-muted"
                   }`}>
                     {f}
                   </span>
                   {f !== "Todos" && (
-                    <span className="text-[10px] text-muted mt-1 text-center leading-tight max-w-[90px]">
+                    <span className="text-xs text-muted mt-1 text-center leading-tight max-w-[110px]">
                       {categoryMeta.description}
                     </span>
                   )}
@@ -222,7 +222,7 @@ export default function BlogContent() {
             </p>
             <Link
               href="/profile"
-              className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-md font-heading font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors label-caps"
             >
               Crear mi mapa
             </Link>

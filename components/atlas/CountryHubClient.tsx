@@ -49,10 +49,10 @@ export default function CountryHubClient({
               {flagEmoji}
             </span>
             <div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.92]">
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps">
                 {countryName}
               </h1>
-              <p className="font-mono text-xs uppercase tracking-wider text-muted mt-1.5">
+              <p className="text-sm text-muted mt-1.5 label-caps">
                 {totalEntities} {totalEntities === 1 ? "entidad registrada" : "entidades registradas"}
               </p>
             </div>
@@ -61,7 +61,7 @@ export default function CountryHubClient({
           {countryEntity && (
             <Link
               href={`/affinity/country/${countryEntity.id}`}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-accent/30 bg-accent/5 hover:bg-accent/10 text-accent text-xs font-semibold uppercase tracking-wider transition-colors self-start sm:self-auto min-h-[44px]"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-accent/30 bg-accent/5 hover:bg-accent/10 text-accent text-sm font-semibold transition-colors self-start sm:self-auto min-h-[44px] label-caps"
             >
               <span>Ficha simbólica de {countryName}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -154,7 +154,7 @@ export default function CountryHubClient({
       <div className="pt-8 border-t border-ink/10">
         <Link
           href="/atlas"
-          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted hover:text-accent transition-colors min-h-[44px]"
+          className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors min-h-[44px] label-caps"
         >
           <span>← Volver al Atlas</span>
         </Link>

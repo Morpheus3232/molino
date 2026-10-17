@@ -34,10 +34,10 @@ export default function AiPage() {
     return (
       <main className="min-h-screen bg-background" id="main-content">
         <div className="mx-auto max-w-2xl px-4 sm:px-8 lg:px-12 pt-24 sm:pt-32 pb-24 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-4">
+          <p className="text-sm text-accent mb-4 label-caps">
             Primer paso: tu mapa
           </p>
-          <h1 className="font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] text-foreground label-caps">
             Después de la lectura,
             <br />
             la conversación.
@@ -48,7 +48,7 @@ export default function AiPage() {
           </p>
           <Link
             href="/onboarding"
-            className="mt-8 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"
+            className="mt-8 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
           >
             Crear mi mapa →
           </Link>
@@ -63,12 +63,12 @@ export default function AiPage() {
         <header className="border-b border-ink/10 pb-10">
           <Link
             href="/profile"
-            className="font-mono text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+            className="text-sm text-muted hover:text-accent transition-colors label-caps"
           >
             ← Mi Mapa
           </Link>
-          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">Preguntale</p>
-          <h1 className="mt-2 font-display text-[clamp(2.25rem,7vw,4rem)] leading-[0.9] tracking-tight text-foreground uppercase">
+          <p className="mt-8 text-sm text-accent label-caps">Preguntale</p>
+          <h1 className="mt-2 font-display text-[clamp(2.25rem,7vw,4rem)] leading-[0.9] text-foreground label-caps">
             Ya sabés lo que
             <br />
             tu mapa dice.
@@ -87,7 +87,7 @@ export default function AiPage() {
         ) : (
           <div className="pt-10">
             <div className="rounded-[--radius-lg] border border-ink/10 bg-paper p-6 sm:p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
+              <p className="text-sm text-accent mb-3 label-caps">
                 Ejemplos de lo que el mapa puede ayudarte a pensar
               </p>
               <ul className="space-y-3">
@@ -109,7 +109,7 @@ export default function AiPage() {
               </p>
               <Link
                 href={`/lectura`}
-                className="mt-5 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"
+                className="mt-5 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
               >
                 Ver la Lectura Pro →
               </Link>

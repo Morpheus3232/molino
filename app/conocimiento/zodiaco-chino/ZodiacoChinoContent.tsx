@@ -46,7 +46,7 @@ export default function ZodiacoChinoContent() {
               La data m&#225;s antigua que se conoce proviene de tablillas de hueso oraculares de la dinast&#237;a Shang (c. 1250 a.C.), donde ya aparecen los 12 animales asociados a meses.
             </p>
             <div className="p-6 border border-ink/10 mt-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
+              <p className="text-sm text-accent font-medium mb-2 label-caps">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
                 El zod&#237;aco chino es un sistema de data cultural estructurada. No es un sistema de predicciones, sino un modelo c&#237;clico que estructura el tiempo de una cultura.
               </p>

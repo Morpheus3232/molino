@@ -61,10 +61,10 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
       aria-label="Coordenadas fundamentales del mapa"
     >
       <div className="max-w-3xl mb-16 lg:mb-20">
-        <span className="block font-mono text-xs uppercase tracking-[0.25em] text-accent mb-3">
+        <span className="block text-sm text-accent mb-3 label-caps">
           COORDENADAS FUNDAMENTALES
         </span>
-        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground tracking-tight uppercase leading-[0.95]">
+        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] label-caps">
           LOS CUATRO PILARES
           <br />
           DE TU MAPA.
@@ -90,7 +90,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                     <LifePathGlyph value={lifePath} size={72} />
                   </span>
                   <div>
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                    <span className="block text-sm text-accent font-bold label-caps">
                       01 · Numerología Pitagórica
                     </span>
                     <span className="block font-mono text-[11px] text-muted mt-0.5">
@@ -102,7 +102,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido principal */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
                   {archetypeName}
                 </h3>
 
@@ -177,7 +177,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                     />
                   </span>
                   <div>
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                    <span className="block text-sm text-accent font-bold label-caps">
                       02 · Astrología Occidental
                     </span>
                     <span className="block font-mono text-[11px] text-muted mt-0.5">
@@ -189,19 +189,19 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
                   Sol en {profile.sunSign}
                 </h3>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] text-sm text-foreground label-caps">
                     Elemento {profile.sunSignInfo?.element || profile.element}
                   </span>
-                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] text-sm text-foreground label-caps">
                     Modalidad {profile.sunSignInfo?.modality || profile.modality}
                   </span>
                   {astroInfo?.archetype && (
-                    <span className="inline-flex items-center px-3 py-1.5 bg-accent/8 border border-accent/20 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-accent font-bold">
+                    <span className="inline-flex items-center px-3 py-1.5 bg-accent/8 border border-accent/20 rounded-[--radius-sm] text-sm text-accent font-bold label-caps">
                       {astroInfo.archetype}
                     </span>
                   )}
@@ -242,7 +242,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                     <ZodiacAnimalIcon animal={userAnimal} size={72} />
                   </span>
                   <div>
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                    <span className="block text-sm text-accent font-bold label-caps">
                       03 · Zodíaco Chino
                     </span>
                     <span className="block font-mono text-[11px] text-muted mt-0.5">
@@ -254,15 +254,15 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
                   {display.name} de {chineseElement}
                 </h3>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] text-sm text-foreground label-caps">
                     Polaridad {polarity}
                   </span>
-                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] text-sm text-foreground label-caps">
                     Tronco {chineseElement}
                   </span>
                 </div>
@@ -275,7 +275,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                 {/* Relaciones del ciclo */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-accent font-bold mb-1.5">
+                    <span className="block text-sm text-accent font-bold mb-1.5 label-caps">
                       Tus dos amigos · 三合
                     </span>
                     <span className="block font-heading text-lg font-bold text-foreground">
@@ -287,7 +287,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                   </div>
 
                   <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                    <span className="block text-sm text-muted font-bold mb-1.5 label-caps">
                       Tu energía opuesta · 六冲
                     </span>
                     <span className="block font-heading text-lg font-bold text-foreground">
@@ -323,7 +323,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                     {personalYear}
                   </span>
                   <div>
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                    <span className="block text-sm text-accent font-bold label-caps">
                       04 · Ciclos de Tiempo
                     </span>
                     <span className="block font-mono text-[11px] text-muted mt-0.5">
@@ -335,7 +335,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
                   Año Personal {personalYear} · {yearTheme || "Ciclo de Tiempo"}
                 </h3>
 
@@ -346,7 +346,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                   <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                    <span className="block text-sm text-muted font-bold mb-1.5 label-caps">
                       Año Personal
                     </span>
                     <span className="block font-mono text-3xl font-bold text-accent tabular-nums">
@@ -358,7 +358,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                   </div>
 
                   <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                    <span className="block text-sm text-muted font-bold mb-1.5 label-caps">
                       Mes Personal
                     </span>
                     <span className="block font-mono text-3xl font-bold text-foreground tabular-nums">
@@ -370,7 +370,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
                   </div>
 
                   <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                    <span className="block text-sm text-muted font-bold mb-1.5 label-caps">
                       Día Personal
                     </span>
                     <span className="block font-mono text-3xl font-bold text-foreground tabular-nums">

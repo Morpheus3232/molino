@@ -25,7 +25,7 @@ export default function MasterNumberPersonalization() {
 
   return (
     <div className="mb-14 p-6 sm:p-8 border border-ink/10 bg-card">
-      <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
+      <p className="text-sm text-accent font-medium mb-4 label-caps">
         Tu mapa
       </p>
       <div className="space-y-5">
@@ -42,7 +42,7 @@ export default function MasterNumberPersonalization() {
       </div>
       <Link
         href="/profile"
-        className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+        className="mt-6 inline-flex items-center gap-2 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
       >
         Ver mi interpretación completa →
       </Link>
