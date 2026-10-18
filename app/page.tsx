@@ -1,5 +1,5 @@
 import HeroInstrument from "@/components/sections/HeroInstrument";
-import HoyClient from "@/app/hoy/HoyClient";
+import HomeBook from "@/components/sections/HomeBook";
 import HomeAlmanac from "@/components/sections/HomeAlmanac";
 import { SITE_URL, createRouteMetadata } from "@/lib/seo";
 
@@ -93,16 +93,19 @@ export default function HomePage() {
   return (
     <>
       <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
-        {/* Hoy — lo mismo que /hoy, visible para todos: sin mapa es la
-            energía universal del día; con mapa suma Año/Mes/Día Personal. */}
+        {/* Hoy — los datos de /hoy contados como un capítulo de libro (la vista
+            de detalle sigue en /hoy). Sin mapa es la energía universal del
+            día; con mapa suma Año/Mes/Día Personal. */}
         <section aria-labelledby="hoy-home" className="mx-auto max-w-5xl px-4 sm:px-8 pt-24 sm:pt-28 pb-16 sm:pb-24">
           <HomeAlmanac />
-          {/* Reserva la altura que ocupa el contenido ya cargado (medida sin
-              mapa, el caso más bajo): el esqueleto de carga es mucho más
-              corto y, sin esto, el formulario de abajo salta al hidratar y un
-              click destinado a "Ver tu mapa" cae en otro botón. */}
-          <div className="min-h-[2800px] sm:min-h-[2000px] lg:min-h-[1780px]">
-            <HoyClient />
+          {/* Reserva la altura del capítulo mientras carga (se dibuja en el
+              cliente: depende de la fecha local). Sin esto el formulario de
+              abajo salta al hidratar y un click a "Ver tu mapa" cae en otro
+              botón. Valores = el día más corto de los 9 números posibles,
+              medido por ancho, en rem para que escale con la letra del
+              navegador: nunca deja hueco, y el día largo apenas empuja. */}
+          <div className="min-h-[97rem] sm:min-h-[92rem] md:min-h-[88rem]">
+            <HomeBook />
           </div>
         </section>
 

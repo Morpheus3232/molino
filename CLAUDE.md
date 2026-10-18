@@ -311,6 +311,12 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   `Sparkles`/✨ (donde un ícono es estructural, `Asterisk`). Emoji en Noto
   Emoji monocromo; no usar el selector U+FE0F. Sin gradientes de texto ni
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
+- Portada: el día se cuenta como un capítulo de libro (`HomeBook`:
+  epígrafe, capítulos I–III con número romano, capitular, índices con
+  puntos guía, ⁂), no como tablero; el tablero de detalle sigue en `/hoy`.
+  La altura reservada mientras carga (`app/page.tsx`) es la del día más corto
+  de los 9 números por ancho, en rem: si cambia el texto del capítulo,
+  volver a medirla.
 - Escala de escritorio: `html { font-size: 125% }` desde 1280px (en PC el
   sitio se veía chico; equivale al zoom 125%). Entre 1024 y 1279 queda en
   100% porque el header con mapa no entra. Por eso en el header "Crear nuevo
