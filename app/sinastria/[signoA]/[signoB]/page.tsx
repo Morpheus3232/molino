@@ -5,6 +5,7 @@ import { Heart, ArrowRight, ShieldCheck, Flame, Droplets, Wind, Mountain, Compas
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import { siteUrl, SITE_URL } from "@/lib/seo";
+import { SIGN_PROFILES, canonicalPairSlug } from "@/lib/seo/programmatic";
 
 export const dynamic = "force-static";
 
@@ -24,18 +25,18 @@ interface SignInfo {
 }
 
 const SIGNS_DATA: Record<string, SignInfo> = {
-  aries: { slug: "aries", name: "Aries", element: "Fuego", modality: "Cardinal", ruler: "Marte", symbol: "♈", dates: "21 Mar – 19 Abr", energy: "Impulso, valentía y liderazgo pionero" },
-  tauro: { slug: "tauro", name: "Tauro", element: "Tierra", modality: "Fijo", ruler: "Venus", symbol: "♉", dates: "20 Abr – 20 May", energy: "Estabilidad, sensualidad y construcción paciente" },
-  geminis: { slug: "geminis", name: "Géminis", element: "Aire", modality: "Mutable", ruler: "Mercurio", symbol: "♊", dates: "21 May – 20 Jun", energy: "Curiosidad, agilidad mental y comunicación" },
-  cancer: { slug: "cancer", name: "Cáncer", element: "Agua", modality: "Cardinal", ruler: "Luna", symbol: "♋", dates: "21 Jun – 22 Jul", energy: "Nutrición, intuición profunda y resguardo emocional" },
-  leo: { slug: "leo", name: "Leo", element: "Fuego", modality: "Fijo", ruler: "Sol", symbol: "♌", dates: "23 Jul – 22 Ago", energy: "Brillo, generosidad, nobleza y autoexpresión" },
-  virgo: { slug: "virgo", name: "Virgo", element: "Tierra", modality: "Mutable", ruler: "Mercurio", symbol: "♍", dates: "23 Ago – 22 Sep", energy: "Discernimiento, orden práctico y servicio" },
-  libra: { slug: "libra", name: "Libra", element: "Aire", modality: "Cardinal", ruler: "Venus", symbol: "♎", dates: "23 Sep – 22 Oct", energy: "Armonía, diplomacia y búsqueda de equilibrio" },
-  escorpio: { slug: "escorpio", name: "Escorpio", element: "Agua", modality: "Fijo", ruler: "Plutón / Marte", symbol: "♏", dates: "23 Oct – 21 Nov", energy: "Transformación, profundidad e intensidad magnética" },
-  sagitario: { slug: "sagitario", name: "Sagitario", element: "Fuego", modality: "Mutable", ruler: "Júpiter", symbol: "♐", dates: "22 Nov – 21 Dic", energy: "Expansión, verdad, aventura y filosofía" },
-  capricornio: { slug: "capricornio", name: "Capricornio", element: "Tierra", modality: "Cardinal", ruler: "Saturno", symbol: "♑", dates: "22 Dic – 19 Ene", energy: "Estructura, maestría, perseverancia y propósito" },
-  acuario: { slug: "acuario", name: "Acuario", element: "Aire", modality: "Fijo", ruler: "Urano / Saturno", symbol: "♒", dates: "20 Ene – 18 Feb", energy: "Innovación, visión colectiva y libertad de pensamiento" },
-  piscis: { slug: "piscis", name: "Piscis", element: "Agua", modality: "Mutable", ruler: "Neptuno / Júpiter", symbol: "♓", dates: "19 Feb – 20 Mar", energy: "Empatía mística, imaginación y sensibilidad universal" },
+  aries: { slug: "aries", name: "Aries", element: "Fuego", modality: "Cardinal", symbol: "♈", ...SIGN_PROFILES.aries },
+  tauro: { slug: "tauro", name: "Tauro", element: "Tierra", modality: "Fijo", symbol: "♉", ...SIGN_PROFILES.tauro },
+  geminis: { slug: "geminis", name: "Géminis", element: "Aire", modality: "Mutable", symbol: "♊", ...SIGN_PROFILES.geminis },
+  cancer: { slug: "cancer", name: "Cáncer", element: "Agua", modality: "Cardinal", symbol: "♋", ...SIGN_PROFILES.cancer },
+  leo: { slug: "leo", name: "Leo", element: "Fuego", modality: "Fijo", symbol: "♌", ...SIGN_PROFILES.leo },
+  virgo: { slug: "virgo", name: "Virgo", element: "Tierra", modality: "Mutable", symbol: "♍", ...SIGN_PROFILES.virgo },
+  libra: { slug: "libra", name: "Libra", element: "Aire", modality: "Cardinal", symbol: "♎", ...SIGN_PROFILES.libra },
+  escorpio: { slug: "escorpio", name: "Escorpio", element: "Agua", modality: "Fijo", symbol: "♏", ...SIGN_PROFILES.escorpio },
+  sagitario: { slug: "sagitario", name: "Sagitario", element: "Fuego", modality: "Mutable", symbol: "♐", ...SIGN_PROFILES.sagitario },
+  capricornio: { slug: "capricornio", name: "Capricornio", element: "Tierra", modality: "Cardinal", symbol: "♑", ...SIGN_PROFILES.capricornio },
+  acuario: { slug: "acuario", name: "Acuario", element: "Aire", modality: "Fijo", symbol: "♒", ...SIGN_PROFILES.acuario },
+  piscis: { slug: "piscis", name: "Piscis", element: "Agua", modality: "Mutable", symbol: "♓", ...SIGN_PROFILES.piscis },
 };
 
 const ALL_SIGN_SLUGS = Object.keys(SIGNS_DATA);
@@ -90,15 +91,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // (integrada al catálogo programático). Esta familia: canonical + noindex
   // (follow, para no perder link equity) y fuera del sitemap. El 301 duro
   // queda para cuando se confirme paridad de contenido y rank.
-  const canonicalCompat = siteUrl(`/compatibilidad/${signA.slug}-${signB.slug}`);
+  const canonicalCompat = siteUrl(`/compatibilidad/${canonicalPairSlug(signA.slug, signB.slug)}`);
 
   return {
     title,
     description,
+    // Sin noindex desde que /compatibilidad es indexable (2026-10-17): con
+    // la canónica apuntando a una página indexable, Google consolida las
+    // señales ahí; noindex + canonical a otra URL son señales contradictorias.
     alternates: {
       canonical: canonicalCompat,
     },
-    robots: { index: false, follow: true },
     openGraph: {
       title,
       description,
@@ -157,7 +160,7 @@ export default async function SinastriaPage({ params }: PageProps) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
       { "@type": "ListItem", position: 2, name: "Modo Pareja", item: `${SITE_URL}/pareja` },
-      { "@type": "ListItem", position: 3, name: `${signA.name} y ${signB.name}`, item: siteUrl(`/compatibilidad/${signA.slug}-${signB.slug}`) },
+      { "@type": "ListItem", position: 3, name: `${signA.name} y ${signB.name}`, item: siteUrl(`/compatibilidad/${canonicalPairSlug(signA.slug, signB.slug)}`) },
     ],
   };
 

@@ -8,6 +8,7 @@ import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
 import { BLOG_POSTS } from "@/lib/data/blog-content";
 import { SITE_URL } from "@/lib/seo";
 import { getPrimaryEvent } from "@/lib/data/entity-events";
+import { compatibilidadSignosRoutes } from "@/lib/seo/programmatic";
 
 const BASE_URL = SITE_URL;
 
@@ -139,7 +140,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // internos (sinastria → compatibilidad, conocimiento → signos) sin
   // consumir presupuesto de rastreo anunciando 252 URLs casi idénticas.
   // Las páginas siguen existiendo (generateStaticParams en cada page.tsx).
-  const programmaticPages: MetadataRoute.Sitemap = [];
+  //
+  // Excepción (2026-10-17): /compatibilidad/a-b vuelve al índice con más
+  // contenido, y se anuncian solo las 78 canónicas (orden zodiacal); las 66
+  // inversas apuntan a ellas con canonical. Signo×casa sigue afuera.
+  const programmaticPages: MetadataRoute.Sitemap = compatibilidadSignosRoutes().map((r) => ({
+    url: `${BASE_URL}/${r.path}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: r.priority,
+  }));
 
   // El protocolo de sitemaps exige URLs escapadas: ids como "dragón" o
   // "david-lebón" salían crudos. encodeURI no toca lo que ya es ASCII.

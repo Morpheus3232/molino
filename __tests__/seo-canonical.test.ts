@@ -24,13 +24,16 @@ describe("Technical SEO & Canonical URLs", () => {
     }
   });
 
-  it("no anuncia las rutas programáticas de exploración (thin content, se descubren por enlaces internos)", () => {
+  it("anuncia solo las compatibilidades canónicas; sinastría y signo×casa quedan fuera", () => {
     const entries = sitemap();
     expect(entries.filter((e) => e.url.includes("/sinastria/")).length).toBe(0);
-    // Programáticas (signo×casa + compatibilidad signo-signo) salieron
-    // del sitemap en Fase 4 — contenido de exploración con plantilla
-    // corta; se descubren vía enlaces internos sin consumir crawl budget.
-    expect(entries.filter((e) => /\/compatibilidad\/[a-z]+-[a-z]+$/.test(e.url)).length).toBe(0);
+    // Signo×casa sigue fuera del sitemap. /compatibilidad volvió
+    // (2026-10-17) pero solo con las 78 canónicas: ningún par aparece en
+    // los dos órdenes.
+    const compat = entries.map((e) => e.url.match(/\/compatibilidad\/([a-z]+)-([a-z]+)$/)).filter(Boolean) as RegExpMatchArray[];
+    expect(compat.length).toBe(78);
+    const pairs = new Set(compat.map((m) => [m[1], m[2]].sort().join("|")));
+    expect(pairs.size).toBe(78);
     expect(entries.filter((e) => /\/signo\/\d+\/casa\/\d+/.test(e.url)).length).toBe(0);
   });
 

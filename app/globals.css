@@ -336,6 +336,16 @@
     overflow-x: hidden;
   }
 
+  /* Escala de escritorio: en PC el sitio se veía chico y recién al 125% de
+     zoom quedaba bien. Casi todo (texto, espaciado, anchos) está en rem, así
+     que subir el tamaño raíz equivale a ese zoom. En porcentaje y no en px:
+     respeta a quien ya agrandó la letra en su navegador. */
+  /* Desde 1280px (pantallas de PC). Entre 1024 y 1279 —tablets apaisadas,
+     notebooks chicas— el header con mapa no entra a mayor escala. */
+  @media (min-width: 1280px) {
+    html { font-size: 125%; }
+  }
+
   body {
     background: var(--color-background);
     color: var(--color-foreground);
@@ -1411,7 +1421,7 @@ body { font-variant-numeric: oldstyle-nums proportional-nums; }
 @media (pointer: coarse) {
   nav[aria-label="Breadcrumb"] a {
     display: inline-block;
-    padding-block: 0.375rem;
-    margin-block: -0.375rem;
+    padding: 0.375rem 0.125rem;
+    margin: -0.375rem -0.125rem;
   }
 }

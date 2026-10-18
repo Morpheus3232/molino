@@ -446,12 +446,16 @@ export default function UniversityHeader() {
                   onClick={() => {
                     handleNewProfile();
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
+                  aria-label="Crear nuevo mapa"
+                  title="Crear nuevo mapa"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
                 >
                   <Plus className="w-3.5 h-3.5" aria-hidden="true" focusable="false" />
-                  Crear nuevo mapa
+                  <span className="hidden 2xl:inline">Crear nuevo mapa</span>
                 </button>
-                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={actionClass} />
+                {/* compact: solo ícono por debajo de 1536px — con el header a escala
+                    de escritorio, los textos completos tapaban los menús. */}
+                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={actionClass} compact />
               </div>
             )}
             <button

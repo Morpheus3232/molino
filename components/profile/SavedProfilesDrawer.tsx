@@ -198,7 +198,7 @@ export default function SavedProfilesDrawer({
           aria-label={label ?? "Mis Mapas"}
         >
           <Bookmark className="w-3.5 h-3.5" />
-          <span className={compact ? "hidden lg:inline" : ""}>{label ?? "Mis Mapas"}</span>
+          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? "Mis Mapas"}</span>
         </button>
       ) : (
         <button
@@ -216,7 +216,7 @@ export default function SavedProfilesDrawer({
           ) : (
             <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
           )}
-          <span className={compact ? "hidden lg:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
+          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
         </button>
       )}
 

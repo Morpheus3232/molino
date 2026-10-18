@@ -46,14 +46,14 @@ function Toc({ post }: { post: BlogPost }) {
   return (
     <nav aria-label="Tabla de contenidos" className="mb-8">
       <p className="text-sm text-muted mb-4 label-caps">En este artículo</p>
-      <ul className="space-y-2.5 border-l border-border pl-4">
+      <ul className="space-y-1 border-l border-border pl-4">
         {post.sections.map((section) => {
           const active = activeId === section.id;
           return (
             <li key={section.id}>
               <a
                 href={`#${section.id}`}
-                className={`block text-sm leading-snug transition-colors border-l -ml-[1.05rem] pl-4 ${
+                className={`block py-1.5 text-sm leading-snug transition-colors border-l -ml-[1.05rem] pl-4 ${
                   active
                     ? "text-foreground font-medium border-accent"
                     : "text-muted border-transparent hover:text-foreground"

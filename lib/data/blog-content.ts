@@ -377,13 +377,17 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "numerologia-ano-personal",
-    title: "Cómo calcular el Año Personal en numerología — guía completa",
+    // El año en el título es lo que se busca en el último trimestre ("año
+    // personal 2027"). Actualizarlo cada octubre junto con el ejemplo de
+    // "Cómo se calcula" — si queda viejo, promete algo que el texto no tiene.
+    title: "Año Personal 2027: calculalo con tu fecha de nacimiento",
     excerpt:
       "El Año Personal es el ciclo de nueve años que se mueve dentro de tu numerología. Aprendé cómo se calcula, qué representa cada año del ciclo y cómo usarlo para planificar sin caer en el determinismo.",
     metaDescription:
-      "Cómo calcular el Año Personal en numerología a partir de tu fecha de nacimiento, qué representa cada uno de los 9 años del ciclo y cómo usarlo para planificar tu año con más criterio.",
+      "Sumá tu día y mes de nacimiento al año y reducilo a una cifra: así sale tu Año Personal 2026 y 2027, con un ejemplo paso a paso y qué significa cada uno de los 9 años.",
     category: "Numerología",
     date: "2026-08-16",
+    updatedAt: "2026-10-17",
     image: "/blog/numerologia-ano-personal.svg",
     author: "Equipo Molino",
     intro: [
@@ -405,6 +409,7 @@ export const BLOG_POSTS: BlogPost[] = [
         paragraphs: [
           "Se suma el día y el mes de tu nacimiento con el año en curso, y se reduce el total a una sola cifra del 1 al 9 (a diferencia del Número de Vida, en el Año Personal los números maestros 11, 22 y 33 generalmente también se reducen, porque describe un período corto y no un rasgo estructural).",
           "Por ejemplo, alguien que nació el 15 de agosto, en 2026, suma 1 + 5 (día) + 8 (mes) + 2 + 0 + 2 + 6 (año) = 24, y reduce 2 + 4 = 6. Esa persona transita un Año Personal 6 desde su cumpleaños de 2026 hasta el de 2027.",
+          "Para 2027 la cuenta es la misma con el año nuevo: 1 + 5 + 8 + 2 + 0 + 2 + 7 = 25, y 2 + 5 = 7. Desde su cumpleaños de 2027 entra en un Año Personal 7. Cada año suma uno más al ciclo, y después del 9 vuelve al 1.",
         ],
       },
       {
