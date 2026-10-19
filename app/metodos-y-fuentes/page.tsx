@@ -151,6 +151,18 @@ export default function MetodosYFuentesPage() {
             .{" "}
             <BookMarked className="inline w-3.5 h-3.5 -mt-0.5" aria-hidden="true" />
           </p>
+          <p className="text-xs text-muted mt-3 text-center">
+            Banderas de{" "}
+            <Link
+              href="https://github.com/jdecked/twemoji"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:text-accent-hover"
+            >
+              Twemoji
+            </Link>{" "}
+            (CC BY 4.0) en los dispositivos que no traen las suyas.
+          </p>
         </div>
       </main>
     </>
