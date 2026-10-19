@@ -2,8 +2,8 @@ import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import ZodiacoChinoContent from "./ZodiacoChinoContent";
 
 export const metadata = createRouteMetadata({
-  title: "Zodiaco Chino — Los 12 animales, los 5 elementos",
-  description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años. Un sistema milenario con una profundidad que va mucho más allá de tu animal.",
+  title: "Los 12 animales del zodíaco chino: años, elementos y compatibilidad",
+  description: "Qué animal del horóscopo chino sos según tu año: tabla de 1924 a 2031 con el elemento y el día exacto en que empieza cada año chino. Los 12 animales y los 5 elementos.",
   path: "/conocimiento/zodiaco-chino",
   ogTitle: "Zodiaco Chino",
   ogDescription: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años.",
@@ -13,7 +13,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Zodiaco Chino — Los 12 animales, los 5 elementos",
+    headline: "Los 12 animales del zodíaco chino: años, elementos y compatibilidad",
     description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },

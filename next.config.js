@@ -10,6 +10,14 @@ const __devEval =
   process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
 
 /** @type {import('next').NextConfig} */
+// Orden zodiacal: el mismo de SIGN_SLUGS en lib/seo/programmatic.ts.
+const SIGNOS = ['aries', 'tauro', 'geminis', 'cancer', 'leo', 'virgo', 'libra', 'escorpio', 'sagitario', 'capricornio', 'acuario', 'piscis'];
+
+// /compatibility/<id viejo> → /affinity/<tipo>/<id del Atlas>, emparejados por
+// nombre con lib/data/entities.ts (2026-10-19). Los que no existen en el Atlas
+// (sushi, the-office, fire…) siguen cayendo en /affinity.
+const LEGACY_COMPATIBILITY = { 'argentina': 'country/argentina', 'brasil': 'country/brasil', 'chile': 'country/chile', 'colombia': 'country/colombia', 'mexico': 'country/mexico', 'peru': 'country/peru', 'uruguay': 'country/uruguay', 'espana': 'country/espana', 'francia': 'country/francia', 'alemania': 'country/alemania', 'italia': 'country/italia', 'reino-unido': 'country/reino-unido', 'estados-unidos': 'country/usa', 'canada': 'country/canada', 'australia': 'country/australia', 'china': 'country/china', 'japan': 'country/japon', 'india': 'country/india', 'egipto': 'country/egipto', 'portugal': 'country/portugal', 'grecia': 'country/grecia', 'south-africa': 'country/sudafrica', 'south-korea': 'country/corea-sur', 'netherlands': 'country/paises-bajos', 'buenos-aires': 'city/buenos-aires', 'madrid': 'city/madrid', 'ciudad-de-mexico': 'city/cdmx', 'paris': 'city/paris-city', 'london': 'city/londres', 'barcelona': 'city/barcelona', 'berlin': 'city/berlin', 'apple': 'brand/apple-tech', 'google': 'brand/google', 'microsoft': 'brand/microsoft', 'amazon': 'brand/amazon', 'tesla': 'brand/tesla-autos', 'netflix': 'brand/netflix', 'nike': 'brand/nike-brand', 'adidas': 'brand/adidas', 'coca-cola': 'brand/coca-cola-beverage', 'soda-stereo': 'artist/soda-stereo', 'titanic': 'movie/titanic', 'matrix': 'movie/matrix', 'sydney': 'city/sydney' };
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -47,6 +55,13 @@ const nextConfig = {
   staticPageGenerationTimeout: 120,
   async redirects() {
     return [
+      // Un par de signos = una URL (/compatibilidad, orden zodiacal). El par
+      // invertido y la vieja /sinastria/a/b (duplicado, eliminado 2026-10-19)
+      // redirigen ahí; la sinastría invertida llega en dos saltos.
+      { source: '/sinastria/:a/:b', destination: '/compatibilidad/:a-:b', permanent: true },
+      ...SIGNOS.flatMap((a, i) => SIGNOS.slice(0, i).map((b) => ({
+        source: `/compatibilidad/${a}-${b}`, destination: `/compatibilidad/${b}-${a}`, permanent: true,
+      }))),
       { source: '/principios', destination: '/filosofia', permanent: true },
       // /transparencia se eliminó (2026-10-17); lo que importa de ella vive en /filosofia.
       { source: '/transparencia', destination: '/filosofia', permanent: true },
@@ -80,6 +95,11 @@ const nextConfig = {
       // Wildcard para el resto de URLs legacy (142+ combinaciones y
       // entidades que ya no existen) — evita 404s; el usuario llega
       // al hub en vez de a una página de error.
+      // Cada entidad vieja que existe en el Atlas va a su propia ficha, no al
+      // hub: un redirect masivo a una página genérica Google lo trata como soft 404.
+      ...Object.entries(LEGACY_COMPATIBILITY).map(([slug, target]) => ({
+        source: `/compatibility/${slug}`, destination: `/affinity/${target}`, permanent: true,
+      })),
       { source: '/compatibility/:path*', destination: '/affinity', permanent: true },
       // /precios redirige permanente a /premium: el pricing ladder de 3
       // planes se pausó; un solo pago de $8 desbloquea todo.

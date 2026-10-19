@@ -322,8 +322,11 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   100% porque el header con mapa no entra. Por eso en el header "Crear nuevo
   mapa" y "Guardar" son solo ícono por debajo de 1536px (`compact`).
 - SEO `/compatibilidad` (2026-10-17): indexable de nuevo, una URL por par
-  (`canonicalPairSlug`, orden zodiacal), 78 en el sitemap; `/sinastria` sin
-  noindex y con canonical a la compatibilidad. El título del post de Año
+  (`canonicalPairSlug`, orden zodiacal), 78 en el sitemap. Desde 2026-10-19
+  el par invertido y `/sinastria/a/b` (página eliminada, era un duplicado)
+  redirigen con 308 (`next.config.js`). La lectura de cada par sale de reglas
+  clásicas en `lib/seo/compat-matrix.ts` (aspecto, elemento, modalidad,
+  polaridad, regentes): no escribir prosa a mano por par. El título del post de Año
   Personal lleva el año siguiente: actualizarlo cada octubre con su ejemplo.
 - Legibilidad: el cuerpo va a `font-weight` 450 en celular y 420 desde 768px
   (Garamond a 400 se pierde en pantalla), sin `antialiased`. Ojo:

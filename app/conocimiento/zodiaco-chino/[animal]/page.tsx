@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
-import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
-import AnimalContent from "./AnimalContent";
+import { CHINESE_ANIMALS, delAnimal } from "@/lib/data/zodiaco-chino-content";
+import { lunarYearsOf } from "@/components/affinity/EntitySignSection";
+import { getChineseElement } from "@/lib/engines/chineseZodiacEngine";
+import type { Animal } from "@/lib/data/animalRelations";
+import AnimalContent, { type LunarYearRow } from "./AnimalContent";
+
+/** Cada año del signo con su rango exacto y su elemento, 1924–2031. */
+function yearsOf(animal: string): LunarYearRow[] {
+  return lunarYearsOf(animal as Animal, 1924, 2031).map((y) => ({ ...y, element: getChineseElement(y.year) }));
+}
 
 type Props = { params: Promise<{ animal: string }> };
 
@@ -21,18 +29,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Animal no encontrado" };
   }
 
+  const [amigoA, amigoB] = animal.compatibility.friendly;
+  const recientes = yearsOf(animal.name).slice(-5).map((y) => y.year).join(", ");
+  const title = `${animal.name} en el horóscopo chino: años, elemento y compatibilidad`;
+  const description = `Años ${delAnimal(animal.name)}: ${recientes}… Con la fecha exacta en que empieza y termina cada uno, su elemento, sus dos signos amigos (${amigoA} y ${amigoB}) y su opuesto (${animal.compatibility.challenging[0]}).`;
+  const url = siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`);
+
   return {
-    title: `${animal.emoji} ${animal.name} — Zodiaco Chino`,
-    description: `${animal.meaning.slice(0, 155)}`,
-    alternates: {
-      canonical: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
-    },
-    openGraph: {
-      title: `${animal.emoji} ${animal.name}`,
-      description: `${animal.meaning.slice(0, 155)}`,
-      type: "article",
-      url: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
-    },
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, type: "article", url },
   };
 }
 
@@ -44,7 +51,7 @@ export default async function AnimalPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: `${animal.emoji} ${animal.name}`,
+      headline: `${animal.name} en el horóscopo chino`,
       description: animal.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },
@@ -66,7 +73,7 @@ export default async function AnimalPage({ params }: Props) {
   return (
     <>
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
-      <AnimalContent animal={animal} />
+      <AnimalContent animal={animal} years={animal ? yearsOf(animal.name) : []} />
     </>
   );
 }

@@ -1,9 +1,9 @@
 import { createRouteMetadata, siteUrl } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
-  title: "Camino de Vida",
+  title: "Calculadora del Número de Vida (Camino de Vida)",
   description:
-    "Calculá tu número de Camino de Vida con la fecha de nacimiento. Significado del 1 al 9 y números maestros 11, 22, 33.",
+    "Poné tu fecha de nacimiento y sabé cuál es tu Número de Vida, con la cuenta paso a paso y su significado. Del 1 al 9 y los números maestros 11, 22 y 33.",
   path: "/herramientas/camino-de-vida",
   ogTitle: "Calculá tu Camino de Vida",
   ogDescription: "Número de Camino de Vida a partir de tu fecha de nacimiento.",

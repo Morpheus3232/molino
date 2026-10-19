@@ -8,12 +8,25 @@ import EditorialSection from "@/components/ui/EditorialSection";
 import Halftone from "@/components/ui/Halftone";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
+import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER, delAnimal } from "@/lib/data/zodiaco-chino-content";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const cellPad = "p-8 lg:p-12";
 
-export default function AnimalContent({ animal }: { animal: ChineseAnimal | null | undefined }) {
+export interface LunarYearRow {
+  year: number;
+  start: string;
+  end: string;
+  element: string;
+}
+
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const fecha = (iso: string) => {
+  const [, m, d] = iso.split("-").map(Number);
+  return `${d} de ${MESES[m - 1]}`;
+};
+
+export default function AnimalContent({ animal, years }: { animal: ChineseAnimal | null | undefined; years: LunarYearRow[] }) {
   if (!animal) {
     return (
       <div className="min-h-screen bg-background">
@@ -79,7 +92,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 </h1>
               </div>
 
-              <p className="font-mono text-sm text-muted mt-8 tracking-wide">{animal.years}</p>
+              <p className="font-mono text-sm text-muted mt-8 tracking-wide">{years.map((y) => y.year).join(", ")}</p>
 
               {animal.traits.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-8">
@@ -150,17 +163,48 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           </div>
         </EditorialSection>
 
+        {/* ═══ AÑOS — con fecha exacta: el año chino no empieza el 1 de enero ═══ */}
+        <EditorialSection
+          tone="paperAlt"
+          eyebrow={`AÑOS ${delAnimal(animal.name).toUpperCase()}`}
+          title={<>¿NACISTE EN UN AÑO<br />{animal.name.toUpperCase()}?</>}
+          intro={`El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior.`}
+        >
+          <div className={cellPad}>
+            <table className="w-full text-left text-base">
+              <thead>
+                <tr className="border-b border-ink/20 text-sm text-muted">
+                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Año</th>
+                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Desde</th>
+                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Hasta</th>
+                  <th scope="col" className="py-2 font-normal label-caps">Elemento</th>
+                </tr>
+              </thead>
+              <tbody>
+                {years.map((y) => (
+                  <tr key={y.year} className="border-b border-ink/10">
+                    <th scope="row" className="py-2 pr-4 font-semibold">{y.year}</th>
+                    <td className="py-2 pr-4">{fecha(y.start)} de {y.start.slice(0, 4)}</td>
+                    <td className="py-2 pr-4">{fecha(y.end)} de {y.end.slice(0, 4)}</td>
+                    <td className="py-2">{animal.name} de {y.element}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </EditorialSection>
+
         {/* ═══ COMPATIBILIDADES — azul full-bleed ═══ */}
         <EditorialSection
           tone="accent"
-          eyebrow="COMPATIBILIDADES TRADICIONALES"
+          eyebrow="AMIGOS Y ENEMIGO"
           title={<>CON QUIÉN<br />RESUENA.</>}
           texture="wave"
         >
           <div className="flex flex-wrap">
             <div className={`w-full md:w-1/2 ${cellPad} md:border-r border-paper/20`}>
               <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
-                COMPATIBLES
+                SUS DOS AMIGOS (三合)
               </p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.friendly.map((f) => (
@@ -175,7 +219,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
             </div>
             <div className={`w-full md:w-1/2 ${cellPad} border-t md:border-t-0 border-paper/20`}>
               <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
-                DESAFIANTES
+                SU ENEMIGO (六冲)
               </p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.challenging.map((c) => (

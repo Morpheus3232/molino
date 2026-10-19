@@ -4,6 +4,8 @@
  * compatibilidades, elementos, a\u00f1os, fuentes, disclaimer.
  */
 
+import { SAN_HE_TRIADS, getClashPartner, type Animal } from "@/lib/data/animalRelations";
+
 export interface ChineseAnimal {
   name: string;
   emoji: string;
@@ -13,13 +15,14 @@ export interface ChineseAnimal {
   traits: string[];
   strengths: string[];
   challenges: string[];
+  /** Derivado de animalRelations: los dos amigos (三合) y el enemigo (六冲). */
   compatibility: { friendly: string[]; challenging: string[] };
   elements: { element: string; modifier: string }[];
   scientificNote: string;
   sourceIds: string[];
 }
 
-export const CHINESE_ANIMALS: ChineseAnimal[] = [
+const ANIMAL_TEXTS: Omit<ChineseAnimal, "compatibility">[] = [
   {
     name: "Rata",
     emoji: "\ud83d\udc00",
@@ -29,7 +32,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Inteligente", "Astuta", "Vers\u00e1til", "Sociable", "Resourceful"],
     strengths: ["Ingenio y astucia", "Capacidad de adaptaci\u00f3n", "Sociabilidad", "Observaci\u00f3n", "Resourcefulness"],
     challenges: ["Tendencia a la avaricia", "Dificultad para confiar", "Impaciencia", "Cr\u00edtica excesiva", "Duplicidad percibida"],
-    compatibility: { friendly: ["Drag\u00f3n", "Mono", "Buey"], challenging: ["Caballo", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Creativo e idealista" },
       { element: "Fuego", modifier: "Energ\u00e9tico y carism\u00e1tico" },
@@ -49,7 +51,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Dedicado", "Fuerte", "Determinado", "Paciente", "Confi"],
     strengths: ["Determinaci\u00f3n inquebrantable", "Confiabilidad", "Paciencia", "Fuerza f\u00edsica y mental", "Lealtad"],
     challenges: ["Terquedad", "Rigidez", "Dificultad para adaptarse", "Resentimiento", "Trabajo excesivo"],
-    compatibility: { friendly: ["Serpiente", "Gallo", "Rata"], challenging: ["Cabra", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Rebelde y visionario" },
       { element: "Fuego", modifier: "Aventurero y optimista" },
@@ -69,7 +70,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Valiente", "Competitivo", "Carism\u00e1tico", "Impulsivo", "Generoso"],
     strengths: ["Valent\u00eda", "Liderazgo natural", "Carisma", "Energ\u00eda", "Generosidad"],
     challenges: ["Impulsividad", "Autoritarismo", "Impaciencia", "Dificultad para delegar", "Reactividad"],
-    compatibility: { friendly: ["Caballo", "Perro", "Drag\u00f3n"], challenging: ["Serpiente", "Mono"] },
     elements: [
       { element: "Madera", modifier: "Competitivo y ambicioso" },
       { element: "Fuego", modifier: "Carism\u00e1tico y en\u00e9rgico" },
@@ -89,7 +89,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Elegante", "Diplom\u00e1tico", "Sensible", "Pac\u00edfico", "Astuto"],
     strengths: ["Elegancia", "Diplomacia", "Sensibilidad art\u00edstica", "Paciencia", "Buena intuici\u00f3n"],
     challenges: ["Cautela excesiva", "Indecisi\u00f3n", "Resentimiento silencioso", "Evitaci\u00f3n de conflicto", "Inseguridad"],
-    compatibility: { friendly: ["Cabra", "Cerdo", "Perro"], challenging: ["Rata", "Gallo"] },
     elements: [
       { element: "Madera", modifier: "Generoso y compasivo" },
       { element: "Fuego", modifier: "Energ\u00e9tico y carism\u00e1tico" },
@@ -109,7 +108,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Ambicioso", "Carism\u00e1tico", "Energ\u00e9tico", "Confiado", "L\u00edder"],
     strengths: ["Carisma extraordinario", "Ambici\u00f3n", "Energ\u00eda ilimitada", "Confianza", "Liderazgo visionario"],
     challenges: ["Intolerancia", "Exigencia", "Impaciencia", "Arrogancia", "Dificultad para escuchar"],
-    compatibility: { friendly: ["Rata", "Serpiente", "Mono"], challenging: ["Perro", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Visionario y generoso" },
       { element: "Fuego", modifier: "En\u00e9rgico y apasionado" },
@@ -129,7 +127,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Intuitiva", "Estrat\u00e9gica", "Misteriosa", "Elegante", "Determinada"],
     strengths: ["Intuici\u00f3n extraordinaria", "Estrategia", "Elegancia", "Determinaci\u00f3n", "Sabidur\u00eda"],
     challenges: ["Secretismo", "Celos", "Desconfianza", "Venganza", "Intensidad"],
-    compatibility: { friendly: ["Mono", "Gallo", "Buey"], challenging: ["Cerdo", "Tigre"] },
     elements: [
       { element: "Madera", modifier: "Creativo y filos\u00f3fico" },
       { element: "Fuego", modifier: "Carism\u00e1tico y en\u00e9rgico" },
@@ -149,7 +146,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Libre", "En\u00e9rgico", "Aventurero", "Sociable", "Impulsivo"],
     strengths: ["Libertad de esp\u00edritu", "Energ\u00eda contagiosa", "Entusiasmo", "Versatilidad", "Lealtad"],
     challenges: ["Inquietud", "Impaciencia", "Dificultad para comprometerse", "Inconsistencia", "Egocentrismo"],
-    compatibility: { friendly: ["Tigre", "Perro", "Cabra"], challenging: ["Rata", "Gato"] },
     elements: [
       { element: "Madera", modifier: "En\u00e9rgico y carism\u00e1tico" },
       { element: "Fuego", modifier: "Apasionado y\u00a0entusiasta" },
@@ -169,7 +165,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Creativa", "Sensible", "Pac\u00edfica", "Art\u00edstica", "Generosa"],
     strengths: ["Creatividad", "Sensibilidad est\u00e9tica", "Empat\u00eda", "Paciencia", "Imaginaci\u00f3n"],
     challenges: ["Indecisi\u00f3n", "Dependencia", "Pessimismo", "Inseguridad", "Evitaci\u00f3n"],
-    compatibility: { friendly: ["Gato", "Cerdo", "Caballo"], challenging: ["Buey", "Perro"] },
     elements: [
       { element: "Madera", modifier: "Generoso y compasivo" },
       { element: "Fuego", modifier: "Art\u00edstico y en\u00e9rgico" },
@@ -189,7 +184,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Ingenioso", "Vers\u00e1til", "Curioso", "Sociable", "Competitivo"],
     strengths: ["Ingenio extraordinario", "Versatilidad", "Curiosidad intelectual", "Sociabilidad", "Resoluci\u00f3n de problemas"],
     challenges: ["Inconstancia", "Arrogancia", "Picard\u00eda", "Dificultad para comprometerse", "Impaciencia"],
-    compatibility: { friendly: ["Rata", "Drag\u00f3n", "Serpiente"], challenging: ["Tigre", "Cerdo"] },
     elements: [
       { element: "Madera", modifier: "Ambicioso y lidera" },
       { element: "Fuego", modifier: "En\u00e9rgico y carism\u00e1tico" },
@@ -209,7 +203,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Observador", "Valiente", "Puntual", "Honesto", "Organizado"],
     strengths: ["Observaci\u00f3n aguda", "Puntualidad", "Coraje", "Organizaci\u00f3n", "Honestidad"],
     challenges: ["Cr\u00edtica excesiva", "Vanidad", "Dureza", "Crueldad percibida", "Testarudez"],
-    compatibility: { friendly: ["Buey", "Serpiente", "Mono"], challenging: ["Gato", "Perro"] },
     elements: [
       { element: "Madera", modifier: "Creativo y expansivo" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0carism\u00e1tico" },
@@ -228,12 +221,11 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     history: "El Perro es considerado uno de los animales m\u00e1s leales en todas las culturas. En China, representa la protecci\u00f3n y la compa\u00f1\u00eda.",
     traits: ["Leal", "Honesto", "Protector", "Confiable", "Compasivo"],
     strengths: ["Lealtad incondicional", "Honestidad", "Protecci\u00f3n", "Confianza", "Empat\u00eda"],
-    challenges: ["Ansiedad", "C\u00e1nomo", "Cr\u00edtica", "Terquedad moral", "Preocupaci\u00f3n excesiva"],
-    compatibility: { friendly: ["Tigre", "Gato", "Caballo"], challenging: ["Drag\u00f3n", "Gallo"] },
+    challenges: ["Ansiedad", "Cinismo", "Cr\u00edtica", "Terquedad moral", "Preocupaci\u00f3n excesiva"],
     elements: [
       { element: "Madera", modifier: "Compasivo y\u00a0generoso" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0carism\u00e1tico" },
-      { element: "Tierra", modifier: "Pr\u00e1ctico y\u00a0confi" },
+      { element: "Tierra", modifier: "Pr\u00e1ctico y\u00a0confiable" },
       { element: "Metal", modifier: "Resiliente y\u00a0justo" },
       { element: "Agua", modifier: "Intuitivo y\u00a0flexible" },
     ],
@@ -249,7 +241,6 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Generoso", "Compasivo", "Optimista", "Diligente", "Pac\u00edfico"],
     strengths: ["Generosidad", "Compasi\u00f3n", "Optimismo", "Diligencia", "Tolerancia"],
     challenges: ["Ingenuidad", "Autoindulgencia", "Dificultad para decir no", "Exceso de confianza", "Pereza percibida"],
-    compatibility: { friendly: ["Gato", "Cabra", "Buey"], challenging: ["Serpiente", "Mono"] },
     elements: [
       { element: "Madera", modifier: "Generoso y compasivo" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0apasionado" },
@@ -263,14 +254,38 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
 ];
 
 /**
+ * La compatibilidad no se escribe a mano: es la misma regla del Atlas y del
+ * Mapa (CLAUDE.md) — dos amigos del San He y un enemigo del Liu Chong. Las
+ * listas viejas mezclaban Liu He y Liu Hai y contradecían al resto del sitio.
+ */
+const FEMENINOS = new Set(["Rata", "Serpiente", "Cabra"]);
+
+/** "del Perro", "de la Serpiente". */
+export function delAnimal(name: string): string {
+  return `${FEMENINOS.has(name) ? "de la" : "del"} ${name}`;
+}
+
+export const CHINESE_ANIMALS: ChineseAnimal[] = ANIMAL_TEXTS.map((a) => {
+  const animal = a.name as Animal;
+  const enemy = getClashPartner(animal);
+  return {
+    ...a,
+    compatibility: {
+      friendly: SAN_HE_TRIADS.find((t) => t.animals.includes(animal))!.animals.filter((x) => x !== animal),
+      challenging: enemy ? [enemy] : [],
+    },
+  };
+});
+
+/**
  * Los 5 elementos del zodiaco chino.
  */
 export const CHINESE_ELEMENTS = [
-  { name: "Madera", qualities: ["Crecimiento", "Generosidad", "Flexibilidad", "Idealismo"], yinYang: "Yin" },
-  { name: "Fuego", qualities: ["Pasión", "Energía", "Espontaneidad", "Liderazgo"], yinYang: "Yang" },
-  { name: "Tierra", qualities: ["Estabilidad", "Practicidad", "Paciencia", "Nutrici\u00f3n"], yinYang: "Yin" },
-  { name: "Metal", qualities: ["Determinaci\u00f3n", "Precisi\u00f3n", "Organizaci\u00f3n", "Resiliencia"], yinYang: "Yang" },
-  { name: "Agua", qualities: ["Intuici\u00f3n", "Comunicaci\u00f3n", "Adaptabilidad", "Flexibilidad"], yinYang: "Yin" },
+  { name: "Madera", qualities: ["Crecimiento", "Generosidad", "Flexibilidad", "Idealismo"] },
+  { name: "Fuego", qualities: ["Pasión", "Energía", "Espontaneidad", "Liderazgo"] },
+  { name: "Tierra", qualities: ["Estabilidad", "Practicidad", "Paciencia", "Nutrici\u00f3n"] },
+  { name: "Metal", qualities: ["Determinaci\u00f3n", "Precisi\u00f3n", "Organizaci\u00f3n", "Resiliencia"] },
+  { name: "Agua", qualities: ["Intuici\u00f3n", "Comunicaci\u00f3n", "Adaptabilidad", "Flexibilidad"] },
 ];
 
 /**

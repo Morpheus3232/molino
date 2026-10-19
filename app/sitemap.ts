@@ -14,34 +14,34 @@ const BASE_URL = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1.0 },
-    { url: `${BASE_URL}/explore`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
-    { url: `${BASE_URL}/hoy`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.9 },
-    { url: `${BASE_URL}/pareja`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/journal`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/premium`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/profesionales`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/widget`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/shortcuts`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/nosotros`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/filosofia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/changelog`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
-    { url: `${BASE_URL}/ejemplo`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/docs`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/docs/motores`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/biblioteca`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/metodos-y-fuentes`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/privacidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/terminos`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/calendario`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${BASE_URL}/herramientas`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/herramientas/camino-de-vida`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/herramientas/signo-solar`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/herramientas/zodiaco-chino`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/herramientas/compatibilidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/affinity/recommendations/countries`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
-    { url: `${BASE_URL}/affinity/recommendations/brands`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: BASE_URL, changeFrequency: "weekly" as const, priority: 1.0 },
+    { url: `${BASE_URL}/explore`, changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${BASE_URL}/hoy`, changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/pareja`, changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/journal`, changeFrequency: "weekly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/premium`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/profesionales`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/widget`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/shortcuts`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/nosotros`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/filosofia`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/changelog`, changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/ejemplo`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/docs`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/docs/motores`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/biblioteca`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/metodos-y-fuentes`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/academy`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/privacidad`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/terminos`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/calendario`, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${BASE_URL}/herramientas`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/camino-de-vida`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/signo-solar`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/zodiaco-chino`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/compatibilidad`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/affinity/recommendations/countries`, changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/affinity/recommendations/brands`, changeFrequency: "monthly" as const, priority: 0.5 },
   ];
 
   // Sinastría — Programmatic SEO (144 combinaciones zodiacales)
@@ -51,10 +51,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Affinity hub + category listings
   const affinityPages = [
-    { url: `${BASE_URL}/affinity`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/affinity`, changeFrequency: "weekly" as const, priority: 0.8 },
     ...getAvailableTypes().map((type) => ({
       url: `${BASE_URL}/affinity/${type}`,
-      lastModified: new Date(),
+     
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
@@ -66,7 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const availableTypes = new Set<EntityType>(getAvailableTypes());
   const entityPages = SYMBOLIC_ENTITIES.filter((entity) => availableTypes.has(entity.type as EntityType) && getPrimaryEvent(entity)?.date).map((entity) => ({
     url: `${BASE_URL}/affinity/${entity.type}/${entity.id}`,
-    lastModified: new Date(),
+   
     changeFrequency: "monthly" as const,
     priority: 0.4,
   }));
@@ -76,24 +76,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Conocimiento — educational content (high SEO value)
   const conocimientoPages = [
-    { url: `${BASE_URL}/conocimiento/astrologia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/conocimiento/numerologia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/conocimiento/zodiaco-chino`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/conocimiento/astrologia`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/conocimiento/numerologia`, changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/conocimiento/zodiaco-chino`, changeFrequency: "monthly" as const, priority: 0.8 },
     ...ZODIAC_SIGNS.map((sign) => ({
       url: `${BASE_URL}/conocimiento/astrologia/${encodeURIComponent(sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}`,
-      lastModified: new Date(),
+     
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
     ...NUMBERS.map((num) => ({
       url: `${BASE_URL}/conocimiento/numerologia/${num.number}`,
-      lastModified: new Date(),
+     
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
     ...CHINESE_ANIMALS.map((animal) => ({
       url: `${BASE_URL}/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`,
-      lastModified: new Date(),
+     
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
@@ -101,16 +101,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Guía pages
   const guiaPages = [
-    { url: `${BASE_URL}/guia`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/guia/camino-de-vida-7`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/guia/numeros-maestros`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/guia/compatibilidad-astrologica`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/guia`, changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/guia/camino-de-vida-7`, changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/guia/numeros-maestros`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/guia/compatibilidad-astrologica`, changeFrequency: "monthly" as const, priority: 0.6 },
   ];
 
   // Academia — historia de las tradiciones (artículos individuales)
   const academyPages = ACADEMY_PIECES.map((piece) => ({
     url: `${BASE_URL}/academy/${piece.slug}`,
-    lastModified: new Date(),
+   
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
@@ -118,14 +118,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Biblioteca — fichas de fuentes y referencias
   const bibliotecaPages = BIBLIOTECA_SOURCES.map((source) => ({
     url: `${BASE_URL}/biblioteca/${source.slug}`,
-    lastModified: new Date(),
+   
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
 
   // Blog — artículos SEO (alta prioridad para capturar tráfico orgánico)
   const blogPages = [
-    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(BLOG_POSTS.map((p) => p.updatedAt ?? p.date).sort().at(-1)!),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
     ...BLOG_POSTS.map((post) => ({
       url: `${BASE_URL}/blog/${post.slug}`,
       lastModified: new Date(post.updatedAt ?? post.date),
@@ -146,7 +151,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // inversas apuntan a ellas con canonical. Signo×casa sigue afuera.
   const programmaticPages: MetadataRoute.Sitemap = compatibilidadSignosRoutes().map((r) => ({
     url: `${BASE_URL}/${r.path}`,
-    lastModified: new Date(),
+   
     changeFrequency: "monthly" as const,
     priority: r.priority,
   }));

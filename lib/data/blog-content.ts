@@ -1,3 +1,5 @@
+import { NUMBERS } from "@/lib/data/numerologia-content";
+
 export type BlogCategory =
   | "Numerología"
   | "Astrología"
@@ -38,13 +40,14 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "numerologia-numero-de-vida",
-    title: "Qué significa tu Número de Vida según la Numerología",
+    title: "Número de Vida: qué es, cómo se calcula y qué significa",
     excerpt:
       "El Número de Vida (o Camino de Vida) se calcula con tu fecha de nacimiento y revela la dirección central de tu personalidad. Aprendé a calcularlo y a leerlo.",
     metaDescription:
-      "Descubrí qué es el Número de Vida en la numerología, cómo se calcula desde tu fecha de nacimiento y qué revela cada número sobre tu personalidad y propósito.",
+      "Es tu fecha de nacimiento reducida a una cifra: del 1 al 9, o 11, 22 y 33. Cómo calcularlo paso a paso con un ejemplo y qué significa cada Número de Vida.",
     category: "Numerología",
     date: "2026-08-13",
+    updatedAt: "2026-10-19",
     image: "/blog/numerologia-numero-de-vida.svg",
     author: "Equipo Molino",
     intro: [
@@ -81,6 +84,16 @@ export const BLOG_POSTS: BlogPost[] = [
           "El 6 es el número de la responsabilidad, el cuidado y el hogar. El 7, el del análisis, la introspección y la búsqueda de conocimiento. El 8, el del poder, la ambición y la materialidad. El 9, el del cierre, la compasión y el servicio. Los números maestros 11, 22 y 33 intensifican esas energías: intuición, construcción y enseñanza a gran escala.",
           "Ninguno es 'mejor' que otro. La numerología lee el mapa completo: tu Número de Vida es una nota base, y el resto de tu fecha y tu nombre le agregan armonía y tensión. Por eso dos personas con el mismo Número de Vida pueden vivir vidas muy distintas.",
         ],
+      },
+      {
+        id: "cada-numero",
+        heading: "Significado de cada Número de Vida, del 1 al 33",
+        paragraphs: [
+          "El arquetipo y las tres palabras clave que la tradición le asigna a cada número. Cada uno tiene su página con el detalle completo en la sección de Numerología.",
+        ],
+        list: NUMBERS.map(
+          (n) => `${n.number} — ${n.title}: ${n.keywords.join(", ").toLowerCase()}.`,
+        ),
       },
       {
         id: "aplicarlo",
@@ -585,13 +598,14 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "numerologia-numeros-maestros",
-    title: "Números Maestros: qué significan el 11, el 22 y el 33",
+    title: "Números maestros 11, 22 y 33: qué significan y cómo saber el tuyo",
     excerpt:
       "Los números maestros (11, 22 y 33) no se reducen como el resto y pueden aparecer en cuatro lugares distintos de tu mapa. Aprendé qué representan y por qué el mismo maestro se lee distinto según dónde cae.",
     metaDescription:
       "Qué son los números maestros 11, 22 y 33 en numerología, por qué no se reducen, en qué cuatro posiciones de tu mapa pueden aparecer y cómo se lee cada uno según dónde cae.",
     category: "Numerología",
     date: "2026-08-18",
+    updatedAt: "2026-10-19",
     image: "/blog/numerologia-numeros-maestros.svg",
     author: "Equipo Molino",
     intro: [

@@ -217,7 +217,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.4 }}
                       >
-                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Compatibilidades tradicionales</h3>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Tus dos amigos (三合)</h3>
                         <div className="flex flex-wrap gap-2">
                           {animalData.compatibility.friendly.map(f => (
                             <span key={f} className="text-sm px-3 py-1 rounded-md border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>

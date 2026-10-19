@@ -10,6 +10,7 @@
 
 import { SIGN_FACTS, type WesternSign } from "@/lib/data/facts/astrology-facts";
 import { HOUSES } from "@/lib/data/knowledge";
+import { pairReading } from "@/lib/seo/compat-matrix";
 
 /** Sign slugs in canonical order (lowercase, no accents). */
 export const SIGN_SLUGS = [
@@ -86,6 +87,21 @@ export const SIGN_PROFILES: Record<(typeof SIGN_SLUGS)[number], { ruler: string;
 };
 
 /**
+ * Título y descripción de un par: el título calca cómo se busca ("géminis y
+ * capricornio compatibilidad", "... en el amor") y la descripción arranca con
+ * la respuesta, no con una invitación.
+ */
+export function pairMeta(a: string, b: string): { title: string; description: string } {
+  const nameA = SIGN_NAMES[a];
+  const nameB = SIGN_NAMES[b];
+  const r = pairReading(nameA, nameB);
+  return {
+    title: `${nameA} y ${nameB}: compatibilidad en el amor, amistad y trabajo`,
+    description: `¿${nameA} y ${nameB} son compatibles? ${r.aspect.verdict}: forman ${["conjunción", "cuadratura", "oposición"].includes(r.aspect.name) ? "una" : "un"} ${r.aspect.name} (${a === b ? `los dos de ${SIGN_FACTS[nameA].element}` : `${SIGN_FACTS[nameA].element} y ${SIGN_FACTS[nameB].element}`}). Qué aporta cada uno, dónde chocan y cómo funcionan en pareja.`,
+  };
+}
+
+/**
  * /compatibilidad/[s1]-[s2] — matriz de compatibilidad entre signos.
  * Devuelve solo las 78 canónicas (orden zodiacal, incluye signo consigo
  * mismo): las 66 inversas existen pero apuntan con canonical a estas.
@@ -95,15 +111,9 @@ export function compatibilidadSignosRoutes(): ProgrammaticRoute[] {
   for (const a of SIGN_SLUGS) {
     for (const b of SIGN_SLUGS) {
       if (canonicalPairSlug(a, b) !== `${a}-${b}`) continue;
-      const nameA = SIGN_NAMES[a];
-      const nameB = SIGN_NAMES[b];
-      const factA = SIGN_FACTS[nameA];
-      const factB = SIGN_FACTS[nameB];
-      const path = `compatibilidad/${a}-${b}`;
       routes.push({
-        path,
-        title: `Compatibilidad ${nameA} y ${nameB}: ${factA.element} + ${factB.element}`,
-        description: `Descubrí la compatibilidad astrológica entre ${nameA} (${factA.element}, ${factA.modality}) y ${nameB} (${factB.element}, ${factB.modality}). Amor, comunicación y sinergia elemental.`,
+        path: `compatibilidad/${a}-${b}`,
+        ...pairMeta(a, b),
         priority: 0.7,
       });
     }

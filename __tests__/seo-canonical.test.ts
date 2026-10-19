@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import sitemap from "@/app/sitemap";
 import { SITE_URL, siteUrl, formatTitle, createRouteMetadata } from "@/lib/seo";
+import { SIGN_SLUGS, canonicalPairSlug } from "@/lib/seo/programmatic";
+const nextConfig = require("../next.config.js");
 
 describe("Technical SEO & Canonical URLs", () => {
   it("generates a sitemap where all URLs have valid canonical format", () => {
@@ -76,5 +78,17 @@ describe("Technical SEO & Canonical URLs", () => {
 
     expect(meta.robots).toEqual({ index: false, follow: true });
     expect(meta.alternates?.canonical).toBeUndefined();
+  });
+
+  it("cada par invertido de /compatibilidad redirige a su canónica", async () => {
+    const redirects: { source: string; destination: string }[] = await nextConfig.redirects();
+    const byPath = new Map(redirects.map((r) => [r.source, r.destination]));
+    for (const a of SIGN_SLUGS) {
+      for (const b of SIGN_SLUGS) {
+        const canon = canonicalPairSlug(a, b);
+        if (canon === `${a}-${b}`) expect(byPath.has(`/compatibilidad/${a}-${b}`)).toBe(false);
+        else expect(byPath.get(`/compatibilidad/${a}-${b}`)).toBe(`/compatibilidad/${canon}`);
+      }
+    }
   });
 });

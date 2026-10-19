@@ -9,6 +9,16 @@ function normalize(str: string) {
   return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+/** /compatibilidad/a-b en orden zodiacal: el mismo de ZODIAC_SIGNS (canonicalPairSlug). */
+function pairHref(a: string, b: string) {
+  const ia = ZODIAC_SIGNS.findIndex((s) => s.name === a);
+  const ib = ZODIAC_SIGNS.findIndex((s) => s.name === b);
+  const [x, y] = ia <= ib ? [a, b] : [b, a];
+  return `/compatibilidad/${normalize(x)}-${normalize(y)}`;
+}
+
+const chip = "text-sm text-foreground px-2 py-1 rounded bg-background border border-border hover:border-ink/40 transition-colors";
+
 export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[number] | null | undefined }) {
   if (!sign) {
     return (
@@ -104,7 +114,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
               <h3 className="font-heading text-lg font-semibold text-accent mb-2">Compatibles</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
-                  <span key={f} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{f}</span>
+                  <Link key={f} href={pairHref(sign.name, f)} className={chip}>{f}</Link>
                 ))}
               </div>
             </div>
@@ -112,10 +122,18 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
               <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Desafiantes</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
-                  <span key={c} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{c}</span>
+                  <Link key={c} href={pairHref(sign.name, c)} className={chip}>{c}</Link>
                 ))}
               </div>
             </div>
+          </div>
+          <h3 className="font-heading text-lg font-semibold text-foreground mt-8 mb-3">{sign.name} con cada signo</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {ZODIAC_SIGNS.map((other) => (
+              <Link key={other.name} href={pairHref(sign.name, other.name)} className={chip}>
+                {sign.name} y {other.name}
+              </Link>
+            ))}
           </div>
         </motion.section>
 

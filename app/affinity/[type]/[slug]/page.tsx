@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { buildEntityJsonLd } from "@/lib/seo-jsonld";
-import { ENTITY_TYPES, getEntityById, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
+import { ENTITY_TYPES, getEntityById, getEntitiesByType, resolveEntityAnimalData, type EntityType } from "@/lib/data/symbolic-entities";
+import { amigosDe, enemigoDe } from "@/lib/engines/personalMapEngine";
+import type { Animal } from "@/lib/data/animalRelations";
 import { getPrimaryEvent } from "@/lib/data/entity-events";
 import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
@@ -35,28 +37,55 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
   if (!entity) {
     return { title: "Entidad no encontrada" };
   }
-  const meta = ENTITY_TYPES[type as EntityType];
+  const { title, description } = entitySeo(entity, type as EntityType);
+  const url = siteUrl(`/affinity/${type}/${slug}`);
 
   return {
-    title: `Mi afinidad simbólica con ${entity.name}`,
-    description: `Mi afinidad simbólica con ${entity.name}: ${entity.emoji} según el zodíaco chino. Descubrí tu mapa de afinidades en Molino.`,
-    alternates: {
-      canonical: siteUrl(`/affinity/${type}/${slug}`),
-    },
+    title,
+    description,
+    alternates: { canonical: url },
     // Sin fecha exacta el signo no es afirmable (CLAUDE.md) y la ficha queda
     // sin su sección de signo: no se ofrece a Google. Sigue enlazando.
     ...(getPrimaryEvent(entity)?.date ? {} : { robots: { index: false, follow: true } }),
-    openGraph: {
-      title: `Mi afinidad simbólica con ${entity.name}`,
-      description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
-      type: "website",
-      url: siteUrl(`/affinity/${type}/${slug}`),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `Mi afinidad simbólica con ${entity.name}`,
-      description: `Afinidad simbólica con ${entity.name} según el zodíaco chino.`,
-    },
+    openGraph: { title, description, type: "website", url },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
+
+const PERSON_TYPES = new Set<EntityType>(["artist", "football_player"]);
+
+/**
+ * El título responde lo que se busca ("¿qué signo es Gavi?", "Argentina
+ * zodíaco chino") con el dato que la ficha afirma: signo y año. El año además
+ * separa homónimos (Claudio Bravo pintor y arquero; Universidad de Chile club
+ * y universidad). Sin fecha exacta no se afirma signo: la ficha va noindex.
+ */
+function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: EntityType) {
+  const primary = getPrimaryEvent(entity);
+  if (!primary?.date) {
+    return {
+      title: `${entity.name} · ${ENTITY_TYPES[type].label}`,
+      description: `${entity.name} en el Atlas de Molino: su origen documentado y su lugar en el zodíaco chino.`,
+    };
+  }
+  const { animal, year } = resolveEntityAnimalData(entity);
+  const fecha = new Date(`${primary.date}T12:00:00Z`).toLocaleDateString("es-AR", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  });
+  const amigos = amigosDe(animal as Animal);
+  const enemigo = enemigoDe(animal as Animal);
+  const relaciones = `Sus dos signos amigos son ${amigos.join(" y ")}${enemigo ? `; su opuesto, ${enemigo}` : ""}.`;
+  if (PERSON_TYPES.has(type)) {
+    return {
+      title: `¿Qué signo chino es ${entity.name}? ${animal} (${year})`,
+      description: `${entity.name} nació el ${fecha}: en el zodíaco chino es ${animal}. ${relaciones}`,
+    };
+  }
+  return {
+    title: `${entity.name} en el zodíaco chino: signo ${animal} (${year})`,
+    // La etiqueta del evento viene de muchas formas ("Fundación", "Revolución
+    // Francesa", "Independencia de Mongolia"): entre paréntesis lee bien con todas.
+    description: `${primary.label} (${fecha}): ${entity.name} es ${animal} en el zodíaco chino. ${relaciones}`,
   };
 }
 
