@@ -1387,6 +1387,13 @@
     letter-spacing: 0.06em;
     font-feature-settings: "c2sc", "smcp";
   }
+
+  /* Banderas a color. Noto Emoji (la fuente de emoji del sitio, monocroma)
+     tiene los indicadores regionales como letras sueltas y ninguna bandera:
+     con ella 🇦🇷 se ve "A R". Se saltea a la de emoji a color del sistema. */
+  .flag-emoji {
+    font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif;
+  }
 }
 
 /* Cifras: elzevirianas en el texto corrido, tabulares donde se alinean datos. */

@@ -94,7 +94,7 @@ describe("EntityVisual Component", () => {
 
   it("falls back to the flag emoji del propio registro cuando no hay countryISO", () => {
     const { container } = render(
-      <EntityVisual visualType="flag" emoji="🇵🇷" name="San Juan PR" type="city" size={36} />
+      <EntityVisual visualType="flag" emoji="🇵🇷" name="San Juan" type="city" size={36} />
     );
     expect(container.textContent).toContain("🇵🇷");
   });

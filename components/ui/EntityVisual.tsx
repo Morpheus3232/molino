@@ -131,7 +131,7 @@ export default function EntityVisual({
         role="img"
         aria-label={`Bandera de ${name}`}
       >
-        <span style={{ fontSize: size * 0.62 }} className="leading-none select-none">
+        <span style={{ fontSize: size * 0.62 }} className="flag-emoji leading-none select-none">
           {flag ?? "🌐"}
         </span>
       </span>

@@ -40,7 +40,7 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
                   Tu país
                 </span>
               )}
-              <span className="text-4xl leading-none" role="img" aria-label={country.name}>
+              <span className="flag-emoji text-4xl leading-none" role="img" aria-label={country.name}>
                 {country.flag}
               </span>
               <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">

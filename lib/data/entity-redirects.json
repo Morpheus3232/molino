@@ -248,6 +248,10 @@
     "destination": "/affinity/city/cartagena"
   },
   {
+    "source": "/affinity/city/city-cordoba-ar",
+    "destination": "/affinity/city/cordoba-ar"
+  },
+  {
     "source": "/affinity/city/city-medellin",
     "destination": "/affinity/city/medellin"
   },

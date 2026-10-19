@@ -146,7 +146,7 @@ function NoCoverageBanner({ country, topCountries }: { country: string; topCount
             href={`/atlas/${c.iso}`}
             className="px-3 py-1.5 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 transition-colors"
           >
-            {c.flag} {c.name}
+            <span className="flag-emoji">{c.flag}</span> {c.name}
           </a>
         ))}
       </div>
