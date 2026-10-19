@@ -82,7 +82,7 @@ export default function JournalClient() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+      <main className="mx-auto max-w-3xl px-4 sm:px-8 pt-16 sm:pt-24 pb-24" id="main-content">
         {/* Header */}
         <header className="mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-ink/10">
@@ -123,9 +123,11 @@ export default function JournalClient() {
           </p>
         )}
 
-        {/* Main Grid: Editor on left, Timeline on right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
+        {/* Una sola columna, como la hoja de un cuaderno: la página de hoy y
+            debajo las anteriores. En dos columnas, con el historial vacío, en
+            la PC se veía solo la mitad izquierda. */}
+        <div className="space-y-16">
+          <div className="space-y-6">
             <JournalEditor
               profile={profile}
               onSaveEntry={handleSave}
@@ -144,8 +146,7 @@ export default function JournalClient() {
             </Link>
           </div>
 
-          {/* Timeline & Analysis Column */}
-          <div className="lg:col-span-7">
+          <div>
             <JournalTimeline
               entries={entries}
               loading={loading}
