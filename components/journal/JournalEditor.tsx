@@ -71,6 +71,8 @@ export default function JournalEditor({
     [contextualPrompt, promptSeed]
   );
 
+  const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+
   const usePrompt = useCallback(() => {
     if (!currentPrompt) return;
     setContent((prev) => (prev.trim() ? `${prev.trim()}\n\n` : "") + currentPrompt);
@@ -302,7 +304,7 @@ export default function JournalEditor({
             )}
 
             <span className="text-xs text-muted font-mono ml-auto shrink-0">
-              {content.trim() ? content.trim().split(/\s+/).length : 0} palabras
+              {wordCount} {wordCount === 1 ? "palabra" : "palabras"}
             </span>
           </div>
         </div>

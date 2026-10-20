@@ -128,7 +128,10 @@ export default function JournalClient() {
             la PC se veía solo la mitad izquierda. */}
         <div className="space-y-16">
           <div className="space-y-6">
+            {/* La consigna de ?prompt= se lee después del primer render: la
+                key remonta el editor para que la precargue en la hoja. */}
             <JournalEditor
+              key={contextualPrompt ?? ""}
               profile={profile}
               onSaveEntry={handleSave}
               editingEntry={editingEntry}
