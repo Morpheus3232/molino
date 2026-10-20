@@ -67,6 +67,40 @@ export const ACADEMY_PIECES: AcademyPiece[] = [
     ],
   },
   {
+    id: "zou-yan",
+    slug: "zou-yan",
+    era: "~300 a.C.",
+    title: "Zou Yan y los cinco elementos",
+    icon: "repeat",
+    origin: "Reino de Qi (China)",
+    idea: "Metal, Agua, Madera, Fuego y Tierra se generan y se frenan en ciclos.",
+    influence: ["Wu Xing", "Yin y yang", "Ciclos de generación y control"],
+    molino: "Origen del elemento que acompaña a tu signo",
+    metaDescription:
+      "Zou Yan y la Escuela del Yin-Yang sistematizaron los cinco elementos (Wu Xing) en el siglo III a.C. Cómo esa teoría llegó al nombre completo de tu año chino.",
+    story: [
+      "En el reino de Qi, a fines del período de los Reinos Combatientes, Zou Yan reunió dos ideas que circulaban por separado: el par yin-yang y las cinco fases —Metal, Agua, Madera, Fuego y Tierra—. Su escuela las convirtió en un sistema: cada fase genera a la siguiente y frena a otra, en ciclos que explicaban desde las estaciones hasta la sucesión de las dinastías.",
+      "Esa teoría quedó incorporada al calendario: cada año chino lleva un elemento además de su signo, y la combinación de los dos tarda sesenta años en repetirse. En Molino, el elemento aparece junto a tu signo en Mi Mapa, pero no entra en las afinidades, que comparan solo signo contra signo.",
+    ],
+  },
+  {
+    id: "calendario-taichu",
+    slug: "calendario-taichu",
+    era: "104 a.C.",
+    title: "El calendario Taichu",
+    icon: "clock",
+    origin: "Dinastía Han (China)",
+    idea: "El año empieza con la luna nueva de fin de invierno: el Año Nuevo que se celebra hasta hoy.",
+    influence: ["Calendario lunisolar", "Año Nuevo chino", "Corte entre signos"],
+    molino: "Define el día exacto en que cambia tu signo",
+    metaDescription:
+      "En el 104 a.C. la reforma Taichu de la dinastía Han fijó el comienzo del año chino. Por qué esa decisión hace que los nacidos en enero y febrero puedan tener el signo del año anterior.",
+    story: [
+      "Durante siglos, cada dinastía china empezó el año en un mes distinto. En el 104 a.C., bajo el emperador Wu de Han, una reforma del calendario —en la que participó el historiador Sima Qian— fijó el comienzo del año en la luna nueva de fines del invierno. Con pocas interrupciones, esa convención es la que sigue marcando el Año Nuevo chino.",
+      "Como el año se ata a la Luna y no a una fecha fija, el Año Nuevo cae cada vez en un día distinto entre el 21 de enero y el 20 de febrero. Por eso en Molino tu signo sale de tu fecha completa: si naciste antes del Año Nuevo de tu año, tu signo es el del año anterior.",
+    ],
+  },
+  {
     id: "helenistica",
     slug: "helenistica",
     era: "Siglo I d.C.",
@@ -86,7 +120,7 @@ export const ACADEMY_PIECES: AcademyPiece[] = [
   {
     id: "zodiaco-chino",
     slug: "zodiaco-chino",
-    era: "Siglo V",
+    era: "Siglo I d.C.",
     title: "Zodíaco chino",
     icon: "cycle",
     origin: "China imperial",
@@ -97,9 +131,26 @@ export const ACADEMY_PIECES: AcademyPiece[] = [
       "El zodíaco chino combina 12 animales con los elementos Yin y Yang en ciclos de 60 años. Descubrí su origen imperial y cómo Molino lo integra en tu mapa.",
     story: [
       "En la China imperial, el tiempo se organizaba en ciclos sexagenarios: cada año combinaba uno de los cinco elementos con uno de los doce animales, creando 60 combinaciones distintas. El sistema ordenaba calendarios, decisiones y rituales.",
-      "Los doce animales se convirtieron en una forma accesible de leer el carácter y la suerte. Molino lo usa como uno de los tres ejes de tu mapa: tu animal zodiacal, sus afinidades y los ciclos que rigen tu año.",
+      "Los doce animales aparecen asociados a las doce ramas terrestres en textos de la dinastía Qin, y la lista completa, tal como la conocemos, ya figura en el Lunheng de Wang Chong, en el siglo I. Se convirtieron en una forma accesible de leer el carácter y la suerte. Molino lo usa como uno de los tres ejes de tu mapa: tu animal zodiacal, sus afinidades y los ciclos que rigen tu año.",
     ],
     relatedGuideSlug: "como-funciona-el-zodiaco-chino",
+  },
+  {
+    id: "ptolomeo",
+    slug: "ptolomeo",
+    era: "~150 d.C.",
+    title: "Ptolomeo y el Tetrabiblos",
+    icon: "book",
+    origin: "Alejandría (Egipto romano)",
+    idea: "Los signos se cuentan desde el equinoccio de primavera, no desde las estrellas.",
+    influence: ["Zodíaco tropical", "Tetrabiblos", "Astrología como sistema escrito"],
+    molino: "Base de las fechas de tu signo solar",
+    metaDescription:
+      "Claudio Ptolomeo escribió el Tetrabiblos en Alejandría en el siglo II. Cómo su zodíaco contado desde el equinoccio fijó las fechas de los signos que se usan hasta hoy.",
+    story: [
+      "Claudio Ptolomeo fue astrónomo, matemático y geógrafo en la Alejandría del siglo II. Además del Almagesto, su tratado de astronomía, escribió el Tetrabiblos, el manual que ordenó la astrología helenística en un sistema escrito y razonado. Durante más de mil años fue el texto de referencia en el Mediterráneo, el mundo árabe y Europa.",
+      "Ptolomeo defendió contar los signos desde el equinoccio de primavera del hemisferio norte, en tramos iguales de treinta grados, y no desde las constelaciones. Ese es el zodíaco tropical: el que fija que Aries empiece alrededor del 21 de marzo y el que usa Molino para tu signo solar.",
+    ],
   },
   {
     id: "balliett",

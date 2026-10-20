@@ -1,4 +1,6 @@
 import { NUMBERS } from "@/lib/data/numerologia-content";
+import { CHINESE_NEW_YEAR_DATES, getChineseZodiac } from "@/lib/data/chinese-new-year";
+import { ANIMALS, ANIMAL_PROFILES, SAN_HE_TRIADS, getClashPartner } from "@/lib/data/animalRelations";
 
 export type BlogCategory =
   | "Numerología"
@@ -35,6 +37,16 @@ export interface BlogPost {
   faq?: { q: string; a: string }[];
   related: string[];
   featureLink?: { href: string; label: string }; // Internal link to a Molino feature
+}
+
+// Elemento del año chino por su último dígito (0-1 Metal … 8-9 Tierra).
+const YEAR_ELEMENT = ["Metal", "Metal", "Agua", "Agua", "Madera", "Madera", "Fuego", "Fuego", "Tierra", "Tierra"];
+
+/** "1990: 27 de enero — Caballo de Metal", desde la misma tabla que usa el motor. */
+function lunarNewYearLine(year: number): string {
+  const date = CHINESE_NEW_YEAR_DATES[year];
+  const month = date.slice(5, 7) === "01" ? "enero" : "febrero";
+  return `${year}: ${Number(date.slice(8))} de ${month} — ${getChineseZodiac(date)} de ${YEAR_ELEMENT[year % 10]}.`;
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -1152,7 +1164,482 @@ export const BLOG_POSTS: BlogPost[] = [
         a: "No. El interfaz de Molino es para todos. El código abierto es para quienes quieran verificar cómo funciona adentro. Pero generando tu mapa, no necesitas tocar una línea de código.",
       },
     ],
-    related: ["numerologia-numero-de-vida", "signo-solar", "compatibilidad"],
+    related: ["numerologia-numero-de-vida", "honestidad-radical-lo-que-molino-es-y-no-es", "numerologia-astrologia-herramientas-no-oraculo"],
+  },  {
+    slug: "ano-nuevo-chino-fechas-signo",
+    title: "Año Nuevo chino: la fecha de cada año y por qué tu signo puede ser el del año anterior",
+    excerpt:
+      "El Año Nuevo chino cae entre el 21 de enero y el 20 de febrero. Si naciste en esas semanas, tu signo puede no ser el que dicen las tablas por año. Acá están las fechas de 1925 a 2030.",
+    metaDescription:
+      "Fechas del Año Nuevo chino de 1925 a 2030 con el signo y el elemento de cada año. Si naciste en enero o febrero, así sabés si tu signo es el del año anterior.",
+    category: "Zodiaco Chino",
+    date: "2026-10-19",
+    image: "/blog/ano-nuevo-chino-fechas-signo.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Casi todas las tablas del zodíaco chino que circulan dicen algo como «1990: Caballo». Es cierto para la mayor parte de 1990, pero no para todo: el año del Caballo empezó el 27 de enero de 1990. Quien nació el 20 de enero de ese año es Serpiente, el signo de 1989.",
+      "No es un detalle menor. El signo es lo único que el zodíaco chino usa para leer afinidades, y si está mal, todo lo que se lee después también lo está. Por eso en Molino tu signo sale de tu fecha completa, no del número del año.",
+    ],
+    sections: [
+      {
+        id: "por-que-cambia",
+        heading: "Por qué el Año Nuevo chino no cae siempre el mismo día",
+        paragraphs: [
+          "El calendario chino tradicional es lunisolar: los meses siguen a la Luna y los años se ajustan al Sol. El año empieza con una luna nueva —en general, la segunda después del solsticio de invierno del hemisferio norte—, y como el ciclo lunar no coincide con el calendario que usamos, la fecha se corre de un año a otro.",
+          "El resultado es una ventana fija: el Año Nuevo chino siempre cae entre el 21 de enero y el 20 de febrero. Antes de esa fecha seguís en el año anterior; desde ese día, en el nuevo.",
+        ],
+      },
+      {
+        id: "quien-tiene-que-fijarse",
+        heading: "Quién tiene que fijarse",
+        paragraphs: [
+          "Si naciste entre el 1 de enero y el 20 de febrero, buscá tu año en la lista de abajo. Si tu cumpleaños es anterior a la fecha que figura, tu signo es el del año anterior. Si naciste del 21 de febrero en adelante, no hay duda posible: tu signo es el de tu año.",
+          "Un ejemplo: alguien nacido el 5 de febrero de 1986. Ese año el Año Nuevo cayó el 9 de febrero, así que todavía corría el año del Buey de 1985. Su signo es Buey, no Tigre, aunque cualquier tabla por año diga Tigre.",
+        ],
+      },
+      {
+        id: "fechas",
+        heading: "Fechas del Año Nuevo chino de 1925 a 2030",
+        paragraphs: [
+          "Cada línea dice qué día empezó ese año en el calendario chino y qué signo y elemento le corresponden desde esa fecha. Es la misma tabla que usa Molino para calcular tu signo.",
+        ],
+        list: Array.from({ length: 2030 - 1925 + 1 }, (_, i) => lunarNewYearLine(1925 + i)),
+      },
+      {
+        id: "li-chun",
+        heading: "¿Y el 4 de febrero?",
+        paragraphs: [
+          "Vas a encontrar quien diga que el signo cambia alrededor del 4 de febrero. Es otra convención legítima: la astrología de los Cuatro Pilares (BaZi) cuenta el año desde Li Chun, el comienzo de la primavera en el calendario solar chino, que cae el 3, 4 o 5 de febrero.",
+          "Molino usa el Año Nuevo lunar, que es el que se celebra y el que la mayoría de la gente conoce como el cambio de signo. Si naciste entre esas dos fechas, las dos convenciones te van a dar signos distintos, y conviene saber de dónde sale cada uno.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "Nací el 21 de enero, ¿qué signo soy?",
+        a: "Depende del año. En algunos años el Año Nuevo cayó justo ese día o antes, y en otros recién en febrero. Buscá tu año en la lista: si tu fecha es igual o posterior a la que figura, sos el signo de ese año; si es anterior, el del año anterior.",
+      },
+      {
+        q: "¿La hora de nacimiento importa?",
+        a: "Solo si naciste exactamente el día del Año Nuevo chino, y aun así la diferencia es de horas. Para todos los demás días, la fecha alcanza.",
+      },
+    ],
+    related: ["zodiaco-chino-animal-personalidad", "doce-signos-zodiaco-chino", "cinco-elementos-zodiaco-chino"],
+    featureLink: { href: "/profile", label: "Ver mi signo en Mi Mapa" },
+  },
+  {
+    slug: "amigos-y-enemigo-zodiaco-chino",
+    title: "Los dos amigos y el enemigo de cada signo del zodíaco chino",
+    excerpt:
+      "Cada signo del zodíaco chino tiene dos amigos y un enemigo, y se encuentran contando posiciones en el ciclo. La lista completa de los doce, y por qué alcanza con eso.",
+    metaDescription:
+      "Los dos amigos (San He) y el enemigo (Liu Chong) de cada uno de los 12 signos del zodíaco chino, cómo se calculan contando posiciones y cómo se usan.",
+    category: "Zodiaco Chino",
+    date: "2026-10-19",
+    image: "/blog/amigos-y-enemigo-zodiaco-chino.svg",
+    author: "Equipo Molino",
+    intro: [
+      "De todas las relaciones que la tradición china describe entre signos, hay dos que aparecen en cualquier fuente y que no dependen de interpretaciones: los amigos de la misma tríada (San He, 三合) y el opuesto directo en el ciclo (Liu Chong, 六冲).",
+      "Molino usa solo esas, más tu propio signo. Tres casillas: con quién compartís el signo, quiénes son tus dos amigos y cuál es tu enemigo. El resto del ciclo no tiene una relación especial.",
+    ],
+    sections: [
+      {
+        id: "regla",
+        heading: "La regla: contar posiciones en el ciclo",
+        paragraphs: [
+          "Poné los doce signos en un círculo, en su orden: Rata, Buey, Tigre, Gato, Dragón, Serpiente, Caballo, Cabra, Mono, Gallo, Perro y Cerdo. Tus dos amigos son los que están a cuatro posiciones de vos, para un lado y para el otro. Los tres juntos forman un triángulo equilátero dentro del círculo.",
+          "Tu enemigo es el que está a seis posiciones: el signo de enfrente, en la otra punta del diámetro. Cada signo tiene exactamente uno.",
+        ],
+      },
+      {
+        id: "triadas",
+        heading: "Los cuatro triángulos de amigos",
+        paragraphs: [
+          "Los doce signos se reparten en cuatro tríadas de tres. La tradición asocia cada una a un elemento, que no tiene que ver con el elemento de tu año: es el de la tríada.",
+        ],
+        list: SAN_HE_TRIADS.map((t) => `${t.animals.join(", ")}: tríada de ${t.element}.`),
+      },
+      {
+        id: "lista",
+        heading: "Amigos y enemigo de cada signo",
+        paragraphs: [
+          "La lista completa, en el orden del ciclo. Sale de los mismos datos con los que Molino arma tu mapa.",
+        ],
+        list: ANIMALS.map(
+          (a) => `${a}: amigos ${ANIMAL_PROFILES[a].harmonyPartners.join(" y ")}; enemigo ${getClashPartner(a)}.`,
+        ),
+      },
+      {
+        id: "por-que-solo-estas",
+        heading: "Por qué solo estas tres casillas",
+        paragraphs: [
+          "La tradición tiene más relaciones: pares armónicos (Liu He), pares que se dañan (Liu Hai), castigos. Existen y están documentadas, pero se superponen entre sí y dependen más de la escuela que de una regla. Si se usan todas, casi cualquier par de signos termina teniendo algo bueno y algo malo, y la lectura deja de decir algo.",
+          "Con tres casillas la respuesta es clara: tu signo, tus dos amigos, tu enemigo. Los otros ocho signos quedan en el resto del ciclo, sin una relación especial, y eso también es información.",
+        ],
+      },
+      {
+        id: "como-usarlo",
+        heading: "Cómo se usa",
+        paragraphs: [
+          "El orden de lectura es siempre el mismo: primero lo de tu propio signo, después lo de tus dos amigos, y por último lo del enemigo, que se lee como lo que conviene evitar. No es una condena ni una prohibición: es la relación de más tensión del ciclo, y saberlo sirve para elegir con los ojos abiertos.",
+          "En Mi Mapa, Molino aplica esto a ciudades, equipos, universidades, personas, autos y más: cada entidad tiene un año de origen, ese año da su signo, y el signo la ubica en una de tus casillas.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Mi enemigo es incompatible conmigo?",
+        a: "No en un sentido literal. La tradición lo describe como la relación de más fricción del ciclo. Muchas parejas, sociedades y amistades entre signos opuestos funcionan; la lectura solo te dice dónde está la tensión.",
+      },
+      {
+        q: "¿Y el Liu He, el «amigo secreto»?",
+        a: "Es real en la tradición, pero Molino lo deja fuera para no mezclar categorías. Cuenta como parte del resto del ciclo.",
+      },
+    ],
+    related: ["compatibilidad-zodiaco-chino", "doce-signos-zodiaco-chino", "ano-nuevo-chino-fechas-signo"],
+    featureLink: { href: "/profile", label: "Ver mis casillas en Mi Mapa" },
+  },
+  {
+    slug: "doce-signos-zodiaco-chino",
+    title: "Los 12 signos del zodíaco chino: orden, años y rasgos",
+    excerpt:
+      "Rata, Buey, Tigre, Gato, Dragón, Serpiente, Caballo, Cabra, Mono, Gallo, Perro y Cerdo: el orden del ciclo, los años de cada signo desde 1924 y los rasgos que les asigna la tradición.",
+    metaDescription:
+      "Los 12 signos del zodíaco chino en orden, con los años de cada uno de 1924 a 2031 y sus rasgos tradicionales. Incluye la aclaración para los nacidos en enero y febrero.",
+    category: "Zodiaco Chino",
+    date: "2026-10-19",
+    image: "/blog/doce-signos-zodiaco-chino.svg",
+    author: "Equipo Molino",
+    intro: [
+      "El zodíaco chino asigna un signo a cada año en un ciclo de doce. El orden no cambia nunca: después del Cerdo vuelve la Rata. Por eso, si sabés el signo de un año, sabés el de cualquier otro contando de a doce.",
+      "Esta es la lista completa, con los años de cada signo y los tres rasgos que la tradición asocia a cada uno.",
+    ],
+    sections: [
+      {
+        id: "orden",
+        heading: "El orden y la leyenda de la carrera",
+        paragraphs: [
+          "La explicación popular del orden es una leyenda: el Emperador de Jade convocó a los animales a una carrera, y el orden de llegada fijó el calendario. La Rata ganó viajando sobre el lomo del Buey y saltando a último momento; el Cerdo llegó último. Es un cuento, pero sirve para recordar la secuencia.",
+          "El cuarto signo merece una aclaración: en China es el Conejo y en Vietnam el Gato. En Molino lo llamamos Gato. Si en otro lado leés «Conejo», es el mismo lugar del ciclo y los mismos años.",
+        ],
+      },
+      {
+        id: "signos",
+        heading: "Los doce signos y sus años",
+        paragraphs: [
+          "Los años de cada signo de 1924 a 2031, y sus rasgos tradicionales. Ojo con enero y febrero: el signo cambia con el Año Nuevo chino, no el 1 de enero, así que si naciste en esas semanas, revisá la fecha exacta de tu año.",
+        ],
+        list: ANIMALS.map((a, i) => {
+          const years = Array.from({ length: 9 }, (_, k) => 1924 + i + 12 * k);
+          return `${a}: ${years.join(", ")}. Rasgos: ${ANIMAL_PROFILES[a].traits.join(", ").toLowerCase()}.`;
+        }),
+      },
+      {
+        id: "rasgos",
+        heading: "Qué son los rasgos y qué no",
+        paragraphs: [
+          "Los rasgos son la forma en que la tradición resume el carácter de cada signo. Sirven como vocabulario, no como diagnóstico: nadie es solo «astuto» por ser Rata. Lo que el sistema sí ordena con precisión es la relación entre signos —quién es amigo y quién es opuesto—, porque sale de la posición en el ciclo y no de una opinión.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Conejo y Gato son el mismo signo?",
+        a: "Sí. Ocupan el mismo lugar del ciclo (el cuarto) y los mismos años. China usa el Conejo y Vietnam el Gato; en Molino se llama Gato.",
+      },
+      {
+        q: "¿Cómo calculo el signo de cualquier año?",
+        a: "Contá de a doce desde un año conocido: 2020 fue Rata, entonces 2008, 1996 y 1984 también. Después revisá si la fecha cae antes del Año Nuevo chino.",
+      },
+    ],
+    related: ["ano-nuevo-chino-fechas-signo", "amigos-y-enemigo-zodiaco-chino", "zodiaco-chino-animal-personalidad"],
+    featureLink: { href: "/profile", label: "Ver mi signo en Mi Mapa" },
+  },
+  {
+    slug: "cinco-elementos-zodiaco-chino",
+    title: "Los cinco elementos del zodíaco chino: cómo saber el tuyo por el último dígito del año",
+    excerpt:
+      "Metal, Agua, Madera, Fuego y Tierra: el elemento de tu año sale del último dígito. Cómo se combina con los doce signos para formar el ciclo de 60 años.",
+    metaDescription:
+      "Cómo saber tu elemento del zodíaco chino por el último dígito de tu año de nacimiento, qué es el ciclo de 60 años y cómo se relacionan Metal, Agua, Madera, Fuego y Tierra.",
+    category: "Zodiaco Chino",
+    date: "2026-10-19",
+    image: "/blog/cinco-elementos-zodiaco-chino.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Además del signo, cada año del calendario chino tiene un elemento: Metal, Agua, Madera, Fuego o Tierra. Juntos forman el nombre completo del año: 1990 fue Caballo de Metal; 2026, Caballo de Fuego.",
+      "Saber el tuyo es fácil, porque depende de una sola cifra: la última de tu año de nacimiento.",
+    ],
+    sections: [
+      {
+        id: "regla",
+        heading: "La regla del último dígito",
+        paragraphs: [
+          "Cada elemento dura dos años seguidos: el primero es yang (cifra par) y el segundo yin (cifra impar).",
+        ],
+        list: [
+          "Termina en 0 o 1: Metal.",
+          "Termina en 2 o 3: Agua.",
+          "Termina en 4 o 5: Madera.",
+          "Termina en 6 o 7: Fuego.",
+          "Termina en 8 o 9: Tierra.",
+        ],
+      },
+      {
+        id: "enero-febrero",
+        heading: "Si naciste en enero o febrero",
+        paragraphs: [
+          "La regla se aplica al año chino, no al calendario. Si naciste antes del Año Nuevo chino, tu año es el anterior, y con él cambian el signo y también el elemento.",
+          "Ejemplo: el 5 de febrero de 1986 todavía era año 1985 en el calendario chino, que empezó el 20 de febrero de 1985 y terminó el 8 de febrero de 1986. Esa persona es Buey de Madera (yin), no Tigre de Fuego.",
+        ],
+      },
+      {
+        id: "ciclo-60",
+        heading: "El ciclo de 60 años",
+        paragraphs: [
+          "Los doce signos y los cinco elementos (cada uno en su versión yang y yin, diez en total) avanzan a la vez, y la misma combinación tarda 60 años en repetirse. Por eso el Caballo de Fuego de 2026 es el mismo del año 1966, y el próximo será en 2086.",
+          "En la tradición, cumplir 60 es completar el ciclo y volver al año en que se nació.",
+        ],
+      },
+      {
+        id: "relaciones",
+        heading: "Cómo se relacionan los elementos",
+        paragraphs: [
+          "La teoría de los cinco elementos (Wu Xing) describe dos ciclos. En el de generación, cada elemento alimenta al siguiente: la Madera alimenta al Fuego, el Fuego deja Tierra, la Tierra produce Metal, el Metal recoge Agua y el Agua nutre la Madera. En el de control, cada uno frena a otro: la Madera a la Tierra, la Tierra al Agua, el Agua al Fuego, el Fuego al Metal y el Metal a la Madera.",
+        ],
+      },
+      {
+        id: "en-molino",
+        heading: "Dónde aparece en Molino (y dónde no)",
+        paragraphs: [
+          "Tu elemento aparece en Mi Mapa, al lado de tu signo, como parte del nombre completo de tu año. No entra en las afinidades: ahí Molino compara signo contra signo y nada más, para que la lectura sea clara y se pueda verificar a mano.",
+          "Tampoco hay que confundirlo con el elemento de una tríada de amigos (por ejemplo, la tríada de Fuego de Tigre, Caballo y Perro). Son dos clasificaciones distintas que comparten nombres.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Yin y yang cambian algo?",
+        a: "Indican la mitad del par: el año par es la versión yang (más expansiva) del elemento y el impar la yin (más receptiva). Los dos años consecutivos tienen el mismo elemento.",
+      },
+    ],
+    related: ["doce-signos-zodiaco-chino", "ano-nuevo-chino-fechas-signo", "zodiaco-chino-animal-personalidad"],
+  },
+  {
+    slug: "numero-de-expresion-nombre",
+    title: "Número de Expresión: cómo se calcula con tu nombre (con tildes y eñe)",
+    excerpt:
+      "El Número de Expresión sale de las letras de tu nombre completo. La tabla pitagórica, un ejemplo paso a paso y qué hacer con las tildes, la ñ y los nombres compuestos.",
+    metaDescription:
+      "Cómo calcular el Número de Expresión con tu nombre: tabla pitagórica de letras, ejemplo paso a paso, qué pasa con tildes y ñ, y qué significa cada número.",
+    category: "Numerología",
+    date: "2026-10-19",
+    image: "/blog/numero-de-expresion-nombre.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Si el Número de Vida sale de tu fecha de nacimiento, el Número de Expresión sale de tu nombre. La numerología lo lee como la forma en que tus capacidades se ponen en juego: no hacia dónde vas, sino con qué herramientas.",
+      "El cálculo es simple, pero en castellano tiene dos trampas que la mayoría de las calculadoras en inglés no resuelven: las tildes y la ñ.",
+    ],
+    sections: [
+      {
+        id: "tabla",
+        heading: "La tabla pitagórica",
+        paragraphs: [
+          "Cada letra vale un número del 1 al 9, siguiendo el orden del alfabeto y volviendo a empezar cada nueve letras.",
+        ],
+        list: [
+          "1: A, J, S",
+          "2: B, K, T",
+          "3: C, L, U",
+          "4: D, M, V",
+          "5: E, N, W",
+          "6: F, O, X",
+          "7: G, P, Y",
+          "8: H, Q, Z",
+          "9: I, R",
+        ],
+      },
+      {
+        id: "ejemplo",
+        heading: "Ejemplo paso a paso",
+        paragraphs: [
+          "Tomemos «Ana López». A (1) + N (5) + A (1) = 7. L (3) + O (6) + P (7) + E (5) + Z (8) = 29. En total, 7 + 29 = 36, y 3 + 6 = 9. El Número de Expresión es 9.",
+          "Igual que con el Número de Vida, si en algún paso de la reducción aparece 11, 22 o 33, se deja así: son números maestros y no se reducen.",
+        ],
+      },
+      {
+        id: "tildes-y-ene",
+        heading: "Tildes, eñe y otros signos",
+        paragraphs: [
+          "Las tildes no cambian la letra: la ó de López vale lo mismo que una o, la í de María lo mismo que una i. La ñ se cuenta como n (5) y la ü como u. Espacios, guiones y apóstrofos no suman.",
+          "Esto importa más de lo que parece: una calculadora que descarta las letras con tilde en vez de contarlas le saca una vocal a María, José o Martín y da otro número.",
+        ],
+      },
+      {
+        id: "que-nombre",
+        heading: "Qué nombre usar",
+        paragraphs: [
+          "La tradición pitagórica usa el nombre completo de nacimiento, tal como figura en tu partida: todos los nombres y todos los apellidos. Es el que se considera tu nombre «de origen».",
+          "Si usás otro nombre en la vida diaria —un apodo, un apellido de casada, un nombre artístico—, podés calcularlo también. Muchos numerólogos lo leen como la energía de esa etapa o de ese rol, sin reemplazar al de nacimiento.",
+        ],
+      },
+      {
+        id: "significados",
+        heading: "Qué significa cada número",
+        paragraphs: [
+          "Los arquetipos son los mismos que en el Número de Vida; lo que cambia es la lectura. En el Número de Vida describen el camino; en el de Expresión, cómo lo recorrés.",
+        ],
+        list: NUMBERS.map(
+          (n) => `${n.number} — ${n.title}: ${n.keywords.join(", ").toLowerCase()}.`,
+        ),
+      },
+    ],
+    faq: [
+      {
+        q: "¿Uso uno o los dos apellidos?",
+        a: "En la tradición, todos los que figuran en tu nombre de nacimiento. En países donde se usan dos apellidos, van los dos.",
+      },
+      {
+        q: "¿Qué pasa si me cambié el nombre?",
+        a: "El de nacimiento sigue siendo tu Número de Expresión de base. El nuevo se puede leer aparte, como el tono de la etapa en la que lo adoptaste.",
+      },
+    ],
+    related: ["numerologia-numero-de-vida", "numerologia-numeros-maestros", "numerologia-ano-personal"],
+    featureLink: { href: "/profile", label: "Ver mis números en Mi Mapa" },
+  },
+  {
+    slug: "fechas-signos-zodiaco-cuspide",
+    title: "Fechas de los signos del zodíaco y qué pasa si naciste en la cúspide",
+    excerpt:
+      "Las fechas de los doce signos solares y por qué cambian un día según el año. Qué hacer si tu cumpleaños cae justo en el borde entre dos signos.",
+    metaDescription:
+      "Fechas de los 12 signos del zodíaco occidental, por qué varían un día según el año y cómo saber tu signo solar si naciste en la cúspide entre dos signos.",
+    category: "Astrología",
+    date: "2026-10-19",
+    image: "/blog/fechas-signos-zodiaco-cuspide.svg",
+    author: "Equipo Molino",
+    intro: [
+      "El signo solar es el signo en el que estaba el Sol el día que naciste. Las fechas de cada signo parecen fijas, pero no lo son del todo: el Sol cambia de signo en un momento preciso que se corre unas horas de un año a otro.",
+      "Para casi todo el mundo da igual. Para quien nació en el borde entre dos signos —la «cúspide»—, es la diferencia entre un signo y otro.",
+    ],
+    sections: [
+      {
+        id: "fechas",
+        heading: "Las fechas de los doce signos",
+        paragraphs: [
+          "Estas son las fechas habituales, que son también las que usa Molino.",
+        ],
+        list: [
+          "Aries: 21 de marzo al 19 de abril.",
+          "Tauro: 20 de abril al 20 de mayo.",
+          "Géminis: 21 de mayo al 20 de junio.",
+          "Cáncer: 21 de junio al 22 de julio.",
+          "Leo: 23 de julio al 22 de agosto.",
+          "Virgo: 23 de agosto al 22 de septiembre.",
+          "Libra: 23 de septiembre al 22 de octubre.",
+          "Escorpio: 23 de octubre al 21 de noviembre.",
+          "Sagitario: 22 de noviembre al 21 de diciembre.",
+          "Capricornio: 22 de diciembre al 19 de enero.",
+          "Acuario: 20 de enero al 18 de febrero.",
+          "Piscis: 19 de febrero al 20 de marzo.",
+        ],
+      },
+      {
+        id: "por-que-varian",
+        heading: "Por qué las fechas se corren un día",
+        paragraphs: [
+          "El año del calendario dura 365 días, pero el Sol tarda unos 365 días y 6 horas en volver al mismo punto. Cada año el cambio de signo ocurre unas seis horas más tarde, hasta que el 29 de febrero lo vuelve a acomodar. Además, la hora depende del huso horario: el Sol puede entrar en Aries el 20 de marzo a la noche en Buenos Aires y el 21 de madrugada en Madrid.",
+        ],
+      },
+      {
+        id: "cuspide",
+        heading: "Si naciste en la cúspide",
+        paragraphs: [
+          "En astrología no existen los signos intermedios: el Sol está en un signo o en el siguiente. Lo que sí existe es la duda sobre en cuál estaba. Si naciste el primer o el último día de un signo, la única forma de saberlo con certeza es una efeméride, que da la hora exacta del cambio en ese año; con tu hora y lugar de nacimiento, sale la respuesta.",
+          "Molino usa la tabla de fechas habituales, sin hora. Si tu cumpleaños es un día de cambio, tomá el signo que te da como el más probable y verificalo con una efeméride si querés certeza.",
+        ],
+      },
+      {
+        id: "tropical",
+        heading: "Signos y constelaciones no son lo mismo",
+        paragraphs: [
+          "Los signos de la astrología occidental se cuentan desde el equinoccio de marzo, en tramos iguales de 30 grados. Las constelaciones con el mismo nombre ya no coinciden con esos tramos por la precesión de los equinoccios, y por eso aparece cada tanto la noticia de que «cambiaron los signos». No cambiaron: son dos sistemas distintos, y el occidental siempre usó el primero.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Existe un signo número trece, Ofiuco?",
+        a: "Ofiuco es una constelación por la que pasa el Sol, pero no un signo. La astrología occidental divide el cielo en doce tramos iguales que no dependen de las constelaciones.",
+      },
+    ],
+    related: ["signo-astral-personalidad", "luna-ascendente-fecha-nacimiento-no-alcanza", "numerologia-astrologia-herramientas-no-oraculo"],
+  },
+  {
+    slug: "diario-de-autoconocimiento",
+    title: "Cómo llevar un diario de autoconocimiento (y para qué sirve de verdad)",
+    excerpt:
+      "Un diario no sirve para escribir lindo: sirve para tener datos sobre vos mismo. Cómo llevarlo para que, en unos meses, te muestre algo que no veías.",
+    metaDescription:
+      "Cómo llevar un diario de autoconocimiento útil: qué anotar, cada cuánto, cómo releerlo y cómo cruzarlo con tus ciclos sin forzar las conclusiones.",
+    category: "Autoconocimiento",
+    date: "2026-10-19",
+    image: "/blog/diario-de-autoconocimiento.svg",
+    author: "Equipo Molino",
+    intro: [
+      "La memoria no es un buen registro de uno mismo. Recordamos lo que confirma la historia que ya nos contamos y olvidamos lo que no encaja. Un diario corrige eso: deja escrito lo que pasó y lo que sentiste antes de que la memoria lo edite.",
+      "No hace falta escribir bien ni mucho. Hace falta escribir parecido, seguido, y releer.",
+    ],
+    sections: [
+      {
+        id: "que-anotar",
+        heading: "Qué anotar",
+        paragraphs: [
+          "Separá lo que pasó de lo que pensás de lo que pasó. «Discutí con mi hermano por la herencia» es un hecho; «siempre me deja solo con todo» es una interpretación. Las dos sirven, pero mezcladas no se pueden comparar después.",
+        ],
+        list: [
+          "Qué pasó hoy que te importó, en una o dos líneas.",
+          "Cómo te sentiste, con una palabra concreta (no «bien» o «mal»).",
+          "Una decisión que tomaste o postergaste.",
+          "Algo que se repitió de otro día.",
+        ],
+      },
+      {
+        id: "cada-cuanto",
+        heading: "Cada cuánto y cuánto",
+        paragraphs: [
+          "Mejor cinco minutos todos los días que una hora una vez por mes. La regularidad es lo que permite ver patrones: un registro con huecos de semanas muestra los días excepcionales, no los comunes.",
+          "Si un día no tenés nada, anotá eso. «Día sin novedad» también es un dato.",
+        ],
+      },
+      {
+        id: "releer",
+        heading: "Releer es la mitad del trabajo",
+        paragraphs: [
+          "Una vez por mes, leé todo lo del mes de un tirón y anotá aparte lo que se repite: personas, situaciones, horarios, emociones. Ahí es donde el diario empieza a devolverte algo que no veías mientras lo escribías.",
+        ],
+      },
+      {
+        id: "ciclos",
+        heading: "Cruzarlo con tus ciclos, sin forzarlo",
+        paragraphs: [
+          "Si usás tu Año Personal o tu día personal como marco, el diario es la forma de comprobarlo en vez de creerlo. Anotá primero lo que pasó y recién después mirá qué decía tu ciclo. Si coincide, bien; si no, también es información.",
+          "El error más común es al revés: leer el ciclo a la mañana y después buscar en el día lo que lo confirma. Así cualquier sistema parece acertar.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Papel o digital?",
+        a: "El que vayas a usar. El papel ayuda a escribir más despacio; lo digital, a buscar y releer. Lo que importa es que esté a mano a la misma hora todos los días.",
+      },
+      {
+        q: "¿Dónde queda guardado el diario de Molino?",
+        a: "En tu navegador. Molino no tiene un servidor donde guardar tu perfil ni lo que escribís.",
+      },
+    ],
+    related: ["autoconocimiento-que-es-que-no", "numerologia-ano-personal", "mes-personal-dia-personal-numerologia"],
+    featureLink: { href: "/journal", label: "Abrir mi diario" },
   },
 ];
 

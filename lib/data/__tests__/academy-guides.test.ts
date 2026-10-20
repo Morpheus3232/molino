@@ -9,12 +9,14 @@ import { getRelation, type Animal } from "@/lib/data/animalRelations";
 const EXPECTED_SLUGS = [
   "como-funciona-tu-mapa",
   "como-funciona-el-zodiaco-chino",
+  "como-se-arma-mi-mapa",
+  "por-que-fecha-exacta",
   "como-leer-una-afinidad",
   "como-funciona-hoy",
 ];
 
-describe("ACADEMY_GUIDES — Fase 1 (4 guías)", () => {
-  test("existen exactamente las 4 guías esperadas, en orden pedagógico", () => {
+describe("ACADEMY_GUIDES — Fase 2 (6 guías)", () => {
+  test("existen exactamente las 6 guías esperadas, en orden pedagógico", () => {
     expect(ACADEMY_GUIDES.map((g) => g.slug)).toEqual(EXPECTED_SLUGS);
   });
 
@@ -127,7 +129,7 @@ describe("Guía 'Cómo leer una afinidad' — ejemplos verificados contra los en
 });
 
 describe("Relación editorial recíproca entre la pieza histórica y su guía práctica", () => {
-  test("solo la pieza 'zodiaco-chino' declara relatedGuideSlug — las otras 9 no", () => {
+  test("solo la pieza 'zodiaco-chino' declara relatedGuideSlug — las demás no", () => {
     const withGuide = ACADEMY_PIECES.filter((p) => p.relatedGuideSlug);
     expect(withGuide.map((p) => p.slug)).toEqual(["zodiaco-chino"]);
   });

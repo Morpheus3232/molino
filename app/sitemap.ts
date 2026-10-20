@@ -4,6 +4,7 @@ import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
 import { ACADEMY_PIECES } from "@/lib/data/academy-content";
+import { ACADEMY_GUIDES } from "@/lib/data/academy-guides";
 import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
 import { BLOG_POSTS } from "@/lib/data/blog-content";
 import { SITE_URL } from "@/lib/seo";
@@ -107,8 +108,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/guia/compatibilidad-astrologica`, changeFrequency: "monthly" as const, priority: 0.6 },
   ];
 
-  // Academia — historia de las tradiciones (artículos individuales)
-  const academyPages = ACADEMY_PIECES.map((piece) => ({
+  // Academia — historia de las tradiciones y guías prácticas (comparten /academy/[slug])
+  const academyPages = [...ACADEMY_PIECES, ...ACADEMY_GUIDES].map((piece) => ({
     url: `${BASE_URL}/academy/${piece.slug}`,
    
     changeFrequency: "monthly" as const,

@@ -7,7 +7,7 @@
  * genera con IA ni depende del perfil (el perfil solo agrega el bloque
  * "En tu mapa" vía ProfileBridge).
  *
- * Fase 1: solo 4 guías, elegidas por utilidad real, no por cantidad.
+ * Fase 2: 6 guías, elegidas por utilidad real, no por cantidad.
  */
 
 export interface AcademyGuideLink {
@@ -143,6 +143,79 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
       { label: "Ver mi animal en Mi Mapa", href: "/profile" },
       { label: "Explorar Afinidades", href: "/affinity" },
       { label: "Conocé el origen del zodíaco chino", href: "/academy/zodiaco-chino" },
+    ],
+  },
+  {
+    id: "como-se-arma-mi-mapa",
+    slug: "como-se-arma-mi-mapa",
+    title: "Cómo se arma Mi Mapa",
+    subtitle: "Signo contra signo, tres casillas y un orden que no cambia el resultado.",
+    metaDescription:
+      "Cómo Mi Mapa cruza tu signo del zodíaco chino con ciudades, equipos, universidades, personas y marcas: las tres casillas, y por qué tu país ordena pero nunca puntúa.",
+    whatYouLearn: [
+      "Qué compara Mi Mapa y qué deja afuera a propósito",
+      "Qué son las tres casillas: tu propio signo, tus dos amigos y tu enemigo",
+      "Por qué tu país cambia el orden de la lista pero no el resultado",
+      "Por qué algunos rubros todavía no aparecen",
+    ],
+    whatIs: [
+      "Mi Mapa responde una sola pregunta: dónde toca el mundo tu signo del zodíaco chino. Toma entidades reales —ciudades y países, clubes, universidades, personas, películas, autos, ropa— y las ubica según la relación entre su signo y el tuyo.",
+    ],
+    howItWorks: [
+      "Cada entidad tiene una fecha de origen documentada: la fundación de una ciudad o un club, el nacimiento de una persona, el estreno de una película. Esa fecha da su signo, con el mismo corte de Año Nuevo chino que se usa para el tuyo.",
+      "Después se compara signo contra signo, y cada entidad cae en una de cuatro casillas: tu propio signo, uno de tus dos amigos (San He), tu enemigo (Liu Chong) o el resto del ciclo. Se muestran las tres primeras, en ese orden; la del enemigo se lee como lo que conviene evitar.",
+      "Dentro de cada casilla hay un orden: primero hasta tres entidades de tu país y después el mundo; en personas, primero las nacidas dentro de una vuelta del ciclo de la tuya (doce años para cada lado); en marcas, las de gama alta van al final. Ese orden decide qué ves primero, nunca en qué casilla está algo.",
+    ],
+    howMolinoUsesIt: [
+      "La regla es una sola y se puede verificar a mano: año de origen, signo, relación con el tuyo. No entran la numerología, el signo solar ni los elementos: esas capas tienen su propia sección.",
+      "Un rubro aparece cuando tiene al menos doce entidades con fecha exacta, una por signo del ciclo. Con menos, la mitad de los signos vería un bloque vacío, así que se anuncia como pendiente en vez de rellenarse.",
+    ],
+    dato: "Tu fecha de nacimiento, tu país (si lo diste) y la fecha de origen documentada de cada entidad.",
+    tradicion: "Las dos relaciones del ciclo de doce que aparecen en cualquier fuente: los amigos de la misma tríada (San He, 三合) y el opuesto directo (Liu Chong, 六冲).",
+    molino: "Molino agrupa por casilla en vez de puntuar. Dos personas del mismo signo ven las mismas entidades en las mismas casillas; el país solo cambia el orden en que aparecen.",
+    whatItDoesNotMean: [
+      "Que una ciudad o un club esté en tu casilla de amigos no es una recomendación de mudarte ni de cambiar de equipo: es una relación simbólica entre dos fechas.",
+      "No hay un puntaje escondido: dentro de una casilla, todas las entidades tienen la misma relación con tu signo.",
+    ],
+    exploreLinks: [
+      { label: "Ver Mi Mapa", href: "/profile" },
+      { label: "Los amigos y el enemigo de cada signo", href: "/blog/amigos-y-enemigo-zodiaco-chino" },
+    ],
+  },
+  {
+    id: "por-que-fecha-exacta",
+    slug: "por-que-fecha-exacta",
+    title: "Por qué Molino pide fecha exacta",
+    subtitle: "Un año solo no alcanza para saber un signo, y preferimos una lista más corta que una dudosa.",
+    metaDescription:
+      "Por qué Molino solo muestra entidades con fecha de origen exacta: el Año Nuevo chino cae entre el 21 de enero y el 20 de febrero, y un año solo puede corresponder a dos signos.",
+    whatYouLearn: [
+      "Por qué el año de nacimiento no alcanza para saber un signo",
+      "Qué pasa con las entidades que solo tienen año de fundación",
+      "Cómo se verifican las fechas que usa Molino",
+      "Por qué algunas listas son más cortas de lo que esperarías",
+    ],
+    whatIs: [
+      "El signo del zodíaco chino cambia con el Año Nuevo chino, que cae cada año en un día distinto entre el 21 de enero y el 20 de febrero. Todo lo que pasó antes de esa fecha pertenece al signo del año anterior.",
+      "Eso vale para vos y para cada ciudad, club o marca del mapa. Si de una entidad solo se sabe el año, no se puede saber su signo con certeza: podría ser el de ese año o el del anterior.",
+    ],
+    howItWorks: [
+      "Por eso Mi Mapa solo muestra entidades cuyo evento de origen tiene día, mes y año. Las que solo tienen año siguen en el catálogo, pero no se usan para recomendar nada.",
+      "Las fechas se cargan con dos fuentes que tienen que coincidir —por ejemplo, Wikidata y Wikipedia, o Wikidata y el registro del propio sitio—. Si no coinciden en el día, el mes y el año, la fecha se descarta. Las fechas anteriores a 1582 se comparan teniendo en cuenta el cambio del calendario juliano al gregoriano.",
+    ],
+    howMolinoUsesIt: [
+      "La consecuencia es visible: hay ciudades conocidas que no aparecen, como Santiago de Chile o Lima, porque su fundación cae en la ventana del Año Nuevo chino y un error de días cambiaría su signo. Y hay rubros, como la ropa, que todavía tienen pocas marcas con fecha exacta.",
+    ],
+    dato: "La fecha de origen de cada entidad, con día, mes y año, y la fuente de donde sale.",
+    tradicion: "El calendario lunisolar chino, en el que el año empieza con la luna nueva de fines del invierno y no el 1 de enero.",
+    molino: "Molino prefiere no mostrar una entidad antes que ubicarla en una casilla equivocada. Una recomendación construida sobre una fecha dudosa no es una recomendación.",
+    whatItDoesNotMean: [
+      "Que una entidad no aparezca no dice nada de ella: solo que todavía no tiene una fecha exacta confirmada por dos fuentes.",
+      "Tampoco significa que tu signo sea dudoso: tu fecha de nacimiento es exacta, así que el tuyo siempre se calcula bien.",
+    ],
+    exploreLinks: [
+      { label: "Fechas del Año Nuevo chino, año por año", href: "/blog/ano-nuevo-chino-fechas-signo" },
+      { label: "Ver Mi Mapa", href: "/profile" },
     ],
   },
   {

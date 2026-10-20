@@ -222,9 +222,9 @@ const COURSES: Course[] = [
     id: "astrologia",
     title: "Astrología occidental",
     icon: "stars",
-    description: "De la observación babilónica del cielo a la astrología helenística que define signos y casas.",
+    description: "De la observación babilónica del cielo a Ptolomeo, que fijó las fechas de los signos.",
     color: "from-purple-500/10",
-    pieces: piecesFor(["babilonia", "helenistica"]),
+    pieces: piecesFor(["babilonia", "helenistica", "ptolomeo"]),
   },
   {
     id: "zodiaco",
@@ -232,7 +232,7 @@ const COURSES: Course[] = [
     icon: "cycle",
     description: "Los 12 animales, los elementos y los ciclos de 60 años: de dónde vienen y cómo funcionan en tu mapa.",
     color: "from-emerald-500/10",
-    pieces: piecesFor(["zodiaco-chino"]),
+    pieces: piecesFor(["zou-yan", "calendario-taichu", "zodiaco-chino"]),
     guideSlug: "como-funciona-el-zodiaco-chino",
   },
 ];
@@ -362,7 +362,7 @@ export default function AcademyContent() {
         </motion.section>
 
         {/* ═══════════════════════════════════════════════
-            EMPEZÁ POR ACÁ — ruta editorial de las 4 guías nuevas.
+            EMPEZÁ POR ACÁ — ruta editorial de las guías prácticas.
             Capa "Aprender": entender Molino, no la historia de las
             tradiciones (eso vive en las tabs de abajo, capa "Explorar").
             ═══════════════════════════════════════════════ */}
