@@ -12,11 +12,9 @@ import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { TIER_META } from "@/lib/engines/affinityEngine";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import type { LightweightEntity, VisualType } from "@/types/atlas";
-import type { EntityType } from "@/lib/data/symbolic-entities";
 import EntityVisual from "@/components/ui/EntityVisual";
 
 interface AffinityTypeContentProps {
-  type: EntityType;
   meta: { label: string; plural: string; icon: string; description: string };
   entities: LightweightEntity[];
   initialAnimal?: string;
@@ -52,7 +50,7 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
   return groups;
 }
 
-export default function AffinityTypeContent({ type, meta, entities, initialAnimal }: AffinityTypeContentProps) {
+export default function AffinityTypeContent({ meta, entities, initialAnimal }: AffinityTypeContentProps) {
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
 
@@ -207,7 +205,7 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
-                            <ResultRow key={result.id} result={result} href={`/affinity/${type}/${result.id}`} />
+                            <ResultRow key={result.id} result={result} href={`/affinity/${result.type}/${result.id}`} />
                           ))}
                         </div>
                         {hasMore && (

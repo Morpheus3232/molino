@@ -92,13 +92,13 @@ const DOMAIN_EXTRA_META: Record<DomainId, DomainMetaInfo> = {
   autos: {
     icon: Car,
     atlasLinks: (animal) => [
-      { label: `Ver Autos de ${animal} en Atlas`, href: `/affinity/brand?animal=${encodeURIComponent(animal)}` },
+      { label: `Ver Autos de ${animal} en Atlas`, href: `/affinity/autos?animal=${encodeURIComponent(animal)}` },
     ],
   },
   vestimenta: {
     icon: Shirt,
     atlasLinks: (animal) => [
-      { label: `Ver Vestimenta de ${animal} en Atlas`, href: `/affinity/brand?animal=${encodeURIComponent(animal)}` },
+      { label: `Ver Vestimenta de ${animal} en Atlas`, href: `/affinity/ropa?animal=${encodeURIComponent(animal)}` },
     ],
   },
   aula: {
@@ -375,7 +375,7 @@ function DomainBlock({
       {/* Botón inferior de derivación al Atlas */}
       <div className="mt-8 pt-4 flex items-center justify-between flex-wrap gap-4 border-t border-border/60">
         <Link
-          href={`/affinity/${domain.id === "territorio" ? "country" : domain.id === "autos" || domain.id === "vestimenta" ? "brand" : domain.id === "aula" ? "university" : domain.id === "gente" ? "artist" : "movie"}?animal=${encodeURIComponent(userAnimal)}`}
+          href={`${domain.href}?animal=${encodeURIComponent(userAnimal)}`}
           className="inline-flex items-center gap-2 text-sm text-accent hover:text-foreground transition-colors label-caps"
         >
           <span>Abrir sección completa de {domain.label} en Atlas</span>

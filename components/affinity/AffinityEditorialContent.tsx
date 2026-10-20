@@ -9,6 +9,7 @@ import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinit
 import Link from "next/link";
 import { getAllCountryISOs, getAtlasNeighbors } from "@/lib/data/atlas-queries";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import { affinityListingOf } from "@/lib/data/brand-kinds";
 
 // Solo los países con página en /atlas (los que tienen entidades además de la
 // propia ficha de país). Enlazar al resto daba 404: 26 en Search Console.
@@ -50,7 +51,7 @@ export default function AffinityEditorialContent({
         crumbs={[
           { href: "/", label: "Inicio" },
           { href: "/affinity", label: "Afinidades" },
-          { href: `/affinity/${type}`, label: meta.plural },
+          { href: `/affinity/${affinityListingOf(entity)}`, label: meta.plural },
           { label: entity.name },
         ]}
       />

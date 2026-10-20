@@ -116,7 +116,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "👟",
     description: "Nike inspira a los atletas de todo el mundo con innovación en calzado y un espíritu de superación.",
     keyThemes: ["Competencia", "Superación", "Vitalidad", "Rebeldía"],
-    category: "otro",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1964, date: "1964-01-25", confidence: "exacta", primaryForAffinity: true, description: "Phil Knight vendía zapatillas japonesas desde su maletero antes de renombrar Blue Ribbon Sports como Nike, por la diosa griega de la victoria.", source: "Documentación histórica" }],
+    category: "ropa",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1964, date: "1964-01-25", confidence: "exacta", primaryForAffinity: true, description: "Phil Knight vendía zapatillas japonesas desde su maletero antes de renombrar Blue Ribbon Sports como Nike, por la diosa griega de la victoria.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 25 de enero de 1964 por Phil Knight y Bill Bowerman como Blue Ribbon Sports en Oregón.",
   },
   {
@@ -134,7 +134,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "👛",
     description: "Chanel liberó a la mujer moderna con diseños atemporales que combinan elegancia y rebeldía.",
     keyThemes: ["Elegancia", "Rebeldía", "Atemporal", "Lujo"],
-    category: "otro",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1910, confidence: "alta", primaryForAffinity: true, description: "Gabrielle 'Coco' Chanel abrió en 1910 su primera tienda de sombreros en París y liberó a la mujer del corsé con un estilo masculino.", source: "Documentación histórica" }],
+    category: "ropa",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1910, confidence: "alta", primaryForAffinity: true, description: "Gabrielle 'Coco' Chanel abrió en 1910 su primera tienda de sombreros en París y liberó a la mujer del corsé con un estilo masculino.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1910 por Coco Chanel en París, Francia.",
   },
   {

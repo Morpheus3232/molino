@@ -6,6 +6,7 @@ import { ENTITY_TYPES, getEntityById, getEntitiesByType, resolveEntityAnimalData
 import { amigosDe, enemigoDe } from "@/lib/engines/personalMapEngine";
 import type { Animal } from "@/lib/data/animalRelations";
 import { getPrimaryEvent } from "@/lib/data/entity-events";
+import { BRAND_LISTINGS, brandListingOf } from "@/lib/data/brand-kinds";
 import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
 
@@ -99,7 +100,8 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   if (!entity) notFound();
   if (entity.type !== type) notFound();
 
-  const meta = ENTITY_TYPES[type as EntityType];
+  // Una marca vuelve a su listado (autos, ropa u otras), no a un "Marcas" genérico.
+  const meta = entity.type === "brand" ? BRAND_LISTINGS[brandListingOf(entity.category)] : ENTITY_TYPES[type as EntityType];
   const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
 
   return (

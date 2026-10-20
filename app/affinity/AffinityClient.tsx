@@ -4,14 +4,15 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Asterisk, Building2, Globe2, GraduationCap, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, Car, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
-import type { EntityType } from "@/lib/data/symbolic-entities";
 
-const EXPLORE_COPY: Record<EntityType, string> = {
-  brand: "Explorar marcas relacionadas con tu perfil.",
+const EXPLORE_COPY: Record<string, string> = {
+  autos: "Explorar marcas de autos que comparten tu signo.",
+  ropa: "Explorar marcas de ropa que comparten tu signo.",
+  brand: "Explorar otras marcas que comparten tu signo.",
   country: "Explorar países que comparten tu signo.",
   city: "Explorar ciudades que comparten tu signo.",
   university: "Explorar universidades que comparten tu signo.",
@@ -20,14 +21,16 @@ const EXPLORE_COPY: Record<EntityType, string> = {
   football_player: "Explorar futbolistas que comparten tu signo.",
 };
 
-const TYPE_ICONS: Record<EntityType, LucideIcon> = {
+const TYPE_ICONS: Record<string, LucideIcon> = {
+  autos: Car,
+  ropa: Shirt,
   brand: Asterisk,
   city: Building2,
   country: Globe2,
   university: GraduationCap,
   movie: Clapperboard,
   artist: Mic2,
-  football_player: Shirt,
+  football_player: Trophy,
 };
 
 const transitionVariants = {
@@ -52,7 +55,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
     }
   }, [mounted, loading, profile, router]);
 
-  const availableTypes = (Object.keys(byType) as EntityType[]).filter((t) => byType[t].length > 0);
+  const availableTypes = Object.keys(byType).filter((t) => byType[t].length > 0);
 
   return (
     <div className="min-h-screen bg-background">

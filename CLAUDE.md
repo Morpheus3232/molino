@@ -78,7 +78,11 @@ Consecuencias operativas:
   inventados.
 - **Gama media primero, y sin bucket genérico de "marcas".** Vestimenta y autos
   son dominios propios; no existe un dominio que junte tecnología, bancos y
-  gaseosas, porque no responde ninguna pregunta. Dentro de cada grupo, las de
+  gaseosas, porque no responde ninguna pregunta. (En `/affinity`, que es un
+  catálogo y no el mapa, las marcas se listan en tres desde 2026-10-20 por
+  decisión del dueño: `/affinity/autos`, `/affinity/ropa` y "Otras marcas" en
+  `/affinity/brand`; las fichas siguen en `/affinity/brand/[slug]`. La familia
+  sale de `lib/data/brand-kinds.ts`.) Dentro de cada grupo, las de
   gama alta van al final: el público es mayoritariamente de clase media.
   `toLightweightEntity` marca `premium: true` según lo que el propio registro
   declara (`category: "Lujo"` o un `keyThemes` con Lujo/Exclusivo/Premium/Alta
@@ -105,7 +109,10 @@ Consecuencias operativas:
   día falso.
 
   Cobertura global con fecha exacta: territorio 108/311, aula 48/93,
-  gente 221/234, pantalla 16/16, autos 19/74, vestimenta 2/89. Los equipos
+  gente 221/234, pantalla 16/16, autos 24/82, vestimenta 4/99
+  (2026-10-20: el dedup ahora conserva la categoría del duplicado descartado —
+  Toyota tenía la fecha en brands-60 con category "otro" y el rubro en
+  brands-autos-60). Los equipos
   de fútbol (91, el dominio "cancha") se eliminaron del sitio el 2026-10-20:
   sus URLs redirigen a /affinity y al Atlas (next.config.js).
 

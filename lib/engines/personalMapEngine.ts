@@ -32,6 +32,7 @@ import {
   SAN_HE_TRIADS,
   type Animal,
 } from "@/lib/data/animalRelations";
+import { brandListingOf } from "@/lib/data/brand-kinds";
 
 // ════════════════════════════════════════════════════
 // LAS CUATRO CASILLAS: MISMO, AMIGO, ENEMIGO, RESTO
@@ -233,10 +234,6 @@ export interface PersonalMapOptions {
 // DOMINIOS
 // ════════════════════════════════════════════════════
 
-/** Categorías de marca que cuentan como automotriz en los datasets cargados. */
-const AUTO_CATEGORIES = new Set(["autos", "Autos y Movilidad"]);
-/** Categorías de marca que cuentan como indumentaria. */
-const ROPA_CATEGORIES = new Set(["ropa", "Ropa y Moda"]);
 
 interface DomainSpec {
   id: DomainId;
@@ -273,16 +270,16 @@ const DOMAIN_SPECS: DomainSpec[] = [
     question: "¿Cómo vestirte?",
     label: "Vestimenta",
     scope: "Marcas de indumentaria y calzado, fechadas por el año en que se fundaron.",
-    href: "/affinity/brand",
-    matches: (e) => e.type === "brand" && !!e.category && ROPA_CATEGORIES.has(e.category),
+    href: "/affinity/ropa",
+    matches: (e) => e.type === "brand" && brandListingOf(e.category) === "ropa",
   },
   {
     id: "autos",
     question: "¿Qué manejar?",
     label: "Autos",
     scope: "Marcas automotrices, fechadas por el año en que se fundaron.",
-    href: "/affinity/brand",
-    matches: (e) => e.type === "brand" && !!e.category && AUTO_CATEGORIES.has(e.category),
+    href: "/affinity/autos",
+    matches: (e) => e.type === "brand" && brandListingOf(e.category) === "autos",
   },
   {
     id: "aula",

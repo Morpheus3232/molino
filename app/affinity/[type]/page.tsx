@@ -4,24 +4,40 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { ANIMALS } from "@/lib/data/animalRelations";
+import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
 import AffinityTypeContent from "./AffinityTypeContent";
 
-const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "movie", "artist", "football_player"];
+// Las marcas se listan en tres: autos, ropa y el resto (/affinity/brand). Las
+// fichas siguen en /affinity/brand/[slug].
+const VALID_TYPES = ["autos", "ropa", "brand", "city", "country", "university", "movie", "artist", "football_player"];
 
-// Solo los types pre-generados son válidos; cualquier otro resuelve a 404 real.
+// Solo los listados pre-generados son válidos; cualquier otro resuelve a 404 real.
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return VALID_TYPES.map((type) => ({ type }));
 }
 
+function isBrandListing(listing: string): listing is BrandListing {
+  return listing in BRAND_LISTINGS;
+}
+
+function listingMeta(listing: string) {
+  return isBrandListing(listing) ? BRAND_LISTINGS[listing] : ENTITY_TYPES[listing as EntityType];
+}
+
+function listingEntities(listing: string) {
+  if (!isBrandListing(listing)) return getEntitiesByType(listing as EntityType);
+  return getEntitiesByType("brand").filter((e) => brandListingOf(e.category) === listing);
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ type: string }> }): Promise<Metadata> {
   const { type } = await params;
-  if (!VALID_TYPES.includes(type as EntityType)) {
+  if (!VALID_TYPES.includes(type)) {
     return { title: "Categoría no encontrada" };
   }
-  const meta = ENTITY_TYPES[type as EntityType];
-  const count = getEntitiesByType(type as EntityType).length;
+  const meta = listingMeta(type);
+  const count = listingEntities(type).length;
 
   return {
     title: `Afinidad Personal · ${meta.plural}`,
@@ -47,10 +63,10 @@ export default async function AffinityTypePage({
 }) {
   const { type } = await params;
   const { animal } = await searchParams;
-  if (!VALID_TYPES.includes(type as EntityType)) notFound();
+  if (!VALID_TYPES.includes(type)) notFound();
 
-  const meta = ENTITY_TYPES[type as EntityType];
-  const entities = getEntitiesByType(type as EntityType).map(toLightweightEntity);
+  const meta = listingMeta(type);
+  const entities = listingEntities(type).map(toLightweightEntity);
 
   // Índice por signo en el HTML del servidor: el listado de arriba se arma en
   // el cliente y Google no veía ningún enlace a las fichas. Solo fecha exacta,
@@ -62,7 +78,7 @@ export default async function AffinityTypePage({
 
   return (
     <>
-      <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} initialAnimal={animal} />
+      <AffinityTypeContent meta={meta} entities={entities} initialAnimal={animal} />
       {bySign.length > 0 && (
         <nav aria-labelledby="indice-por-signo" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-24">
           <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">
@@ -79,7 +95,7 @@ export default async function AffinityTypePage({
                 <ul className="text-sm text-muted space-y-1">
                   {g.items.map((e) => (
                     <li key={e.id}>
-                      <Link href={`/affinity/${type}/${e.id}`} className="hover:text-accent">{e.name}</Link>
+                      <Link href={`/affinity/${e.type}/${e.id}`} className="hover:text-accent">{e.name}</Link>
                     </li>
                   ))}
                 </ul>

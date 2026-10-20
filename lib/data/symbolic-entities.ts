@@ -292,12 +292,24 @@ function dedupeAtlasEntities(entities: AtlasEntity[]): AtlasEntity[] {
   const keyOf = (e: AtlasEntity) => `${e.type}::${normalizeName(e.name)}::${e.country ?? ""}`;
 
   const bestByKey = new Map<string, AtlasEntity>();
+  // La mejor fecha y la categoría pueden venir de registros distintos: Toyota
+  // tiene fecha exacta en brands-60 (category "otro") y category "autos" en
+  // brands-autos-60. Sin esto la superviviente perdía su rubro y quedaba fuera
+  // de Autos/Ropa. La categoría es la que declara el otro registro, no inferida.
+  const categoryByKey = new Map<string, string>();
   for (const entity of entities) {
     const key = keyOf(entity);
     const existing = bestByKey.get(key);
     if (!existing || entityQualityScore(entity) > entityQualityScore(existing)) {
       bestByKey.set(key, entity);
     }
+    if (entity.category && entity.category !== "otro" && !categoryByKey.has(key)) {
+      categoryByKey.set(key, entity.category);
+    }
+  }
+  for (const [key, kept] of bestByKey) {
+    const category = categoryByKey.get(key);
+    if (category && (!kept.category || kept.category === "otro")) bestByKey.set(key, { ...kept, category });
   }
 
   const seen = new Set<string>();

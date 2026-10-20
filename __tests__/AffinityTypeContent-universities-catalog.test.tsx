@@ -33,7 +33,7 @@ beforeEach(() => {
 
 async function search(query: string) {
   const user = userEvent.setup();
-  render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+  render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
   const input = await screen.findByLabelText(/buscar universidades/i);
   await user.type(input, query);
   return { user };

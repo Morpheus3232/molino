@@ -127,7 +127,9 @@ const AFFINITY_GROUPS: NavGroup[] = [
     links: [
       { href: "/affinity/country", label: "Países" },
       { href: "/affinity/city", label: "Ciudades" },
-      { href: "/affinity/brand", label: "Marcas" },
+      { href: "/affinity/autos", label: "Marcas de autos" },
+      { href: "/affinity/ropa", label: "Marcas de ropa" },
+      { href: "/affinity/brand", label: "Otras marcas" },
       { href: "/affinity/university", label: "Universidades" },
       { href: "/affinity/artist", label: "Famosos" },
       { href: "/affinity/movie", label: "Películas" },

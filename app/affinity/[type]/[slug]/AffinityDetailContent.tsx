@@ -11,6 +11,7 @@ import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
 import { formatViewAll } from "@/lib/utils/plural";
+import { affinityListingOf } from "@/lib/data/brand-kinds";
 import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm";
 
 interface AffinityDetailContentProps {
@@ -54,7 +55,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
       <motion.div {...fadeUp}>
         <button
           type="button"
-          onClick={() => router.push(`/affinity/${type}`)}
+          onClick={() => router.push(`/affinity/${affinityListingOf(entity)}`)}
           className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
         >
           &larr; {meta.plural}
@@ -84,7 +85,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         <div className="flex flex-col items-center gap-3">
           <button
             type="button"
-            onClick={() => router.push(`/affinity/${type}`)}
+            onClick={() => router.push(`/affinity/${affinityListingOf(entity)}`)}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {formatViewAll(type, meta.plural)}

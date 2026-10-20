@@ -58,7 +58,7 @@ beforeEach(() => {
 describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)", () => {
   it('buscar "UADE" muestra la card de UADE (antes: contada pero invisible)', async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "UADE");
@@ -68,7 +68,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
 
   it('buscar "UBA" muestra la card de UBA (antes: contada pero invisible)', async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "UBA");
@@ -78,7 +78,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
 
   it('búsqueda parcial ("UAD") sigue encontrando la entidad', async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "UAD");
@@ -88,7 +88,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
 
   it("búsqueda case-insensitive sigue funcionando", async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "uade");
@@ -98,7 +98,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
 
   it("el contador de resultados coincide con la cantidad de cards renderizadas", async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "Universidad"); // matchea las 3
@@ -111,7 +111,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
 
   it("limpiar la búsqueda vuelve a mostrar todas las entidades sin duplicados", async () => {
     const user = userEvent.setup();
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
     await user.type(search, "UADE");
@@ -124,13 +124,13 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
   });
 
   it("el mismo signo se agrupa bajo 'Tu propio signo'", async () => {
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(SAME_ANIMAL_ENTITY.name)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Tu propio signo/ })).toBeInTheDocument();
   });
 
   it("lo que no es signo, amigo ni enemigo aparece bajo 'El resto del ciclo'", async () => {
-    render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(UADE.name)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /El resto del ciclo/ })).toBeInTheDocument();
   });

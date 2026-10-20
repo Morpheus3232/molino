@@ -53,7 +53,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Affinity hub + category listings
   const affinityPages = [
     { url: `${BASE_URL}/affinity`, changeFrequency: "weekly" as const, priority: 0.8 },
-    ...getAvailableTypes().map((type) => ({
+    // Las marcas se listan en tres: /affinity/autos, /affinity/ropa y /affinity/brand.
+    ...[...getAvailableTypes(), "autos", "ropa"].map((type) => ({
       url: `${BASE_URL}/affinity/${type}`,
      
       changeFrequency: "weekly" as const,
