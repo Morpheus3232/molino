@@ -122,7 +122,9 @@ export function calculateLifePath(birthDate: string): number {
 }
 
 export function calculateExpressionNumber(name: string): number {
-  const cleanName = name.toUpperCase().replace(/[^A-Z]/g, '');
+  // NFD separa la tilde de su letra (Í → I + ´, Ñ → N + ˜) para que la
+  // vocal acentuada cuente como vocal y no se descarte junto con el signo.
+  const cleanName = name.normalize('NFD').toUpperCase().replace(/[^A-Z]/g, '');
   const values: Record<string, number> = {
     'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
     'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,

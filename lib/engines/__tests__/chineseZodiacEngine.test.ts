@@ -6,6 +6,7 @@ import {
   getChineseZodiac,
   getChineseZodiacInfo,
   calculateChineseCompatibility,
+  CHINESE_NEW_YEAR_DATES,
 } from "../chineseZodiacEngine";
 
 describe("Chinese Zodiac Engine", () => {
@@ -171,6 +172,28 @@ describe("Chinese Zodiac Engine", () => {
     it("handles empty strings", () => {
       expect(calculateChineseCompatibility("", "Rata")).toBe(50);
       expect(calculateChineseCompatibility("Rata", "")).toBe(50);
+    });
+  });
+
+  // Un typo en esta tabla cambia el signo de todos los nacidos en esa ventana
+  // (1958 llegó a figurar el 18 de enero en vez del 18 de febrero).
+  describe("CHINESE_NEW_YEAR_DATES", () => {
+    const entries = Object.entries(CHINESE_NEW_YEAR_DATES).map(([y, d]) => [Number(y), d] as const);
+
+    it("cada fecha cae en su año, entre el 21 de enero y el 20 de febrero", () => {
+      for (const [year, date] of entries) {
+        expect(date.slice(0, 4), date).toBe(String(year));
+        expect(date.slice(5) >= "01-21" && date.slice(5) <= "02-20", date).toBe(true);
+      }
+    });
+
+    // Desde 1900. El bloque anterior tiene un intervalo imposible (356 días
+    // entre 1899 y 1900) que no se corrige sin una segunda fuente.
+    it("entre dos años nuevos hay un año lunar real (353-355 o 383-385 días)", () => {
+      for (let i = entries.findIndex(([y]) => y === 1900) + 1; i < entries.length; i++) {
+        const days = (Date.parse(entries[i][1]) - Date.parse(entries[i - 1][1])) / 86_400_000;
+        expect([353, 354, 355, 383, 384, 385], `${entries[i - 1][1]} → ${entries[i][1]}`).toContain(days);
+      }
     });
   });
 });

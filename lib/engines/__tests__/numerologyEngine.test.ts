@@ -41,6 +41,11 @@ describe("Numerology Engine", () => {
       expect(calculateExpressionNumber("MARIA GARCIA")).toBe(9);
     });
 
+    it("cuenta las letras con tilde y la Ñ como su letra base", () => {
+      expect(calculateExpressionNumber("María García")).toBe(calculateExpressionNumber("MARIA GARCIA"));
+      expect(calculateExpressionNumber("Íñigo Muñoz")).toBe(calculateExpressionNumber("INIGO MUNOZ"));
+    });
+
     it("handles single name", () => {
       expect(calculateExpressionNumber("ANA")).toBe(7); // A=1, N=5, A=1 = 7
     });
