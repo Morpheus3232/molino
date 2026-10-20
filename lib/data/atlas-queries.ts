@@ -14,6 +14,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import { SYMBOLIC_ENTITIES, toLightweightEntity, ENTITY_TYPES, getCountryISO, type EntityType } from "./symbolic-entities";
 import { getAnimalProfile, type Animal } from "./animalRelations";
 import { getRegionCountryISOs } from "./atlas-regions";
+import { CHINESE_NEW_YEAR_DATES, getLunarYear } from "./chinese-new-year";
 
 /** Categories we expose in the drill-down (skip the "country" type itself). */
 const DRILL_DOWN_TYPES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
@@ -384,4 +385,80 @@ export function getPersonalAtlas(query: PersonalAtlasQuery): PersonalAtlasResult
   );
 
   return { groups, usedCountry };
+}
+
+// ════════════════════════════════════════════════════
+// VECINOS DE UNA FICHA — contenido propio de cada página de entidad
+// ════════════════════════════════════════════════════
+
+/**
+ * Año chino de una fecha exacta, solo cuando no hay duda. Dentro de la tabla
+ * de Año Nuevo es exacto; fuera de ella, lo posterior al 20 de febrero es del
+ * año en curso y lo anterior al 21 de enero del anterior. Lo que cae en la
+ * ventana del Año Nuevo sin tabla queda en null: no se afirma.
+ */
+export function lunarYearOfDate(date: string): number | null {
+  const year = Number(date.slice(0, 4));
+  if (CHINESE_NEW_YEAR_DATES[year]) return getLunarYear(date);
+  const monthDay = date.slice(5);
+  if (monthDay > "02-20") return year;
+  if (monthDay < "01-21") return year - 1;
+  return null;
+}
+
+type Dated = LightweightEntity & { originDate: string; lunarYear: number | null };
+
+let datedCache: Dated[] | null = null;
+
+/** Solo entidades con fecha exacta: sin ella el signo no es afirmable. */
+function datedEntities(): Dated[] {
+  datedCache ??= SYMBOLIC_ENTITIES.map(toLightweightEntity)
+    // Solo tipos con ficha propia: el resto daría links a 404.
+    .filter((e): e is LightweightEntity & { originDate: string } =>
+      Boolean(e.originDate) && !e.isApproximate && e.type in ENTITY_TYPES)
+    .map((e) => ({ ...e, lunarYear: lunarYearOfDate(e.originDate) }))
+    .sort((a, b) => a.originDate.localeCompare(b.originDate));
+  return datedCache;
+}
+
+export interface AtlasNeighbors {
+  /** Mismo país y mismo signo, por fecha. */
+  sameCountrySign: LightweightEntity[];
+  sameCountrySignTotal: number;
+  /** Mismo año del calendario chino, en cualquier país (las del propio país primero). */
+  sameLunarYear: LightweightEntity[];
+  sameLunarYearTotal: number;
+  lunarYear: number | null;
+}
+
+const MAX_NEIGHBORS = 8;
+
+/**
+ * Dos listas con un criterio que se escribe en una línea (CLAUDE.md: "nada de
+ * listas sin criterio"): comparte país y signo, o comparte año chino. Son
+ * hechos de las fechas cargadas, no un ranking. Vacías si la entidad no tiene
+ * fecha exacta.
+ */
+export function getAtlasNeighbors(entityId: string): AtlasNeighbors {
+  const all = datedEntities();
+  const self = all.find((e) => e.id === entityId);
+  const empty: AtlasNeighbors = { sameCountrySign: [], sameCountrySignTotal: 0, sameLunarYear: [], sameLunarYearTotal: 0, lunarYear: null };
+  if (!self) return empty;
+
+  const sameCountrySign = self.countryISO
+    ? all.filter((e) => e.id !== self.id && e.countryISO === self.countryISO && e.animal === self.animal)
+    : [];
+  const sameLunarYear = self.lunarYear === null
+    ? []
+    : all
+        .filter((e) => e.id !== self.id && e.lunarYear === self.lunarYear)
+        .sort((a, b) => Number(b.countryISO === self.countryISO) - Number(a.countryISO === self.countryISO));
+
+  return {
+    sameCountrySign: sameCountrySign.slice(0, MAX_NEIGHBORS),
+    sameCountrySignTotal: sameCountrySign.length,
+    sameLunarYear: sameLunarYear.slice(0, MAX_NEIGHBORS),
+    sameLunarYearTotal: sameLunarYear.length,
+    lunarYear: self.lunarYear,
+  };
 }

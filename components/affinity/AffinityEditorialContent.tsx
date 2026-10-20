@@ -7,7 +7,8 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
 import Link from "next/link";
-import { getAllCountryISOs } from "@/lib/data/atlas-queries";
+import { getAllCountryISOs, getAtlasNeighbors } from "@/lib/data/atlas-queries";
+import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 
 // Solo los países con página en /atlas (los que tienen entidades además de la
 // propia ficha de país). Enlazar al resto daba 404: 26 en Search Console.
@@ -112,6 +113,9 @@ export default function AffinityEditorialContent({
           <CollapsibleSection title="Evento documentado" id="section-evento-documentado" defaultOpen>
             <div className="space-y-3">
               <DataRow label="Hito histórico" value={primaryEvent.label} />
+              {primaryEvent.description && primaryEvent.description !== entity.sourceNote && (
+                <DataRow label="Qué pasó" value={primaryEvent.description} />
+              )}
               {primaryEvent.date ? (
                 <DataRow label="Fecha documentada" value={formatDisplayDate(primaryEvent.date)} />
               ) : (
@@ -131,6 +135,75 @@ export default function AffinityEditorialContent({
       {signo && primaryEvent?.date && (
         <EntitySignSection name={entity.name} animal={signo} eventLabel={primaryEvent.label} eventDate={primaryEvent.date} />
       )}
+
+      {signo && <EntityNeighbors entity={entity} animal={signo} />}
     </div>
+  );
+}
+
+/**
+ * Lo que la ficha comparte con otras del Atlas, por dos criterios que se dicen
+ * en el título de cada lista: mismo país y signo, o mismo año chino. Sale de
+ * las fechas cargadas; no hay ranking.
+ */
+function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: Animal }) {
+  const n = getAtlasNeighbors(entity.id);
+  const lists = [
+    entity.country && n.sameCountrySign.length > 0 && {
+      id: "section-mismo-signo-pais",
+      title: `También ${animal} en ${entity.country}`,
+      intro: `${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`,
+      items: n.sameCountrySign,
+      total: n.sameCountrySignTotal,
+    },
+    n.lunarYear !== null && n.sameLunarYear.length > 0 && {
+      id: "section-mismo-ano-chino",
+      title: `Del mismo año chino: ${animal} de ${n.lunarYear}`,
+      intro: `Entradas del Atlas fechadas dentro del mismo año del calendario chino que ${entity.name}${entity.country ? `, primero las de ${entity.country}` : ""}.`,
+      items: n.sameLunarYear,
+      total: n.sameLunarYearTotal,
+    },
+  ].filter((l): l is Exclude<typeof l, false | "" | undefined> => Boolean(l));
+
+  if (lists.length === 0) return null;
+
+  return (
+    <>
+      {lists.map((list) => (
+        <section key={list.id} className="mb-10" aria-labelledby={list.id}>
+          <h2 id={list.id} className="font-heading text-xl font-semibold text-foreground mb-3">
+            {list.title}
+          </h2>
+          <p className="text-sm text-muted leading-relaxed mb-4">{list.intro}</p>
+          <ul className="divide-y divide-ink/10 border-y border-ink/10 text-sm">
+            {list.items.map((e) => (
+              <li key={e.id}>
+                <Link
+                  href={`/affinity/${e.type}/${e.id}`}
+                  className="flex items-baseline justify-between gap-4 py-2.5 min-h-[44px] hover:text-accent transition-colors"
+                >
+                  <span className="text-foreground">{e.name}</span>
+                  <span className="text-xs text-muted text-right shrink-0">
+                    {ENTITY_TYPES[e.type as EntityType]?.label}
+                    {e.country && e.country !== entity.country ? ` · ${e.country}` : ""}
+                    {" · "}
+                    {e.originLabel} {e.originDate && formatDisplayDate(e.originDate)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {list.total > list.items.length && (
+            <p className="text-xs text-muted mt-3">
+              Y {list.total - list.items.length} más en{" "}
+              <Link href={`/atlas/explorar/${animal}`} className="underline underline-offset-4 decoration-dotted hover:text-accent">
+                el Atlas, signo {animal}
+              </Link>
+              .
+            </p>
+          )}
+        </section>
+      ))}
+    </>
   );
 }
