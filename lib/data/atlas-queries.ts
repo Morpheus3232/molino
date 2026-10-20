@@ -14,10 +14,20 @@ import type { LightweightEntity } from "@/types/atlas";
 import { SYMBOLIC_ENTITIES, toLightweightEntity, ENTITY_TYPES, getCountryISO, type EntityType } from "./symbolic-entities";
 import { getAnimalProfile, type Animal } from "./animalRelations";
 import { getRegionCountryISOs } from "./atlas-regions";
+import { BRAND_LISTINGS, affinityListingOf, type BrandListing } from "./brand-kinds";
 import { CHINESE_NEW_YEAR_DATES, getLunarYear } from "./chinese-new-year";
 
-/** Categories we expose in the drill-down (skip the "country" type itself). */
-const DRILL_DOWN_TYPES: EntityType[] = ["brand", "city", "university", "artist", "movie"];
+/**
+ * Categorías del drill-down (sin "country"). Las marcas van en tres listados,
+ * igual que en /affinity: autos, ropa y otras ("brand").
+ */
+export const DRILL_DOWN_LISTINGS = ["city", "autos", "ropa", "brand", "university", "artist", "movie"];
+
+/** Etiquetas de un listado del Atlas: las marcas por familia, el resto por tipo. */
+export function listingMeta(listing: string): { label: string; plural: string } | null {
+  if (listing in BRAND_LISTINGS) return BRAND_LISTINGS[listing as BrandListing];
+  return ENTITY_TYPES[listing as EntityType] ?? null;
+}
 
 export interface AtlasCountry {
   /** ISO 3166-1 alpha-2 */
@@ -28,11 +38,13 @@ export interface AtlasCountry {
   flag: string;
   /** Total entity count (non-"country" categories) for display. */
   count: number;
+  /** Listados del drill-down con al menos una entidad en este país. */
+  listings: string[];
 }
 
 export interface AtlasCategory {
-  /** EntityType key, e.g. "team". */
-  type: EntityType;
+  /** Listado del drill-down: un EntityType, o "autos"/"ropa"/"brand" para marcas. */
+  type: string;
   label: string;
   plural: string;
   /** Number of entities of this category in this country. */
@@ -60,11 +72,16 @@ export function getAtlasCountries(): AtlasCountry[] {
       name: entity.country,
       flag: isoToFlagEmoji(iso),
       count: 0,
+      listings: [],
     };
     entry.count += 1;
+    const listing = affinityListingOf(entity);
+    if (!entry.listings.includes(listing)) entry.listings.push(listing);
     map.set(iso, entry);
   }
-  return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name, "es"));
+  return Array.from(map.values())
+    .map((c) => ({ ...c, listings: DRILL_DOWN_LISTINGS.filter((l) => c.listings.includes(l)) }))
+    .sort((a, b) => a.name.localeCompare(b.name, "es"));
 }
 
 /**
@@ -72,13 +89,13 @@ export function getAtlasCountries(): AtlasCountry[] {
  */
 export function getCategoriesByCountry(countryISO: string): AtlasCategory[] {
   const categories: AtlasCategory[] = [];
-  for (const type of DRILL_DOWN_TYPES) {
+  for (const listing of DRILL_DOWN_LISTINGS) {
     const count = SYMBOLIC_ENTITIES.filter(
-      (e) => e.countryISO === countryISO && e.type === type
+      (e) => e.countryISO === countryISO && affinityListingOf(e) === listing
     ).length;
     if (count === 0) continue;
-    const meta = ENTITY_TYPES[type];
-    categories.push({ type, label: meta.label, plural: meta.plural, count });
+    const meta = listingMeta(listing)!;
+    categories.push({ type: listing, label: meta.label, plural: meta.plural, count });
   }
   // Stable order: keep the drill-down order but filter to present ones.
   return categories;
@@ -87,9 +104,9 @@ export function getCategoriesByCountry(countryISO: string): AtlasCategory[] {
 /**
  * Lightweight entities of a given category within a country.
  */
-export function getEntitiesByTaxonomy(countryISO: string, category: EntityType): LightweightEntity[] {
+export function getEntitiesByTaxonomy(countryISO: string, category: string): LightweightEntity[] {
   return SYMBOLIC_ENTITIES
-    .filter((e) => e.countryISO === countryISO && e.type === category)
+    .filter((e) => e.countryISO === countryISO && affinityListingOf(e) === category)
     .map(toLightweightEntity);
 }
 
@@ -223,9 +240,9 @@ export function getEntitiesByAnimalWithCountries(animal: string): LightweightEnt
  * Entities of a given category whose primary event maps to the specified
  * Chinese Zodiac animal. Used by /atlas/explorar/[animal]/[category].
  */
-export function getEntitiesByAnimalAndCategory(animal: string, category: EntityType): LightweightEntity[] {
+export function getEntitiesByAnimalAndCategory(animal: string, category: string): LightweightEntity[] {
   return SYMBOLIC_ENTITIES
-    .filter((e) => e.type === category)
+    .filter((e) => affinityListingOf(e) === category)
     .map(toLightweightEntity)
     .filter((e) => e.animal === animal);
 }

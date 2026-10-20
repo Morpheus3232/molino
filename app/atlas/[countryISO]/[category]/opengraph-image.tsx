@@ -6,7 +6,9 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const CATEGORY_LABELS: Record<string, string> = {
-  brand: "Marcas",
+  autos: "Marcas de autos",
+  ropa: "Marcas de ropa",
+  brand: "Otras marcas",
   city: "Ciudades",
   university: "Universidades",
   artist: "Famosos",

@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Asterisk, Building2, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, Car, GraduationCap, Mic2, Clapperboard, Shirt, Trophy, type LucideIcon } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";
-import type { EntityType } from "@/lib/data/symbolic-entities";
 
-const CATEGORY_ICONS: Record<EntityType, LucideIcon> = {
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  autos: Car,
+  ropa: Shirt,
   brand: Asterisk,
   city: Building2,
   university: GraduationCap,
   artist: Mic2,
   movie: Clapperboard,
   country: Building2,
-  football_player: Shirt,
+  football_player: Trophy,
 };
 
 interface CategoryGridProps {

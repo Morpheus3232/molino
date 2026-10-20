@@ -16,6 +16,7 @@ import { getRelation, getAnimalProfile, getFriends, ANIMALS, type Animal } from 
 import type { VisualType } from "@/types/atlas";
 import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { t } from "@/lib/i18n";
+import { affinityListingOf } from "@/lib/data/brand-kinds";
 
 /** La casilla del ciclo, igual que AffinityTier en affinityEngine. */
 export type LightTier = MapRelation;
@@ -161,7 +162,9 @@ type LightweightLike = {
 const CATEGORY_ORDER: { type: string; label: string; singular: string }[] = [
   { type: "country", label: "Países", singular: "país" },
   { type: "city", label: "Ciudades", singular: "ciudad" },
-  { type: "brand", label: "Marcas", singular: "marca" },
+  { type: "autos", label: "Marcas de autos", singular: "marca de autos" },
+  { type: "ropa", label: "Marcas de ropa", singular: "marca de ropa" },
+  { type: "brand", label: "Otras marcas", singular: "marca" },
   { type: "university", label: "Universidades", singular: "universidad" },
   { type: "artist", label: "Famosos", singular: "famoso" },
   { type: "movie", label: "Películas", singular: "película" },
@@ -247,7 +250,7 @@ export function buildAtlasSections(
       sameAnimal.push({ type, label, entities });
       continue;
     }
-    const pool = sameAnimalEntities.filter((e) => e.type === type);
+    const pool = sameAnimalEntities.filter((e) => affinityListingOf(e) === type);
     if (pool.length === 0) continue;
     sameAnimal.push({
       type,
@@ -266,7 +269,7 @@ export function buildAtlasSections(
       enemyAnimal.push({ type, label, entities: sortByCityThenScore(pool).slice(0, PER_CATEGORY_PREVIEW) });
       continue;
     }
-    const pool = enemyEntities.filter((e) => e.type === type);
+    const pool = enemyEntities.filter((e) => affinityListingOf(e) === type);
     if (pool.length === 0) continue;
     enemyAnimal.push({
       type,

@@ -365,12 +365,17 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
             {(
               [
                 ["city", "Ciudades"],
-                ["brand", "Marcas"],
+                ["autos", "Marcas de autos"],
+                ["ropa", "Marcas de ropa"],
+                ["brand", "Otras marcas"],
                 ["university", "Universidades"],
                 ["artist", "Famosos"],
                 ["movie", "Películas"],
               ] as const
-            ).map(([cat, label]) => (
+            )
+              // Solo los listados que existen para ese país: los demás serían 404.
+              .filter(([cat]) => countries.find((c) => c.iso === userCountryISO)?.listings.includes(cat))
+              .map(([cat, label]) => (
               <Link
                 key={cat}
                 href={`/atlas/${userCountryISO}/${cat}`}

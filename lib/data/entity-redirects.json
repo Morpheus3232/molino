@@ -340,6 +340,10 @@
     "destination": "/affinity/country/country-barbados"
   },
   {
+    "source": "/atlas/BE/brand",
+    "destination": "/atlas/BE/ropa"
+  },
+  {
     "source": "/atlas/BH",
     "destination": "/affinity/country/country-barein"
   },
@@ -376,12 +380,20 @@
     "destination": "/affinity/country/country-belice"
   },
   {
+    "source": "/atlas/CA/brand",
+    "destination": "/atlas/CA/ropa"
+  },
+  {
     "source": "/atlas/CV",
     "destination": "/affinity/country/country-cabo-verde"
   },
   {
     "source": "/atlas/CY",
     "destination": "/affinity/country/country-chipre"
+  },
+  {
+    "source": "/atlas/CZ/brand",
+    "destination": "/atlas/CZ/autos"
   },
   {
     "source": "/atlas/DJ",
@@ -418,6 +430,10 @@
   {
     "source": "/atlas/FM",
     "destination": "/affinity/country/country-micronesia"
+  },
+  {
+    "source": "/atlas/FR/brand",
+    "destination": "/atlas/FR/autos"
   },
   {
     "source": "/atlas/GD",
@@ -462,6 +478,10 @@
   {
     "source": "/atlas/IS",
     "destination": "/affinity/country/islandia"
+  },
+  {
+    "source": "/atlas/IT/brand",
+    "destination": "/atlas/IT/autos"
   },
   {
     "source": "/atlas/JO",
@@ -556,6 +576,10 @@
     "destination": "/affinity/country/country-malaui"
   },
   {
+    "source": "/atlas/MY/brand",
+    "destination": "/atlas/MY/autos"
+  },
+  {
     "source": "/atlas/MZ",
     "destination": "/affinity/country/country-mozambique"
   },
@@ -566,6 +590,10 @@
   {
     "source": "/atlas/NI",
     "destination": "/affinity/country/country-nicaragua"
+  },
+  {
+    "source": "/atlas/NO/brand",
+    "destination": "/atlas/NO/ropa"
   },
   {
     "source": "/atlas/NP",
@@ -598,6 +626,10 @@
   {
     "source": "/atlas/QA",
     "destination": "/affinity/country/country-qatar"
+  },
+  {
+    "source": "/atlas/RO/brand",
+    "destination": "/atlas/RO/autos"
   },
   {
     "source": "/atlas/RS",

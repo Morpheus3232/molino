@@ -12,12 +12,15 @@ import { useUserContext } from "@/lib/hooks/useUserContext";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { formatViewAll } from "@/lib/utils/plural";
 import EntityVisual from "@/components/ui/EntityVisual";
+import { affinityListingOf } from "@/lib/data/brand-kinds";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const CATEGORY_ORDER = [
   { type: "country", label: "Países" },
   { type: "city", label: "Ciudades" },
-  { type: "brand", label: "Marcas" },
+  { type: "autos", label: "Marcas de autos" },
+  { type: "ropa", label: "Marcas de ropa" },
+  { type: "brand", label: "Otras marcas" },
   { type: "university", label: "Universidades" },
   { type: "artist", label: "Famosos" },
   { type: "movie", label: "Películas" },
@@ -45,9 +48,10 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
   const grouped = useMemo(() => {
     const map = new Map<string, LightweightEntity[]>();
     for (const e of entities) {
-      const list = map.get(e.type) ?? [];
+      const key = affinityListingOf(e);
+      const list = map.get(key) ?? [];
       list.push(e);
-      map.set(e.type, list);
+      map.set(key, list);
     }
     const result: { type: string; label: string; entities: LightweightEntity[] }[] = [];
     for (const { type, label } of CATEGORY_ORDER) {

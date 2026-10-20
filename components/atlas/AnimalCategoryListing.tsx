@@ -16,7 +16,9 @@ import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 const CATEGORY_LABELS: Record<string, string> = {
   country: "Países",
   city: "Ciudades",
-  brand: "Marcas",
+  autos: "Marcas de autos",
+  ropa: "Marcas de ropa",
+  brand: "Otras marcas",
   university: "Universidades",
   artist: "Famosos",
   movie: "Películas",

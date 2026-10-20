@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
-import { getAllCountryISOs, getCategoriesByCountry, getCountryName, getEntitiesByTaxonomy } from "@/lib/data/atlas-queries";
-import type { EntityType } from "@/lib/data/symbolic-entities";
+import { DRILL_DOWN_LISTINGS, getAllCountryISOs, getCategoriesByCountry, getCountryName, getEntitiesByTaxonomy, listingMeta } from "@/lib/data/atlas-queries";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import AtlasCategoryListing from "@/components/atlas/AtlasCategoryListing";
 import AtlasSharePanel from "@/components/atlas/AtlasSharePanel";
-
-const VALID_CATEGORIES: EntityType[] = ["brand", "city", "university", "artist", "movie"];
 
 interface Props {
   params: Promise<{ countryISO: string; category: string }>;
@@ -48,14 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 function categoryLabel(category: string): string | null {
-  const meta: Record<string, { plural: string; label: string }> = {
-    brand: { plural: "Marcas", label: "Marcas" },
-    city: { plural: "Ciudades", label: "Ciudades" },
-    university: { plural: "Universidades", label: "Universidades" },
-    artist: { plural: "Famosos", label: "Famoso" },
-    movie: { plural: "Películas", label: "Películas" },
-  };
-  return meta[category]?.plural ?? null;
+  return DRILL_DOWN_LISTINGS.includes(category) ? listingMeta(category)!.plural : null;
 }
 
 export default async function CategoryPage({ params }: Props) {
@@ -64,9 +54,9 @@ export default async function CategoryPage({ params }: Props) {
   const name = getCountryName(iso);
   const catLabel = categoryLabel(category);
 
-  if (!name || !catLabel || !VALID_CATEGORIES.includes(category as EntityType)) notFound();
+  if (!name || !catLabel) notFound();
 
-  const entities = getEntitiesByTaxonomy(iso, category as EntityType);
+  const entities = getEntitiesByTaxonomy(iso, category);
   if (entities.length === 0) notFound();
 
   return (

@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 import { ENTITY_ID_ALIASES, SYMBOLIC_ENTITIES, getAvailableTypes, getEntityById, type EntityType } from "../symbolic-entities";
-import { getAllCountryISOs } from "../atlas-queries";
+import { getAllCountryISOs, getCategoriesByCountry } from "../atlas-queries";
 
 /**
  * Candado: cada id que el dedup descarta redirige (308, next.config.js) a la
@@ -26,7 +26,21 @@ function expected() {
       destination: `/affinity/${entity.type}/${encodeURIComponent(entity.id)}`,
     }))
     .concat(atlasSinPagina())
+    .concat(atlasMarcasSinOtras())
     .sort((a, b) => a.source.localeCompare(b.source));
+}
+
+/**
+ * /atlas/XX/brand era "Marcas" de ese país; desde 2026-10-20 es solo "Otras
+ * marcas". Donde todas las marcas son de autos o de ropa, la URL vieja va a
+ * la que las tiene en vez de dar 404.
+ */
+function atlasMarcasSinOtras() {
+  return getAllCountryISOs().flatMap((iso) => {
+    const listings = getCategoriesByCountry(iso).map((c) => c.type);
+    const target = listings.includes("brand") ? null : listings.find((l) => l === "autos" || l === "ropa");
+    return target ? [{ source: `/atlas/${iso}/brand`, destination: `/atlas/${iso}/${target}` }] : [];
+  });
 }
 
 /** /atlas/XX de un país sin página de atlas (solo tiene su propia ficha) → esa ficha. */

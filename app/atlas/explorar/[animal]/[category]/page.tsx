@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
 import { buildEntityListJsonLd } from "@/lib/seo-jsonld";
-import { getAllAnimalNames, getEntitiesByAnimalAndCategory } from "@/lib/data/atlas-queries";
+import { DRILL_DOWN_LISTINGS, getAllAnimalNames, getEntitiesByAnimalAndCategory, listingMeta } from "@/lib/data/atlas-queries";
 import { getAnimalProfile } from "@/lib/data/animalRelations";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import type { EntityType } from "@/lib/data/symbolic-entities";
 import type { Animal } from "@/lib/data/animalRelations";
 import AnimalCategoryListing from "@/components/atlas/AnimalCategoryListing";
 
-const VALID_CATEGORIES: EntityType[] = ["brand", "city", "university", "artist", "movie", "country"];
+const VALID_CATEGORIES = [...DRILL_DOWN_LISTINGS, "country"];
 
 interface Props {
   params: Promise<{ animal: string; category: string }>;
@@ -32,10 +30,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { animal: rawAnimal, category } = await params;
   const animal = decodeURIComponent(rawAnimal);
-  if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category as EntityType)) {
+  if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category)) {
     return { title: "No encontrado" };
   }
-  const meta = ENTITY_TYPES[category as EntityType];
+  const meta = listingMeta(category)!;
   const profile = getAnimalProfile(animal as Animal);
   const canonical = siteUrl(`/atlas/explorar/${animal}/${category}`);
   return {
@@ -62,9 +60,9 @@ export default async function AnimalCategoryPage({ params }: Props) {
   const { animal: rawAnimal, category } = await params;
   const animal = decodeURIComponent(rawAnimal);
 
-  if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category as EntityType)) notFound();
+  if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category)) notFound();
 
-  const entities = getEntitiesByAnimalAndCategory(animal, category as EntityType);
+  const entities = getEntitiesByAnimalAndCategory(animal, category);
   const jsonLd = buildEntityListJsonLd(entities);
 
   return (
