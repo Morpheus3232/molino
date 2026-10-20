@@ -148,6 +148,12 @@ const nextConfig = {
           },
         ],
       },
+      // Las imágenes de OG son archivos, no páginas: Search Console las listaba
+      // como "rastreada, sin indexar" (~115 de 128). Las redes las siguen leyendo.
+      ...['/opengraph-image', '/:path*/opengraph-image'].map((source) => ({
+        source,
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      })),
       {
         source: '/(fonts|manifest|favicon|apple-touch-icon)(.*)',
         headers: [
