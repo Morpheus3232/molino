@@ -5,13 +5,14 @@
  * Produces structured narrative data for "Sos X como Y" moments.
  */
 
+import { relacionCon } from "@/lib/engines/personalMapEngine";
+import { t } from "@/lib/i18n";
 import type { UserProfile } from "@/types/user";
 import { getPrimaryEvent } from "@/lib/data/entity-events";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getRelation, type Animal, type RelationType } from "@/lib/data/animalRelations";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { getScoreLabel } from "@/lib/utils/score";
 
 export interface EntityConnectionStory {
   /** User's zodiac animal */
@@ -75,40 +76,31 @@ export function buildEntityConnectionStory(
   const eventYear = primaryEvent?.year;
   const hasUniqueEvent = eventDescription && eventDescription !== primaryEvent?.label;
 
+  // Cuatro casillas (CLAUDE.md): Liu He y Liu Hai son "resto del ciclo".
+  let meaning: string;
   switch (relation.type) {
     case "same":
       headline = `Energía del ${entityDisplay.name}, como tu ${userDisplay.name}.`;
-      subtitle = `Alta compatibilidad: comparte tu mismo animal del zodíaco chino`;
+      subtitle = `Tu propio signo: comparte tu ${userDisplay.name}`;
+      meaning = `Comparte tu propio signo, el ${entityDisplay.name}.`;
       isPositive = true;
       break;
     case "triad":
-      headline = `${entity.name} y tu ${userDisplay.name} comparten afinidad elemental.`;
-      subtitle = `Buena compatibilidad: pertenece a uno de tus dos animales aliados`;
-      isPositive = true;
-      break;
-    case "harmonious":
-      headline = `${entity.name} conecta con tu ${userDisplay.name} de forma natural.`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} se complementan naturalmente`;
-      isPositive = true;
-      break;
-    case "neutral":
-      headline = `${entity.name} y tu ${userDisplay.name} recorren caminos independientes.`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} no tienen una relación especial`;
+      headline = `${entity.name} es del signo de uno de tus dos amigos.`;
+      subtitle = `Signo amigo (三合 San He): ${entityDisplay.name} y ${userDisplay.name} están a cuatro posiciones`;
+      meaning = `El ${entityDisplay.name} es uno de los dos amigos de tu ${userDisplay.name}.`;
       isPositive = true;
       break;
     case "clash":
-      headline = `${entity.name} entra en tensión con tu ${userDisplay.name}.`;
-      subtitle = `Energía opuesta: pertenece al animal que ocupa la posición opuesta a la tuya`;
-      isPositive = false;
-      break;
-    case "harm":
-      headline = `${entity.name} tiene una relación de atención con tu ${userDisplay.name}.`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} tienen una tensión según la tradición`;
+      headline = `${entity.name} es del signo de tu enemigo.`;
+      subtitle = `Signo enemigo (六冲 Liu Chong): lo que conviene evitar`;
+      meaning = `El ${entityDisplay.name} es el opuesto directo de tu ${userDisplay.name} en el ciclo: la relación que conviene evitar.`;
       isPositive = false;
       break;
     default:
-      headline = `Tu conexión con ${entity.name}`;
-      subtitle = `Según el zodíaco chino`;
+      headline = `${entity.name} y tu ${userDisplay.name} recorren caminos independientes.`;
+      subtitle = `Resto del ciclo: ni tu signo, ni tus amigos, ni tu enemigo`;
+      meaning = `El ${entityDisplay.name} no es tu signo, ni uno de tus dos amigos, ni tu enemigo.`;
       isPositive = true;
   }
 
@@ -116,18 +108,16 @@ export function buildEntityConnectionStory(
   const historicalContext = eventYear
     ? (hasUniqueEvent ? `${eventDescription} (${eventYear}).` : `${entity.name} quedó definida por ${primaryEvent?.label?.toLowerCase() || "su origen"} de ${eventYear}.`)
     : "";
-  const explanation = historicalContext
-    ? `${historicalContext} ${relation.description}`
-    : relation.description;
-  const shareText = `${userDisplay.name}: ${headline}. Resonancia simbólica ${getScoreLabel(relation.score).toLowerCase()}. Descubrí la tuya en Molino.`;
+  const explanation = historicalContext ? `${historicalContext} ${meaning}` : meaning;
+  const shareText = `${userDisplay.name}: ${headline} Descubrí la tuya en Molino.`;
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
 
   return {
     userAnimal,
     entityAnimal,
-    relationType: relation.type,
+    relationType: relation.type === "harmonious" || relation.type === "harm" ? "neutral" : relation.type,
     relationScore: relation.score,
-    relationLabel: relation.label,
+    relationLabel: t.affinityTiers[relacionCon(userAnimal, entityAnimal)].label,
     headline,
     subtitle,
     explanation,

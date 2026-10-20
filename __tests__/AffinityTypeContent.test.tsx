@@ -123,15 +123,15 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     }
   });
 
-  it("same/triad/opposite se agrupan con la nueva terminología: 'Alta compatibilidad'", async () => {
+  it("el mismo signo se agrupa bajo 'Tu propio signo'", async () => {
     render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(SAME_ANIMAL_ENTITY.name)).toBeInTheDocument();
-    expect(screen.getByText("Alta compatibilidad")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Tu propio signo/ })).toBeInTheDocument();
   });
 
-  it("las relaciones que no son same/triad/opposite aparecen bajo 'Otras conexiones'", async () => {
+  it("lo que no es signo, amigo ni enemigo aparece bajo 'El resto del ciclo'", async () => {
     render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(UADE.name)).toBeInTheDocument();
-    expect(screen.getByText("Otras conexiones")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /El resto del ciclo/ })).toBeInTheDocument();
   });
 });

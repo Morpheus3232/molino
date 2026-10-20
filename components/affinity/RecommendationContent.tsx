@@ -20,14 +20,6 @@ interface RecommendationContentProps {
   subtitle: string;
 }
 
-const TIER_LABEL: Record<string, string> = {
-  "resonancia-alta": "Resonancia alta",
-  "afinidad-media": "Afinidad media",
-  complementarios: "Complementarios",
-  desafiante: "Desafiante",
-  distante: "Distante",
-};
-
 const TYPE_LABEL: Record<string, string> = {
   brand: "Marca",
   city: "Ciudad",
@@ -111,10 +103,12 @@ export default function RecommendationContent({ entityType, catalog, title, subt
 
   const userAnimal = profile.chineseZodiac ?? "";
 
-  const tripleResonance = recommendations.filter(r => r.tier === "resonancia-alta");
-  const aligned = recommendations.filter(r => r.tier === "afinidad-media");
-  const compatible = recommendations.filter(r => r.tier === "complementarios");
-  const strategic = recommendations.filter(r => r.tier === "desafiante" || r.tier === "distante");
+  // Orden de CLAUDE.md: tu propio signo → tus dos amigos → tu enemigo (lo que
+  // conviene evitar). El resto del ciclo no dice nada: se cuenta, no se lista.
+  const same = recommendations.filter(r => r.tier === "mismo");
+  const friends = recommendations.filter(r => r.tier === "amigo");
+  const enemy = recommendations.filter(r => r.tier === "enemigo");
+  const restCount = recommendations.filter(r => r.tier === "otro").length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -143,58 +137,52 @@ export default function RecommendationContent({ entityType, catalog, title, subt
             {subtitle}
           </p>
           <div className="mt-4 flex items-center gap-2 text-xs text-muted">
-            <span>Tu animal:</span>
+            <span>Tu signo:</span>
             <span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span>
           </div>
         </motion.section>
 
         {/* Recommendation groups with AnimatePresence on search/filter change */}
         <AnimatePresence mode="wait">
-          {tripleResonance.length > 0 && (
+          {same.length > 0 && (
             <RecommendationGroup
-              key="triple"
-              title="Alineación triple"
-              subtitle="Tu signo, la entidad y el ciclo actual comparten la misma energía"
-              recommendations={tripleResonance}
+              key="mismo"
+              title="Tu propio signo · 本命"
+              subtitle={`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`}
+              recommendations={same}
               accentColor="var(--color-accent)"
               router={router}
               transitionDelay={0}
             />
           )}
-          {aligned.length > 0 && (
+          {friends.length > 0 && (
             <RecommendationGroup
-              key="aligned"
-              title="Patrón complementario"
-              subtitle="Símbolos tradicionalmente asociados con armonía"
-              recommendations={aligned}
+              key="amigo"
+              title="Tus dos amigos · 三合 San He"
+              subtitle="Del signo de uno de tus dos amigos: los separados por cuatro posiciones del ciclo."
+              recommendations={friends}
               accentColor="var(--color-accent)"
               router={router}
               transitionDelay={0.1}
             />
           )}
-          {compatible.length > 0 && (
+          {enemy.length > 0 && (
             <RecommendationGroup
-              key="compatible"
-              title="Diferente"
-              subtitle="Energías complementarias dentro del ciclo chino"
-              recommendations={compatible}
+              key="enemigo"
+              title="Tu enemigo · 六冲 Liu Chong"
+              subtitle="Del signo opuesto al tuyo en el ciclo: lo que conviene evitar."
+              recommendations={enemy}
               accentColor="var(--color-muted)"
               router={router}
               transitionDelay={0.15}
             />
           )}
-          {strategic.length > 0 && (
-            <RecommendationGroup
-              key="strategic"
-              title="Contraste"
-              subtitle="Relaciones que requieren más atención simbólica"
-              recommendations={strategic}
-              accentColor="var(--color-muted)"
-              router={router}
-              transitionDelay={0.2}
-            />
+          {restCount > 0 && (
+            <p key="resto" className="text-xs text-muted mb-10">
+              {restCount} más quedan en el resto del ciclo: ni tu signo, ni tus amigos, ni tu enemigo.
+            </p>
           )}
-          {tripleResonance.length === 0 && aligned.length === 0 && compatible.length === 0 && strategic.length === 0 && (
+          {same.length === 0 && friends.length === 0 && enemy.length === 0 && (
             <motion.div
               key="empty"
               initial={{ opacity: 0, y: 16 }}
@@ -303,14 +291,8 @@ function RecommendationCard({
             <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
               {rec.name}
             </h3>
-            {rec.tier === "resonancia-alta" && (
-              <span className="text-sm font-medium text-accent label-caps">
-                triple alineación
-              </span>
-            )}
           </div>
-          <p className="text-xs text-muted mb-1">{rec.relationship}</p>
-          <p className="text-xs text-muted leading-relaxed line-clamp-2">{TIER_LABEL[rec.tier]}</p>
+          <p className="text-xs text-muted mb-1">{formatAnimalSimple(rec.animal)}{rec.origin ? ` · ${rec.origin}` : ""}</p>
         </div>
       </div>
     </motion.button>

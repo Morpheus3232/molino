@@ -99,7 +99,7 @@ describe("Guía 'Cómo leer una afinidad' — ejemplos verificados contra los en
     return entity!;
   }
 
-  test("tiene exactamente 3 ejemplos: mismo animal, tríada y opuesto", () => {
+  test("tiene exactamente 3 ejemplos: propio signo, amigo y enemigo", () => {
     expect(guide.examples?.length).toBe(3);
   });
 
@@ -111,7 +111,7 @@ describe("Guía 'Cómo leer una afinidad' — ejemplos verificados contra los en
     expect(relation.type).toBe("same");
   });
 
-  test("YPF (1922) forma 'tríada' con el Caballo, según el engine real", () => {
+  test("YPF (1922) es signo amigo del Caballo, según el engine real", () => {
     const entity = findEntity("YPF");
     const primary = getPrimaryEvent(entity)!;
     const { animal } = calculateAnimalFromDate(primary.date, primary.year);
@@ -119,7 +119,7 @@ describe("Guía 'Cómo leer una afinidad' — ejemplos verificados contra los en
     expect(relation.type).toBe("triad");
   });
 
-  test("Corrientes (1588) es el animal 'opuesto' (clash) al Caballo, según el engine real", () => {
+  test("Corrientes (1588) es el signo enemigo (clash) del Caballo, según el engine real", () => {
     const entity = findEntity("Corrientes");
     const primary = getPrimaryEvent(entity)!;
     const { animal } = calculateAnimalFromDate(primary.date, primary.year);
@@ -158,18 +158,18 @@ describe("Relación editorial recíproca entre la pieza histórica y su guía pr
   });
 });
 
-describe("Guía 'Zodíaco chino' — tríadas citadas coinciden con animalRelations.ts", () => {
+describe("Guía 'Zodíaco chino' — amigos y enemigos citados coinciden con animalRelations.ts", () => {
   const guide = getAcademyGuideBySlug("como-funciona-el-zodiaco-chino")!;
 
-  test("el ejemplo de tríada nombra Rata-Dragón-Mono y Buey-Serpiente-Gallo, tal como en SAN_HE_TRIADS", () => {
-    const triadExample = guide.examples?.find((e) => e.title.includes("Tríada"));
+  test("el ejemplo de amigos nombra Rata-Dragón-Mono y Buey-Serpiente-Gallo, tal como en SAN_HE_TRIADS", () => {
+    const triadExample = guide.examples?.find((e) => e.title.includes("amigos"));
     expect(triadExample).toBeTruthy();
     expect(triadExample!.body).toContain("Rata-Dragón-Mono");
     expect(triadExample!.body).toContain("Buey-Serpiente-Gallo");
   });
 
   test("el ejemplo de opuesto nombra Rata-Caballo, tal como en LIU_CHONG_CLASHES", () => {
-    const clashExample = guide.examples?.find((e) => e.title.includes("Opuesto"));
+    const clashExample = guide.examples?.find((e) => e.title.includes("enemigo"));
     expect(clashExample).toBeTruthy();
     expect(clashExample!.body).toContain("Rata-Caballo");
   });

@@ -16,6 +16,7 @@ import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/sym
 import { getPrimaryEvent } from "@/lib/data/entity-events";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { ANIMALS, SAN_HE_TRIADS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { t } from "@/lib/i18n";
 
 // ════════════════════════════════════════════════════
@@ -34,7 +35,7 @@ export interface AffinityResult {
   entityAnimal: string;
   score: number;           // 0–100
   tier: AffinityTier;
-  relationship: string;    // "mismo animal", "opuestos", "tríada", etc.
+  relationship: string;    // "tu propio signo", "signo amigo", "signo enemigo", "resto del ciclo"
   explanation: string;     // human-readable "why"
   tradition?: string;      // "Según la tradición..." context
   summary: string;
@@ -44,21 +45,21 @@ export interface AffinityResult {
   isApproximate: boolean;
 }
 
-export type AffinityTier =
-  | "resonancia-alta"
-  | "afinidad-media"
-  | "complementarios"
-  | "desafiante"
-  | "distante";
+/**
+ * Las cuatro casillas del ciclo: tu propio signo, tus dos amigos (San He), tu
+ * enemigo (Liu Chong) y el resto. Salen del TIPO de relación, no de un
+ * puntaje: Liu He y Liu Hai caen en "otro" (CLAUDE.md).
+ */
+export type AffinityTier = MapRelation;
 
 // Colores por tier: token de diseño, no depende del locale — por eso vive
 // acá y no en el diccionario (lib/i18n solo tiene label/description).
 const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
-  "resonancia-alta": "#515151",
-  "afinidad-media": "#626262",
-  "complementarios": "#626262",
-  "desafiante": "#606060",
-  "distante": "#656565",
+  // Hex y no var(): varios call sites arman el fondo con `${color}15`.
+  mismo: "#0A0A0A",
+  amigo: "#0A0A0A",
+  enemigo: "#474747",
+  otro: "#474747",
 };
 
 // Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +
@@ -70,12 +71,9 @@ export const TIER_META: Record<AffinityTier, { label: string; color: string; des
   ])
 ) as Record<AffinityTier, { label: string; color: string; description: string }>;
 
-export function getTierForScore(score: number): AffinityTier {
-  if (score >= 75) return "resonancia-alta";
-  if (score >= 60) return "afinidad-media";
-  if (score >= 45) return "complementarios";
-  if (score >= 30) return "desafiante";
-  return "distante";
+/** Casilla de `entityAnimal` vista desde `userAnimal`. Sin datos, "otro". */
+export function getTier(userAnimal: string, entityAnimal: string): AffinityTier {
+  return userAnimal && entityAnimal ? relacionCon(userAnimal, entityAnimal) : "otro";
 }
 
 // ════════════════════════════════════════════════════
@@ -88,10 +86,10 @@ function getZodiacScore(userAnimal: string, entityAnimal: string): number {
   return getRelation(userAnimal as Animal, entityAnimal as Animal).score;
 }
 
-/** Human-readable relationship label from canonical animalRelations */
+/** Nombre de la casilla, en minúscula para usarlo dentro de una frase. */
 function getRelationship(_diff: number, userAnimal: string, entityAnimal: string): string {
   if (!userAnimal || !entityAnimal) return "datos insuficientes";
-  return getRelation(userAnimal as Animal, entityAnimal as Animal).label;
+  return TIER_META[getTier(userAnimal, entityAnimal)].label.toLowerCase();
 }
 
 /**
@@ -138,24 +136,18 @@ function getExplanation(
   let relationalMeaning: string;
   switch (rel.type) {
     case "same":
-      relationalMeaning = `Comparte tu mismo animal, el ${entityAnimal}.`;
+      relationalMeaning = `Comparte tu propio signo, el ${entityAnimal}.`;
       break;
     case "triad": {
       const triad = SAN_HE_TRIADS.find(t => t.animals.includes(userAnimal as Animal) && t.animals.includes(entityAnimal as Animal));
-      relationalMeaning = `Pertenece a tu triada${triad ? ` (elemento ${triad.element})` : ""}, junto con tu ${userAnimal}.`;
+      relationalMeaning = `El ${entityAnimal} es uno de los dos amigos de tu ${userAnimal} (三合 San He${triad ? `, elemento ${triad.element}` : ""}).`;
       break;
     }
-    case "harmonious":
-      relationalMeaning = `Su energía del ${entityAnimal} complementa naturalmente tu ${userAnimal}.`;
-      break;
     case "clash":
-      relationalMeaning = `Pertenece al animal opuesto a tu ${userAnimal} en el ciclo de 12 años.`;
-      break;
-    case "harm":
-      relationalMeaning = `Su energía del ${entityAnimal} tiene una relación de atención con tu ${userAnimal}.`;
+      relationalMeaning = `El ${entityAnimal} es el enemigo de tu ${userAnimal}: su opuesto directo en el ciclo (六冲 Liu Chong). Es la relación que conviene evitar.`;
       break;
     default:
-      relationalMeaning = `Su energía del ${entityAnimal} corre por un carril distinto al de tu ${userAnimal}.`;
+      relationalMeaning = `El ${entityAnimal} no es tu signo, ni uno de tus dos amigos, ni tu enemigo: queda en el resto del ciclo.`;
       break;
   }
 
@@ -169,13 +161,13 @@ function getTradition(_diff: number, userAnimal: string, entityAnimal: string): 
   if (!userAnimal || !entityAnimal) return undefined;
   const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
   if (rel.type === "triad") {
-    return "Las trías San He agrupan animales por elemento oculto: Rata-Dragón-Mono (Agua), Buey-Serpiente-Gallo (Metal), Tigre-Caballo-Perro (Fuego), Gato-Cabra-Cerdo (Madera).";
+    return "Los doce signos se agrupan en cuatro triángulos de amigos (三合 San He), separados por cuatro posiciones: Rata-Dragón-Mono (Agua), Buey-Serpiente-Gallo (Metal), Tigre-Caballo-Perro (Fuego), Gato-Cabra-Cerdo (Madera).";
   }
-  if (rel.type === "harmonious") {
-    return "Los pares Liu He (六合) son combinaciones armoniosas: Rata-Buey, Tigre-Gato, Dragón-Serpiente, Caballo-Cabra, Mono-Gallo, Perro-Cerdo.";
+  if (rel.type === "clash") {
+    return "Cada signo tiene un solo enemigo (六冲 Liu Chong): el que está a seis posiciones, en la otra punta del ciclo. Es la relación de más tensión, no una condena.";
   }
   if (rel.type === "same") {
-    return "Según la tradición, dos personas del mismo animal comparten fortalezas naturales pero también los mismos puntos ciegos.";
+    return "Según la tradición, dos del mismo signo comparten fortalezas naturales pero también los mismos puntos ciegos.";
   }
   return undefined;
 }
@@ -246,15 +238,14 @@ export function calculateAffinityForAnimal(
     tradition = getTradition(diff, userAnimal, entityAnimal);
   }
 
-  const tier = getTierForScore(score);
-  const tierMeta = TIER_META[tier];
+  const tier = getTier(userAnimal, entityAnimal);
 
   // Build event date description
   const eventDateStr = primaryEvent.date
     ? formatEventDate(primaryEvent.date)
     : String(primaryEvent.year);
 
-  const summary = `${entity.name} tiene una ${tierMeta.label.toLowerCase()} con tu perfil simbólico. Tu animal es ${userAnimal || "—"} y el de ${entity.name} (según ${primaryEvent.label.toLowerCase()}) es ${entityAnimal || "—"}.`;
+  const summary = `Tu signo es ${userAnimal || "—"} y el de ${entity.name} (según ${primaryEvent.label.toLowerCase()}) es ${entityAnimal || "—"}: ${relationship}.`;
 
   return {
     entity,
@@ -271,7 +262,7 @@ export function calculateAffinityForAnimal(
     summary,
     tradition,
     disclaimer: "Molino es una plataforma educativa y de entretenimiento. Estas interpretaciones pertenecen al ámbito de los sistemas simbólicos y no constituyen predicción científica, diagnóstico ni asesoramiento profesional.",
-    methodNote: `Cálculo: comparación directa entre el animal del zodíaco chino de tu año de nacimiento (${userYear}) y el del evento "${primaryEvent.label}" de ${entity.name} (${eventDateStr}). Basado en la relación documentada entre animales en el ciclo de 12 años.${isApproximate ? " Nota: el cálculo utiliza el año documentado en fuentes históricas." : ""}`,
+    methodNote: `Cálculo: comparación directa entre el signo del zodíaco chino de tu fecha de nacimiento (${userYear}) y el del evento "${primaryEvent.label}" de ${entity.name} (${eventDateStr}). Signo contra signo: mismo signo, amigos (三合 San He), enemigo (六冲 Liu Chong) o resto del ciclo.${isApproximate ? " Nota: el cálculo utiliza el año documentado en fuentes históricas." : ""}`,
     isApproximate,
   };
 }
@@ -303,7 +294,7 @@ function buildFallbackResult(
     entityYear: getPrimaryEvent(entity)?.year ?? 0,
     entityAnimal: "",
     score: 0,
-    tier: "distante",
+    tier: "otro",
     relationship: "datos insuficientes",
     explanation: reason,
     summary: `No se pudo calcular la afinidad con ${entity.name}: ${reason}`,
@@ -348,7 +339,7 @@ export function calculateAnimalComparison(animalA: string, animalB: string): Ani
       animalA,
       animalB,
       score: 50,
-      tier: "distante",
+      tier: "otro",
       relationship: "datos insuficientes",
       explanation: "No se pudo determinar la relación entre ambos animales.",
     };
@@ -356,9 +347,14 @@ export function calculateAnimalComparison(animalA: string, animalB: string): Ani
 
   const diff = Math.abs(ui - ei) % 12;
   const score = getZodiacScore(animalA, animalB);
-  const tier = getTierForScore(score);
-  const relationship = getRelationship(diff, animalA, animalB);
-  const explanation = getExplanation(diff, animalA, animalB);
+  const tier = getTier(animalA, animalB);
+  // Entre dos entidades no hay "tu": la relación se nombra en tercera persona.
+  const { relationship, explanation } = {
+    mismo: { relationship: "mismo signo", explanation: `Las dos son ${animalA}: comparten casilla en el ciclo de doce.` },
+    amigo: { relationship: "amigos", explanation: `${animalA} y ${animalB} son amigos: están a cuatro posiciones en el ciclo (三合 San He).` },
+    enemigo: { relationship: "enemigos", explanation: `${animalA} y ${animalB} son enemigos: opuestos directos en el ciclo (六冲 Liu Chong).` },
+    otro: { relationship: "sin relación especial", explanation: `${animalA} y ${animalB} no son amigos ni enemigos: el ciclo no los relaciona.` },
+  }[tier];
   const tradition = getTradition(diff, animalA, animalB);
 
   return { animalA, animalB, score, tier, relationship, explanation, tradition };

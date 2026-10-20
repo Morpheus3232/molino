@@ -9,20 +9,7 @@ import { useMemo } from "react";
 import EntityVisual from "@/components/ui/EntityVisual";
 import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
-const TIER_COLOR: Record<string, string> = {
-  "resonancia-alta": "#515151",
-  "afinidad-media": "#6E6E6E",
-  complementarios: "var(--color-gold)",
-  desafiante: "#6F6F6F",
-  distante: "#8B8B8B",
-};
-const TIER_LABEL: Record<string, string> = {
-  "resonancia-alta": "Resonancia alta",
-  "afinidad-media": "Afinidad media",
-  complementarios: "Complementarios",
-  desafiante: "Desafiante",
-  distante: "Distante",
-};
+import { TIER_META, type AffinityTier } from "@/lib/engines/affinityEngine";
 const TYPE_LABEL: Record<string, string> = {
   brand: "Marca",
   city: "Ciudad",
@@ -38,7 +25,7 @@ interface WorldConnectionsProps {
   catalog: LightweightEntity[];
 }
 
-function EntityCard({ entity, score, tier }: { entity: LightAffinityResult; score: number; tier: string }) {
+function EntityCard({ entity, tier }: { entity: LightAffinityResult; tier: AffinityTier }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -60,8 +47,8 @@ function EntityCard({ entity, score, tier }: { entity: LightAffinityResult; scor
         <div className="flex-1 min-w-0">
           <p className="font-medium text-foreground truncate">{entity.name}</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs font-mono" style={{ color: TIER_COLOR[tier] || "var(--tier-neutral)" }}>
-              {TIER_LABEL[tier] || tier} · {score}%
+            <span className="text-xs" style={{ color: TIER_META[tier].color }}>
+              {TIER_META[tier].label}
             </span>
             <span className="text-xs text-muted">{TYPE_LABEL[entity.type] || entity.type}</span>
           </div>
@@ -91,7 +78,6 @@ function EntityRank({
           <EntityCard
             key={`${item.id}-${i}`}
             entity={item}
-            score={item.score}
             tier={item.tier}
           />
         ))}

@@ -103,7 +103,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                 </p>
                 {profile && (
                   <p className="text-sm text-muted mt-3">
-                    Camino de Vida {profile.lifePath} · {profile.chineseZodiac}
+                    Tu signo: {profile.chineseZodiac}
                   </p>
                 )}
               </motion.section>
@@ -111,10 +111,10 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
               {/* Contexto editorial — qué es y qué no es la resonancia */}
               <motion.section {...fadeUp} className="mb-12 border border-ink/10 p-6">
                 <p className="text-sm text-foreground leading-relaxed max-w-2xl">
-                  Cada entidad tiene un animal asociado según su fecha de origen. La resonancia compara ese animal con el de tu mapa.
+                  Cada entidad tiene un signo según su fecha de origen, y se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos (三合 San He), tu enemigo (六冲 Liu Chong) o el resto del ciclo.
                 </p>
                 <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">
-                  No es una predicción ni una medida de compatibilidad personal. Es una lectura simbólica basada exclusivamente en la relación entre ambos animales del zodíaco chino.
+                  No es una predicción ni un puntaje: es una casilla del ciclo de doce. El enemigo se lee como lo que conviene evitar, no como una condena.
                 </p>
               </motion.section>
 

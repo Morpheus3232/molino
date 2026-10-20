@@ -14,21 +14,11 @@
 
 import { getRelation, getAnimalProfile, getFriends, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import type { VisualType } from "@/types/atlas";
+import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
+import { t } from "@/lib/i18n";
 
-export type LightTier =
-  | "resonancia-alta"
-  | "afinidad-media"
-  | "complementarios"
-  | "desafiante"
-  | "distante";
-
-export function tierForScore(score: number): LightTier {
-  if (score >= 75) return "resonancia-alta";
-  if (score >= 60) return "afinidad-media";
-  if (score >= 45) return "complementarios";
-  if (score >= 30) return "desafiante";
-  return "distante";
-}
+/** La casilla del ciclo, igual que AffinityTier en affinityEngine. */
+export type LightTier = MapRelation;
 
 export interface LightAffinityResult {
   id: string;
@@ -72,31 +62,26 @@ export function lightAffinity(userAnimal: string, entity: { animal: string }): {
   relationship: string;
 } {
   if (!userAnimal || !entity?.animal) {
-    return { score: 50, tier: "afinidad-media", relationship: "datos insuficientes" };
+    return { score: 50, tier: "otro", relationship: "datos insuficientes" };
   }
   const rel = getRelation(userAnimal as Animal, entity.animal as Animal);
-  return { score: rel.score, tier: tierForScore(rel.score), relationship: rel.label };
+  const tier = relacionCon(userAnimal, entity.animal);
+  return { score: rel.score, tier, relationship: t.affinityTiers[tier].label.toLowerCase() };
 }
 
 /**
  * Single source of truth for "N con afinidad para tu perfil" style counters.
- * matched = entities whose boosted score (same country boost used everywhere
- * else) reaches the "afinidad-media" tier per tierForScore — i.e. the same
- * tier cutoffs the rest of the UI already uses to call something an affinity.
- * A score of exactly 50 ("complementarios") is NOT an affinity match: it's
- * neutral, not affinity, and must not be counted here.
+ * matched = entities de tu propio signo o de uno de tus dos amigos. El país
+ * no cuenta: ordena, nunca puntúa (CLAUDE.md).
  */
 export function countAffinityMatches(
   userAnimal: string,
   entities: { animal: string; country?: string }[],
-  userCountry?: string,
+  _userCountry?: string,
 ): { total: number; matched: number } {
-  const COUNTRY_BOOST = 15;
   const matched = entities.filter((e) => {
-    const { score } = lightAffinity(userAnimal, e);
-    const boosted = userCountry && e.country === userCountry ? score + COUNTRY_BOOST : score;
-    const tier = tierForScore(boosted);
-    return tier === "afinidad-media" || tier === "resonancia-alta";
+    const { tier } = lightAffinity(userAnimal, e);
+    return tier === "mismo" || tier === "amigo";
   }).length;
   return { total: entities.length, matched };
 }

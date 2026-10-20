@@ -47,12 +47,12 @@ export const es = {
   // (affinityEngine.ts) solo devuelven el id del tier; este objeto le pone
   // el idioma. Los colores de cada tier son tokens de diseño (no dependen
   // del locale) y viven en AFFINITY_TIER_COLORS, en affinityEngine.ts.
+  // Las cuatro casillas del ciclo (CLAUDE.md): signo contra signo, sin puntaje.
   affinityTiers: {
-    "resonancia-alta": { label: "Alta", description: "Patrones simbólicos fuertemente alineados" },
-    "afinidad-media": { label: "Afinidad media", description: "Conexión moderada con puntos de interés compartidos" },
-    "complementarios": { label: "Complementarios", description: "Diferentes pero que se enriquecen mutuamente" },
-    "desafiante": { label: "Desafiante", description: "Tensión creativa que puede generar crecimiento" },
-    "distante": { label: "Baja", description: "Baja resonancia simbólica, pero no excluyente" },
+    mismo: { label: "Tu propio signo", description: "Su año de origen es del mismo signo que el tuyo." },
+    amigo: { label: "Signo amigo", description: "Es uno de tus dos signos amigos (三合 San He)." },
+    enemigo: { label: "Signo enemigo", description: "Es tu opuesto directo en el ciclo (六冲 Liu Chong): lo que conviene evitar." },
+    otro: { label: "Resto del ciclo", description: "Ni tu signo, ni tus dos amigos, ni tu enemigo: el ciclo no dice nada especial." },
   },
 
   // Lectura cualitativa de un score 0-100 (energía, timing, alineación,

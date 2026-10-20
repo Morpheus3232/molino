@@ -198,7 +198,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                         className="font-heading text-lg font-bold text-center"
                         style={{ color: compTier.color }}
                       >
-                        {compTier.label}
+                        {entityComparison.relationship}
                       </span>
                     </div>
 
@@ -218,15 +218,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                       <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
                       <p className="text-xs text-muted mt-1">{entityB.name}</p>
                     </div>
-                  </div>
-
-                  <div className="text-center mb-6">
-                    <span
-                      className="text-sm font-medium px-3 py-1 rounded-sm label-caps"
-                      style={{ color: compTier.color, backgroundColor: `${compTier.color}15` }}
-                    >
-                      {entityComparison.relationship}
-                    </span>
                   </div>
 
                   <div className="h-px bg-border my-5" />
@@ -277,7 +268,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 <SectionHeader title="Diferencias simbólicas" />
                 <div className="p-6 border border-ink/10 bg-transparent space-y-4">
                   <DifferenceRow
-                    label="Animales"
+                    label="Signos"
                     valueA={`${formatAnimalSimple(resultA.entityAnimal)} (${entityA.name})`}
                     valueB={`${formatAnimalSimple(resultB.entityAnimal)} (${entityB.name})`}
                   />
@@ -436,7 +427,7 @@ function PersonalCard({
         </span>
       </div>
       <p className="text-xs text-muted mb-1">
-        Tu animal: <span className="font-medium text-foreground">{userAnimal || "—"}</span> ↔ {animal}
+        Tu signo: <span className="font-medium text-foreground">{userAnimal || "—"}</span> ↔ {animal}
       </p>
       <p className="text-xs text-muted">
         Relación: <span className="font-medium text-foreground">{relationship}</span>

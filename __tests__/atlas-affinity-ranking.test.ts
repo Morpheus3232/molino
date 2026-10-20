@@ -8,6 +8,7 @@ import {
   buildAtlasSections,
   getEnemyAnimal,
   countAffinityMatches,
+  lightAffinity,
   type LightAffinityResult,
 } from '@/lib/affinity-light';
 import type { LightweightEntity } from '@/types/atlas';
@@ -253,14 +254,18 @@ describe('countAffinityMatches', () => {
     expect(matched).toBe(0);
   });
 
-  test('country boost can push a neutral relation over the affinity threshold', () => {
-    // Neutral (50) + 15 country boost = 65 >= 60 → counts.
+  test('Liu He y Liu Hai caen en el resto del ciclo, no en amigo ni enemigo', () => {
+    expect(lightAffinity("Rata", { animal: "Buey" }).tier).toBe("otro"); // Liu He
+    expect(lightAffinity("Rata", { animal: "Cabra" }).tier).toBe("otro"); // Liu Hai
+    expect(lightAffinity("Rata", { animal: "Mono" }).tier).toBe("amigo");
+    expect(lightAffinity("Rata", { animal: "Caballo" }).tier).toBe("enemigo");
+  });
+
+  test('el país ordena, nunca puntúa: no convierte una relación neutral en afinidad', () => {
     const entities = [{ animal: "Gato", country: "Argentina" }];
-    const { matched } = countAffinityMatches("Caballo", entities, "Argentina");
-    expect(matched).toBe(1);
-    // Without the boost, same pair does not count.
-    const { matched: unboosted } = countAffinityMatches("Caballo", entities);
-    expect(unboosted).toBe(0);
+    expect(countAffinityMatches("Caballo", entities, "Argentina").matched).toBe(0);
+    // Mismo signo y amigos sí cuentan, con o sin país.
+    expect(countAffinityMatches("Caballo", [{ animal: "Caballo" }, { animal: "Perro" }, { animal: "Rata" }]).matched).toBe(2);
   });
 
   test('real catalog counts for Camino de Vida 5 · Caballo profile (per category)', () => {

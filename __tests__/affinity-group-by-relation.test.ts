@@ -27,7 +27,7 @@ function fixture(id: string, name: string, animal: Animal): LightAffinityResult 
     visualType: "logo",
     type: "university",
     score: getRelation("Rata", animal).score,
-    tier: "afinidad-media",
+    tier: "otro",
     relationship: getRelation("Rata", animal).label,
     isApproximate: false,
   };
@@ -38,26 +38,26 @@ describe("groupByRelation — exhaustiveness (no entity dropped)", () => {
     const uadeAnimal = getChineseAnimal(1957);
     expect(getRelation("Rata", uadeAnimal).type).toBe("neutral"); // confirma la causa raíz
     const groups = groupByRelation("Rata", [fixture("uade", "UADE", uadeAnimal)]);
-    const allRendered = [...groups.same, ...groups.triad, ...groups.opposite, ...groups.other];
+    const allRendered = [...groups.mismo, ...groups.amigo, ...groups.enemigo, ...groups.otro];
     expect(allRendered).toHaveLength(1);
     expect(allRendered[0].id).toBe("uade");
-    expect(groups.other.map(r => r.id)).toContain("uade");
+    expect(groups.otro.map(r => r.id)).toContain("uade");
   });
 
   it("UBA (1821 → Serpiente, neutral con Rata) aparece en algún grupo", () => {
     const ubaAnimal = getChineseAnimal(1821);
     expect(getRelation("Rata", ubaAnimal).type).toBe("neutral"); // confirma la causa raíz
     const groups = groupByRelation("Rata", [fixture("uba", "UBA", ubaAnimal)]);
-    const allRendered = [...groups.same, ...groups.triad, ...groups.opposite, ...groups.other];
+    const allRendered = [...groups.mismo, ...groups.amigo, ...groups.enemigo, ...groups.otro];
     expect(allRendered).toHaveLength(1);
-    expect(groups.other.map(r => r.id)).toContain("uba");
+    expect(groups.otro.map(r => r.id)).toContain("uba");
   });
 
   it("una entidad con relación neutral queda contada Y visible (no descartada en silencio)", () => {
     const neutralAnimal = "Gato"; // Rata.neutralRelations incluye "Gato"
     expect(getRelation("Rata", neutralAnimal).type).toBe("neutral");
     const groups = groupByRelation("Rata", [fixture("x", "Entidad neutral", neutralAnimal)]);
-    const total = groups.same.length + groups.triad.length + groups.opposite.length + groups.other.length;
+    const total = groups.mismo.length + groups.amigo.length + groups.enemigo.length + groups.otro.length;
     expect(total).toBe(1);
   });
 
@@ -65,7 +65,7 @@ describe("groupByRelation — exhaustiveness (no entity dropped)", () => {
     const harmoniousAnimal = "Buey"; // liuHePartner de Rata
     expect(getRelation("Rata", harmoniousAnimal).type).toBe("harmonious");
     const groups = groupByRelation("Rata", [fixture("y", "Entidad armoniosa", harmoniousAnimal)]);
-    expect(groups.other.map(r => r.id)).toContain("y");
+    expect(groups.otro.map(r => r.id)).toContain("y");
   });
 
   it("same/triad/opposite mantienen exactamente su agrupación de siempre", () => {
@@ -74,23 +74,23 @@ describe("groupByRelation — exhaustiveness (no entity dropped)", () => {
       fixture("triad-1", "Triada", "Dragón"),
       fixture("clash-1", "Opuesta", "Caballo"),
     ]);
-    expect(groups.same.map(r => r.id)).toEqual(["same-1"]);
-    expect(groups.triad.map(r => r.id)).toEqual(["triad-1"]);
-    expect(groups.opposite.map(r => r.id)).toEqual(["clash-1"]);
-    expect(groups.other).toHaveLength(0);
+    expect(groups.mismo.map(r => r.id)).toEqual(["same-1"]);
+    expect(groups.amigo.map(r => r.id)).toEqual(["triad-1"]);
+    expect(groups.enemigo.map(r => r.id)).toEqual(["clash-1"]);
+    expect(groups.otro).toHaveLength(0);
   });
 
   it("contador = total renderizado para cualquier combinación de animales", () => {
     const entities = ANIMALS.map((a, i) => fixture(`e${i}`, `Entidad ${a}`, a));
     const groups = groupByRelation("Rata", entities);
-    const rendered = groups.same.length + groups.triad.length + groups.opposite.length + groups.other.length;
+    const rendered = groups.mismo.length + groups.amigo.length + groups.enemigo.length + groups.otro.length;
     expect(rendered).toBe(entities.length);
   });
 
   it("no genera duplicados: cada entidad cae en exactamente un grupo", () => {
     const entities = ANIMALS.map((a, i) => fixture(`e${i}`, `Entidad ${a}`, a));
     const groups = groupByRelation("Caballo", entities);
-    const ids = [...groups.same, ...groups.triad, ...groups.opposite, ...groups.other].map(r => r.id);
+    const ids = [...groups.mismo, ...groups.amigo, ...groups.enemigo, ...groups.otro].map(r => r.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids.length).toBe(entities.length);
   });

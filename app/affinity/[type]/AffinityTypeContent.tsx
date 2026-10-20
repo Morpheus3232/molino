@@ -7,12 +7,13 @@ import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
-import { ANIMALS, getRelation, RELATION_SCORES, type Animal } from "@/lib/data/animalRelations";
+import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
+import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
+import { TIER_META } from "@/lib/engines/affinityEngine";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import type { LightweightEntity, VisualType } from "@/types/atlas";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import EntityVisual from "@/components/ui/EntityVisual";
-import RelationBar from "@/components/affinity/RelationBar";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -27,44 +28,27 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-type RelationGroupKey = "same" | "triad" | "opposite" | "other";
+type RelationGroupKey = MapRelation;
 
-const GROUPS: { key: RelationGroupKey; label: string }[] = [
-  { key: "same", label: "Alta compatibilidad" },
-  { key: "triad", label: "Buena compatibilidad" },
-  { key: "opposite", label: "Energía opuesta" },
-  { key: "other", label: "Otras conexiones" },
+// Orden de lectura de CLAUDE.md: tu propio signo → tus dos amigos → tu
+// enemigo (lo que conviene evitar) → el resto del ciclo.
+const GROUPS: { key: RelationGroupKey; label: string; chinese: string; note?: string }[] = [
+  { key: "mismo", label: "Tu propio signo", chinese: "本命" },
+  { key: "amigo", label: "Tus dos amigos", chinese: "三合 San He" },
+  { key: "enemigo", label: "Tu enemigo", chinese: "六冲 Liu Chong", note: "Lo que conviene evitar." },
+  { key: "otro", label: "El resto del ciclo", chinese: "" },
 ];
-
-const RELATION_GROUP_SCORE: Partial<Record<RelationGroupKey, number>> = {
-  same: RELATION_SCORES.same.score,
-  triad: RELATION_SCORES.triad.score,
-  opposite: RELATION_SCORES.clash.score,
-  // "other" agrupa relaciones heterogéneas (armonía natural / neutral / daño)
-  // — cada fila ya muestra su propia relación real (result.relationship), no
-  // hay un score único que represente al grupo entero.
-};
 
 const PAGE_SIZE = 8;
 
 /**
- * Group results by the actual relation type the system calculates — same
- * animal, triad (San He) y opuesto (Liu Chong clash) mantienen su
- * presentación destacada de siempre. Todo lo demás (armonía natural /
- * neutral / daño) cae en "other": una entidad que pasa el filtro de
- * búsqueda SIEMPRE termina en algún grupo, nunca se descarta en silencio
- * (antes, harmonious/neutral/harm no caían en ningún grupo y desaparecían
- * del render aunque el contador de resultados las siguiera contando).
+ * Agrupa por las cuatro casillas del ciclo (relacionCon, la misma regla que
+ * Mi Mapa). Liu He y Liu Hai caen en "otro". Una entidad que pasa el filtro
+ * de búsqueda SIEMPRE termina en algún grupo, nunca se descarta en silencio.
  */
 export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[]): Record<RelationGroupKey, LightAffinityResult[]> {
-  const groups: Record<RelationGroupKey, LightAffinityResult[]> = { same: [], triad: [], opposite: [], other: [] };
-  for (const result of sorted) {
-    const type = getRelation(userAnimal, result.animal as Animal).type;
-    if (type === "same") groups.same.push(result);
-    else if (type === "triad") groups.triad.push(result);
-    else if (type === "clash") groups.opposite.push(result);
-    else groups.other.push(result);
-  }
+  const groups: Record<RelationGroupKey, LightAffinityResult[]> = { mismo: [], amigo: [], enemigo: [], otro: [] };
+  for (const result of sorted) groups[relacionCon(userAnimal, result.animal)].push(result);
   return groups;
 }
 
@@ -105,9 +89,9 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
 
   const groups = useMemo(() => groupByRelation(activeAnimal, filteredSorted), [activeAnimal, filteredSorted]);
 
-  const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE, other: PAGE_SIZE });
+  const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ mismo: PAGE_SIZE, amigo: PAGE_SIZE, enemigo: PAGE_SIZE, otro: PAGE_SIZE });
   useEffect(() => {
-    setVisibleCounts({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE, other: PAGE_SIZE });
+    setVisibleCounts({ mismo: PAGE_SIZE, amigo: PAGE_SIZE, enemigo: PAGE_SIZE, otro: PAGE_SIZE });
   }, [activeAnimal, searchQuery]);
 
   return (
@@ -142,13 +126,13 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                   Cómo resuena cada {meta.label.toLowerCase()}
                 </h1>
                 <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
-                  Cada entidad tiene un animal según su fecha de origen. La resonancia compara ese animal con el tuyo — una lectura simbólica, no una predicción.
+                  Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.
                 </p>
               </motion.div>
 
               {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
               <div className="border-t border-ink/10 py-8">
-                <p className="label-micro mb-4">Animal</p>
+                <p className="label-micro mb-4">Signo</p>
                 <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
                   {ANIMALS.map((animal) => {
                     const display = getZodiacDisplay(animal);
@@ -172,7 +156,7 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                   })}
                 </div>
                 {profile?.chineseZodiac === activeAnimal && !selectedAnimal && (
-                  <p className="text-xs text-muted mt-3">Tu animal — {formatAnimalSimple(activeAnimal)}.</p>
+                  <p className="text-xs text-muted mt-3">Tu signo — {formatAnimalSimple(activeAnimal)}.</p>
                 )}
               </div>
 
@@ -194,9 +178,9 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                 )}
               </div>
 
-              {/* RESULTADOS AGRUPADOS POR RELACIÓN REAL: mismo animal, triada, opuesto,
-                  y el resto (armonía natural / neutral / daño) en "Otras conexiones" —
-                  ninguna entidad que pase el filtro de búsqueda queda sin grupo. */}
+              {/* RESULTADOS AGRUPADOS POR CASILLA: tu signo, tus dos amigos, tu
+                  enemigo y el resto del ciclo — ninguna entidad que pase el
+                  filtro de búsqueda queda sin grupo. */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAnimal}
@@ -214,11 +198,12 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                     return (
                       <div key={group.key} className="py-8 border-b border-ink/10 last:border-b-0">
                         <div className="mb-4">
-                          {group.key === "other" ? (
-                            <p className="label-micro">{group.label}</p>
-                          ) : (
-                            <RelationBar score={RELATION_GROUP_SCORE[group.key]!} label={group.label} />
-                          )}
+                          <h2 className="font-heading text-lg font-semibold text-foreground">
+                            {group.label}
+                            {group.chinese && <span className="text-sm font-normal text-muted"> · {group.chinese}</span>}
+                            <span className="text-sm font-normal text-muted"> · {all.length}</span>
+                          </h2>
+                          {group.note && <p className="text-sm text-muted mt-1">{group.note}</p>}
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
@@ -254,14 +239,8 @@ function ResultRow({
   result: LightAffinityResult;
   href: string;
 }) {
-  // Presentación editorial: el label del engine se mantiene, el color pasa
-  // a tonos de marca (accent/muted) — nunca semáforo verde/rojo.
-  const tierColor =
-    result.tier === "resonancia-alta" || result.tier === "afinidad-media"
-      ? "var(--color-accent)"
-      : "var(--color-muted)";
-
-  const tierLabel = result.relationship;
+  // Tonos de marca (accent/muted) — nunca semáforo verde/rojo.
+  const { color: tierColor, label: tierLabel } = TIER_META[result.tier];
 
   return (
     <Link

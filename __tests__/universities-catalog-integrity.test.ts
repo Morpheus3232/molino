@@ -120,9 +120,9 @@ describe("Universidades — ninguna desaparece de /affinity/university por su re
     const groups = groupByRelation(animal as Animal, lightweight.map(e => ({
       id: e.id, name: e.name, animal: e.animal, emoji: e.emoji, visualType: e.visualType,
       country: e.country, countryISO: e.countryISO, city: e.city, type: e.type,
-      score: 0, tier: "afinidad-media" as const, relationship: "", isApproximate: e.isApproximate,
+      score: 0, tier: "otro" as const, relationship: "", isApproximate: e.isApproximate,
     })));
-    const rendered = groups.same.length + groups.triad.length + groups.opposite.length + groups.other.length;
+    const rendered = groups.mismo.length + groups.amigo.length + groups.enemigo.length + groups.otro.length;
     expect(rendered).toBe(lightweight.length);
   });
 });

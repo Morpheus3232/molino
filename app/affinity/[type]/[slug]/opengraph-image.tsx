@@ -92,7 +92,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
             <span style={{ color: "#0A0A0A", fontSize: 48 }}>→</span>
             <span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
-              ¿Cuál es tu animal?
+              ¿Cuál es tu signo?
             </span>
           </div>
 
