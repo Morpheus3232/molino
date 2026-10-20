@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Asterisk, Building2, Trophy, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 
 const CATEGORY_ICONS: Record<EntityType, LucideIcon> = {
   brand: Asterisk,
   city: Building2,
-  team: Trophy,
   university: GraduationCap,
   artist: Mic2,
   movie: Clapperboard,

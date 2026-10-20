@@ -5,9 +5,7 @@ import EntityVisual from "../EntityVisual";
 import { resolveEntityIconKind } from "../EntityIcon";
 
 describe("EntityIcon resolution", () => {
-  it("resolves football for teams, players, and soccer themes", () => {
-    expect(resolveEntityIconKind({ name: "Boca Juniors", type: "team" })).toBe("football");
-    expect(resolveEntityIconKind({ name: "River Plate", type: "team" })).toBe("football");
+  it("resolves football for players and soccer themes", () => {
     expect(resolveEntityIconKind({ name: "Lionel Messi", type: "football_player" })).toBe("football");
     expect(resolveEntityIconKind({ name: "Dibu Martínez", emoji: "⚽" })).toBe("football");
   });

@@ -34,10 +34,10 @@ describe('getAtlasCountries', () => {
 });
 
 describe('getCategoriesByCountry', () => {
-  test('Argentina has brand/city/team/university/artist categories', () => {
+  test('Argentina has brand/city/university/artist categories, and no team', () => {
     const cats = getCategoriesByCountry('AR');
     const types = cats.map((c) => c.type);
-    expect(types).toContain('team');
+    expect(types).not.toContain('team');
     expect(types).toContain('city');
     expect(types).toContain('brand');
   });
@@ -52,13 +52,13 @@ describe('getCategoriesByCountry', () => {
 
 describe('getEntitiesByTaxonomy', () => {
   test('returns LightweightEntity[] for a country+category', () => {
-    const entities = getEntitiesByTaxonomy('AR', 'team');
+    const entities = getEntitiesByTaxonomy('AR', 'university');
     expect(entities.length).toBeGreaterThan(0);
     // Lightweight shape: no events, no prose.
     for (const e of entities) {
       expect(e.id).toBeTruthy();
       expect(e.animal).toBeTruthy();
-      expect(e.type).toBe('team');
+      expect(e.type).toBe('university');
       expect(e.countryISO).toBe('AR');
       expect((e as unknown as Record<string, unknown>).events).toBeUndefined();
     }

@@ -15,7 +15,7 @@ beforeEach(() => {
   vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 });
 
-// PersonalAtlasPilot agrupa Equipos y Jugadores bajo "Fútbol", y dentro de
+// PersonalAtlasPilot muestra los Jugadores bajo "Fútbol", y dentro de
 // Jugadores separa por category ("actual"/"historico") sin introducir un
 // EntityType nuevo ni tocar el motor — ver getPersonalAtlas en atlas-queries.ts.
 
@@ -31,10 +31,6 @@ function player(id: string, category: "actual" | "historico"): LightweightEntity
   };
 }
 
-function team(id: string): LightweightEntity {
-  return { id, name: id, animal: "Caballo", isApproximate: false, visualType: "logo", type: "team" };
-}
-
 function artist(id: string): LightweightEntity {
   return { id, name: id, animal: "Caballo", isApproximate: false, visualType: "portrait", type: "artist" };
 }
@@ -44,7 +40,6 @@ function city(id: string): LightweightEntity {
 }
 
 const GROUPS: PersonalAtlasGroup[] = [
-  { category: "team", level: "country-animal", entities: [team("River")], totalAvailable: 1 },
   {
     category: "football_player",
     level: "region-animal",
@@ -69,7 +64,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("PersonalAtlasPilot — Fútbol: Equipos / Jugadores (Actualidad + Referentes históricos)", () => {
+describe("PersonalAtlasPilot — Fútbol: Jugadores (Actualidad + Referentes históricos)", () => {
   test("football_player con category=actual aparece bajo Actualidad", async () => {
     await renderWithGroups(GROUPS);
     const actualidad = screen.getByText("Actualidad").closest("div")!;
@@ -94,12 +89,6 @@ describe("PersonalAtlasPilot — Fútbol: Equipos / Jugadores (Actualidad + Refe
     const historicos = screen.getByText("Referentes históricos").closest("div")!;
     expect(historicos.parentElement).not.toHaveTextContent("Actual1");
     expect(historicos.parentElement).not.toHaveTextContent("Actual2");
-  });
-
-  test("Equipos sigue mostrándose separado de Jugadores", async () => {
-    await renderWithGroups(GROUPS);
-    expect(screen.getByText("Equipos")).toBeInTheDocument();
-    expect(screen.getByText("River")).toBeInTheDocument();
   });
 
   test("Famosos sigue fuera de Fútbol", async () => {

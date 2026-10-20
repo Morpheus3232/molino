@@ -54,7 +54,6 @@ export function getCurationCategoryLabel(type: string): string {
   const labels: Record<string, string> = {
     city: "Ciudades",
     brand: "Marcas",
-    team: "Equipos",
     university: "Universidades",
     artist: "Famosos",
     movie: "Películas",
@@ -63,10 +62,10 @@ export function getCurationCategoryLabel(type: string): string {
 }
 
 /** Order of sections in the curated display. */
-export const CURATION_SECTION_ORDER: string[] = ["city", "brand", "team", "university", "artist", "movie"];
+export const CURATION_SECTION_ORDER: string[] = ["city", "brand", "university", "artist", "movie"];
 
 /** Order of sections for "Descubrí el mundo" — only the 4 editorial categories. */
-export const WORLD_SECTION_ORDER: string[] = ["city", "brand", "team", "university"];
+export const WORLD_SECTION_ORDER: string[] = ["city", "brand", "university"];
 
 /** Compact list of ISO codes for the country row. */
 export const FEATURED_COUNTRY_ISOS: string[] = ["AR", "MX", "ES", "CL", "CO", "UY", "PE"];

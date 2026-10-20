@@ -8,7 +8,6 @@ import type { LightweightEntity } from "@/types/atlas";
 
 const mockCategories: AtlasCategory[] = [
   { type: "city", label: "Ciudad", plural: "Ciudades", count: 3 },
-  { type: "team", label: "Equipo", plural: "Equipos", count: 2 },
   { type: "university", label: "Universidad", plural: "Universidades", count: 4 },
 ];
 
@@ -76,7 +75,7 @@ describe("CountryHubClient (Fase 3 - Geografía Bidireccional)", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Argentina" })).toBeInTheDocument();
-    expect(screen.getByText("9 entidades registradas")).toBeInTheDocument();
+    expect(screen.getByText("7 entidades registradas")).toBeInTheDocument();
     expect(screen.getByText("Ciudades de Argentina")).toBeInTheDocument();
     expect(screen.getByText("Buenos Aires")).toBeInTheDocument();
     expect(screen.getByText("Córdoba")).toBeInTheDocument();

@@ -7,7 +7,7 @@ import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import AtlasCategoryListing from "@/components/atlas/AtlasCategoryListing";
 import AtlasSharePanel from "@/components/atlas/AtlasSharePanel";
 
-const VALID_CATEGORIES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
+const VALID_CATEGORIES: EntityType[] = ["brand", "city", "university", "artist", "movie"];
 
 interface Props {
   params: Promise<{ countryISO: string; category: string }>;
@@ -51,7 +51,6 @@ function categoryLabel(category: string): string | null {
   const meta: Record<string, { plural: string; label: string }> = {
     brand: { plural: "Marcas", label: "Marcas" },
     city: { plural: "Ciudades", label: "Ciudades" },
-    team: { plural: "Equipos", label: "Equipos" },
     university: { plural: "Universidades", label: "Universidades" },
     artist: { plural: "Famosos", label: "Famoso" },
     movie: { plural: "Películas", label: "Películas" },

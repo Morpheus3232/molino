@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Asterisk, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
+import { Asterisk, Building2, Globe2, GraduationCap, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
@@ -15,7 +15,6 @@ const EXPLORE_COPY: Record<EntityType, string> = {
   country: "Explorar países que comparten tu signo.",
   city: "Explorar ciudades que comparten tu signo.",
   university: "Explorar universidades que comparten tu signo.",
-  team: "Explorar equipos que comparten tu signo.",
   movie: "Explorar películas que comparten tu signo.",
   artist: "Explorar famosos que comparten tu signo.",
   football_player: "Explorar futbolistas que comparten tu signo.",
@@ -26,7 +25,6 @@ const TYPE_ICONS: Record<EntityType, LucideIcon> = {
   city: Building2,
   country: Globe2,
   university: GraduationCap,
-  team: Trophy,
   movie: Clapperboard,
   artist: Mic2,
   football_player: Shirt,

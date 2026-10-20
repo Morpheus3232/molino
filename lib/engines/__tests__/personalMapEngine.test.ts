@@ -88,7 +88,6 @@ describe("buildPersonalMap", () => {
     entity({ id: "auto-mov", type: "brand", category: "Autos y Movilidad", animal: "Tigre", year: 1938 }),
     entity({ id: "ropa-misma", type: "brand", category: "ropa", animal: "Caballo", year: 1954 }),
     entity({ id: "ropa-moda", type: "brand", category: "Ropa y Moda", animal: "Buey", year: 1961 }),
-    entity({ id: "equipo", type: "team", animal: "Caballo", year: 1906 }),
     entity({ id: "marca-suelta", type: "brand", category: "Tecnología", animal: "Caballo", year: 1978 }),
     entity({ id: "marca-sin-categoria", type: "brand", animal: "Perro", year: 1970 }),
     entity({ id: "uni", type: "university", animal: "Caballo", year: 1942 }),
@@ -106,7 +105,6 @@ describe("buildPersonalMap", () => {
       "vestimenta",
       "autos",
       "aula",
-      "cancha",
       "gente",
       "pantalla",
     ]);
@@ -138,8 +136,6 @@ describe("buildPersonalMap", () => {
     const map = buildPersonalMap(perfil, catalog);
     const idsDe = (id: string) =>
       map.domains.find((d) => d.id === id)!.groups.flatMap((g) => g.entities.map((e) => e.id));
-    expect(idsDe("cancha")).toEqual(["equipo"]);
-    expect(idsDe("territorio")).not.toContain("equipo");
     expect(idsDe("vestimenta")).toContain("ropa-misma");
     expect(idsDe("autos")).toContain("auto-mismo");
     // Sin dominio "marcas": una marca de tecnología ya no tiene dónde caer, y

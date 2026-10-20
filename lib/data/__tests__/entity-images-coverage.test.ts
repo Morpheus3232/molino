@@ -37,11 +37,9 @@ describe("cobertura de imágenes para entidades del atlas", () => {
     }
   });
 
-  it("los equipos y universidades usan visualType logo para mostrar su escudo", () => {
-    const conImagen = SYMBOLIC_ENTITIES.filter(
-      (e) => (e.type === "team" || e.type === "university") && e.imageUrl
-    );
-    expect(conImagen.length).toBeGreaterThan(80);
+  it("las universidades usan visualType logo para mostrar su escudo", () => {
+    const conImagen = SYMBOLIC_ENTITIES.filter((e) => e.type === "university" && e.imageUrl);
+    expect(conImagen.length).toBeGreaterThan(60);
     for (const e of conImagen) {
       expect(e.visualType).toBe("logo");
     }

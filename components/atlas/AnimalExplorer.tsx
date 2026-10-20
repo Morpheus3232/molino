@@ -18,7 +18,6 @@ const CATEGORY_ORDER = [
   { type: "country", label: "Países" },
   { type: "city", label: "Ciudades" },
   { type: "brand", label: "Marcas" },
-  { type: "team", label: "Equipos" },
   { type: "university", label: "Universidades" },
   { type: "artist", label: "Famosos" },
   { type: "movie", label: "Películas" },

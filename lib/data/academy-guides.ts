@@ -67,7 +67,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
     howItWorks: [
       "Mi Mapa responde ¿quién soy según los sistemas que usa Molino? Ahí están tu Camino de Vida, tu signo solar y tu signo del zodíaco chino: los datos base que no cambian con la fecha.",
       "Hoy responde ¿qué está activo para mí ahora? Combina tu día personal, tu año personal y la fase lunar del día para armar el Consejo del Momento — se explica en detalle en la guía de Hoy.",
-      "Afinidades responde ¿en qué casilla de mi ciclo cae cada entidad del mundo? Países, ciudades, marcas, universidades, famosos, películas y equipos, comparados signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto (ver la guía de afinidades).",
+      "Afinidades responde ¿en qué casilla de mi ciclo cae cada entidad del mundo? Países, ciudades, marcas, universidades, famosos y películas, comparados signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto (ver la guía de afinidades).",
       "Journal responde ¿qué quiero registrar y observar de mi propio recorrido? Es el único espacio donde el contenido lo escribís vos, no Molino.",
       "Año (Evolution) responde ¿en qué ciclo largo estoy? Mira el arco de tiempo más amplio que tu Año Personal, con perspectiva sobre patrones que no se ven día a día.",
       "Mes (Calendario) responde ¿qué cambia durante este período? Es la vista intermedia entre el detalle diario de Hoy y el arco largo de Año.",
@@ -151,7 +151,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
     title: "Cómo se arma Mi Mapa",
     subtitle: "Signo contra signo, tres casillas y un orden que no cambia el resultado.",
     metaDescription:
-      "Cómo Mi Mapa cruza tu signo del zodíaco chino con ciudades, equipos, universidades, personas y marcas: las tres casillas, y por qué tu país ordena pero nunca puntúa.",
+      "Cómo Mi Mapa cruza tu signo del zodíaco chino con ciudades, universidades, personas y marcas: las tres casillas, y por qué tu país ordena pero nunca puntúa.",
     whatYouLearn: [
       "Qué compara Mi Mapa y qué deja afuera a propósito",
       "Qué son las tres casillas: tu propio signo, tus dos amigos y tu enemigo",
@@ -159,7 +159,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
       "Por qué algunos rubros todavía no aparecen",
     ],
     whatIs: [
-      "Mi Mapa responde una sola pregunta: dónde toca el mundo tu signo del zodíaco chino. Toma entidades reales —ciudades y países, clubes, universidades, personas, películas, autos, ropa— y las ubica según la relación entre su signo y el tuyo.",
+      "Mi Mapa responde una sola pregunta: dónde toca el mundo tu signo del zodíaco chino. Toma entidades reales —ciudades y países, universidades, personas, películas, autos, ropa— y las ubica según la relación entre su signo y el tuyo.",
     ],
     howItWorks: [
       "Cada entidad tiene una fecha de origen documentada: la fundación de una ciudad o un club, el nacimiento de una persona, el estreno de una película. Esa fecha da su signo, con el mismo corte de Año Nuevo chino que se usa para el tuyo.",
@@ -174,7 +174,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
     tradicion: "Las dos relaciones del ciclo de doce que aparecen en cualquier fuente: los amigos del mismo triángulo (三合 San He) y el opuesto directo (六冲 Liu Chong).",
     molino: "Molino agrupa por casilla en vez de puntuar. Dos personas del mismo signo ven las mismas entidades en las mismas casillas; el país solo cambia el orden en que aparecen.",
     whatItDoesNotMean: [
-      "Que una ciudad o un club esté en tu casilla de amigos no es una recomendación de mudarte ni de cambiar de equipo: es una relación simbólica entre dos fechas.",
+      "Que una ciudad o una universidad esté en tu casilla de amigos no es una recomendación de mudarte ni de cambiar de carrera: es una relación simbólica entre dos fechas.",
       "No hay un puntaje escondido: dentro de una casilla, todas las entidades tienen la misma relación con tu signo.",
     ],
     exploreLinks: [
@@ -232,7 +232,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
       "Qué NO te está diciendo una afinidad",
     ],
     whatIs: [
-      "Una página de Afinidad compara tu signo del zodíaco chino con el de una entidad real — un país, una ciudad, una marca, una universidad, un famoso, una película o un equipo. No mide compatibilidad ni predice nada: te dice en qué casilla del ciclo cae esa entidad respecto de vos.",
+      "Una página de Afinidad compara tu signo del zodíaco chino con el de una entidad real — un país, una ciudad, una marca, una universidad, un famoso o una película. No mide compatibilidad ni predice nada: te dice en qué casilla del ciclo cae esa entidad respecto de vos.",
     ],
     howItWorks: [
       "Todo empieza con un dato verificable: el evento de origen de la entidad, con su fecha exacta — una fundación, un nacimiento, un estreno. Molino usa ese evento para calcular el signo de la entidad, con el mismo corte de Año Nuevo chino que usa para el tuyo.",

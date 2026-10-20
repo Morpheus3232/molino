@@ -65,6 +65,12 @@ const nextConfig = {
       { source: '/principios', destination: '/filosofia', permanent: true },
       // /transparencia se eliminó (2026-10-17); lo que importa de ella vive en /filosofia.
       { source: '/transparencia', destination: '/filosofia', permanent: true },
+      // Los equipos de fútbol salieron del sitio (2026-10-20): sus 91 fichas,
+      // la categoría y las listas del Atlas van a la página padre.
+      { source: '/affinity/team', destination: '/affinity', permanent: true },
+      { source: '/affinity/team/:path*', destination: '/affinity', permanent: true },
+      { source: '/atlas/:iso/team', destination: '/atlas/:iso', permanent: true },
+      { source: '/atlas/explorar/:animal/team', destination: '/atlas/explorar/:animal', permanent: true },
       { source: '/patterns', destination: '/profile', permanent: true },
       { source: '/synthesis', destination: '/profile', permanent: true },
       // Ids que descarta el dedup del atlas → la ficha que sobrevivió (generado,

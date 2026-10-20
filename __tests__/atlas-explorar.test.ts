@@ -97,15 +97,6 @@ describe('getEntitiesByAnimalAndCategory', () => {
     }
   });
 
-  test('Caballo + team returns team entities', () => {
-    const entities = getEntitiesByAnimalAndCategory("Caballo", "team");
-    expect(entities.length).toBeGreaterThan(0);
-    for (const e of entities) {
-      expect(e.type).toBe("team");
-      expect(e.animal).toBe("Caballo");
-    }
-  });
-
   test('Caballo + university returns university entities', () => {
     const entities = getEntitiesByAnimalAndCategory("Caballo", "university");
     expect(entities.length).toBeGreaterThan(0);

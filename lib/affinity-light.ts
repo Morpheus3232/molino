@@ -162,7 +162,6 @@ const CATEGORY_ORDER: { type: string; label: string; singular: string }[] = [
   { type: "country", label: "Países", singular: "país" },
   { type: "city", label: "Ciudades", singular: "ciudad" },
   { type: "brand", label: "Marcas", singular: "marca" },
-  { type: "team", label: "Equipos", singular: "equipo" },
   { type: "university", label: "Universidades", singular: "universidad" },
   { type: "artist", label: "Famosos", singular: "famoso" },
   { type: "movie", label: "Películas", singular: "película" },

@@ -104,21 +104,23 @@ Consecuencias operativas:
   inventaría uno); si vale la pena, es un campo `month` en el evento, jamás un
   día falso.
 
-  Cobertura global con fecha exacta: territorio 108/311, cancha 70/91,
-  aula 48/93, gente 221/234, pantalla 16/16, autos 19/74, vestimenta 2/89.
+  Cobertura global con fecha exacta: territorio 108/311, aula 48/93,
+  gente 221/234, pantalla 16/16, autos 19/74, vestimenta 2/89. Los equipos
+  de fútbol (91, el dominio "cancha") se eliminaron del sitio el 2026-10-20:
+  sus URLs redirigen a /affinity y al Atlas (next.config.js).
 
   Cobertura local con fecha exacta, por país del público objetivo (entidades
   del propio país que el mapa puede mostrar):
 
-  | País | Total | ciudades | marcas | equipos | univ. | personas |
-  |---|---|---|---|---|---|---|
-  | Argentina | 108 | 28 | 3 | 19 | 18 | 38 |
-  | Uruguay | 57 | 8 | 0 | 13 | 1 | 34 |
-  | Chile | 50 | 5 | 0 | 10 | 9 | 26 |
-  | Perú | 50 | 6 | 0 | 10 | 9 | 25 |
-  | México | 55 | 18 | 4 | 5 | 5 | 23 |
-  | España | 35 | 2 | 3 | 7 | 2 | 20 |
-  | Colombia | 45 | 16 | 1 | 5 | 3 | 20 |
+  | País | Total | ciudades | marcas | univ. | personas |
+  |---|---|---|---|---|---|
+  | Argentina | 89 | 28 | 3 | 18 | 38 |
+  | Uruguay | 44 | 8 | 0 | 1 | 34 |
+  | Chile | 40 | 5 | 0 | 9 | 26 |
+  | Perú | 40 | 6 | 0 | 9 | 25 |
+  | México | 50 | 18 | 4 | 5 | 23 |
+  | España | 28 | 2 | 3 | 2 | 20 |
+  | Colombia | 40 | 16 | 1 | 3 | 20 |
 
   (La columna "marcas" de esa tabla ya no tiene dominio propio: solo cuenta
   para vestimenta y autos.) Ciudades actualizadas el 2026-10-04: se cargaron
@@ -177,8 +179,8 @@ Consecuencias operativas:
   listado en otro lado.
 - **Motor**: `lib/engines/personalMapEngine.ts` (puro, client-safe) es la
   implementación de todo lo anterior. UI: `components/profile/PersonalMapSection.tsx`
-  dentro de `/profile` ("Mi Mapa"). Cubre los ocho dominios del Atlas
-  (territorio, vestimenta, autos, cancha, aula, gente, pantalla).
+  dentro de `/profile` ("Mi Mapa"). Cubre los dominios del Atlas
+  (territorio, vestimenta, autos, aula, gente, pantalla).
 
 ## Sesión del 2026-08-17
 

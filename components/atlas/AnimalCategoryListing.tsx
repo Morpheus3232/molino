@@ -17,7 +17,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   country: "Países",
   city: "Ciudades",
   brand: "Marcas",
-  team: "Equipos",
   university: "Universidades",
   artist: "Famosos",
   movie: "Películas",

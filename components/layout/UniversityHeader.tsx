@@ -131,7 +131,6 @@ const AFFINITY_GROUPS: NavGroup[] = [
       { href: "/affinity/university", label: "Universidades" },
       { href: "/affinity/artist", label: "Famosos" },
       { href: "/affinity/movie", label: "Películas" },
-      { href: "/affinity/team", label: "Equipos" },
     ],
   },
 ];

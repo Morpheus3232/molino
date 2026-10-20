@@ -132,10 +132,10 @@ describe("getPersonalAtlas — casos de prueba obligatorios", () => {
 });
 
 describe("getPersonalAtlas — city (piloto ampliado)", () => {
-  test("city forma parte del piloto por defecto, junto a university/team/football_player/artist", () => {
+  test("city forma parte del piloto por defecto, junto a university/football_player/artist", () => {
     const result = getPersonalAtlas({ animal: "Caballo", countryISO: "AR" });
     expect(result.groups.map((g) => g.category).sort()).toEqual(
-      ["artist", "city", "football_player", "team", "university"]
+      ["artist", "city", "football_player", "university"]
     );
   });
 
@@ -178,19 +178,6 @@ describe("getPersonalAtlas — football_player (Fútbol = Equipos + Jugadores)",
   test("football_player forma parte del piloto por defecto", () => {
     const result = getPersonalAtlas({ animal: "Caballo", countryISO: "AR" });
     expect(result.groups.map((g) => g.category)).toContain("football_player");
-  });
-
-  test("team y football_player resuelven su propia cascada de forma independiente", () => {
-    // Regla explícita: cada categoría es independiente — team no debe
-    // "prestarle" su nivel de fallback a football_player ni viceversa.
-    const result = getPersonalAtlas({ animal: "Dragón", countryISO: "MX" });
-    const team = result.groups.find((g) => g.category === "team")!;
-    const players = result.groups.find((g) => g.category === "football_player")!;
-    expect(team).toBeDefined();
-    expect(players).toBeDefined();
-    // Con solo 4 football_player en todo el dataset, es legítimo que no
-    // alcance el threshold aunque team sí lo haga en el mismo país/animal.
-    expect(team.entities.length).toBeGreaterThan(0);
   });
 
   test("un grupo football_player sin cobertura queda vacío, nunca por debajo del threshold", () => {

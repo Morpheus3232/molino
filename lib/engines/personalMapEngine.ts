@@ -159,7 +159,6 @@ export type DomainId =
   | "territorio"
   | "vestimenta"
   | "autos"
-  | "cancha"
   | "aula"
   | "gente"
   | "pantalla";
@@ -252,7 +251,7 @@ interface DomainSpec {
 
 /**
  * Los ocho dominios cubren TODO lo que el atlas tiene fechado: países,
- * ciudades, las tres familias de marcas, equipos, universidades, personas y
+ * ciudades, las familias de marcas, universidades, personas y
  * películas. Un tipo de entidad que no aparezca acá es un tipo que el mapa
  * personal no está usando — y la idea es que no quede ninguno afuera.
  *
@@ -292,14 +291,6 @@ const DOMAIN_SPECS: DomainSpec[] = [
     scope: "Universidades fechadas por su fundación documentada.",
     href: "/affinity/university",
     matches: (e) => e.type === "university",
-  },
-  {
-    id: "cancha",
-    question: "¿De qué equipo sentirte?",
-    label: "Cancha",
-    scope: "Clubes fechados por su fundación documentada.",
-    href: "/affinity/team",
-    matches: (e) => e.type === "team",
   },
   {
     id: "gente",

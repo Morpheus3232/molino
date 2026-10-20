@@ -1282,7 +1282,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "Cómo se usa",
         paragraphs: [
           "El orden de lectura es siempre el mismo: primero lo de tu propio signo, después lo de tus dos amigos, y por último lo del enemigo, que se lee como lo que conviene evitar. No es una condena ni una prohibición: es la relación de más tensión del ciclo, y saberlo sirve para elegir con los ojos abiertos.",
-          "En Mi Mapa, Molino aplica esto a ciudades, equipos, universidades, personas, autos y más: cada entidad tiene un año de origen, ese año da su signo, y el signo la ubica en una de tus casillas.",
+          "En Mi Mapa, Molino aplica esto a ciudades, universidades, personas, autos y más: cada entidad tiene un año de origen, ese año da su signo, y el signo la ubica en una de tus casillas.",
         ],
       },
     ],

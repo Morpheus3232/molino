@@ -25,7 +25,7 @@ describe("GET /api/atlas/personal", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     const categories = body.groups.map((g: { category: string }) => g.category).sort();
-    expect(categories).toEqual(["artist", "city", "football_player", "team", "university"]);
+    expect(categories).toEqual(["artist", "city", "football_player", "university"]);
   });
 
   test("category=brand en la query string no cambia el piloto", async () => {
@@ -33,7 +33,7 @@ describe("GET /api/atlas/personal", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     const categories = body.groups.map((g: { category: string }) => g.category).sort();
-    expect(categories).toEqual(["artist", "city", "football_player", "team", "university"]);
+    expect(categories).toEqual(["artist", "city", "football_player", "university"]);
   });
 
   test("city aparece como grupo del piloto con un nivel válido", async () => {

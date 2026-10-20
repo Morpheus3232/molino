@@ -8,7 +8,6 @@ const SCHEMA_TYPE: Record<EntityType, string> = {
   city: "City",
   country: "Country",
   brand: "Organization",
-  team: "SportsTeam",
   university: "CollegeOrUniversity",
   artist: "Person",
   movie: "Movie",
@@ -35,7 +34,6 @@ export function buildEntityJsonLd(entity: SymbolicEntity, type: EntityType, path
       if (entity.country) jsonLd.containedInPlace = { "@type": "Country", name: entity.country };
       break;
     case "brand":
-    case "team":
     case "university":
       if (foundingDate) jsonLd.foundingDate = foundingDate;
       if (entity.country) {

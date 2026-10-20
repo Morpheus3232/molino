@@ -8,7 +8,6 @@ export const contentType = "image/png";
 const CATEGORY_LABELS: Record<string, string> = {
   brand: "Marcas",
   city: "Ciudades",
-  team: "Equipos",
   university: "Universidades",
   artist: "Famosos",
   movie: "Películas",

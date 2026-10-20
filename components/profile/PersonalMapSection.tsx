@@ -16,7 +16,6 @@ import {
   Car,
   Shirt,
   GraduationCap,
-  Trophy,
   Users,
   Clapperboard,
   ArrowRight,
@@ -69,7 +68,7 @@ const KIND_TONE: Record<MapRelation, { accent: string; bar: string }> = {
 };
 
 /** Dominios secundarios donde se prioriza acotar la cantidad visible inicial. */
-const SECONDARY_DOMAINS = new Set(["cancha", "gente", "pantalla"]);
+const SECONDARY_DOMAINS = new Set(["gente", "pantalla"]);
 
 
 const MESES = [
@@ -106,12 +105,6 @@ const DOMAIN_EXTRA_META: Record<DomainId, DomainMetaInfo> = {
     icon: GraduationCap,
     atlasLinks: (animal) => [
       { label: `Ver Universidades de ${animal} en Atlas`, href: `/affinity/university?animal=${encodeURIComponent(animal)}` },
-    ],
-  },
-  cancha: {
-    icon: Trophy,
-    atlasLinks: (animal) => [
-      { label: `Ver Clubes de ${animal} en Atlas`, href: `/affinity/team?animal=${encodeURIComponent(animal)}` },
     ],
   },
   gente: {
@@ -382,7 +375,7 @@ function DomainBlock({
       {/* Botón inferior de derivación al Atlas */}
       <div className="mt-8 pt-4 flex items-center justify-between flex-wrap gap-4 border-t border-border/60">
         <Link
-          href={`/affinity/${domain.id === "territorio" ? "country" : domain.id === "autos" || domain.id === "vestimenta" ? "brand" : domain.id === "aula" ? "university" : domain.id === "cancha" ? "team" : domain.id === "gente" ? "artist" : "movie"}?animal=${encodeURIComponent(userAnimal)}`}
+          href={`/affinity/${domain.id === "territorio" ? "country" : domain.id === "autos" || domain.id === "vestimenta" ? "brand" : domain.id === "aula" ? "university" : domain.id === "gente" ? "artist" : "movie"}?animal=${encodeURIComponent(userAnimal)}`}
           className="inline-flex items-center gap-2 text-sm text-accent hover:text-foreground transition-colors label-caps"
         >
           <span>Abrir sección completa de {domain.label} en Atlas</span>

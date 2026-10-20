@@ -30,10 +30,6 @@ import { CITIES_ARGENTINA_COMPLETO } from "./cities-argentina-completo";
 import { CITIES_URUGUAY } from "./cities-uruguay";
 import { CITIES_CHILE } from "./cities-chile";
 import { CITIES_PERU } from "./cities-peru";
-import { TEAMS_ARGENTINA } from "./teams-argentina";
-import { TEAMS_CHILE } from "./teams-chile";
-import { TEAMS_PERU } from "./teams-peru";
-import { TEAMS_URUGUAY } from "./teams-uruguay";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
 import { UNIVERSITIES_BUENOS_AIRES } from "./universities-buenos-aires";
 import { UNIVERSITIES_CHILE } from "./universities-chile";
@@ -45,9 +41,9 @@ import { ARTISTS_CHILE } from "./artists-chile";
 import { ARTISTS_PERU } from "./artists-peru";
 import { ARTISTS_URUGUAY } from "./artists-uruguay";
 import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
-import { CITIES_MEXICO, TEAMS_MEXICO, UNIVERSITIES_MEXICO, BRANDS_MEXICO, ARTISTS_MEXICO } from "./atlas/mexico";
-import { CITIES_COLOMBIA, TEAMS_COLOMBIA, UNIVERSITIES_COLOMBIA, BRANDS_COLOMBIA, ARTISTS_COLOMBIA } from "./atlas/colombia";
-import { CITIES_ESPANA, TEAMS_ESPANA, UNIVERSITIES_ESPANA, BRANDS_ESPANA, ARTISTS_ESPANA } from "./atlas/espana";
+import { CITIES_MEXICO, UNIVERSITIES_MEXICO, BRANDS_MEXICO, ARTISTS_MEXICO } from "./atlas/mexico";
+import { CITIES_COLOMBIA, UNIVERSITIES_COLOMBIA, BRANDS_COLOMBIA, ARTISTS_COLOMBIA } from "./atlas/colombia";
+import { CITIES_ESPANA, UNIVERSITIES_ESPANA, BRANDS_ESPANA, ARTISTS_ESPANA } from "./atlas/espana";
 import { FOOTBALL_PLAYERS_ARGENTINA } from "./football-players-argentina";
 import { FOOTBALL_PLAYERS_URUGUAY } from "./football-players-uruguay";
 import { FOOTBALL_PLAYERS_ESPANA } from "./football-players-espana";
@@ -63,7 +59,6 @@ export type EntityType =
   | "city"
   | "country"
   | "university"
-  | "team"
   | "movie"
   | "artist"
   | "football_player";
@@ -74,7 +69,6 @@ export const VISUAL_TYPE_BY_TYPE: Record<EntityType, VisualType> = {
   city: "flag",
   country: "flag",
   university: "logo",
-  team: "logo",
   movie: "album",
   artist: "portrait",
   football_player: "portrait",
@@ -215,7 +209,6 @@ export const ENTITY_TYPES: Record<EntityType, { label: string; plural: string; i
   city:       { label: "Ciudad",     plural: "Ciudades",      icon: "\ud83c\udfef", description: "Explor\u00e9 qu\u00e9 ciudades vibran con tu perfil" },
   country:    { label: "Pa\u00eds",  plural: "Pa\u00edses",   icon: "\ud83c\udf0d", description: "Encontr\u00e1 qu\u00e9 pa\u00edses reson\u00e1n con vos" },
   university: { label: "Universidad", plural: "Universidades", icon: "\ud83c\udf93", description: "Conoc\u00e9 qu\u00e9 instituciones educativas conectan con tu patr\u00f3n" },
-  team:       { label: "Equipo",     plural: "Equipos",       icon: "\u26bd",  description: "Ved qu\u00e9 equipos deportivos vibran con tu energ\u00eda" },
   movie:      { label: "Pel\u00edcula", plural: "Pel\u00edculas", icon: "\ud83c\udfac", description: "Descubr\u00ed qu\u00e9 pel\u00edculas resuenan con vos" },
   artist:     { label: "Famoso",     plural: "Famosos",       icon: "\ud83c\udfa4", description: "Encontr\u00e1 qu\u00e9 famosos conectan con tu esencia" },
   football_player: { label: "Futbolista", plural: "Futbolistas", icon: "\u26bd", description: "Encontr\u00e1 qu\u00e9 futbolistas comparten tu signo" },
@@ -349,10 +342,6 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...CITIES_CHILE,
   ...CITIES_PERU,
 
-  ...TEAMS_ARGENTINA,
-  ...TEAMS_CHILE,
-  ...TEAMS_PERU,
-  ...TEAMS_URUGUAY,
   ...UNIVERSITIES_ARGENTINA,
   ...UNIVERSITIES_BUENOS_AIRES,
   ...UNIVERSITIES_CHILE,
@@ -368,19 +357,16 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
 
   // ──── ATLAS VISUAL — México, Colombia, España (Fase 2) ────
   ...CITIES_MEXICO,
-  ...TEAMS_MEXICO,
   ...UNIVERSITIES_MEXICO,
   ...BRANDS_MEXICO,
   ...ARTISTS_MEXICO,
 
   ...CITIES_COLOMBIA,
-  ...TEAMS_COLOMBIA,
   ...UNIVERSITIES_COLOMBIA,
   ...BRANDS_COLOMBIA,
   ...ARTISTS_COLOMBIA,
 
   ...CITIES_ESPANA,
-  ...TEAMS_ESPANA,
   ...UNIVERSITIES_ESPANA,
   ...BRANDS_ESPANA,
   ...ARTISTS_ESPANA,
@@ -485,99 +471,6 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
         description: "El rey Alfonso IX de León funda el Estudio General de Salamanca, origen de la universidad.",
         source: "Universidad de Salamanca — Historia institucional",
         confidence: "media",
-        primaryForAffinity: true,
-      },
-    ],
-  },
-
-  // ──── EQUIPOS (3) ────
-  {
-    id: "boca-juniors", name: "Boca Juniors", type: "team", country: "Argentina",
-    emoji: "\u26bd",
-    description: "Boca Juniors es el club m\u00e1s ic\u00f3nico del f\u00fatbol argentino. Fundado por inmigrantes italianos en La Boca.",
-    keyThemes: ["Pasión", "Identidad", "Garra", "Comunidad"],
-    sourceNote: "Fundado el 3 de abril de 1905 por ocho j\u00f3venes italianos en La Boca.",
-    events: [
-      {
-        id: "boca-fundacion",
-        type: "fundacion",
-        label: "Fundaci\u00f3n",
-        date: "1905-04-03",
-        year: 1905,
-        description: "Ocho j\u00f3venes inmigrantes italianos fundan Club Atl\u00e9tico Boca Juniors en el barrio de La Boca, Buenos Aires.",
-        source: "Boca Juniors — Historia oficial",
-        confidence: "exacta",
-        primaryForAffinity: true,
-      },
-    ],
-  },
-  {
-    id: "fc-barcelona", name: "FC Barcelona", type: "team", country: "Espa\u00f1a",
-    emoji: "\u26bd",
-    description: "El FC Barcelona es m\u00e1s que un club. Su lema \u00abM\u00e9s que un club\u00bb refleja su identidad cultural.",
-    keyThemes: ["Identidad", "Excelencia", "Cultura", "Rebelde"],
-    sourceNote: "Fundado el 29 de noviembre de 1899 por Joan Gamper.",
-    events: [
-      {
-        id: "barca-fundacion",
-        type: "fundacion",
-        label: "Fundaci\u00f3n",
-        date: "1899-11-29",
-        year: 1899,
-        description: "Joan Gamper y un grupo de futbolistas suizos, catalanes e ingleses fundan el Futbol Club Barcelona.",
-        source: "FC Barcelona — Historia del Club",
-        confidence: "exacta",
-        primaryForAffinity: true,
-      },
-    ],
-  },
-  {
-    id: "real-madrid", name: "Real Madrid", type: "team", country: "Espa\u00f1a",
-    emoji: "\u26bd",
-    description: "Real Madrid es el club con m\u00e1s t\u00edtulos de la Champions League. S\u00edmbolo de excelencia deportiva global.",
-    keyThemes: ["Excellence", "Ambici\u00f3n", "Legado", "Glory"],
-    sourceNote: "Fundado el 6 de marzo de 1902 como Madrid Football Club.",
-    events: [
-      {
-        id: "rm-fundacion",
-        type: "fundacion",
-        label: "Fundaci\u00f3n como Madrid Football Club",
-        date: "1902-03-06",
-        year: 1902,
-        description: "Juli\u00e1n Palacios y los hermanos Juan y Carlos Padr\u00f3s fundan el Madrid Football Club.",
-        source: "Real Madrid — Historia del Club",
-        confidence: "exacta",
-        primaryForAffinity: true,
-      },
-      {
-        id: "rm-titulo-real",
-        type: "cambio-nombre",
-        label: "T\u00edtulo de Real",
-        year: 1920,
-        description: "El rey Alfonso XIII concede el t\u00edtulo de \"Real\" al club.",
-        source: "Real Madrid — Historia del Club",
-        confidence: "alta",
-        primaryForAffinity: false,
-      },
-    ],
-  },
-
-  {
-    id: "sporting-cp", name: "Sporting CP", type: "team", country: "Portugal",
-    emoji: "⚽",
-    description: "Sporting Clube de Portugal es uno de los tres grandes del fútbol portugués, cantera histórica de figuras como Cristiano Ronaldo.",
-    keyThemes: ["Cantera", "Identidad", "Tradición", "Formación"],
-    sourceNote: "Fundado el 1 de julio de 1906 en Lisboa por José Alvalade.",
-    events: [
-      {
-        id: "sporting-fundacion",
-        type: "fundacion",
-        label: "Fundación",
-        date: "1906-07-01",
-        year: 1906,
-        description: "José Alvalade funda el Sporting Clube de Portugal en Lisboa.",
-        source: "Sporting Clube de Portugal — Historia oficial",
-        confidence: "exacta",
         primaryForAffinity: true,
       },
     ],
@@ -744,12 +637,12 @@ export function getAvailableTypes(): EntityType[] {
 
 /**
  * Entity types with real per-country coverage (ciudades, artistas,
- * universidades, equipos all have dedicated country data files —
+ * universidades all have dedicated country data files —
  * cities-argentina.ts, artists-chile.ts, etc.). "country" itself and
  * global-only types (brand, movie) are excluded: narrowing "país" to just
  * the user's own country would be a trivial, uninformative single result.
  */
-const COUNTRY_FOCUSABLE_TYPES: EntityType[] = ["city", "artist", "university", "team"];
+const COUNTRY_FOCUSABLE_TYPES: EntityType[] = ["city", "artist", "university"];
 
 function normalizeCountryName(name: string): string {
   return name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
@@ -757,8 +650,8 @@ function normalizeCountryName(name: string): string {
 
 /**
  * Narrows entities to the user's own country for types where that's
- * meaningful — un visitante de Chile ve ciudades/artistas/universidades/
- * equipos de Chile, no una mezcla global de docenas de países. Si no hay
+ * meaningful — un visitante de Chile ve ciudades/artistas/universidades
+ * de Chile, no una mezcla global de docenas de países. Si no hay
  * datos locales para ese tipo (país sin cobertura todavía), devuelve la
  * lista completa sin filtrar: mejor mostrar algo global que una página vacía.
  */

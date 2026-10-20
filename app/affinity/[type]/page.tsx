@@ -6,7 +6,7 @@ import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType }
 import { ANIMALS } from "@/lib/data/animalRelations";
 import AffinityTypeContent from "./AffinityTypeContent";
 
-const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist", "football_player"];
+const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "movie", "artist", "football_player"];
 
 // Solo los types pre-generados son válidos; cualquier otro resuelve a 404 real.
 export const dynamicParams = false;

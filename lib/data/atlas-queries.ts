@@ -17,7 +17,7 @@ import { getRegionCountryISOs } from "./atlas-regions";
 import { CHINESE_NEW_YEAR_DATES, getLunarYear } from "./chinese-new-year";
 
 /** Categories we expose in the drill-down (skip the "country" type itself). */
-const DRILL_DOWN_TYPES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
+const DRILL_DOWN_TYPES: EntityType[] = ["brand", "city", "university", "artist", "movie"];
 
 export interface AtlasCountry {
   /** ISO 3166-1 alpha-2 */
@@ -258,7 +258,7 @@ export type PersonalAtlasCategory = EntityType | "football_player";
 
 /** Categorías habilitadas cuando no se pide una categoría específica. */
 export const PERSONAL_ATLAS_PILOT_CATEGORIES: PersonalAtlasCategory[] = [
-  "university", "team", "football_player", "artist", "city",
+  "university", "football_player", "artist", "city",
 ];
 
 export type FallbackLevel =

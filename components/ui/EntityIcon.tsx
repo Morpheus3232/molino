@@ -92,7 +92,6 @@ export function resolveEntityIconKind(entity: EntityDataLike): EntityIconKind {
 
   // 1. FOOTBALL / SOCCER (teams, players, soccer items)
   if (
-    type === "team" ||
     type === "football_player" ||
     emoji === "⚽" ||
     emoji === "🏟" ||

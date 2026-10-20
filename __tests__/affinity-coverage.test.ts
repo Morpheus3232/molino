@@ -39,7 +39,7 @@ function bucketFor(score: number): Bucket {
   return 'LOW';
 }
 
-const CATEGORY_TYPES: EntityType[] = ['brand', 'city', 'country', 'university', 'team', 'movie', 'artist'];
+const CATEGORY_TYPES: EntityType[] = ['brand', 'city', 'country', 'university', 'movie', 'artist'];
 
 describe('Affinity coverage per animal (report)', () => {
   const report: Record<string, Record<EntityType, Record<Bucket, number>>> = {};

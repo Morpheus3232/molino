@@ -224,7 +224,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             >
               <p>
-                El Atlas reúne países, ciudades, marcas, equipos, universidades y
+                El Atlas reúne países, ciudades, marcas, universidades y
                 personas. Cada uno tiene una fecha de origen —el día en que se
                 fundó o nació— y esa fecha le da un signo del zodíaco chino, igual
                 que tu fecha de nacimiento te da el tuyo.
@@ -366,7 +366,6 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               [
                 ["city", "Ciudades"],
                 ["brand", "Marcas"],
-                ["team", "Equipos"],
                 ["university", "Universidades"],
                 ["artist", "Famosos"],
                 ["movie", "Películas"],

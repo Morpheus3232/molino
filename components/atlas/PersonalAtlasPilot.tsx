@@ -8,7 +8,6 @@ import type { FallbackLevel, PersonalAtlasGroup } from "@/lib/data/atlas-queries
 
 const CATEGORY_LABEL: Record<string, string> = {
   university: "Universidades",
-  team: "Equipos",
   football_player: "Jugadores",
   artist: "Famosos",
   city: "Ciudades",
@@ -101,13 +100,13 @@ function FootballPlayerBlock({ group }: { group: PersonalAtlasGroup }) {
 }
 
 /**
- * Demostración piloto de getPersonalAtlas(): university/team/
+ * Demostración piloto de getPersonalAtlas(): university/
  * football_player/artist/city, fallback país -> región -> mundo resuelto
  * server-side vía /api/atlas/personal. El cliente solo recibe
  * LightweightEntity[] + el nivel alcanzado — nunca vuelve a filtrar
  * SYMBOLIC_ENTITIES ni recibe el dataset completo.
  *
- * Agrupación de producto: Equipos y Jugadores se presentan juntos bajo
+ * Agrupación de producto: los Jugadores se presentan bajo
  * "Fútbol" — misma data, misma cascada, solo agrupación visual (ver
  * getPersonalAtlas: cada categoría sigue resolviendo su propio fallback
  * de forma independiente).
@@ -142,15 +141,12 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
 
   const byCategory = new Map(groups.map((g) => [g.category, g]));
   const university = byCategory.get("university");
-  const team = byCategory.get("team");
   const footballPlayer = byCategory.get("football_player");
   const artist = byCategory.get("artist");
   const city = byCategory.get("city");
 
   const hasUniversity = (university?.entities.length ?? 0) > 0;
-  const hasTeam = (team?.entities.length ?? 0) > 0;
-  const hasFootballPlayer = (footballPlayer?.entities.length ?? 0) > 0;
-  const hasFootball = hasTeam || hasFootballPlayer;
+  const hasFootball = (footballPlayer?.entities.length ?? 0) > 0;
   const hasArtist = (artist?.entities.length ?? 0) > 0;
   const hasCity = (city?.entities.length ?? 0) > 0;
 
@@ -180,8 +176,7 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
               Fútbol
             </h3>
             <div className="space-y-8 sm:pl-6 sm:border-l border-ink/10">
-              {hasTeam && <CategoryBlock group={team!} heading="h4" />}
-              {hasFootballPlayer && <FootballPlayerBlock group={footballPlayer!} />}
+              <FootballPlayerBlock group={footballPlayer!} />
             </div>
           </div>
         )}

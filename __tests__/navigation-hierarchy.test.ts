@@ -103,7 +103,7 @@ describe("Header — navegación con perfil", () => {
     expect(block).toContain('href: "/atlas"');
   });
 
-  test("Afinidades usa las 7 categorías reales de /affinity/[type]", () => {
+  test("Afinidades usa las 6 categorías reales de /affinity/[type], sin equipos", () => {
     const src = header();
     for (const href of [
       "/affinity/country",
@@ -112,10 +112,10 @@ describe("Header — navegación con perfil", () => {
       "/affinity/university",
       "/affinity/artist",
       "/affinity/movie",
-      "/affinity/team",
     ]) {
       expect(src).toContain(`href: "${href}"`);
     }
+    expect(src).not.toContain(`href: "/affinity/team"`);
   });
 
   test("Tiempo usa Hoy/Semana/Mes/Año sobre rutas reales existentes", () => {

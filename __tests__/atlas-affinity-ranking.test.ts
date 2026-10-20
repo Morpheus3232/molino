@@ -269,7 +269,7 @@ describe('countAffinityMatches', () => {
   });
 
   test('real catalog counts for Camino de Vida 5 · Caballo profile (per category)', () => {
-    const CATEGORY_TYPES: EntityType[] = ['brand', 'country', 'city', 'team', 'university', 'movie', 'artist'];
+    const CATEGORY_TYPES: EntityType[] = ['brand', 'country', 'city', 'university', 'movie', 'artist'];
     const results: Record<string, { total: number; matched: number }> = {};
     for (const type of CATEGORY_TYPES) {
       const entities = getEntitiesByType(type).map((e) => toLightweightEntity(e));

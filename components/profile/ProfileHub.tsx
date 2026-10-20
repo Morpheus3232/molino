@@ -169,7 +169,7 @@ export default function ProfileHub({
 
       {/* ═══════════════════════════════════════════════
           EL MAPA APLICADO — Dónde tu signo toca el mundo.
-          Territorio, vestimenta, autos, cancha, aula, gente
+          Territorio, vestimenta, autos, aula, gente
           y pantalla con afinidad de 3 casillas.
           ═══════════════════════════════════════════════ */}
       <PersonalMapSection profile={profile} catalog={catalog} />
