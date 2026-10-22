@@ -31,6 +31,10 @@ export interface BlogPost {
   date: string;
   updatedAt?: string;
   image: string;
+  /** Texto alternativo de la portada (describe la foto, no repite el título). */
+  imageAlt?: string;
+  /** Crédito de la foto de portada (Unsplash). */
+  imageCredit?: { name: string; url: string };
   author: string;
   intro: string[];
   sections: BlogSection[];
@@ -60,7 +64,9 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Numerología",
     date: "2026-08-13",
     updatedAt: "2026-10-19",
-    image: "/blog/numerologia-numero-de-vida.svg",
+    image: "/blog/numerologia-numero-de-vida.jpg",
+    imageAlt: "Ruta sinuosa vista desde arriba, atravesando un valle",
+    imageCredit: { name: "Jerry Kavan", url: "https://unsplash.com/photos/vv-oEGlN-4E" },
     author: "Equipo Molino",
     intro: [
       "En numerología, tu Número de Vida —también llamado Camino de Vida o Life Path— es el dato más importante de tu mapa. Se deriva únicamente de tu fecha de nacimiento y describe la dirección general que tiende a tomar tu vida: tus dones, tus desafíos y el tipo de experiencias que vas a buscar una y otra vez.",
@@ -142,7 +148,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Aprendé a calcular tu animal del zodíaco chino según tu año de nacimiento y descubrí qué revela cada uno de los 12 animales sobre tu personalidad y tus ciclos.",
     category: "Zodiaco Chino",
     date: "2026-08-13",
-    image: "/blog/zodiaco-chino-animal-personalidad.svg",
+    image: "/blog/zodiaco-chino-animal-personalidad.jpg",
+    imageAlt: "Escultura de un dragón de bronce sobre el alero de un templo",
+    imageCredit: { name: "Annie Spratt", url: "https://unsplash.com/photos/rdVLN3UFmpU" },
     author: "Equipo Molino",
     intro: [
       "El zodíaco chino organiza el tiempo en ciclos de doce años, cada uno asociado a un animal. A diferencia del zodíaco occidental —que mira el día de nacimiento— el zodíaco chino se define por el año. Tu animal no cambia con el mes: es el que corresponde al año lunar en el que naciste.",
@@ -213,7 +221,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Tu carta astral va más allá del signo solar. Descubrí los 3 elementos —signo solar, signo lunar y ascendente— y cómo se combinan para definir tu personalidad.",
     category: "Astrología",
     date: "2026-08-13",
-    image: "/blog/signo-astral-personalidad.svg",
+    image: "/blog/signo-astral-personalidad.jpg",
+    imageAlt: "Silueta de una persona bajo la Vía Láctea",
+    imageCredit: { name: "Greg Rakozy", url: "https://unsplash.com/photos/oMpAz-DN-9I" },
     author: "Equipo Molino",
     intro: [
       "Cuando alguien pregunta '¿qué signo sos?', casi siempre se refiere a tu signo solar: el que depende de tu día de nacimiento. Pero la astrología es más rica que eso. Tu identidad astral se compone de varios elementos, y los tres más importantes forman lo que se llama tu 'triángulo' personal.",
@@ -278,7 +288,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Qué es el autoconocimiento genuino, en qué se diferencia de sistemas simbólicos como la numerología o la astrología, y cómo usarlos como punto de partida sin que reemplacen tu propia reflexión.",
     category: "Autoconocimiento",
     date: "2026-08-16",
-    image: "/blog/autoconocimiento-que-es-que-no.svg",
+    image: "/blog/autoconocimiento-que-es-que-no.jpg",
+    imageAlt: "Un hombre mira por la ventana y su reflejo se superpone en el vidrio",
+    imageCredit: { name: "Laurenz Kleinheider", url: "https://unsplash.com/photos/OsC8HauR0e0" },
     author: "Equipo Molino",
     intro: [
       "\"Autoconocimiento\" se usa para casi cualquier cosa: un test de personalidad, una carta astral, una sesión de terapia, un feed de reels con 'señales de que sos un alma vieja'. Esa amplitud lo vacía de contenido. Antes de usar cualquier herramienta —incluida la numerología o la astrología— vale la pena preguntarse qué es realmente conocerse a uno mismo y qué es, en cambio, adoptar una etiqueta prestada.",
@@ -344,7 +356,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cómo usar la numerología y la astrología como herramientas de reflexión y no como oráculo: la diferencia entre perspectiva y predicción, y 3 formas de aplicar un patrón a tu vida diaria.",
     category: "Autoconocimiento",
     date: "2026-08-16",
-    image: "/blog/numerologia-astrologia-herramientas-no-oraculo.svg",
+    image: "/blog/numerologia-astrologia-herramientas-no-oraculo.jpg",
+    imageAlt: "Brújula de bolsillo apoyada sobre un mapa antiguo",
+    imageCredit: { name: "Himesh Kumar Behera", url: "https://unsplash.com/photos/t11oyf1K8kA" },
     author: "Equipo Molino",
     intro: [
       "Hay una manera de usar la numerología y la astrología que las vuelve útiles, y otra que las vuelve una forma elegante de dejar de pensar. La diferencia no está en el sistema —los mismos números, los mismos signos— sino en qué le pedís que haga por vos: ¿perspectiva sobre un patrón, o una respuesta que te saque de encima la responsabilidad de decidir?",
@@ -413,7 +427,9 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Numerología",
     date: "2026-08-16",
     updatedAt: "2026-10-17",
-    image: "/blog/numerologia-ano-personal.svg",
+    image: "/blog/numerologia-ano-personal.jpg",
+    imageAlt: "Calendario minimalista abierto en el 1 de enero",
+    imageCredit: { name: "Nathan Dumlao", url: "https://unsplash.com/photos/tG4waP7YiAg" },
     author: "Equipo Molino",
     intro: [
       "A diferencia del Número de Vida, que es fijo, el Año Personal es la parte de la numerología que se mueve. Es un ciclo de nueve años que se repite durante toda tu vida, y cada uno de esos nueve tiene un carácter distinto: hay años de inicio, años de repliegue, años de cosecha. Saber en qué año estás no te dice qué va a pasar, pero te da un marco para planificar con más criterio.",
@@ -485,7 +501,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Por qué el signo lunar y el ascendente necesitan hora y lugar de nacimiento exactos, qué tan preciso es lo que Molino calcula hoy, y cómo conseguir tu hora de nacimiento para una lectura más completa.",
     category: "Astrología",
     date: "2026-08-16",
-    image: "/blog/luna-ascendente-fecha-nacimiento-no-alcanza.svg",
+    image: "/blog/luna-ascendente-fecha-nacimiento-no-alcanza.jpg",
+    imageAlt: "Secuencia de la Luna trazando un arco en el cielo nocturno",
+    imageCredit: { name: "Sanni Sahil", url: "https://unsplash.com/photos/cSm2a_-25YU" },
     author: "Equipo Molino",
     intro: [
       "Casi todo el mundo conoce su signo solar: el que sale con solo el día y el mes de nacimiento. Pero la astrología tradicional describe la personalidad con al menos tres capas —sol, luna y ascendente— y las últimas dos necesitan datos que la fecha sola no provee. Sin ellos, cualquier lectura astrológica es una aproximación, no un cálculo exacto.",
@@ -551,7 +569,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Qué significa realmente la compatibilidad en el zodíaco chino, por qué 'incompatible' no es una sentencia, y cómo Molino combina zodíaco chino, astrología y numerología para calcular el % de Modo Pareja.",
     category: "Zodiaco Chino",
     date: "2026-08-16",
-    image: "/blog/compatibilidad-zodiaco-chino.svg",
+    image: "/blog/compatibilidad-zodiaco-chino.jpg",
+    imageAlt: "Faroles de papel encendidos, agrupados en la oscuridad",
+    imageCredit: { name: "Carl Tronders", url: "https://unsplash.com/photos/mwV0_D-o0IQ" },
     author: "Equipo Molino",
     intro: [
       "La tradición china asocia ciertos animales del zodíaco con afinidades naturales y otros con tensión estructural. Es un sistema con siglos de desarrollo y bastante más matiz del que suele llegar en versiones resumidas ('Rata y Caballo, incompatibles'). Pero incluso en su versión completa, sigue siendo un sistema simbólico: describe una tendencia entre arquetipos, no un veredicto sobre una relación real entre dos personas.",
@@ -618,7 +638,9 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Numerología",
     date: "2026-08-18",
     updatedAt: "2026-10-19",
-    image: "/blog/numerologia-numeros-maestros.svg",
+    image: "/blog/numerologia-numeros-maestros.jpg",
+    imageAlt: "Dos placas con el número 1 sobre una pared de ladrillo",
+    imageCredit: { name: "Haberdoedas", url: "https://unsplash.com/photos/3gbOU7ILMVA" },
     author: "Equipo Molino",
     intro: [
       "En numerología, casi todos los cálculos terminan en una cifra del 1 al 9: se suman los dígitos y se reduce el total hasta llegar a un número simple. Los números maestros son la excepción. Cuando la suma intermedia da 11, 22 o 33, la reducción se detiene ahí — no se sigue sumando hasta obtener un dígito único.",
@@ -687,7 +709,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Qué hace bien Molino, qué le falta, y qué es (y qué no es) el proyecto: no somos expertos certificados, somos aficionados que construyeron una herramienta gratuita y privada de autoconocimiento.",
     category: "Autoconocimiento",
     date: "2026-08-19",
-    image: "/blog/honestidad-radical-lo-que-molino-es-y-no-es.svg",
+    image: "/blog/honestidad-radical-lo-que-molino-es-y-no-es.jpg",
+    imageAlt: "Fachada de vidrio que deja ver la estructura del edificio",
+    imageCredit: { name: "Michael", url: "https://unsplash.com/photos/48yI_ZyzuLo" },
     author: "Equipo Molino",
     intro: [
       "Cada tanto vale la pena parar y mirar un proyecto propio con la misma honestidad que le pedimos a la gente que se mire a sí misma con un mapa simbólico. Esto es lo que vemos cuando hacemos ese ejercicio con Molino, hoy.",
@@ -751,7 +775,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Qué son el Mes Personal y el Día Personal en numerología, cómo se calculan a partir de tu Año Personal (no de tu fecha de nacimiento sola) y cómo usarlos para leer el momento exacto que estás viviendo.",
     category: "Numerología",
     date: "2026-08-19",
-    image: "/blog/mes-personal-dia-personal-numerologia.svg",
+    image: "/blog/mes-personal-dia-personal-numerologia.jpg",
+    imageAlt: "Calendario mensual con chinches marcando días",
+    imageCredit: { name: "Towfiqu barbhuiya", url: "https://unsplash.com/photos/bwOAixLG0uc" },
     author: "Equipo Molino",
     intro: [
       "Si ya conocés tu Año Personal, seguro notaste que describe un clima amplio — todo un año de una sola tacada. Útil para planificar, pero demasiado grueso para una pregunta como '¿hoy es buen día para esa conversación difícil?'. Ahí es donde entran el Mes Personal y el Día Personal: la misma lógica numerológica, aplicada con más resolución.",
@@ -817,7 +843,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cómo se calcula el porcentaje de compatibilidad en el Modo Pareja de Molino: las 5 capas (numerología, astrología occidental, zodíaco chino, arquetipo y elemento) y el peso real de cada una en el resultado final.",
     category: "Autoconocimiento",
     date: "2026-08-19",
-    image: "/blog/como-molino-calcula-compatibilidad-de-pareja.svg",
+    image: "/blog/como-molino-calcula-compatibilidad-de-pareja.jpg",
+    imageAlt: "Dos personas tomadas de la mano a contraluz",
+    imageCredit: { name: "Joe Yates", url: "https://unsplash.com/photos/wNOymf_yTUA" },
     author: "Equipo Molino",
     intro: [
       "Cuando dos personas usan el Modo Pareja de Molino, el resultado final es un solo número — un porcentaje de compatibilidad. Es tentador tratarlo como un cálculo cerrado ('el algoritmo dijo 78%'), pero no lo es: ese número sale de promediar cinco capas distintas, cada una con un peso específico, y las cinco están calculadas con datos reales de las dos personas, no con un puntaje al azar.",
@@ -874,7 +902,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "El 28 y el 8 como números del dinero y del poder: el patrón que se repite en Steve Jobs, Elon Musk, Bill Gates y Nikola Tesla, explicado con curiosidad y sin caer en la superstición.",
     category: "Numerología",
     date: "2026-08-19",
-    image: "/blog/numeros-del-poder-28-y-8.svg",
+    image: "/blog/numeros-del-poder-28-y-8.jpg",
+    imageAlt: "Rey blanco de ajedrez iluminado sobre fondo negro",
+    imageCredit: { name: "Hassan Pasha", url: "https://unsplash.com/photos/WTZZomyqaoA" },
     author: "Equipo Molino",
     intro: [
       "Hay números que la tradición numerológica asocia con la riqueza y el poder: el 28 (el llamado 'número del dinero') y el 8 (su reducción, el número de la materialidad y la ambición). Y una curiosidad que circula hace años: las fechas más importantes de algunos de los creadores de riqueza más conocidos del mundo tienden a sumar 28 o 8.",
@@ -982,7 +1012,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Qué significa el 8 en numerología: el número del dinero, el poder, la ambición y la materialidad. Cómo se calcula, dónde aparece en tu mapa y cómo leerlo con equilibrio.",
     category: "Numerología",
     date: "2026-08-19",
-    image: "/blog/numero-8-dinero-poder.svg",
+    image: "/blog/numero-8-dinero-poder.jpg",
+    imageAlt: "Pila alta de monedas",
+    imageCredit: { name: "Matthew Lancaster", url: "https://unsplash.com/photos/OtfnlTw0lH4" },
     author: "Equipo Molino",
     intro: [
       "Dentro del mapa numerológico, el 8 ocupa un lugar particular: es el único número asociado de forma casi unánime al dinero, el poder y la materialidad. Representa la energía de construir, administrar y ver resultados tangibles en el mundo — la capacidad de convertir una idea en algo que existe y vale.",
@@ -1052,7 +1084,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Descubrí por qué Molino eligió ser código abierto, cómo eso protege tu privacidad, y qué significa que un sistema de autoconocimiento sea transparente por defecto.",
     category: "Autoconocimiento",
     date: "2026-08-21",
-    image: "/blog/filosofia-codigo-abierto.svg",
+    image: "/blog/filosofia-codigo-abierto.jpg",
+    imageAlt: "Pantalla con líneas de código fuente",
+    imageCredit: { name: "Chris Ried", url: "https://unsplash.com/photos/ieic5Tq8YMk" },
     author: "Equipo Molino",
     intro: [
       "En un mundo donde la mayoría de las plataformas de tecnología venden tus datos, Molino eligió el camino opuesto: ser completamente abierta. Eso significa que todo el código que genera tu mapa personal está disponible en GitHub para que lo leas, lo audites y lo entiendas.",
@@ -1174,7 +1208,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Fechas del Año Nuevo chino de 1925 a 2030 con el signo y el elemento de cada año. Si naciste en enero o febrero, así sabés si tu signo es el del año anterior.",
     category: "Zodiaco Chino",
     date: "2026-10-19",
-    image: "/blog/ano-nuevo-chino-fechas-signo.svg",
+    image: "/blog/ano-nuevo-chino-fechas-signo.jpg",
+    imageAlt: "Calle decorada con cientos de faroles para el Año Nuevo chino",
+    imageCredit: { name: "Alex Preusser", url: "https://unsplash.com/photos/sYXV3ccsBWQ" },
     author: "Equipo Molino",
     intro: [
       "Casi todas las tablas del zodíaco chino que circulan dicen algo como «1990: Caballo». Es cierto para la mayor parte de 1990, pero no para todo: el año del Caballo empezó el 27 de enero de 1990. Quien nació el 20 de enero de ese año es Serpiente, el signo de 1989.",
@@ -1236,7 +1272,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Los dos amigos (San He) y el enemigo (Liu Chong) de cada uno de los 12 signos del zodíaco chino, cómo se calculan contando posiciones y cómo se usan.",
     category: "Zodiaco Chino",
     date: "2026-10-19",
-    image: "/blog/amigos-y-enemigo-zodiaco-chino.svg",
+    image: "/blog/amigos-y-enemigo-zodiaco-chino.jpg",
+    imageAlt: "Puerta de un templo custodiada por dos leones de piedra",
+    imageCredit: { name: "Quentin Bounias", url: "https://unsplash.com/photos/quxnQBnUWbw" },
     author: "Equipo Molino",
     intro: [
       "De todas las relaciones que la tradición china describe entre signos, hay dos que aparecen en cualquier fuente y que no dependen de interpretaciones: los amigos de la misma tríada (San He, 三合) y el opuesto directo en el ciclo (Liu Chong, 六冲).",
@@ -1308,7 +1346,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Los 12 signos del zodíaco chino en orden, con los años de cada uno de 1924 a 2031 y sus rasgos tradicionales. Incluye la aclaración para los nacidos en enero y febrero.",
     category: "Zodiaco Chino",
     date: "2026-10-19",
-    image: "/blog/doce-signos-zodiaco-chino.svg",
+    image: "/blog/doce-signos-zodiaco-chino.jpg",
+    imageAlt: "Cuadros enmarcados con los animales del zodíaco chino",
+    imageCredit: { name: "极雅 张", url: "https://unsplash.com/photos/cWk1pzbTPmw" },
     author: "Equipo Molino",
     intro: [
       "El zodíaco chino asigna un signo a cada año en un ciclo de doce. El orden no cambia nunca: después del Cerdo vuelve la Rata. Por eso, si sabés el signo de un año, sabés el de cualquier otro contando de a doce.",
@@ -1364,7 +1404,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cómo saber tu elemento del zodíaco chino por el último dígito de tu año de nacimiento, qué es el ciclo de 60 años y cómo se relacionan Metal, Agua, Madera, Fuego y Tierra.",
     category: "Zodiaco Chino",
     date: "2026-10-19",
-    image: "/blog/cinco-elementos-zodiaco-chino.svg",
+    image: "/blog/cinco-elementos-zodiaco-chino.jpg",
+    imageAlt: "Fogata de madera junto al agua, de noche",
+    imageCredit: { name: "Vadim Sadovski", url: "https://unsplash.com/photos/AmtDxJpEEEg" },
     author: "Equipo Molino",
     intro: [
       "Además del signo, cada año del calendario chino tiene un elemento: Metal, Agua, Madera, Fuego o Tierra. Juntos forman el nombre completo del año: 1990 fue Caballo de Metal; 2026, Caballo de Fuego.",
@@ -1434,7 +1476,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cómo calcular el Número de Expresión con tu nombre: tabla pitagórica de letras, ejemplo paso a paso, qué pasa con tildes y ñ, y qué significa cada número.",
     category: "Numerología",
     date: "2026-10-19",
-    image: "/blog/numero-de-expresion-nombre.svg",
+    image: "/blog/numero-de-expresion-nombre.jpg",
+    imageAlt: "Máquina de escribir con una hoja en blanco",
+    imageCredit: { name: "Iván Díaz", url: "https://unsplash.com/photos/S0rG5EpxiLA" },
     author: "Equipo Molino",
     intro: [
       "Si el Número de Vida sale de tu fecha de nacimiento, el Número de Expresión sale de tu nombre. La numerología lo lee como la forma en que tus capacidades se ponen en juego: no hacia dónde vas, sino con qué herramientas.",
@@ -1516,7 +1560,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Fechas de los 12 signos del zodíaco occidental, por qué varían un día según el año y cómo saber tu signo solar si naciste en la cúspide entre dos signos.",
     category: "Astrología",
     date: "2026-10-19",
-    image: "/blog/fechas-signos-zodiaco-cuspide.svg",
+    image: "/blog/fechas-signos-zodiaco-cuspide.jpg",
+    imageAlt: "El sol tocando la línea del horizonte sobre el mar",
+    imageCredit: { name: "Cam Carpenter", url: "https://unsplash.com/photos/ZgSymzET270" },
     author: "Equipo Molino",
     intro: [
       "El signo solar es el signo en el que estaba el Sol el día que naciste. Las fechas de cada signo parecen fijas, pero no lo son del todo: el Sol cambia de signo en un momento preciso que se corre unas horas de un año a otro.",
@@ -1584,7 +1630,9 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cómo llevar un diario de autoconocimiento útil: qué anotar, cada cuánto, cómo releerlo y cómo cruzarlo con tus ciclos sin forzar las conclusiones.",
     category: "Autoconocimiento",
     date: "2026-10-19",
-    image: "/blog/diario-de-autoconocimiento.svg",
+    image: "/blog/diario-de-autoconocimiento.jpg",
+    imageAlt: "Mano escribiendo en un cuaderno abierto",
+    imageCredit: { name: "Marcos Paulo Prado", url: "https://unsplash.com/photos/tcyW6Im5Uug" },
     author: "Equipo Molino",
     intro: [
       "La memoria no es un buen registro de uno mismo. Recordamos lo que confirma la historia que ya nos contamos y olvidamos lo que no encaja. Un diario corrige eso: deja escrito lo que pasó y lo que sentiste antes de que la memoria lo edite.",

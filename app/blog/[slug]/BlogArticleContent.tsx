@@ -158,18 +158,40 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
             </motion.header>
 
             {/* Portada — above the fold, dispara al montar */}
-            <motion.div {...fadeUpMount} className="mb-10">
+            <motion.figure {...fadeUpMount} className="mb-10">
               <div className="relative aspect-[16/9] overflow-hidden rounded-md border border-border bg-paper-alt">
                 <Image
                   src={post.image}
-                  alt={post.title}
+                  alt={post.imageAlt ?? post.title}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 70vw"
                   className="object-cover"
                 />
               </div>
-            </motion.div>
+              {post.imageCredit && (
+                <figcaption className="mt-2 text-xs text-muted/70">
+                  Foto:{" "}
+                  <a
+                    href={`${post.imageCredit.url}?utm_source=molino&utm_medium=referral`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    {post.imageCredit.name}
+                  </a>{" "}
+                  en{" "}
+                  <a
+                    href="https://unsplash.com/?utm_source=molino&utm_medium=referral"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    Unsplash
+                  </a>
+                </figcaption>
+              )}
+            </motion.figure>
 
             <div className="max-w-prose">
               {/* Intro */}

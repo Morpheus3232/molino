@@ -59,7 +59,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
       <Link href={`/blog/${post.slug}`} className="block aspect-[16/9] relative overflow-hidden bg-paper-alt" aria-label={post.title}>
         <Image
           src={post.image}
-          alt={post.title}
+          alt={post.imageAlt ?? post.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
