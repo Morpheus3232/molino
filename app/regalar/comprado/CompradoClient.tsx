@@ -18,7 +18,7 @@ export default function CompradoClient() {
 
   if (!code) {
     return (
-      <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24 text-center px-4">
+      <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24 text-center px-4">
         <p className="text-sm text-muted">
           No encontramos tu código. Si ya pagaste, revisá tu email — te lo enviamos ahí también.
         </p>
@@ -57,7 +57,7 @@ export default function CompradoClient() {
   };
 
   return (
-    <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-xl px-4 sm:px-8 text-center">
         <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25">
           <Check className="w-3.5 h-3.5 text-emerald-400" />

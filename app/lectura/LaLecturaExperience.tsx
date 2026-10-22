@@ -25,6 +25,8 @@ import BuildingMolino from "@/components/ui/BuildingMolino";
 import LecturaGratis from "@/components/lectura/LecturaGratis";
 import PremiumChatSection from "@/components/chat/PremiumChatSection";
 
+const SUCCESS_BANNER_MS = 4000;
+
 interface Props {
   profile: UserProfile;
   catalog: LightweightEntity[];
@@ -74,6 +76,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const [fetchDone, setFetchDone] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const { step, setStep } = usePremiumActivation();
+  // El paso y el estado de la lectura, leídos desde callbacks y timers sin
+  // volver a armarlos en cada render.
+  const stepRef = useRef(step);
+  const revealedRef = useRef(revealed);
+  useEffect(() => {
+    stepRef.current = step;
+    revealedRef.current = revealed;
+  }, [step, revealed]);
 
   // El acceso premium es por (fecha de nacimiento + dispositivo), no por
   // dispositivo a secas: cargar un mapa nuevo sin pagarlo NO da acceso a su
@@ -131,8 +141,11 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     if (hasFetched.current) return;
     hasFetched.current = true;
     setStarted(true);
-    // 'preparing' hasta que la lectura se revela (ahí pasa a 'idle').
-    setStep('preparing');
+    // 'preparing' hasta que la lectura se revela (ahí pasa a 'idle'). Si se
+    // llegó por un cupón recién aceptado, el "Código aceptado" se queda en
+    // pantalla unos segundos: pisarlo acá mismo lo borraba en el mismo render
+    // y quien canjeaba el código no veía ninguna confirmación.
+    if (stepRef.current !== 'success') setStep('preparing');
     launchLecturaFetch();
   }, [launchLecturaFetch, setStep]);
 
@@ -178,8 +191,18 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // está en pantalla se descarta solo — también cuando la generación arranca
   // DESPUÉS de reabrir una lectura cacheada (refresco silencioso).
   useEffect(() => {
-    if (revealed && step !== 'idle') setStep('idle');
+    if (revealed && step !== 'idle' && step !== 'success') setStep('idle');
   }, [revealed, step, setStep]);
+
+  // "Código aceptado" dura lo justo para leerlo: después pasa a "preparando"
+  // si la lectura todavía no llegó, o se va si ya está en pantalla.
+  useEffect(() => {
+    if (step !== 'success') return;
+    const t = setTimeout(() => {
+      if (stepRef.current === 'success') setStep(revealedRef.current ? 'idle' : 'preparing');
+    }, SUCCESS_BANNER_MS);
+    return () => clearTimeout(t);
+  }, [step, setStep]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 

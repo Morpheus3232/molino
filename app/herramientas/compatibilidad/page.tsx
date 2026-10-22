@@ -193,7 +193,7 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0, scale: 0.6 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="font-heading text-3xl sm:text-4xl font-semibold leading-tight"
+                    className="font-heading text-3xl sm:text-4xl font-semibold leading-tight first-letter:uppercase"
                     style={{
                       color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
                     }}
@@ -250,7 +250,7 @@ export default function CompatibilidadCalcPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Querés una experiencia más completa con tu perfil personal?</p>
+                  <p className="text-sm text-muted mb-3">¿Querés una experiencia más completa con tu perfil personal?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"

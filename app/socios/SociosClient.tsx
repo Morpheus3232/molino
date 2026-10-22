@@ -144,7 +144,7 @@ export default function SociosClient() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
           <div className="page-eyebrow mb-3">
@@ -406,6 +406,6 @@ export default function SociosClient() {
         </AnimatePresence>
         )}
       </div>
-    </div>
+    </main>
   );
 }

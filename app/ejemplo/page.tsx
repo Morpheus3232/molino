@@ -54,7 +54,7 @@ const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
 
 export default function EjemploPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <main id="main-content" className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
@@ -81,6 +81,6 @@ export default function EjemploPage() {
           </Link>
         </Button>
       </div>
-    </div>
+    </main>
   );
 }

@@ -181,7 +181,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
                 </div>
                 <span
                   className="inline-block text-sm font-semibold px-2 py-0.5 rounded-full label-caps"
-                  style={{ backgroundColor: `${getScoreColor(area.score)}20`, color: getScoreColor(area.score) }}
+                  style={{ backgroundColor: `color-mix(in srgb, ${getScoreColor(area.score)} 12%, transparent)`, color: getScoreColor(area.score) }}
                 >
                   {area.label}
                 </span>

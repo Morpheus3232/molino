@@ -26,7 +26,7 @@ export default function RegalarClient() {
   };
 
   return (
-    <main className="min-h-screen bg-background pt-20 sm:pt-28 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-28 pb-24">
       <div className="mx-auto max-w-2xl px-4 sm:px-8 text-center">
         <span className="page-eyebrow mb-4">
           <Gift className="w-4 h-4 text-accent" />

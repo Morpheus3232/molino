@@ -1,7 +1,7 @@
 export default function BlogLoading() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24 animate-pulse">
+      <main id="main-content" className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24 animate-pulse">
         <div className="mb-12 space-y-4">
           <div className="h-12 w-3/4 max-w-xl bg-ink/10 rounded-xl" />
           <div className="h-4 w-full max-w-2xl bg-ink/5 rounded-lg" />

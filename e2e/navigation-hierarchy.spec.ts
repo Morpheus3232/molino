@@ -95,16 +95,16 @@ test.describe("Navegación — sin perfil", () => {
     await expect(menu.getByRole("link", { name: "Año", exact: true })).toHaveCount(0);
   });
 
-  test("Modos sin perfil lleva a Modo Socios/Modo Parejas/Regalar Mapa", async ({ page }) => {
+  test("Modos sin perfil lleva a Modo Socios/Modo Pareja/Regalar un mapa", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Navegación principal" });
     await nav.getByRole("button", { name: "Modos" }).click();
     const menu = page.locator("#modes-menu");
     await expect(menu.getByRole("link", { name: "Modo Socios", exact: true })).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Modo Parejas", exact: true })).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Regalar Mapa 🎁", exact: true })).toBeVisible();
-    await menu.getByRole("link", { name: "Modo Parejas", exact: true }).click();
+    await expect(menu.getByRole("link", { name: "Modo Pareja", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Regalar un mapa", exact: true })).toBeVisible();
+    await menu.getByRole("link", { name: "Modo Pareja", exact: true }).click();
     await page.waitForURL("**/pareja");
   });
 
@@ -179,10 +179,10 @@ test.describe("Navegación — con perfil", () => {
     await nav.getByRole("button", { name: "Afinidades" }).click({ force: true });
     await page.waitForSelector("#affinities-menu", { state: "visible" });
     const menu = page.locator("#affinities-menu");
-    for (const label of ["Países", "Ciudades", "Marcas", "Universidades", "Famosos", "Películas", "Equipos"]) {
+    for (const label of ["Países", "Ciudades", "Marcas de autos", "Marcas de ropa", "Otras marcas", "Universidades", "Famosos", "Películas", "Futbolistas"]) {
       await expect(menu.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
-    await menu.getByRole("link", { name: "Marcas", exact: true }).click();
+    await menu.getByRole("link", { name: "Otras marcas", exact: true }).click();
     await page.waitForURL("**/affinity/brand");
   });
 
@@ -199,15 +199,15 @@ test.describe("Navegación — con perfil", () => {
     await page.waitForURL("**/semana");
   });
 
-  test("Modos con perfil muestra Modo Socios/Modo Parejas/Regalar y navega", async ({ page }) => {
+  test("Modos con perfil muestra Modo Socios/Modo Pareja/Regalar y navega", async ({ page }) => {
     await seedProfile(page);
     const nav = page.getByRole("navigation", { name: "Navegación principal" });
     await expect(page.getByRole("banner").getByRole("link", { name: "Mi Mapa" })).toBeVisible();
     await nav.getByRole("button", { name: "Modos" }).click();
     const menu = page.locator("#modes-menu");
     await expect(menu.getByRole("link", { name: "Modo Socios", exact: true })).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Modo Parejas", exact: true })).toBeVisible();
-    await expect(menu.getByRole("link", { name: "Regalar Mapa 🎁", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Modo Pareja", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Regalar un mapa", exact: true })).toBeVisible();
     await menu.getByRole("link", { name: "Modo Socios", exact: true }).click();
     await page.waitForURL("**/socios");
   });
@@ -274,7 +274,8 @@ test.describe("Footer — enlaces actualizados", () => {
     const footer = page.locator("footer");
     await expect(footer.getByRole("link", { name: "Mi Mapa", exact: true })).toBeVisible();
     await expect(footer.getByRole("link", { name: "Mi Lectura" })).toBeVisible();
-    await expect(footer.getByRole("link", { name: "Preguntá (IA)" })).toBeVisible();
+    await expect(footer.getByRole("link", { name: "Modo Pareja" })).toBeVisible();
+    await expect(footer.getByRole("link", { name: "Premium", exact: true })).toBeVisible();
   });
 
   test("footer: Conocer y explorar tiene las entradas del sistema", async ({ page }) => {

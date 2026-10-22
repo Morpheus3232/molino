@@ -308,12 +308,14 @@
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo.
      excellent/good recalibrados de azul/índigo (sobrevivientes de la paleta
-     oscura anterior) al acento terracota de "Almanaque Cálido" — neutral/poor
-     ya eran tonos cálidos y no hacía falta tocarlos. */
-  --score-excellent: var(--color-accent-light);
-  --score-good: var(--color-accent);
-  --score-neutral: #6C6C6C;
-  --score-poor: #464646;
+     oscura anterior) al acento terracota de "Almanaque Cálido". Con la paleta
+     blanco y negro, accent-light quedó en gris claro (#CFCFCF): los mejores
+     días se veían apagados, como deshabilitados. Ahora es una escala de grises
+     legible sobre papel (todas ≥ 5:1), del más oscuro al más claro. */
+  --score-excellent: var(--color-accent);
+  --score-good: #2E2E2E;
+  --score-neutral: #555555;
+  --score-poor: #6C6C6C;
 
   /* Overlay */
   --overlay: rgba(0, 0, 0, 0.6);

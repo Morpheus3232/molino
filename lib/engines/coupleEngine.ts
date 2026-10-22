@@ -14,7 +14,7 @@ import { safeNumber } from "@/lib/utils/score";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
 import { calculateNumerologyCompatibility } from "@/lib/engines/numerologyEngine";
 import { getElement } from "@/lib/engines/astrologyEngine";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 
 export interface CoupleConnectionPoint {
   id: string;
@@ -250,7 +250,7 @@ export function calculateCoupleCompatibility(
     connections.push({
       id: "lp-harmony",
       title: `Caminos de Vida en Armonía (${lifePathA} y ${lifePathB})`,
-      description: `La energía del ${lifePathA} (${ARCHETYPES[lifePathA]?.name}) y la del ${lifePathB} (${ARCHETYPES[lifePathB]?.name}) se complementan con fluidez.`,
+      description: `La energía del ${lifePathA} (${archetypeDisplayName(ARCHETYPES[lifePathA]?.name ?? "")}) y la del ${lifePathB} (${archetypeDisplayName(ARCHETYPES[lifePathB]?.name ?? "")}) se complementan con fluidez.`,
       system: "numerology",
       score: numerologyScore,
     });
@@ -337,7 +337,7 @@ export function calculateCoupleCompatibility(
   // Summary
   const nameA = profileA.name?.trim() || "Persona A";
   const nameB = profileB.name?.trim() || "Persona B";
-  const summary = `La combinación entre ${nameA} (${ARCHETYPES[lifePathA]?.name}, ${sunSignA}) y ${nameB} (${ARCHETYPES[lifePathB]?.name}, ${sunSignB}) genera una compatibilidad del ${score}% con perfil de ${level.toLowerCase()}.`;
+  const summary = `La combinación entre ${nameA} (${archetypeDisplayName(ARCHETYPES[lifePathA]?.name ?? "")}, ${sunSignA}) y ${nameB} (${archetypeDisplayName(ARCHETYPES[lifePathB]?.name ?? "")}, ${sunSignB}) genera una compatibilidad del ${score}% con perfil de ${level.toLowerCase()}.`;
 
   return {
     score,

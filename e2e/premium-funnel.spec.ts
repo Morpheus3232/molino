@@ -125,8 +125,8 @@ test.describe("Premium Funnel E2E", () => {
     await setupPremiumMocks(page);
     await page.goto("/lectura");
     await page.waitForLoadState("networkidle");
-    await expect(page.getByText(/TU PATRÓN CENTRAL/i)).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Lectura Pro', { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /La conversación entre tus sistemas/i })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/Arquetipos y Zodiaco Chino coinciden|coinciden en/).first()).toBeVisible();
     await expect(page.getByText(/Pago único · de por vida/)).toBeVisible();
   });
 
@@ -136,7 +136,7 @@ test.describe("Premium Funnel E2E", () => {
     await page.goto("/ai");
     await page.waitForLoadState("networkidle");
     await expect(page.getByText("Preguntale")).toBeVisible();
-    await expect(page.getByText("a tu Molino")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Ya sabés lo que tu mapa dice/ })).toBeVisible();
     await expect(page.getByText(/Incluye 50 preguntas/)).toBeVisible();
     await expect(page.getByRole("link", { name: /Ver la Lectura Pro/ })).toBeVisible();
   });

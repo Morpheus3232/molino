@@ -307,7 +307,7 @@ export default function ZodiacoChinoCalcPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Querés ver cómo tu animal se conecta con numerología y astrología?</p>
+                  <p className="text-sm text-muted mb-3">¿Querés ver cómo tu animal se conecta con numerología y astrología?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"

@@ -76,8 +76,8 @@ const PROFILE_LINKS = {
 
 const MODES_LINKS: NavLink[] = [
   { href: "/socios", label: "Modo Socios" },
-  { href: "/pareja", label: "Modo Parejas" },
-  { href: "/regalar", label: "Regalar Mapa 🎁" },
+  { href: "/pareja", label: "Modo Pareja" },
+  { href: "/regalar", label: "Regalar un mapa" },
 ];
 
 // "Conocimiento" — los tres sistemas son la arquitectura intelectual
@@ -119,7 +119,7 @@ const PROJECT_GROUPS: NavGroup[] = [{ links: PROJECT_LINKS }];
 // estados.
 const MODES_GROUPS: NavGroup[] = [{ links: MODES_LINKS }];
 
-// Categorías reales de /affinity/[type] — mismas 7 que generateStaticParams
+// Categorías reales de /affinity/[type] — las mismas que generateStaticParams
 // en app/affinity/[type]/page.tsx. No se agrega ninguna que no tenga ruta.
 const AFFINITY_GROUPS: NavGroup[] = [
   {
@@ -133,6 +133,7 @@ const AFFINITY_GROUPS: NavGroup[] = [
       { href: "/affinity/university", label: "Universidades" },
       { href: "/affinity/artist", label: "Famosos" },
       { href: "/affinity/movie", label: "Películas" },
+      { href: "/affinity/football_player", label: "Futbolistas" },
     ],
   },
 ];

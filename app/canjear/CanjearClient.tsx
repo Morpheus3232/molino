@@ -60,7 +60,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
   };
 
   return (
-    <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="page-eyebrow mb-4">
           <Ticket className="w-3.5 h-3.5 text-accent" />

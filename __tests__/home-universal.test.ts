@@ -17,7 +17,9 @@ describe("Home page — universal access without profile", () => {
     // (HeroInstrument) + JSON-LD: cualquier persona la abre sin perfil.
     expect(source).toContain("HeroInstrument");
     expect(source).toContain("HowTo");
-    expect(source).toContain("FAQPage");
+    // Sin preguntas frecuentes visibles, no hay FAQPage: Google pide que el
+    // marcado coincida con lo que se ve.
+    expect(source).not.toContain('"@type": "FAQPage"');
     expect(source).toContain("#mapa-form");
   });
 });

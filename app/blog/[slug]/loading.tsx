@@ -1,7 +1,7 @@
 export default function BlogArticleLoading() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24 animate-pulse">
+      <main id="main-content" className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24 animate-pulse">
         <div className="h-3 w-40 bg-ink/5 rounded mb-8" />
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
           <div className="min-w-0">

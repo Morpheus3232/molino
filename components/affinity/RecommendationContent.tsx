@@ -58,7 +58,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-background">
+      <main id="main-content" className="min-h-screen bg-background">
         <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
           <p className="sr-only" role="status" aria-label="Cargando recomendaciones...">
             Cargando recomendaciones...
@@ -77,13 +77,13 @@ export default function RecommendationContent({ entityType, catalog, title, subt
             ))}
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
+      <main id="main-content" className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-sm text-accent font-medium mb-4 label-caps">
@@ -97,7 +97,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           </p>
           <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
-      </div>
+      </main>
     );
   }
 

@@ -38,7 +38,7 @@ export default function LecturaClient({ catalog }: Props) {
 
   if (!profile) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-background px-6 text-center">
+      <main id="main-content" className="min-h-screen flex items-center justify-center bg-background px-6 text-center">
         <p className="text-muted text-sm">
           Esta lectura necesita tu mapa.{" "}
           <Link href="/onboarding" className="text-accent underline underline-offset-4">

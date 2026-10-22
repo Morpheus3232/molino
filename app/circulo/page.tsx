@@ -126,6 +126,10 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
           <span>›</span>
           <span className="text-foreground font-medium">Círculo</span>
         </nav>
+        {/* Igual que /mundo: la página tenía solo h2 y ningún título principal. */}
+        <h1 className="page-title text-foreground mb-2">
+          Tu círculo
+        </h1>
       </div>
       <main id="main-content">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4 mb-4 flex justify-end">

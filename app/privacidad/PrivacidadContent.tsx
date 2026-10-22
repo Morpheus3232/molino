@@ -100,7 +100,7 @@ Respondemos dentro de los 30 días. Podés reclamar ante la AAIP (Argentina), la
 
 export default function PrivacidadContent() {
   return (
-    <div className="min-h-screen bg-background">
+    <main id="main-content" className="min-h-screen bg-background">
       <div className="container-content py-16 sm:py-24 max-w-3xl mx-auto">
         <div>
           <nav className="flex items-center gap-2 text-xs text-muted mb-8" aria-label="Breadcrumb">
@@ -149,6 +149,6 @@ export default function PrivacidadContent() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

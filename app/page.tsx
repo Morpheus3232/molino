@@ -34,49 +34,8 @@ const homeSchemas = [
       },
     ],
   },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "¿Por qué el mapa esencial es 100% gratuito y sin registro?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Porque el autoconocimiento de base debe ser libre y accesible. Generás tu lectura completa de numerología, astrología y zodíaco chino al instante sin crear cuentas, sin dejar tu email y sin publicidad intrusiva.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Qué incluye el acceso Premium de $8 USD?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa personalizada y chat interactivo con tu mapa, ciclos personales 2026–2030 y desglose de tensiones arquetípicas.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          // Este texto lo amplifica Google como rich result, así que no puede
-          // llevar un absoluto que el código no cumple. Decía "nunca se
-          // transmite en texto plano": falso — /api/intelligence/interpret
-          // recibe `dob` en el body para poder armar el prompt. Lo que no se
-          // guarda es la fecha; lo que viaja, viaja.
-          text: "Depende de qué uses. Los motores de cálculo corren enteros en tu navegador: si te quedás con el mapa y la lectura gratuitos, tu fecha no sale de tu dispositivo. La Lectura Pro y las preguntas a la IA sí la envían a nuestro servidor (por HTTPS) para poder redactarse, y de ahí al proveedor del modelo. Lo que nunca guardamos es tu fecha: en la base solo queda un hash HMAC-SHA256 irreversible de tu perfil, que sirve para validar tu acceso. Detalle completo en /privacidad.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Puedo comparar mi mapa con mi pareja o guardar varios perfiles?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas en tu navegador sin crear cuentas.",
-        },
-      },
-    ],
-  },
+  // Sin FAQPage: la portada ya no muestra preguntas frecuentes, y Google pide
+  // que el marcado coincida con lo que se ve en la página.
 ];
 
 export const metadata = createRouteMetadata({
@@ -92,7 +51,7 @@ export const metadata = createRouteMetadata({
 export default function HomePage() {
   return (
     <>
-      <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
+      <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden">
         {/* Hoy — los datos de /hoy contados como un capítulo de libro (la vista
             de detalle sigue en /hoy). Sin mapa es la energía universal del
             día; con mapa suma Año/Mes/Día Personal. */}

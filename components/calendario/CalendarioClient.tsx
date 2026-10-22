@@ -78,7 +78,9 @@ export default function CalendarioClient() {
             {MONTH_NAMES[month]} {year}
           </h2>
           <p className="text-sm text-muted">
-            {daysInMonth} días · {selectedContent?.master ? "Número maestro" : "Energía regular"} de hoy
+            {/* Antes decía "… de hoy" con el día elegido, aunque se mirara otro mes. */}
+            {daysInMonth} días · {monthStats.masters.length}{" "}
+            {monthStats.masters.length === 1 ? "con número maestro" : "con números maestros"}
           </p>
         </div>
 

@@ -107,7 +107,7 @@ function SemanaContent() {
           </nav>
 
           <h1 className="page-title text-foreground">
-            {formatDate(new Date(), { weekday: "long" })}
+            Tu semana
           </h1>
           <p className="text-sm text-muted mt-3">{weekRange}</p>
         </motion.div>
@@ -142,7 +142,9 @@ function SemanaContent() {
                   style={{
                     borderColor: color,
                     color: isTodayCell ? "var(--color-background)" : color,
-                    backgroundColor: isTodayCell ? color : `${color}12`,
+                    // `${color}12` daba CSS inválido ("var(--x)12"): ahora un
+                    // fondo suave con color-mix, y el día de hoy relleno.
+                    backgroundColor: isTodayCell ? color : `color-mix(in srgb, ${color} 7%, transparent)`,
                   }}
                 >
                   {day.personalDay}

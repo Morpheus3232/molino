@@ -74,7 +74,7 @@ El uso continuado después de la publicación implica aceptación. Si no estás 
 
 export default function TerminosContent() {
   return (
-    <div className="min-h-screen bg-background">
+    <main id="main-content" className="min-h-screen bg-background">
       <div className="container-content py-16 sm:py-24 max-w-3xl mx-auto">
         <div>
           <h1
@@ -107,6 +107,6 @@ export default function TerminosContent() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

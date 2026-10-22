@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
@@ -94,40 +93,37 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence>
-        {!mounted ? (
-          <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
-            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
+        {/* El título va fuera de la espera: así llega en el HTML del servidor
+            (Google y quien comparte el enlace lo ven) y no parpadea al montar.
+            Solo la lista, que depende del signo del perfil, espera al navegador. */}
+        {/* HERO */}
+        <div className="border-t border-ink/10 py-6 sm:py-8">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">
+            <Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">{meta.plural}</span>
+          </nav>
+          <h1 className="page-title text-foreground">
+            Cómo resuena cada {meta.label.toLowerCase()}
+          </h1>
+          <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
+            Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.
+          </p>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {!mounted ? (
+            <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
               <p className="sr-only" role="status" aria-label="Cargando afinidades...">
                 Cargando afinidades...
               </p>
-              <div className="animate-pulse">
-                <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
-                <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
-                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+              <div className="animate-pulse border-t border-ink/10 py-8">
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10" />
               </div>
-            </main>
-          </motion.div>
-        ) : (
-          <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
-            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-
-              {/* HERO */}
-              <motion.div {...fadeUp} className="border-t border-ink/10 py-6 sm:py-8">
-                <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">
-                  <Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</Link>
-                  <span>›</span>
-                  <span className="text-foreground font-medium">{meta.plural}</span>
-                </nav>
-                <h1 className="page-title text-foreground">
-                  Cómo resuena cada {meta.label.toLowerCase()}
-                </h1>
-                <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
-                  Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.
-                </p>
-              </motion.div>
-
+            </motion.div>
+          ) : (
+            <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
               {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
               <div className="border-t border-ink/10 py-8">
                 <p className="label-micro mb-4">Signo</p>
@@ -222,10 +218,10 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   })}
                 </motion.div>
               </AnimatePresence>
-            </main>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
     </div>
   );
 }

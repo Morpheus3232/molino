@@ -10,7 +10,7 @@
  */
 
 import type { UserProfile } from "@/types/user";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { computeRawCompatibility, type CoupleConnectionPoint, type CoupleChallengePoint } from "./coupleEngine";
 
 export interface PartnershipCompatibilityResult {
@@ -60,7 +60,7 @@ export function calculatePartnershipCompatibility(
     connections.push({
       id: "lp-harmony",
       title: `Caminos de Vida en Armonía (${lifePathA} y ${lifePathB})`,
-      description: `La energía del ${lifePathA} (${ARCHETYPES[lifePathA]?.name}) y la del ${lifePathB} (${ARCHETYPES[lifePathB]?.name}) se complementan bien a la hora de repartir roles.`,
+      description: `La energía del ${lifePathA} (${archetypeDisplayName(ARCHETYPES[lifePathA]?.name ?? "")}) y la del ${lifePathB} (${archetypeDisplayName(ARCHETYPES[lifePathB]?.name ?? "")}) se complementan bien a la hora de repartir roles.`,
       system: "numerology",
       score: numerologyScore,
     });
@@ -140,7 +140,7 @@ export function calculatePartnershipCompatibility(
 
   const nameA = profileA.name?.trim() || "Persona A";
   const nameB = profileB.name?.trim() || "Persona B";
-  const summary = `La combinación entre ${nameA} (${ARCHETYPES[lifePathA]?.name}, ${sunSignA}) y ${nameB} (${ARCHETYPES[lifePathB]?.name}, ${sunSignB}) da una afinidad de trabajo del ${score}% con perfil de ${level.toLowerCase()}.`;
+  const summary = `La combinación entre ${nameA} (${archetypeDisplayName(ARCHETYPES[lifePathA]?.name ?? "")}, ${sunSignA}) y ${nameB} (${archetypeDisplayName(ARCHETYPES[lifePathB]?.name ?? "")}, ${sunSignB}) da una afinidad de trabajo del ${score}% con perfil de ${level.toLowerCase()}.`;
 
   return {
     score,

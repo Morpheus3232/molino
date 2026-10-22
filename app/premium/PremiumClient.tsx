@@ -34,7 +34,7 @@ export default function PremiumClient() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Hero Section */}
         <header className="mb-14 sm:mb-16 text-center max-w-3xl mx-auto">
@@ -137,6 +137,6 @@ export default function PremiumClient() {
         {/* 5. Specific FAQ */}
         <PricingFAQ items={PREMIUM_FAQS} subtitle="Sobre el pago y tus datos." />
       </div>
-    </div>
+    </main>
   );
 }

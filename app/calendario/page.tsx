@@ -78,7 +78,7 @@ export default function CalendarioPage() {
             Navegá entre meses con las flechas.
           </p>
           <p className="text-xs text-muted">
-            💡 <span className="text-accent">Tip:</span> Los números maestros tienen bordes dorados. Hoy está marcado con un punto debajo del número.
+            💡 <span className="text-accent">Tip:</span> Los números maestros van resaltados en gris oscuro. Hoy está marcado con un punto debajo del número.
           </p>
         </div>
 

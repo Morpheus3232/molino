@@ -82,7 +82,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
 
   if (checkState === "checking") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
+      <main id="main-content" className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
         <Loader2 className="w-6 h-6 text-accent animate-spin" />
         <p className="text-xs font-mono text-muted">Verificando tu regalo…</p>
       </main>
@@ -91,7 +91,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
 
   if (checkState === "not_found" || checkState === "already_redeemed") {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
+      <main id="main-content" className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
         <p className="text-sm text-foreground">
           {checkState === "already_redeemed" ? "Este código ya fue usado." : "Este código no existe o ya expiró."}
         </p>
@@ -103,7 +103,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
   }
 
   return (
-    <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="page-eyebrow mb-4">
           <Gift className="w-3.5 h-3.5 text-accent" />
