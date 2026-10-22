@@ -63,7 +63,6 @@ export const ENTITY_IMAGE_URLS: Record<string, string> = {
   "bancolombia": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Bancolombia_S.A._logo.svg/330px-Bancolombia_S.A._logo.svg.png",
   "barack-obama": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/330px-President_Barack_Obama.jpg",
   "barcelona-univ": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Universit%C3%A4t_Barcelona.svg/330px-Universit%C3%A4t_Barcelona.svg.png",
-  "bentley-autos": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Bentley_Tbilisi_2017.jpg/330px-Bentley_Tbilisi_2017.jpg",
   "beyonce": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2871_of_118%29_%2852945301662%29_%28face_cropped%29.jpg/330px-Beyonc%C3%A9_-_Tottenham_Hotspur_Stadium_-_1st_June_2023_%2871_of_118%29_%2852945301662%29_%28face_cropped%29.jpg",
   "bill-gates": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bill_Gates_at_the_European_Commission_-_2025_-_P067383-987995_%28cropped%29.jpg/330px-Bill_Gates_at_the_European_Commission_-_2025_-_P067383-987995_%28cropped%29.jpg",
   "billie-eilish": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg/330px-BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg",
