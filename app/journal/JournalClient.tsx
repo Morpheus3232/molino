@@ -128,10 +128,11 @@ export default function JournalClient() {
             la PC se veía solo la mitad izquierda. */}
         <div className="space-y-16">
           <div className="space-y-6">
-            {/* La consigna de ?prompt= se lee después del primer render: la
-                key remonta el editor para que la precargue en la hoja. */}
+            {/* La key remonta el editor cuando cambia la página que se corrige:
+                el texto vive en un useState, y sin remontar, "Editar" dejaba la
+                hoja vacía en vez de traer lo escrito. */}
             <JournalEditor
-              key={contextualPrompt ?? ""}
+              key={editingEntry?.id ?? "nueva"}
               profile={profile}
               onSaveEntry={handleSave}
               editingEntry={editingEntry}

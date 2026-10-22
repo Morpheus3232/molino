@@ -24,8 +24,9 @@ interface JournalEditorProps {
   ) => Promise<JournalEntry | void>;
   editingEntry?: JournalEntry | null;
   onCancelEdit?: () => void;
-  /** Sugerencia del día (viene de /hoy vía ?prompt=) — precarga el
-   * textarea como texto real y editable. */
+  /** Sugerencia del día (viene de /hoy vía ?prompt=). Se muestra como la
+   * sugerencia de abajo de la hoja, nunca escrita adentro: la hoja es de quien
+   * escribe y arranca en blanco (antes aparecía el texto "solo"). */
   contextualPrompt?: string;
   className?: string;
 }
@@ -49,7 +50,7 @@ export default function JournalEditor({
   contextualPrompt,
   className = "",
 }: JournalEditorProps) {
-  const [content, setContent] = useState(editingEntry?.content || contextualPrompt || "");
+  const [content, setContent] = useState(editingEntry?.content || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
   const [tags, setTags] = useState<string[]>(editingEntry?.tags || []);
   const [showTags, setShowTags] = useState<boolean>(Boolean(editingEntry?.tags && editingEntry.tags.length > 0));

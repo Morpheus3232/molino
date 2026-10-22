@@ -110,7 +110,9 @@ function AnimalSelector({
               type="button"
               onClick={() => onSelect(animal)}
               aria-pressed={isActive}
-              className={`flex min-w-0 items-center gap-1.5 px-2.5 py-2 rounded-xl border text-xs font-medium transition-colors ${
+              // Ícono arriba y nombre abajo: en fila, con la columna angosta,
+              // "Serpiente" o "Caballo" se cortaban en "Ser…" / "Ca…".
+              className={`flex min-w-0 flex-col items-center justify-center gap-1 px-1 py-2.5 min-h-[64px] rounded-xl border text-sm font-medium transition-colors ${
                 isActive
                   ? "border-accent bg-accent/10 text-accent"
                   : "border-ink/10 text-foreground hover:border-accent/40"
@@ -118,10 +120,10 @@ function AnimalSelector({
             >
               <ZodiacAnimalIcon
                 animal={animal}
-                size={18}
+                size={22}
                 className={`shrink-0 ${isActive ? "text-accent" : "text-foreground/70"}`}
               />
-              <span className="truncate">{animal}</span>
+              <span className="whitespace-nowrap leading-tight">{animal}</span>
             </button>
           );
         })}
@@ -238,7 +240,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
           </div>
 
           <motion.div
-            className="shrink-0 w-full lg:w-[320px]"
+            className="shrink-0 w-full lg:w-[360px]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
