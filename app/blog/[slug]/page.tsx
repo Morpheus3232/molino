@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const url = siteUrl(`/blog/${post.slug}`);
-  const ogImage = siteUrl(post.image);
+  // og:image (y, por fallback, la de X) la genera opengraph-image.tsx:
+  // la foto de portada con el título encima.
 
   return {
     title: post.title,
@@ -37,7 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.metaDescription,
       type: "article",
       url,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
       publishedTime: post.date,
       authors: [post.author],
     },
@@ -45,7 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: post.title,
       description: post.metaDescription,
-      images: [ogImage],
     },
   };
 }

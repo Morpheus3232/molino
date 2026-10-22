@@ -33,10 +33,10 @@ const nextConfig = {
         hostname: 'upload.wikimedia.org',
       },
     ],
-    // Las portadas del blog (public/blog/*.svg) son SVGs propios, servidos
-    // desde el mismo dominio. `dangerouslyAllowSVG` habilita que next/image
-    // las optimice/sirva; la CSP `sandbox` impide que un SVG malicioso ejecute
-    // scripts dentro de la imagen. Solo se aplica a nuestros assets estáticos.
+    // `dangerouslyAllowSVG` habilita que next/image sirva SVGs (lo usaban las
+    // portadas del blog hasta que pasaron a fotos JPG, 2026-10-21; se mantiene
+    // por si algún logo remoto llega como .svg). La CSP `sandbox` impide que
+    // un SVG malicioso ejecute scripts dentro de la imagen.
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/avif', 'image/webp'],
