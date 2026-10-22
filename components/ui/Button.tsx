@@ -27,7 +27,8 @@ export default function Button({
     primary: "bg-ink text-paper hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent active:scale-95",
     // La acción principal es el único lugar con color en la interfaz: el rojo
     // de la ilustración del Quijote (ver --color-vermilion en globals.css).
-    accent: "bg-vermilion text-paper hover:bg-vermilion-hover focus-visible:ring-vermilion active:scale-95",
+    // Deshabilitado va en gris, no en rojo lavado: el rosa no es de la paleta.
+    accent: "bg-vermilion text-paper hover:bg-vermilion-hover focus-visible:ring-vermilion active:scale-95 disabled:opacity-100 disabled:bg-ink/10 disabled:text-ink/45 disabled:hover:bg-ink/10",
     secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent hover:bg-accent/5 focus-visible:ring-accent",
     ghost: "bg-transparent text-muted hover:text-foreground hover:bg-ink/5 focus-visible:ring-accent",
     inverse: "bg-paper text-ink hover:bg-paper/80 focus-visible:ring-accent active:scale-95",

@@ -117,7 +117,7 @@ export default function MetodosYFuentesPage() {
             <p className="text-sm text-accent font-bold mb-3 label-caps">
               Metodología
             </p>
-            <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-foreground">
+            <h1 className="page-title text-foreground">
               Métodos y Fuentes
             </h1>
             <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">

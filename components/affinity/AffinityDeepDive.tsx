@@ -114,7 +114,7 @@ export default function AffinityDeepDive({
               size={28}
             />
             <p className="text-sm font-medium text-foreground">
-              {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
+              {formatAnimalSimple(result.userAnimal)} y {formatAnimalSimple(result.entityAnimal)}
             </p>
             <span
               className="text-sm font-medium px-2 py-0.5 rounded-sm label-caps"

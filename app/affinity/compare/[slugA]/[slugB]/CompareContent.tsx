@@ -93,7 +93,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           >
             <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -112,7 +112,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           >
             <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 No se pudo calcular la comparación
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -144,7 +144,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Header */}
               <motion.section {...fadeUp} className="mb-12 text-center">
-                <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3 line-clamp-2">
+                <h1 className="page-title text-foreground mb-3 line-clamp-2">
                   <span className="inline-block max-w-[45%] truncate align-bottom">{entityA.emoji} {entityA.name}</span>
                   <span className="text-muted mx-2 sm:mx-3">vs</span>
                   <span className="inline-block max-w-[45%] truncate align-bottom">{entityB.emoji} {entityB.name}</span>
@@ -427,7 +427,7 @@ function PersonalCard({
         </span>
       </div>
       <p className="text-xs text-muted mb-1">
-        Tu signo: <span className="font-medium text-foreground">{userAnimal || "—"}</span> ↔ {animal}
+        Tu signo: <span className="font-medium text-foreground">{userAnimal || "—"}</span> · el suyo: {animal}
       </p>
       <p className="text-xs text-muted">
         Relación: <span className="font-medium text-foreground">{relationship}</span>

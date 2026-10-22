@@ -80,7 +80,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         className="text-center mb-8"
       >
         <p className="text-sm font-medium text-muted mb-3 label-caps">Paso 2 de 2</p>
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground leading-[0.9] mb-3">
+        <h1 className="page-title text-foreground mb-3">
           ¿Dónde estás ahora?
         </h1>
         {/* Antes esto eran dos bloques (subtítulo + card "¿Para qué sirve

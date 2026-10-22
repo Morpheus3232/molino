@@ -130,14 +130,14 @@ export default function ParejaClient() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Header */}
         <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
+          <div className="page-eyebrow mb-3">
             <Heart className="w-3.5 h-3.5 text-accent animate-pulse" />
             <span className="text-sm text-accent font-bold label-caps">
               Modo Pareja · Sinergia Simbólica
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground label-caps">
+          <h1 className="page-title text-foreground">
             Comparativa de Mapas
           </h1>
           <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">

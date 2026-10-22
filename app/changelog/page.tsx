@@ -161,14 +161,14 @@ export default function ChangelogPage() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-12">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
+          <div className="page-eyebrow mb-4">
             <GitBranch className="w-3.5 h-3.5" />
             <span className="text-sm font-bold label-caps">
               Registro Público de Novedades
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.08] text-foreground">
+          <h1 className="page-title text-foreground">
             Evolución & Changelog
           </h1>
 

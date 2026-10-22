@@ -78,7 +78,7 @@ export default async function SignoCasaPage({ params }: Props) {
           <p className="text-sm text-accent font-bold mb-3 label-caps">
             Numerología × Astrología
           </p>
-          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground label-caps">
+          <h1 className="page-title text-foreground">
             Número {num} en la Casa {house.number}
           </h1>
           <p className="text-sm text-muted mt-3">

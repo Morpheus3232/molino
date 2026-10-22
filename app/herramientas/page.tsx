@@ -60,7 +60,7 @@ export default function HerramientasPage() {
 
         {/* Hero — animación por montaje (no whileInView, ver fadeUpMount) */}
         <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="page-title text-foreground">
             Calculá tu identidad
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">

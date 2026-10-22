@@ -196,7 +196,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeOut", delay: reduceMotion ? 0 : 0.08 }}
-          className="mt-3 text-balance font-heading text-2xl leading-[1.05] text-foreground sm:text-3xl label-caps"
+          className="section-title mt-3 text-balance text-foreground"
         >
           {hero}
         </motion.h3>

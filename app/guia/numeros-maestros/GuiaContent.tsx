@@ -12,7 +12,7 @@ export default function GuiaContent() {
         </nav>
 
         <p className="text-sm text-accent font-medium mb-4 label-caps">Numerología</p>
-        <h1 className="font-heading text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
+        <h1 className="page-title text-foreground mb-4">
           Números Maestros
         </h1>
         <p className="font-heading text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">

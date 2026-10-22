@@ -114,7 +114,7 @@ export default function SiteIntro() {
           </div>
 
           <div className="text-center">
-            <p className="font-display text-2xl sm:text-3xl text-ink label-caps">Molino</p>
+            <p className="section-title text-ink">Molino</p>
             <p className="text-sm text-muted mt-2 label-caps">
               Mapa personal de autoconocimiento
             </p>

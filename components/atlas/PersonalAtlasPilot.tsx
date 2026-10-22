@@ -163,7 +163,7 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
       <p className="text-sm text-accent font-semibold mb-2 label-caps">
         Tu Atlas
       </p>
-      <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-10 label-caps">
+      <h2 className="section-title text-foreground mb-10">
         {animal}
       </h2>
 

@@ -38,7 +38,7 @@ export default function PremiumClient() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Hero Section */}
         <header className="mb-14 sm:mb-16 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/25 shadow-sm">
+          <div className="page-eyebrow mb-3">
             <span className="text-sm text-accent font-bold label-caps">
               Molino Premium · Síntesis Profunda
             </span>
@@ -46,7 +46,7 @@ export default function PremiumClient() {
 
           {hook ? (
             <>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
+              <h1 className="page-title text-foreground">
                 {hook.question}
               </h1>
               <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
@@ -55,7 +55,7 @@ export default function PremiumClient() {
             </>
           ) : (
             <>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
+              <h1 className="page-title text-foreground">
                 Explorá tu mapa completo <br className="hidden sm:inline" />
                 <span className="text-accent">sin determinismo</span>
               </h1>

@@ -49,7 +49,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
               {CATEGORY_LABELS[source.category] || source.category}
             </span>
           </div>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
+          <h1 className="page-title text-foreground mb-4">
             {source.title}
           </h1>
           <p className="text-sm sm:text-base text-muted">{source.author} · {source.year}</p>

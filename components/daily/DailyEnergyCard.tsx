@@ -48,7 +48,7 @@ export default function DailyEnergyCard({
           </span>
         </div>
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-foreground font-mono text-xs">
+        <div className="page-eyebrow text-foreground font-mono text-xs">
           <span>{streakBadge?.emoji || "🌱"}</span>
           <span className="font-bold text-accent">
             Día {streakDays} conociéndote

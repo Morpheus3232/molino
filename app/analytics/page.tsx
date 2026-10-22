@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
           >
             <div className="container-content">
               <div className="py-12">
-                <h1 className="text-4xl font-heading text-foreground mb-2">
+                <h1 className="page-title text-foreground mb-2">
                   Panel de análisis
                 </h1>
                 <p className="text-muted mb-8">

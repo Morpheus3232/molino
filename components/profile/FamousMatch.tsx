@@ -256,7 +256,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
             </div>
             <h2
               id="famous-match-title"
-              className="font-heading text-3xl sm:text-4xl font-bold text-foreground label-caps"
+              className="section-title text-foreground"
             >
               ¿Con quién compartís tu mapa?
             </h2>

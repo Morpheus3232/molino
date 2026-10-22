@@ -64,7 +64,7 @@ export default function CompradoClient() {
           <span className="text-sm text-emerald-400 font-bold label-caps">Regalo pago</span>
         </span>
 
-        <h1 className="font-display text-2xl sm:text-3xl text-foreground label-caps">
+        <h1 className="page-title text-foreground">
           ¡Listo! Tu regalo está pago.
         </h1>
 

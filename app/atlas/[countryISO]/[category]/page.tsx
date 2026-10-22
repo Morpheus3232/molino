@@ -71,7 +71,7 @@ export default async function CategoryPage({ params }: Props) {
         />
 
         <header className="mb-8">
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground leading-[0.95] label-caps">
+          <h1 className="page-title text-foreground">
             {catLabel} de {name}
           </h1>
           <p className="text-sm text-muted mt-2">

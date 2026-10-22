@@ -170,7 +170,7 @@ export default function PremiumCheckout({
     >
       <div className="max-w-xl mx-auto text-center space-y-6">
         {/* Top Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/25">
+        <div className="page-eyebrow">
           <span className="text-sm text-accent font-bold label-caps">
             Acceso Permanente de por Vida
           </span>

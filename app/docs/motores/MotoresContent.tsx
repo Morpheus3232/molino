@@ -104,7 +104,7 @@ export default function MotoresContent() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-[1.1] label-caps">
+          <h1 className="page-title text-foreground">
             Motores de cálculo
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
@@ -131,33 +131,28 @@ export default function MotoresContent() {
                   <engine.icon className="w-7 h-7" aria-hidden="true" />
                 </div>
                 <div>
-                  <h2 className="font-heading uppercase text-2xl sm:text-3xl font-semibold text-foreground">
+                  <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground">
                     {engine.title}
                   </h2>
                   <p className="text-muted mt-2 max-w-xl leading-relaxed">{engine.description}</p>
                 </div>
               </div>
 
-              {/* Formulas table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border border-border rounded-lg overflow-hidden">
-                  <thead>
-                    <tr className="bg-muted/50 border-b border-border">
-                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Fórmula</th>
-                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Descripción</th>
-                      <th className="px-4 py-3 font-medium text-sm text-foreground label-caps">Ejemplo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {engine.formulas.map((f, i) => (
-                      <tr key={f.name} className={`border-b border-border ${i % 2 === 0 ? "bg-background" : "bg-muted/30"}`}>
-                        <td className="px-4 py-3 font-mono text-sm text-foreground">{f.name}</td>
-                        <td className="px-4 py-3 text-sm text-muted">{f.formula}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-accent">{f.example}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              {/* Fórmulas: en el celular cada una es un bloque; desde sm, tres columnas.
+                  Con <table> la columna "Ejemplo" quedaba cortada en pantallas chicas. */}
+              <div className="border-t border-border">
+                <div className="hidden sm:grid grid-cols-[10rem_1fr_14rem] gap-6 py-2 border-b border-border text-sm text-muted label-caps">
+                  <span>Fórmula</span>
+                  <span>Descripción</span>
+                  <span>Ejemplo</span>
+                </div>
+                {engine.formulas.map((f) => (
+                  <div key={f.name} className="py-4 border-b border-border sm:grid sm:grid-cols-[10rem_1fr_14rem] sm:gap-6">
+                    <p className="text-sm font-semibold text-foreground">{f.name}</p>
+                    <p className="text-sm text-muted mt-1 sm:mt-0">{f.formula}</p>
+                    <p className="font-mono text-[0.8rem] text-foreground mt-2 sm:mt-0 break-words">{f.example}</p>
+                  </div>
+                ))}
               </div>
 
               {/* Code example */}

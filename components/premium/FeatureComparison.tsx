@@ -126,7 +126,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
           </span>
           <h2
             id="feature-comparison-title"
-            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground mt-1 label-caps"
+            className="section-title text-foreground mt-1"
           >
             Gratis vs Premium
           </h2>

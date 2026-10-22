@@ -72,7 +72,7 @@ export default function ExplorePage() {
           <p className="label-micro mb-4">
             Explorar
           </p>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05] max-w-3xl">
+          <h1 className="page-title text-foreground max-w-3xl">
             El universo de tu conocimiento
           </h1>
           <p className="mt-6 text-base sm:text-lg text-muted max-w-xl leading-relaxed">

@@ -37,7 +37,7 @@ export function calculateElementSynergy(elA: ElementName, elB: ElementName): { l
 }
 
 /** Aspecto clásico según la distancia en la rueda (0 a 6 signos). */
-const ASPECT_BY_DISTANCE = [
+export const ASPECT_BY_DISTANCE = [
   { name: "conjunción", angle: 0, verdict: "Alta, en espejo", answer: "se reconocen enseguida: son el mismo signo. Comparten virtudes, gustos y ritmo — y también los mismos puntos ciegos, que nadie compensa.", advice: "Busquen afuera lo que ninguno de los dos trae: amistades, actividades o proyectos que los saquen del espejo." },
   { name: "semisextil", angle: 30, verdict: "Media", answer: "son vecinos en la rueda: distinto elemento, distinto ritmo y distinta polaridad. Al principio cuesta encontrarse; con el tiempo, cada uno le muestra al otro lo que no ve.", advice: "Dense tiempo para conocerse: lo que al principio parece incompatible suele ser justo lo que el otro tiene para enseñar." },
   { name: "sextil", angle: 60, verdict: "Alta", answer: "forman un sextil, el aspecto de la oportunidad: elementos que se complementan y la misma polaridad. Hay química fácil, pero rinde si la trabajan.", advice: "Aprovechen la facilidad para hacer cosas juntos: la química del sextil crece con proyectos compartidos, no sola." },

@@ -82,12 +82,12 @@ export default function WidgetPage() {
       <div className="mx-auto max-w-4xl px-4 sm:px-8 lg:px-12">
         {/* Hero */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
+          <div className="page-eyebrow mb-4">
             <span className="text-sm font-bold label-caps">
               Widget gratuito para coaches y sitios de bienestar
             </span>
           </div>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.08] text-foreground">
+          <h1 className="page-title text-foreground">
             Widget Gratuito de Numerología para tu Sitio Web
           </h1>
           <p className="text-base sm:text-lg text-muted mt-5 max-w-2xl mx-auto leading-relaxed">

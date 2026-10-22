@@ -345,12 +345,12 @@ export default function AcademyContent() {
             HERO — Impactante con mejor contexto
             ═══════════════════════════════════════════════ */}
         <motion.section {...scaleUpMount} className="mb-20">
-          <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
+          <div className="page-eyebrow mb-6">
             <BookOpen className="w-4 h-4 text-accent" />
             <span className="text-sm text-accent font-bold label-caps">Academia de Molino</span>
           </div>
 
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl tracking-tight text-foreground leading-[1.05] mb-6">
+          <h1 className="page-title text-foreground mb-6">
             De dónde viene este sistema
           </h1>
 

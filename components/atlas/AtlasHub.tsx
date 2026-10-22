@@ -43,7 +43,7 @@ function CategoryPreview({
 
   return (
     <motion.div className="group" {...fadeUp}>
-      <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-3 label-caps">
+      <h3 className="section-title text-foreground mb-3">
         {label}
       </h3>
 
@@ -208,7 +208,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
           <div className="flex-1">
             <motion.h1
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps"
+              className="section-title text-foreground"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
@@ -299,7 +299,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               <p className="text-sm text-muted font-medium mb-2 label-caps">
                 Energía opuesta
               </p>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground/60 label-caps">
+              <h2 className="section-title text-foreground/60">
                 {enemyName}
               </h2>
             </div>

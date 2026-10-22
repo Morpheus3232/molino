@@ -37,7 +37,7 @@ export default function AiPage() {
           <p className="text-sm text-accent mb-4 label-caps">
             Primer paso: tu mapa
           </p>
-          <h1 className="font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] text-foreground label-caps">
+          <h1 className="page-title text-foreground">
             Después de la lectura,
             <br />
             la conversación.
@@ -68,7 +68,7 @@ export default function AiPage() {
             ← Mi Mapa
           </Link>
           <p className="mt-8 text-sm text-accent label-caps">Preguntale</p>
-          <h1 className="mt-2 font-display text-[clamp(2.25rem,7vw,4rem)] leading-[0.9] text-foreground label-caps">
+          <h1 className="page-title mt-2 text-foreground">
             Ya sabés lo que
             <br />
             tu mapa dice.

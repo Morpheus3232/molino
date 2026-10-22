@@ -19,14 +19,14 @@ export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-24 text-foreground relative overflow-hidden">
       <div className="text-center max-w-xl relative z-10 w-full">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-6">
+        <div className="page-eyebrow mb-6">
           <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "12s" }} />
           <span className="text-sm font-bold label-caps">
             Error 404 · Coordenada No Mapeada
           </span>
         </div>
 
-        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.0] mb-4">
+        <h1 className="page-title text-foreground mb-4">
           Patrón fuera de órbita
         </h1>
 

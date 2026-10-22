@@ -144,7 +144,7 @@ export default function OnboardingPage() {
               transition={{ duration: 0.4 }}
               className="text-center mb-10"
             >
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 ¿Cuándo naciste?
               </h1>
               <p className="text-base text-muted-foreground max-w-sm mx-auto">
@@ -175,7 +175,7 @@ export default function OnboardingPage() {
                 size="lg"
                 onClick={handleDateSubmit}
                 aria-disabled={!isDateValid}
-                className={!isDateValid ? "opacity-50" : ""}
+                className={!isDateValid ? "!bg-ink/10 !text-ink/45 hover:!bg-ink/10" : ""}
               >
                 Continuar
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />

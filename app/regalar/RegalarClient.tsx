@@ -28,14 +28,14 @@ export default function RegalarClient() {
   return (
     <main className="min-h-screen bg-background pt-20 sm:pt-28 pb-24">
       <div className="mx-auto max-w-2xl px-4 sm:px-8 text-center">
-        <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-full bg-accent/15 border border-accent/30 shadow-sm">
+        <span className="page-eyebrow mb-4">
           <Gift className="w-4 h-4 text-accent" />
           <span className="text-sm text-accent font-bold label-caps">
             Regalo Especial · Molino Pro
           </span>
         </span>
 
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[1.05] label-caps">
+        <h1 className="page-title text-foreground">
           Regalale su mapa <br className="hidden sm:inline" />
           <span className="text-gradient-warm">personal y completo</span>
         </h1>

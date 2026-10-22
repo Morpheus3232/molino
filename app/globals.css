@@ -1397,6 +1397,37 @@
     font-feature-settings: "c2sc", "smcp";
   }
 
+  /* Título de página: un solo tamaño y un solo tono para todos los <h1> del
+     sitio (2026-10-21). Antes convivían ~40 combinaciones — versalitas,
+     negrita, de 30 a 128px — y cada sección parecía de otro libro. */
+  .page-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.125rem, 1.55rem + 2.4vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  /* Título de sección (h2 de bloques grandes): mismo tono que .page-title,
+     un escalón más chico. Reemplaza los titulares en versalitas de 60-90px. */
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.625rem, 1.3rem + 1.3vw, 2.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* Volanta sobre el título: versalitas sueltas, sin píldora ni fondo. */
+  .page-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-muted);
+  }
+
   /* Banderas a color. Noto Emoji (la fuente de emoji del sitio, monocroma)
      tiene los indicadores regionales como letras sueltas y ninguna bandera:
      con ella 🇦🇷 se ve "A R". Se saltea a la de emoji a color del sistema;

@@ -98,7 +98,7 @@ export default function EvolutionPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-              <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 Tu recorrido
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -125,7 +125,7 @@ export default function EvolutionPage() {
                   <span className="text-foreground font-medium">Evolución</span>
                 </nav>
 
-                <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+                <h1 className="page-title text-foreground">
                   Tu recorrido
                 </h1>
                 <p className="text-sm text-muted mt-4 max-w-2xl">

@@ -55,7 +55,7 @@ export default function NosotrosContent() {
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-24 max-w-2xl">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
+          <h1 className="page-title text-foreground">
             Molino nació de una frustración
           </h1>
           <div className="space-y-5 mt-8">

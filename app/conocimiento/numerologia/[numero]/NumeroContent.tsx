@@ -11,7 +11,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-          <h1 className="font-heading text-4xl font-semibold text-foreground">Número no encontrado</h1>
+          <h1 className="page-title text-foreground">Número no encontrado</h1>
           <p className="text-muted mt-4">El número no existe en la base de numerología de Molino.</p>
           <Link href="/conocimiento/numerologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Numerología</Link>
         </main>
@@ -42,7 +42,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 items-start">
             <p className="number-display text-[6rem] sm:text-[8rem] number-display-accent leading-none">{num.number}</p>
             <div>
-              <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.1]">{num.title}</h1>
+              <h1 className="page-title text-foreground">{num.title}</h1>
               <div className="flex flex-wrap gap-2 mt-3">
                 {num.keywords.map(kw => (
                   <span key={kw} className="text-sm text-muted font-medium px-2 py-0.5 rounded-md border border-border label-caps">{kw}</span>

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { Animal } from "@/lib/data/animalRelations";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { getRelationshipMap, getClashPartner } from "@/lib/data/animalRelations";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { SIGN_INTERPRETATIONS_ES } from "@/lib/data/interpretations/astrology-interpretations";
@@ -28,7 +28,7 @@ const YANG_ANIMALS = new Set(["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Pe
 export default function ProfileCoordinatesSection({ profile }: ProfileCoordinatesSectionProps) {
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = archetype.name;
+  const archetypeName = archetypeDisplayName(archetype.name);
 
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
@@ -64,10 +64,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         <span className="block text-sm text-accent mb-3 label-caps">
           COORDENADAS FUNDAMENTALES
         </span>
-        <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] label-caps">
-          LOS CUATRO PILARES
-          <br />
-          DE TU MAPA.
+        <h2 className="section-title text-foreground">
+          Los cuatro pilares de tu mapa
         </h2>
         <p className="mt-4 font-serif text-base sm:text-lg text-muted leading-relaxed">
           Cada sistema calcula una coordenada exacta a partir de tu fecha de nacimiento.
@@ -102,7 +100,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido principal */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
+                <h3 className="section-title text-foreground">
                   {archetypeName}
                 </h3>
 
@@ -189,7 +187,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
+                <h3 className="section-title text-foreground">
                   Sol en {profile.sunSign}
                 </h3>
 
@@ -254,7 +252,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
+                <h3 className="section-title text-foreground">
                   {display.name} de {chineseElement}
                 </h3>
 
@@ -335,7 +333,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
               {/* Contenido */}
               <div className="space-y-4">
-                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] label-caps">
+                <h3 className="section-title text-foreground">
                   Año Personal {personalYear} · {yearTheme || "Ciclo de Tiempo"}
                 </h3>
 

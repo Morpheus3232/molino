@@ -49,7 +49,7 @@ export default function CountryHubClient({
               {flagEmoji}
             </span>
             <div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps">
+              <h1 className="page-title text-foreground">
                 {countryName}
               </h1>
               <p className="text-sm text-muted mt-1.5 label-caps">

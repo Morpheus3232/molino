@@ -100,7 +100,7 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
+          <h1 className="page-title text-foreground mb-4">
             Tu círculo de energías
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">Para ver tu círculo, primero necesitás crear tu perfil personal.</p>

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import {
   Lock,
@@ -49,7 +49,7 @@ export default function PremiumPreview({
 
   const lifePath = safeNumber(displayProfile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = archetype.name || "El Caminante";
+  const archetypeName = archetypeDisplayName(archetype.name || "El Caminante");
 
   return (
     <section className={`py-12 ${className}`} aria-labelledby="premium-preview-title">
@@ -60,7 +60,7 @@ export default function PremiumPreview({
           </span>
           <h2
             id="premium-preview-title"
-            className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground mt-1 label-caps"
+            className="section-title text-foreground mt-1"
           >
             Así se ve tu lectura desbloqueada
           </h2>

@@ -24,7 +24,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-          <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
+          <h1 className="page-title text-foreground">Signo no encontrado</h1>
           <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
           <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
         </main>
@@ -52,7 +52,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
           <div className="flex items-center gap-4 mb-4">
             <span className="text-5xl">{sign.symbol}</span>
             <div>
-              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.1]">{sign.name}</h1>
+              <h1 className="page-title text-foreground">{sign.name}</h1>
               <p className="text-sm text-muted mt-1">{sign.dates}</p>
             </div>
           </div>

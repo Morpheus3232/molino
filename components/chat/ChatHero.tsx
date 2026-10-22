@@ -57,7 +57,7 @@ export default function ChatHero({
         </div>
 
         {/* Display Title */}
-        <h2 className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[0.94] text-paper max-w-2xl mx-auto label-caps">
+        <h2 className="section-title text-paper max-w-2xl mx-auto">
           Tu mapa ya está
           <br />
           <span className="text-accent-light italic font-normal">

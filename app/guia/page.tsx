@@ -20,7 +20,7 @@ export default function GuiaPage() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <div className="border-t border-ink/10 py-10 sm:py-16">
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+          <h1 className="page-title text-foreground">
             Artículos y guías
           </h1>
           <p className="text-sm text-muted mt-4 max-w-xl">

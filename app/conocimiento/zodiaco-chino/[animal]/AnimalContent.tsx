@@ -21,9 +21,10 @@ export interface LunarYearRow {
 }
 
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-const fecha = (iso: string) => {
-  const [, m, d] = iso.split("-").map(Number);
-  return `${d} de ${MESES[m - 1]}`;
+/** "5 feb 1924": la versión corta, para que la tabla entre en el celular. */
+const fechaCorta = (iso: string) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${MESES[m - 1].slice(0, 3)} ${y}`;
 };
 
 export default function AnimalContent({ animal, years }: { animal: ChineseAnimal | null | undefined; years: LunarYearRow[] }) {
@@ -31,7 +32,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-24 pb-24" id="main-content">
-          <h1 className="font-display text-4xl sm:text-5xl text-foreground">Animal no encontrado</h1>
+          <h1 className="page-title text-foreground">Animal no encontrado</h1>
           <p className="text-muted mt-4">
             El animal no existe en la base del zodiaco chino de Molino.
           </p>
@@ -80,14 +81,14 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
 
             <motion.div {...fadeUp} className="border-t border-ink/10 pt-10 lg:pt-14">
               <p className="text-sm font-semibold text-accent mb-6 label-caps">
-                ZODÍACO CHINO · SIGNO {String(currentIndex + 1).padStart(2, "0")} DE 12
+                Zodíaco chino · signo {currentIndex + 1} de 12
               </p>
 
               <div className="flex flex-wrap items-center gap-6 lg:gap-10">
                 <div className="text-accent shrink-0">
                   <ZodiacAnimalIcon animal={animal.name} size={96} />
                 </div>
-                <h1 className="font-display text-[clamp(3rem,10vw,8rem)] leading-[0.85] text-foreground label-caps">
+                <h1 className="page-title text-foreground">
                   {animal.name}
                 </h1>
               </div>
@@ -111,7 +112,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <EditorialSection
           tone="ink"
           eyebrow="SIGNIFICADO"
-          title={<>QUÉ DICE<br />SER {animal.name.toUpperCase()}.</>}
+          title={<>Qué dice ser {animal.name}</>}
           texture="spiral"
         >
           <div className="flex flex-wrap">
@@ -131,7 +132,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <EditorialSection
           tone="paper"
           eyebrow="RASGOS"
-          title={<>CÓMO SE<br />MANIFIESTA.</>}
+          title="Cómo se manifiesta"
         >
           <div className="flex flex-wrap">
             {blocks.map((block, i) => (
@@ -167,11 +168,11 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <EditorialSection
           tone="paperAlt"
           eyebrow={`AÑOS ${delAnimal(animal.name).toUpperCase()}`}
-          title={<>¿NACISTE EN UN AÑO<br />{animal.name.toUpperCase()}?</>}
+          title={<>¿Naciste en un año {animal.name}?</>}
           intro={`El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior.`}
         >
           <div className={cellPad}>
-            <table className="w-full text-left text-base">
+            <table className="w-full text-left text-sm sm:text-base tabular-nums">
               <thead>
                 <tr className="border-b border-ink/20 text-sm text-muted">
                   <th scope="col" className="py-2 pr-4 font-normal label-caps">Año</th>
@@ -184,9 +185,9 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                 {years.map((y) => (
                   <tr key={y.year} className="border-b border-ink/10">
                     <th scope="row" className="py-2 pr-4 font-semibold">{y.year}</th>
-                    <td className="py-2 pr-4">{fecha(y.start)} de {y.start.slice(0, 4)}</td>
-                    <td className="py-2 pr-4">{fecha(y.end)} de {y.end.slice(0, 4)}</td>
-                    <td className="py-2">{animal.name} de {y.element}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">{fechaCorta(y.start)}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">{fechaCorta(y.end)}</td>
+                    <td className="py-2">{y.element}</td>
                   </tr>
                 ))}
               </tbody>
@@ -198,7 +199,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <EditorialSection
           tone="accent"
           eyebrow="AMIGOS Y ENEMIGO"
-          title={<>CON QUIÉN<br />RESUENA.</>}
+          title="Con quién resuena"
           texture="wave"
         >
           <div className="flex flex-wrap">
@@ -239,7 +240,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <EditorialSection
           tone="paperAlt"
           eyebrow="LOS 5 ELEMENTOS"
-          title={<>CINCO VERSIONES<br />DEL MISMO SIGNO.</>}
+          title="Cinco versiones del mismo signo"
         >
           <div className="flex flex-wrap">
             {animal.elements.map((el, i) => (
@@ -256,7 +257,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                 <span className="font-display text-4xl leading-none text-ink/15 block mb-6" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="font-heading text-lg text-foreground uppercase leading-tight">
+                <p className="font-heading text-lg text-foreground leading-tight">
                   {el.element}
                 </p>
                 <p className="text-sm text-muted mt-3 leading-relaxed">{el.modifier}</p>
@@ -308,7 +309,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                   </span>
                   <span>
                     <span className="block text-sm text-muted label-caps">Anterior</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center gap-2">
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors inline-flex items-center gap-2">
                       <ZodiacAnimalIcon animal={prev.name} size={20} className="text-accent" /> {prev.name}
                     </span>
                   </span>
@@ -324,7 +325,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                 >
                   <span>
                     <span className="block text-sm text-muted label-caps">Siguiente</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center justify-end gap-2">
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors inline-flex items-center justify-end gap-2">
                       {next.name} <ZodiacAnimalIcon animal={next.name} size={20} className="text-accent" />
                     </span>
                   </span>

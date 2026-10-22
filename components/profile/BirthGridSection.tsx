@@ -42,7 +42,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
     <EditorialSection
       tone="paperAlt"
       eyebrow="TU CUADRO DE NACIMIENTO"
-      title={<>LOS DÍGITOS<br />DE TU FECHA.</>}
+      title="Los dígitos de tu fecha"
       intro="Se cuenta cuántas veces aparece cada dígito del 1 al 9 en tu fecha y se ubica en la grilla Lo Shu. Podés rehacer la cuenta a mano."
     >
       <div className="pt-4">

@@ -196,7 +196,7 @@ export default function AffinityAnalyticsPage() {
             <main className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
               <div className="mb-8">
-                <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-2">
+                <h1 className="page-title text-foreground mb-2">
                   Affinity Experiment
                 </h1>
                 <p className="text-sm text-muted">

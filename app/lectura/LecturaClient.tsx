@@ -60,7 +60,7 @@ export default function LecturaClient({ catalog }: Props) {
           >
             ← Tu mapa
           </Link>
-          <h1 className="mt-8 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] text-foreground label-caps">
+          <h1 className="page-title mt-8 text-foreground">
             ¿Qué significa
             <br />
             tu mapa?

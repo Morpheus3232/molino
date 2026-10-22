@@ -8,7 +8,7 @@ import { buildAtlasSections } from "@/lib/affinity-light";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import PersonalSigil from "@/components/ui/PersonalSigil";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
@@ -50,7 +50,7 @@ export default function ProfileHub({
 
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = archetype.name;
+  const archetypeName = archetypeDisplayName(archetype.name);
 
   const [birthY, birthM, birthD] = useMemo(() => {
     const parts = (profile.birthDate || "1990-01-01").split("-").map(Number);
@@ -116,13 +116,13 @@ export default function ProfileHub({
 
             {/* Tríada simbólica en tipografía display grande */}
             <div className="space-y-1 sm:space-y-2">
-              <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
+              <h1 className="page-title text-foreground">
                 Camino de Vida {lifePath} · {archetypeName}
               </h1>
-              <p className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
+              <p className="section-title text-foreground">
                 Sol en {profile.sunSign}
               </p>
-              <p className="font-display text-3xl sm:text-5xl lg:text-6xl text-foreground leading-[1.0] label-caps">
+              <p className="section-title text-foreground">
                 {display.name} · {chineseElement} · {polarity}
               </p>
             </div>

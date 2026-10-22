@@ -193,7 +193,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
           <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           {futureDateError ? (
             <div role="alert">
-              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 Fecha inválida
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -205,7 +205,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
             </div>
           ) : (
             <>
-              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
+              <h1 className="page-title text-foreground mb-4">
                 Tu mapa se genera en la portada
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">

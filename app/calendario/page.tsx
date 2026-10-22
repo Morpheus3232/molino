@@ -31,7 +31,7 @@ export default function CalendarioPage() {
             <span className="text-sm text-accent font-bold label-caps">Herramienta interactiva</span>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.9] tracking-tight mb-5">
+          <h1 className="page-title text-foreground mb-5">
             Calendario Numerológico
           </h1>
 

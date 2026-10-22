@@ -318,7 +318,7 @@ function DomainBlock({
 
       <h3
         id={`dominio-${domain.id}`}
-        className="mt-3 font-display text-2xl sm:text-4xl font-bold text-foreground leading-[1.05] label-caps"
+        className="section-title mt-3 text-foreground"
       >
         {domain.question}
       </h3>
@@ -504,11 +504,9 @@ export default function PersonalMapSection({
 
           <h2
             id="mapa-aplicado-heading"
-            className="font-display text-3xl sm:text-5xl lg:text-6xl max-w-4xl text-foreground leading-[0.95] label-caps"
+            className="section-title max-w-4xl text-foreground"
           >
-            DÓNDE TU SIGNO
-            <br />
-            TOCA EL MUNDO.
+            Dónde tu signo toca el mundo
           </h2>
 
           <p className="font-serif text-base sm:text-lg mt-5 max-w-3xl leading-relaxed text-muted">

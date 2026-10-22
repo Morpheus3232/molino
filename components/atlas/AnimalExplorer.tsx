@@ -93,7 +93,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
 
           <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10">
             <div className="flex-1">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.92] label-caps">
+              <h1 className="page-title text-foreground">
                 {animal}
               </h1>
               <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -116,7 +116,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
             {grouped.map((g, i) => (
               <motion.div key={g.type} {...fadeUpDelayed(i * 0.05)}>
                 <div className="flex items-end justify-between mb-4">
-                  <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground label-caps">
+                  <h2 className="font-heading text-xl sm:text-2xl text-foreground">
                     {g.label}
                   </h2>
                   <span className="font-mono text-[11px] text-muted">

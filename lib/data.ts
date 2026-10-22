@@ -231,3 +231,14 @@ export const SYMBOLIC_FRAMEWORKS = [
   { id: "compatibilidad", name: "Compatibilidad", description: "Conexiones entre almas", icon: "💞", available: true },
   { id: "meditacion", name: "Meditación guiada", description: "Audio personalizado", icon: "🧘", available: false },
 ];
+
+/**
+ * "EL CONSTRUCTOR MAESTRO" → "El Constructor Maestro". Los nombres se guardan
+ * en mayúsculas (los usan exportaciones y tests tal cual); en pantalla van en
+ * tipo de título, como el resto de los títulos del sitio.
+ */
+export function archetypeDisplayName(name: string): string {
+  return name
+    .toLocaleLowerCase("es")
+    .replace(/(^|[\s/])(\p{L})/gu, (_, sep: string, ch: string) => sep + ch.toLocaleUpperCase("es"));
+}

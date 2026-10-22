@@ -102,7 +102,7 @@ export default function MundoClient({ refParam, catalog }: MundoClientProps) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
+          <h1 className="page-title text-foreground mb-4">
             Tu mundo de conexiones
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">Para ver tu mundo, primero necesitás crear tu perfil personal.</p>
@@ -128,7 +128,7 @@ export default function MundoClient({ refParam, catalog }: MundoClientProps) {
           <span>›</span>
           <span className="text-foreground font-medium">Mundo</span>
         </nav>
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
+        <h1 className="page-title text-foreground mb-2">
           Tu mundo
         </h1>
       </div>

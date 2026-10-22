@@ -207,7 +207,7 @@ export default function PremiumChatSection({
   if (isPremium === false) {
     return (
       <div className="rounded-[--radius-xl] bg-ink text-paper p-8 border border-paper/10 text-center">
-        <h3 className="font-display text-2xl text-paper mb-2 label-caps">
+        <h3 className="section-title text-paper mb-2">
           Preguntale a tu mapa
         </h3>
         <p className="text-sm text-paper/70 max-w-md mx-auto leading-relaxed">

@@ -27,7 +27,7 @@ export default function ZodiacoChinoContent() {
         </nav>
 
         <Reveal tag="section" className="mb-16 sm:mb-20">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Zod&#237;aco Chino</h1>
+          <h1 className="page-title text-foreground">Zod&#237;aco Chino</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             Los 12 animales, los 5 elementos y el ciclo de 60 a&#241;os.
           </h2>
@@ -53,12 +53,12 @@ export default function ZodiacoChinoContent() {
               Este sistema combina <strong>12 animales</strong> (ra&#237;ces terrestres) con <strong>10 troncos celestes</strong> (asociados a los 5 elementos en polaridad Yin/Yang), creando un ciclo de <strong>60 combinaciones &#250;nicas</strong>.
             </p>
             <p className="text-base text-foreground leading-relaxed">
-              La data m&#225;s antigua que se conoce proviene de tablillas de hueso oraculares de la dinast&#237;a Shang (c. 1250 a.C.), donde ya aparecen los 12 animales asociados a meses.
+              El registro m&#225;s antiguo que se conoce son los huesos oraculares de la dinast&#237;a Shang (c. 1250 a.C.), donde ya aparecen los 12 animales asociados a meses.
             </p>
             <div className="p-6 border border-ink/10 mt-6">
               <p className="text-sm text-accent font-medium mb-2 label-caps">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
-                El zod&#237;aco chino es un sistema de data cultural estructurada. No es un sistema de predicciones, sino un modelo c&#237;clico que estructura el tiempo de una cultura.
+                El zod&#237;aco chino es una forma de ordenar el tiempo en ciclos, heredada de una cultura. No es un sistema de predicciones.
               </p>
             </div>
           </div>
@@ -76,11 +76,8 @@ export default function ZodiacoChinoContent() {
                 <div className="mb-2 text-accent group-hover:scale-105 transition-transform origin-left">
                   <ZodiacAnimalIcon animal={animal.name} size={32} />
                 </div>
-                <h3 className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors">{animal.name}</h3>
-                 <p className="text-xs text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
-                   {animal.traits.slice(0, 3).join(", ")}
-                   <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-                 </p>
+                <h3 className="font-heading text-base font-semibold text-foreground group-hover:underline underline-offset-4">{animal.name}</h3>
+                <p className="text-xs text-muted mt-1">{animal.traits.slice(0, 3).join(" · ")}</p>
               </Link>
             ))}
           </div>
@@ -93,16 +90,19 @@ export default function ZodiacoChinoContent() {
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">¿Qué animal sos? Tabla por año, de 1924 a 2031</h2>
           </div>
           <p className="text-sm sm:text-base text-muted leading-relaxed max-w-2xl mb-6">
-            El año chino no empieza el 1 de enero sino con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste antes de la fecha de tu año, tu animal es el del año anterior.
+            El año chino no empieza el 1 de enero sino con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Al lado de cada año va el día en que empieza: si naciste antes de esa fecha, tu animal es el del año anterior.
           </p>
-          <div className="sm:columns-2 lg:columns-3 gap-8 text-sm">
+          {/* Una fila = una grilla de tres columnas fijas: año, signo (sin cortar
+              línea) y fecha de inicio. Con flex + columnas CSS, "Serpiente de
+              Madera" partía la fila en dos y la tabla quedaba despareja. */}
+          <div className="sm:columns-2 lg:columns-3 gap-10 text-sm">
             {YEAR_TABLE.map((y) => (
-              <p key={y.year} className="flex justify-between gap-3 py-1 border-b border-ink/10 break-inside-avoid">
+              <p key={y.year} className="grid grid-cols-[3rem_1fr_auto] items-baseline gap-3 py-1.5 border-b border-ink/10 break-inside-avoid">
                 <span className="font-semibold tabular-nums">{y.year}</span>
-                <Link href={`/conocimiento/zodiaco-chino/${y.animal.toLowerCase()}`} className="flex-1 underline decoration-ink/25 underline-offset-2 hover:decoration-ink">
+                <Link href={`/conocimiento/zodiaco-chino/${y.animal.toLowerCase()}`} className="whitespace-nowrap hover:underline underline-offset-4">
                   {y.animal} de {y.element}
                 </Link>
-                <span className="text-muted tabular-nums">desde el {y.start}</span>
+                <span className="text-muted tabular-nums whitespace-nowrap">{y.start}</span>
               </p>
             ))}
           </div>
@@ -117,9 +117,9 @@ export default function ZodiacoChinoContent() {
           <p className="text-sm sm:text-base text-muted leading-relaxed max-w-2xl mb-6">
             Cada elemento rige dos años seguidos —uno Yang (los terminados en número par) y otro Yin (impar)— y el ciclo completo de 12 animales por 5 elementos se repite cada 60 años. Los años terminados en 0 y 1 son de Metal; en 2 y 3, de Agua; en 4 y 5, de Madera; en 6 y 7, de Fuego; en 8 y 9, de Tierra.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {CHINESE_ELEMENTS.map((el) => (
-              <div key={el.name} className="p-6 border border-ink/10">
+              <div key={el.name} className="p-5 border border-ink/10">
                 <p className="font-heading text-xl font-semibold text-foreground mb-2">{el.name}</p>
                 <p className="text-xs text-muted">{el.qualities.join(" · ")}</p>
               </div>
@@ -143,7 +143,17 @@ export default function ZodiacoChinoContent() {
                 <div className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" />
                 <div>
                   <p className="text-sm text-foreground">{src.title}</p>
-                  <p className="text-xs text-muted">{src.author}{src.url ? ` · ${src.url}` : ""}</p>
+                  <p className="text-xs text-muted">
+                    {src.author}
+                    {src.url && (
+                      <>
+                        {" · "}
+                        <a href={src.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">
+                          britannica.com
+                        </a>
+                      </>
+                    )}
+                  </p>
                 </div>
               </div>
             ))}
@@ -162,7 +172,7 @@ export default function ZodiacoChinoContent() {
                 Calculá tu animal →
               </Link>
               <Link href="/herramientas/compatibilidad" className="text-sm font-medium text-accent hover:underline">
-                Compatibilidad persona↔persona →
+                Compatibilidad entre dos personas →
               </Link>
             </div>
           </div>

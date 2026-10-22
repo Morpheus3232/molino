@@ -120,7 +120,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   <span>›</span>
                   <span className="text-foreground font-medium">{meta.plural}</span>
                 </nav>
-                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[0.95] tracking-tight">
+                <h1 className="page-title text-foreground">
                   Cómo resuena cada {meta.label.toLowerCase()}
                 </h1>
                 <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">

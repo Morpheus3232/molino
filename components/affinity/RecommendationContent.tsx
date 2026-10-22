@@ -89,7 +89,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           <p className="text-sm text-accent font-medium mb-4 label-caps">
             Recomendaciones Simbólicas
           </p>
-          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          <h1 className="page-title text-foreground mb-4">
             {title}
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
@@ -130,7 +130,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           <p className="text-sm text-accent font-medium mb-4 label-caps">
             Recomendaciones Simbólicas · {TYPE_LABEL[entityType] ?? entityType}
           </p>
-          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
+          <h1 className="page-title text-foreground mb-3">
             {title}
           </h1>
           <p className="text-sm text-muted">

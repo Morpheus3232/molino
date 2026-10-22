@@ -130,7 +130,7 @@ function PatronCentral({
         <p className="text-sm text-muted mb-2 label-caps">
           {pattern.label}
         </p>
-        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] text-accent mb-4 label-caps">
+        <p className="section-title text-accent mb-4">
           {pattern.keyword}
         </p>
         <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
@@ -556,7 +556,7 @@ export function LecturaLibre({
       as="h2"
       tone="paperAlt"
       eyebrow="TU MAPA"
-      title={<>LEER TU MAPA<br />EN DOS MOVIMIENTOS.</>}
+      title="Leer tu mapa en dos movimientos"
       intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Los principios que las ordenan están en la lectura completa."
     >
       <div className="pt-10 sm:pt-14">
@@ -592,7 +592,7 @@ export function LecturaPremium({
       as="h2"
       tone="paper"
       eyebrow="TU MAPA"
-      title={<>PROFUNDIZÁ<br />TU LECTURA.</>}
+      title="Profundizá tu lectura"
       intro="La síntesis entre tus sistemas y una conversación abierta con tu mapa."
     >
       <div className="pt-10 sm:pt-14">

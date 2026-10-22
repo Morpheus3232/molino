@@ -98,7 +98,7 @@ export default function EmbedWidgetPage() {
 
         {!isCompact && (
           <>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+            <h1 className="page-title mb-2">
               Calculá tu Mapa Personal
             </h1>
             <p className="text-xs sm:text-sm text-muted mb-6 leading-relaxed">

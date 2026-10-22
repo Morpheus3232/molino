@@ -76,7 +76,7 @@ function SemanaContent() {
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
+          <h1 className="page-title text-foreground mb-4">
             Creá tu mapa primero
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
@@ -106,7 +106,7 @@ function SemanaContent() {
             <span className="text-foreground font-medium">Semana</span>
           </nav>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.9] tracking-tight">
+          <h1 className="page-title text-foreground">
             {formatDate(new Date(), { weekday: "long" })}
           </h1>
           <p className="text-sm text-muted mt-3">{weekRange}</p>

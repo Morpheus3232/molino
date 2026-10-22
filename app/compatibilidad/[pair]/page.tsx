@@ -112,7 +112,7 @@ export default async function CompatibilidadPage({ params }: Props) {
       <article className="mx-auto max-w-3xl px-4 sm:px-8">
         <header className="text-center mb-10">
           <p className="text-sm text-accent font-bold mb-3 label-caps">Compatibilidad astrológica</p>
-          <h1 className="font-display text-3xl sm:text-5xl font-bold text-foreground">
+          <h1 className="page-title text-foreground">
             {nameA} y {nameB}
           </h1>
           <p className="text-sm text-muted mt-3">

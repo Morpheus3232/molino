@@ -9,7 +9,7 @@ import {
 } from "@/lib/engines/coupleEngine";
 import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { ARCHETYPES } from "@/lib/data";
+import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import PersonalSynergySigil from "@/components/ui/PersonalSynergySigil";
 import {
@@ -38,7 +38,7 @@ export function PersonCard({
 }) {
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = archetype.name || "El Caminante";
+  const archetypeName = archetypeDisplayName(archetype.name || "El Caminante");
   const sunSign = profile.sunSign || "Aries";
   const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "☀";
   const zodiacDisplay = getZodiacDisplay(profile.chineseZodiac);
@@ -65,7 +65,7 @@ export function PersonCard({
           )}
         </div>
 
-        <h3 className="font-display text-xl sm:text-2xl text-foreground label-caps">
+        <h3 className="section-title text-foreground">
           {name}
         </h3>
         <p className="text-xs text-muted mt-0.5 italic">

@@ -78,7 +78,7 @@ export default function TerminosContent() {
       <div className="container-content py-16 sm:py-24 max-w-3xl mx-auto">
         <div>
           <h1
-            className="font-heading text-4xl sm:text-5xl font-bold text-foreground mb-4 animate-fade-in-up"
+            className="page-title text-foreground mb-4 animate-fade-in-up"
           >
             Términos y Condiciones
           </h1>

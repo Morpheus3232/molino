@@ -63,7 +63,7 @@ export default function ChatReloadModal({
           {/* Título y descripción */}
           <h3
             id="reload-modal-title"
-            className="font-display text-2xl sm:text-3xl text-paper leading-tight label-caps"
+            className="section-title text-paper"
           >
             Te quedaste sin saldo Molino
           </h3>

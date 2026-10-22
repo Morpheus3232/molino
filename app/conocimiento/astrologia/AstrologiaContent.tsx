@@ -29,7 +29,7 @@ export default function AstrologiaContent() {
         </nav>
 
         <Reveal tag="section" className="mb-16 sm:mb-20">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Astrología</h1>
+          <h1 className="page-title text-foreground">Astrología</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El mapa del cielo de tu nacimiento y su tradición interpretativa.
           </h2>

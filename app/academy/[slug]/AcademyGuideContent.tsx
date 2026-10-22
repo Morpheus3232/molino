@@ -23,7 +23,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-10 sm:mb-12">
           <p className="text-sm text-accent font-medium mb-4 label-caps">Guía · Aprender</p>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
+          <h1 className="page-title text-foreground mb-6">
             {guide.title}
           </h1>
           <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{guide.subtitle}</p>

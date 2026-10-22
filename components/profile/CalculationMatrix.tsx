@@ -161,7 +161,7 @@ export default function CalculationMatrix({
         <p className="text-sm text-accent label-caps">
           La cuenta
         </p>
-        <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.25rem)] leading-[0.95] text-foreground label-caps">
+        <h1 className="page-title mt-3 text-foreground">
           Antes de interpretar
           <br />
           nada, la aritmética.

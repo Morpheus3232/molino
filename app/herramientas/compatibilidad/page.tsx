@@ -95,7 +95,7 @@ export default function CompatibilidadCalcPage() {
         </nav>
 
         <motion.section {...fadeUp}>
-          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="page-title text-foreground">
             Compatibilidad simbólica
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -242,7 +242,7 @@ export default function CompatibilidadCalcPage() {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="page-eyebrow justify-center font-medium transition-all text-sm hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />

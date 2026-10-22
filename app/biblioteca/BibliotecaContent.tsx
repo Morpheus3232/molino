@@ -91,7 +91,7 @@ export default function BibliotecaContent() {
         {/* Hero */}
         <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <p className="text-sm text-muted font-medium mb-4 label-caps">Biblioteca de Fuentes</p>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
+          <h1 className="page-title text-foreground">
             Fuentes, Autores & Contexto
           </h1>
           <p className="text-base sm:text-lg text-muted mt-4 max-w-2xl leading-relaxed">

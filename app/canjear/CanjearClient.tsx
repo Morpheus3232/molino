@@ -62,14 +62,14 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
   return (
     <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
-        <span className="inline-flex items-center gap-2 mb-4 px-3.5 py-1 rounded-md bg-accent/10 border border-accent/25">
+        <span className="page-eyebrow mb-4">
           <Ticket className="w-3.5 h-3.5 text-accent" />
           <span className="text-sm text-accent font-bold label-caps">
             Código de acceso
           </span>
         </span>
 
-        <h1 className="font-display text-2xl sm:text-3xl text-foreground label-caps">
+        <h1 className="page-title text-foreground">
           Canjeá tu código
         </h1>
         <p className="text-sm text-muted mt-3 leading-relaxed">

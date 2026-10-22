@@ -69,7 +69,7 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
           </p>
 
           <div className="flex items-end gap-4">
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground leading-[0.95] label-caps">
+            <h1 className="page-title text-foreground">
               {catLabel}
             </h1>
             <ZodiacAnimalIcon animal={animal} size={28} className="text-accent/40 shrink-0" />

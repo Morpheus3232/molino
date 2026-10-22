@@ -144,7 +144,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               <span className="inline-block text-sm text-accent mb-4 label-caps">
                 {post.category}
               </span>
-              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.08] mb-5">
+              <h1 className="page-title text-foreground mb-5">
                 {post.title}
               </h1>
               <p className="text-base text-muted leading-relaxed max-w-2xl mb-6">{post.excerpt}</p>

@@ -45,7 +45,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             </span>
             <p className="text-sm text-accent font-medium label-caps">{piece.era}</p>
           </div>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
+          <h1 className="page-title text-foreground mb-6">
             {piece.title}
           </h1>
           <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{piece.idea}</p>

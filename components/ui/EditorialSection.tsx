@@ -145,7 +145,7 @@ export default function EditorialSection({
                   </span>
                 )}
                 <Heading
-                  className={`font-display text-[clamp(2.25rem,6vw,5.5rem)] leading-[0.88] tracking-tight max-w-4xl ${t.title}`}
+                  className={`section-title max-w-3xl ${t.title}`}
                 >
                   {title}
                 </Heading>

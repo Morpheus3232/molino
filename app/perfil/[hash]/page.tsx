@@ -67,7 +67,7 @@ export default async function SharedProfilePage({ params }: Props) {
   if (!profile) {
     return (
       <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center min-h-screen">
-        <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+        <h1 className="page-title text-foreground mb-4">
           Este perfil compartido no existe
         </h1>
         <p className="text-muted mb-8 max-w-md mx-auto">
