@@ -8,6 +8,7 @@ import { scaleUpMount, staggerContainer } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { BookOpen, Zap, Clock, Users, ArrowRight } from "lucide-react";
+import SectionCover from "@/components/ui/SectionCover";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -358,7 +359,7 @@ export default function AcademyContent() {
             Molino no inventó nada. Es un pórtico a tradiciones milenarias: desde los ciclos babilónicos hasta la numerología pitagórica, 
             pasando por la astrología helenística y el zodíaco chino. Este recorrido te ayuda a entender cómo se construye tu mapa.
           </p>
-
+          <SectionCover imageKey="academia/hub" priority />
         </motion.section>
 
         {/* ═══════════════════════════════════════════════

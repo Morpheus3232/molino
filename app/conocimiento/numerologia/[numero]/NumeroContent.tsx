@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { NUMBERS, NUMEROLOGY_DISCLAIMER, MASTER_NUMBERS_NOTE, MASTER_NUMBERS } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] | null | undefined }) {
   if (!num) {
@@ -50,6 +51,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
               </div>
             </div>
           </div>
+          <SectionCover imageKey={`numerologia/${num.number}`} priority className="mt-10" />
         </motion.section>
 
         {/* Nota de números maestros — solo para 11, 22 y 33 */}

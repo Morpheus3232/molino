@@ -4,6 +4,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
+import SectionCover from "@/components/ui/SectionCover";
+import { signImageKey } from "@/lib/data/section-images";
 
 function normalize(str: string) {
   return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -61,6 +63,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
               <span key={tag} className="text-sm text-muted font-medium px-2 py-0.5 border border-ink/10 label-caps">{tag}</span>
             ))}
           </div>
+          <SectionCover imageKey={signImageKey(sign.name)} priority className="mt-10" />
         </motion.section>
 
         {/* Significado */}

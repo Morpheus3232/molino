@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { AcademyGuide } from "@/lib/data/academy-guides";
 import ProfileBridge from "@/components/academy/ProfileBridge";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) {
   return (
@@ -27,6 +28,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
             {guide.title}
           </h1>
           <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{guide.subtitle}</p>
+          <SectionCover imageKey={`academia/${guide.slug}`} priority className="mt-10" />
         </motion.section>
 
         {/* Qué vas a aprender */}

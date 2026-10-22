@@ -6,6 +6,7 @@ import { fadeUp } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { ICON_MAP } from "../AcademyContent";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }) {
   const currentIndex = ACADEMY_PIECES.findIndex((p) => p.slug === piece.slug);
@@ -49,6 +50,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             {piece.title}
           </h1>
           <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{piece.idea}</p>
+          <SectionCover imageKey={`academia/${piece.slug}`} priority className="mt-10" />
         </motion.section>
 
         {/* La historia */}

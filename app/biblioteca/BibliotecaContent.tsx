@@ -14,6 +14,7 @@ import {
   CATEGORY_ORDER,
   type BibliotecaSource,
 } from "@/lib/data/biblioteca-content";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const TYPE_META = {
   libro: { label: "Libro", color: "#626262" },
@@ -97,6 +98,7 @@ export default function BibliotecaContent() {
           <p className="text-base sm:text-lg text-muted mt-4 max-w-2xl leading-relaxed">
             Molino integra tres sistemas simbólicos tradicionales: <strong>numerología pitagórica</strong>, <strong>astrología solar</strong> y <strong>zodíaco chino</strong>. Esta biblioteca documenta las obras y corrientes teóricas que fundamentan nuestros algoritmos de lectura.
           </p>
+          <SectionCover imageKey="biblioteca/hub" priority className="mt-10" />
         </motion.section>
 
         {/* Tu mapa en contexto — Guía de lectura temática */}

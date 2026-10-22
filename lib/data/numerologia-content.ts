@@ -230,7 +230,7 @@ export const NUMBERS: NumerologyNumber[] = [
     title: "El Investigador",
     keywords: ["Introspección", "Análisis", "Búsqueda de verdad"],
     meaning: "El 7 representa en la tradición numerológica la introspección, el análisis y la búsqueda de conocimiento profundo. Se asocia con la espiritualidad, la sabiduría y la investigación.",
-    history: "Pitágoras consideraba al 7 como el número sagrado,因为它 era considerado un número primo que no podía dividirse. Se asociaba con la perfección y la divinidad.",
+    history: "Pitágoras consideraba al 7 como el número sagrado porque era un número primo que no podía dividirse. Se asociaba con la perfección y la divinidad.",
     strengths: ["Capacidad analítica", "Introspección", "Búsqueda de verdad", "Espiritualidad", "Sabiduría"],
     challenges: ["Aislamiento", "Escepticismo excesivo", "Perfeccionismo", "Dificultad para expresar emociones", "Retiro excesivo"],
     symbolism: "El 7 se asocia con el arcoiris, los siete días de la creación y las siete notas musicales. Representa el misterio y la búsqueda de significado.",

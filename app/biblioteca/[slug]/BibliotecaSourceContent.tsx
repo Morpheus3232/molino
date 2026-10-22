@@ -9,6 +9,7 @@ import {
   type BibliotecaSource,
 } from "@/lib/data/biblioteca-content";
 import { TYPE_META } from "../BibliotecaContent";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function BibliotecaSourceContent({ source }: { source: BibliotecaSource }) {
   const meta = TYPE_META[source.type];
@@ -53,6 +54,8 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
             {source.title}
           </h1>
           <p className="text-sm sm:text-base text-muted">{source.author} · {source.year}</p>
+          {/* Portada por categoría: 39 obras, cinco temas. */}
+          <SectionCover imageKey={`biblioteca/${source.category}`} priority className="mt-10" />
         </motion.section>
 
         {/* Descripción */}

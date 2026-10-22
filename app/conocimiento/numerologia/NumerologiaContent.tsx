@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NUMBERS, CALCULATIONS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import Reveal from "@/components/ui/Reveal";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function NumerologiaContent() {
   return (
@@ -26,6 +27,7 @@ export default function NumerologiaContent() {
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El lenguaje simbólico de los números y su relación con la personalidad y los ciclos.
           </h2>
+          <SectionCover imageKey="numerologia/hub" priority className="mt-10" />
         </Reveal>
 
         {/* Disclaimer */}

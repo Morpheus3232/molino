@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import Reveal from "@/components/ui/Reveal";
+import SectionCover from "@/components/ui/SectionCover";
 
 const ELEMENTS = [
   { name: "Fuego", signs: "Aries, Leo, Sagitario", traits: ["Energía", "Pasión", "Iniciativa"], color: "var(--element-fire)" },
@@ -33,6 +34,7 @@ export default function AstrologiaContent() {
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El mapa del cielo de tu nacimiento y su tradición interpretativa.
           </h2>
+          <SectionCover imageKey="astrologia/hub" priority className="mt-10" />
         </Reveal>
 
         <Reveal tag="section" delay={0.05} className="mb-12">
