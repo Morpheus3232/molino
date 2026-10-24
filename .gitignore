@@ -58,3 +58,6 @@ validation-results/
 evaluation-results/
 
 .superpowers/
+
+# Planillas de trabajo locales (auditorías, notas): no van al repo público
+*.xlsx
