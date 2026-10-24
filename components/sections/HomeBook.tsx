@@ -73,9 +73,9 @@ export default function HomeBook() {
   return (
     <article className="mx-auto max-w-[38rem] text-lg leading-[1.75] text-foreground">
       {/* Epígrafe: el consejo del momento, como abren los capítulos. */}
-      <blockquote className="ml-auto max-w-[26rem] text-right italic text-muted">
+      <blockquote className="mx-auto max-w-[28rem] text-center italic text-muted">
         <p>&laquo;{daily.dailyAdvice}&raquo;</p>
-        <footer className="mt-1 text-base not-italic">— consejo del día · luna {daily.moonPhase.phase.toLowerCase()}</footer>
+        <footer className="mt-2 text-sm not-italic label-caps">— consejo del día · luna {daily.moonPhase.phase.toLowerCase()}</footer>
       </blockquote>
 
       <Asterism />

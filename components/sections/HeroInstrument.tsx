@@ -133,7 +133,7 @@ export default function HeroInstrument() {
           </p>
 
           {/* Molino context — qué es esta calculadora */}
-          <p className="font-mono text-[11px] sm:text-xs text-muted/80 max-w-md mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted max-w-md mx-auto leading-relaxed">
             Molino cruza tu fecha de nacimiento con numerología pitagórica,
             astrología occidental y zodíaco chino para devolver un mapa
             simbólico de tu patrón personal.
