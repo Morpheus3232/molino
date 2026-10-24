@@ -37,7 +37,7 @@ export default function CalendarioPage() {
 
           <p className="text-base sm:text-lg text-muted max-w-3xl leading-relaxed mb-6">
             Cada día del mes se reduce a un número del 1 al 9, y cada número tiene su propia energía, propósito y significado. 
-            Los números maestros (11, 22, 28, 33) revelan días con potencial amplificado.
+            Los números maestros (11, 22, 33) revelan días con potencial amplificado, y el 28 es el número de la abundancia a largo plazo.
           </p>
 
           {/* Stats */}
@@ -54,10 +54,10 @@ export default function CalendarioPage() {
             <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
               <div className="flex items-center gap-2 mb-2">
                 <Lightbulb className="w-4 h-4 text-accent" />
-                <p className="text-sm text-muted label-caps">Maestros</p>
+                <p className="text-sm text-muted label-caps">Especiales</p>
               </div>
-              <p className="font-heading text-lg font-bold text-foreground">11, 22, 28, 33</p>
-              <p className="text-xs text-muted mt-1">Energía amplificada</p>
+              <p className="font-heading text-lg font-bold text-foreground">11, 22, 33 · 28</p>
+              <p className="text-xs text-muted mt-1">Maestros y abundancia</p>
             </div>
 
             <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
@@ -78,7 +78,7 @@ export default function CalendarioPage() {
             Navegá entre meses con las flechas.
           </p>
           <p className="text-xs text-muted">
-            💡 <span className="text-accent">Tip:</span> Los números maestros van resaltados en gris oscuro. Hoy está marcado con un punto debajo del número.
+            💡 <span className="text-accent">Tip:</span> Los números maestros y el 28 van resaltados en gris oscuro. Hoy está marcado con un punto debajo del número.
           </p>
         </div>
 

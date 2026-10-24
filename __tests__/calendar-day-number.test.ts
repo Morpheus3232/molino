@@ -13,7 +13,7 @@ describe("reduceDateNumber (número del día — suma pitagórica de la fecha co
     expect(reduceDateNumber("2026-01-01")).toBe(3);
   });
 
-  it("conserva los números maestros 11, 22, 28 y 33", () => {
+  it("conserva sin reducir los maestros 11, 22 y 33 y el 28 (abundancia)", () => {
     expect(reduceDateNumber("2026-08-19")).toBe(28);
     expect(reduceDateNumber("2026-08-28")).toBe(28);
   });
@@ -26,7 +26,7 @@ describe("reduceDateNumber (número del día — suma pitagórica de la fecha co
 });
 
 describe("getDateVibration", () => {
-  it("reduce la fecha completa y respeta los maestros 11/22/28/33", () => {
+  it("reduce la fecha completa y respeta los maestros 11/22/33 y el 28", () => {
     expect(getDateVibration("2026-08-11").number).toBe(2);
     expect(getDateVibration("2026-08-19").number).toBe(28);
     expect(getDateVibration("2026-08-28").number).toBe(28);
@@ -39,5 +39,19 @@ describe("getCalendarDayContent", () => {
     expect(content.number).toBe(2);
     expect(content.master).toBe(false);
     expect(content.title).toBeTruthy();
+  });
+});
+
+describe("el 28 es el número de la abundancia, no un maestro", () => {
+  it("no se reduce, pero no se marca como maestro", async () => {
+    const { getCalendarDayContent, getDateNumberBreakdown } = await import("@/lib/numerology/calendar");
+    const day = getCalendarDayContent("2026-08-19");
+    expect(day.number).toBe(28);
+    expect(day.master).toBe(false);
+    expect(day.abundance).toBe(true);
+    const b = getDateNumberBreakdown("2026-08-19");
+    expect(b.isMaster).toBe(false);
+    expect(b.isAbundance).toBe(true);
+    expect(getCalendarDayContent("2026-09-03").master).toBe(true);
   });
 });

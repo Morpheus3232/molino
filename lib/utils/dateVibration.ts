@@ -3,12 +3,13 @@
  *
  * Cada fecha tiene una "energía" que se obtiene sumando los dígitos de su
  * fecha completa (YYYY-MM-DD) y reduciendo el resultado a un número entre
- * 1 y 9 (conservando 11 y 22 como números maestros).
+ * 1 y 9, sin reducir los maestros 11, 22 y 33 ni el 28, número de la
+ * abundancia a largo plazo.
  *
  * Reglas prácticas usadas en el calendario:
  *  - Viajes: días cuya energía reducida es 5.
  *  - Negocios/emprender: días cuya energía reducida es 8, o cuya suma
- *    directa es 28 (día de liderazgo en algunas escuelas).
+ *    directa es 28, el número de la abundancia.
  */
 
 export type TopicId = "viajes" | "negocios";
@@ -17,7 +18,7 @@ export interface VibrationDay {
   date: string;
   /** Suma directa de todos los dígitos de la fecha. */
   sum: number;
-  /** Energía del día (1-9, o 11/22 como maestros). */
+  /** Energía del día (1-9, un maestro 11/22/33 o el 28 de la abundancia). */
   number: number;
   favorable: boolean;
   label: string;
@@ -38,8 +39,9 @@ export function getDateVibration(dateStr: string): { sum: number; number: number
   const sum = digits.reduce((a, b) => a + b, 0);
 
   let num = sum;
-  const MASTER = [11, 22, 28, 33];
-  while (num > 9 && !MASTER.includes(num)) {
+  // Maestros (11, 22, 33) y el 28, número de la abundancia: no se reducen.
+  const UNREDUCED = [11, 22, 28, 33];
+  while (num > 9 && !UNREDUCED.includes(num)) {
     num = String(num)
       .split("")
       .reduce((a, b) => a + Number(b), 0);

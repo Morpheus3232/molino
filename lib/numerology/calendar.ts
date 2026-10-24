@@ -1,4 +1,13 @@
-export const MASTER_NUMBERS = [11, 22, 28, 33] as const;
+/** Números maestros de la numerología pitagórica. */
+export const MASTER_NUMBERS = [11, 22, 33] as const;
+/**
+ * El 28 no es un número maestro: es el número de la abundancia a largo plazo.
+ * Como los maestros, no se reduce (2+8 no se lleva a 1) para conservar su
+ * lectura propia, pero se presenta con su nombre, no como "maestro".
+ */
+export const ABUNDANCE_NUMBER = 28;
+/** Lo que frena la reducción: los maestros y el 28. */
+const UNREDUCED_NUMBERS: readonly number[] = [...MASTER_NUMBERS, ABUNDANCE_NUMBER];
 
 export interface CalendarDayContent {
   number: number;
@@ -7,12 +16,14 @@ export interface CalendarDayContent {
   description: string;
   tags: string[];
   master: boolean;
+  /** true solo para el 28, el número de la abundancia. */
+  abundance: boolean;
   /** Acciones concretas recomendadas para el día — solo definido para los
    * números asociados a manifestación material (8 y 28). */
   recommendations?: string[];
 }
 
-const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
+const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master" | "abundance">> = {
   1: {
     title: "El Líder",
     purpose: "Iniciar, decidir, independencia, acción directa",
@@ -83,7 +94,7 @@ const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
   28: {
     title: "Número de Abundancia",
     purpose: "Abundancia material, riqueza a largo plazo, autoridad, resultados",
-    description: "Número maestro. Comparte la energía de manifestación material del 8, con una base más sólida y sostenida en el tiempo: día de autoridad silenciosa, ideal para decisiones importantes sin esperar permiso de nadie. Antes de reducirse a 1, el 28 conserva la marca del 8 —el número del dinero— y del 2 —el de la cooperación—: por eso es el día de la riqueza construida con otros, no aislada. Es una fecha con fuerte impronta material: los nacidos un día 28 comparten este acento de abundancia personal.",
+    description: "Número de la abundancia a largo plazo. Comparte la energía de manifestación material del 8, con una base más sólida y sostenida en el tiempo: día de autoridad silenciosa, ideal para decisiones importantes sin esperar permiso de nadie. Antes de reducirse a 1, el 28 conserva la marca del 8 —el número del dinero— y del 2 —el de la cooperación—: por eso es el día de la riqueza construida con otros, no aislada. Es una fecha con fuerte impronta material: los nacidos un día 28 comparten este acento de abundancia personal.",
     tags: ["Abundancia", "Riqueza", "Autoridad", "Resultados", "Dinero"],
     recommendations: ["Pagar deudas", "Pagar a tu equipo", "Cortarte el pelo", "Empezar proyectos"],
   },
@@ -101,13 +112,13 @@ function sumDigits(n: number): number {
     .reduce((acc, d) => acc + Number(d), 0);
 }
 
-/** Reduces a day-of-month (1-31) to its numerology number, keeping master numbers 11, 22, 28, 33 unreduced. */
+/** Reduces a day-of-month (1-31) to its numerology number, keeping 11, 22, 33 (masters) and 28 (abundance) unreduced. */
 export function reduceDayNumber(day: number): number {
-  if ((MASTER_NUMBERS as readonly number[]).includes(day)) return day;
+  if (UNREDUCED_NUMBERS.includes(day)) return day;
   let n = day;
   while (n > 9) {
     n = sumDigits(n);
-    if ((MASTER_NUMBERS as readonly number[]).includes(n)) return n;
+    if (UNREDUCED_NUMBERS.includes(n)) return n;
   }
   return n;
 }
@@ -117,16 +128,19 @@ export interface DateNumberBreakdown {
   digits: number[];
   /** Suma de todos los dígitos — primer paso de la reducción. */
   total: number;
-  /** Sumas intermedias sucesivas hasta llegar a un solo dígito o a un número maestro. */
+  /** Sumas intermedias sucesivas hasta llegar a un solo dígito, a un maestro o al 28. */
   reductions: number[];
-  /** Resultado final: 1-9, o el maestro (11/22/28/33) donde se frenó la reducción. */
+  /** Resultado final: 1-9, un maestro (11/22/33) o el 28, donde se frena la reducción. */
   final: number;
   isMaster: boolean;
+  /** El resultado es el 28, número de la abundancia. */
+  isAbundance: boolean;
 }
 
 /**
  * Desglosa paso a paso cómo se reduce una fecha completa (YYYY-MM-DD) a su
- * número pitagórico, preservando los maestros 11, 22, 28 y 33 sin reducir.
+ * número pitagórico, preservando sin reducir los maestros 11, 22 y 33 y el 28
+ * (número de la abundancia).
  * `reduceDateNumber` es un atajo sobre esto — una sola fuente de verdad para
  * el algoritmo, para poder mostrar la cuenta además de solo el resultado.
  */
@@ -135,20 +149,27 @@ export function getDateNumberBreakdown(dateStr: string): DateNumberBreakdown {
   const total = digits.reduce((acc, d) => acc + d, 0);
   const reductions: number[] = [];
   let n = total;
-  if (!(MASTER_NUMBERS as readonly number[]).includes(n)) {
+  if (!UNREDUCED_NUMBERS.includes(n)) {
     while (n > 9) {
       n = sumDigits(n);
       reductions.push(n);
-      if ((MASTER_NUMBERS as readonly number[]).includes(n)) break;
+      if (UNREDUCED_NUMBERS.includes(n)) break;
     }
   }
-  return { digits, total, reductions, final: n, isMaster: (MASTER_NUMBERS as readonly number[]).includes(n) };
+  return {
+    digits,
+    total,
+    reductions,
+    final: n,
+    isMaster: (MASTER_NUMBERS as readonly number[]).includes(n),
+    isAbundance: n === ABUNDANCE_NUMBER,
+  };
 }
 
 /**
  * Reduces a full date (YYYY-MM-DD) to its Pythagorean numerology number:
  * sums all the digits of the complete date and reduces to a single digit,
- * preserving master numbers 11, 22, 28, 33 unreduced.
+ * preserving the master numbers 11, 22, 33 and the abundance number 28 unreduced.
  */
 export function reduceDateNumber(dateStr: string): number {
   return getDateNumberBreakdown(dateStr).final;
@@ -157,7 +178,12 @@ export function reduceDateNumber(dateStr: string): number {
 export function getCalendarDayContent(dateStr: string): CalendarDayContent {
   const number = reduceDateNumber(dateStr);
   const content = CONTENT[number];
-  return { number, master: (MASTER_NUMBERS as readonly number[]).includes(number), ...content };
+  return {
+    number,
+    master: (MASTER_NUMBERS as readonly number[]).includes(number),
+    abundance: number === ABUNDANCE_NUMBER,
+    ...content,
+  };
 }
 
 /** "2+0+2+6+0+8+1+9 = 28" o, si sigue reduciendo, "...= 19 → 1+9 = 10 → 1+0 = 1" — la cuenta completa, no solo el resultado. */

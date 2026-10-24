@@ -76,6 +76,7 @@ export default function DailyEnergyCard({
               <p className="font-mono text-xs text-muted/90 bg-background/80 px-2.5 py-1 rounded-md border border-border/60 inline-block">
                 {formatDateNumberBreakdown(breakdown)}
                 {breakdown.isMaster && <span className="ml-1.5 text-accent font-bold">· maestro</span>}
+                {breakdown.isAbundance && <span className="ml-1.5 text-accent font-bold">· abundancia</span>}
               </p>
             </div>
           </div>

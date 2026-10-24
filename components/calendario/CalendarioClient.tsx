@@ -63,7 +63,7 @@ export default function CalendarioClient() {
       const num = content.number;
 
       numbers[num] = (numbers[num] || 0) + 1;
-      if (content.master) masters.push(day);
+      if (content.master || content.abundance) masters.push(day);
     }
 
     return { numbers, masters };
@@ -80,7 +80,7 @@ export default function CalendarioClient() {
           <p className="text-sm text-muted">
             {/* Antes decía "… de hoy" con el día elegido, aunque se mirara otro mes. */}
             {daysInMonth} días · {monthStats.masters.length}{" "}
-            {monthStats.masters.length === 1 ? "con número maestro" : "con números maestros"}
+            {monthStats.masters.length === 1 ? "día especial" : "días especiales"} (maestros y 28)
           </p>
         </div>
 
@@ -115,10 +115,10 @@ export default function CalendarioClient() {
           <div className="flex items-start gap-2">
             <div>
               <p className="font-heading text-sm font-bold text-foreground mb-1">
-                Números maestros este mes
+                Días especiales este mes
               </p>
               <p className="text-xs text-muted mb-2">
-                {monthStats.masters.length} día{monthStats.masters.length !== 1 ? "s" : ""} con energía amplificada
+                Números maestros (11, 22, 33) y el 28, número de la abundancia
               </p>
               <div className="flex flex-wrap gap-2">
                 {monthStats.masters.map((day) => {
@@ -180,7 +180,7 @@ export default function CalendarioClient() {
 
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-sm font-bold transition-all border ${
-                    content.master
+                    content.master || content.abundance
                       ? "border-accent text-accent bg-accent/20 scale-110"
                       : `${colors.border} ${colors.text} bg-background border-2`
                   }`}
@@ -212,7 +212,7 @@ export default function CalendarioClient() {
             <div className="flex items-start gap-4 mb-6">
               <div
                 className={`w-16 h-16 rounded-xl flex items-center justify-center font-mono text-2xl font-bold border-2 transition-all ${
-                  selectedContent.master
+                  selectedContent.master || selectedContent.abundance
                     ? "border-accent text-accent bg-accent/20"
                     : "border-border text-foreground bg-background"
                 }`}
@@ -229,6 +229,7 @@ export default function CalendarioClient() {
                 <p className="text-sm text-muted">
                   {selected.getDate()} de {MONTH_NAMES[selected.getMonth()]} de {selected.getFullYear()}
                   {selectedContent.master && " · Número maestro"}
+                  {selectedContent.abundance && " · Número de la abundancia"}
                 </p>
               </div>
             </div>
