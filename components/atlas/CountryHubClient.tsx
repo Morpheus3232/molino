@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { Search, MapPin, Building2, ArrowRight } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";
@@ -61,6 +62,7 @@ export default function CountryHubClient({
           {countryEntity && (
             <Link
               href={`/affinity/country/${countryEntity.id}`}
+              rel={entityLinkRel(countryEntity)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-accent/30 bg-accent/5 hover:bg-accent/10 text-accent text-sm font-semibold transition-colors self-start sm:self-auto min-h-[44px] label-caps"
             >
               <span>Ficha simbólica de {countryName}</span>
@@ -107,6 +109,7 @@ export default function CountryHubClient({
               <Link
                 key={city.id}
                 href={`/affinity/city/${city.id}`}
+                rel={entityLinkRel(city)}
                 className="group flex items-center justify-between p-3.5 rounded-xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-all min-h-[52px]"
               >
                 <div className="flex items-center gap-3 min-w-0">

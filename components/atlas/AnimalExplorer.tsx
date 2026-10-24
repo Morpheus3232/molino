@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import type { LightweightEntity } from "@/types/atlas";
@@ -129,6 +130,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                     <Link
                       key={e.id}
                       href={entityHref(e)}
+                      rel={entityLinkRel(e)}
                       className="flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-lg hover:bg-ink/[0.03] transition-colors group"
                     >
                       <EntityVisual

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -44,8 +43,13 @@ const MIN_SOCIOS = 2;
 const MAX_SOCIOS = SLOTS.length;
 const socioLabel = (i: number) => `Socio ${String.fromCharCode(65 + i)}`;
 
-export default function SociosClient() {
-  const searchParams = useSearchParams();
+/** Parámetros de la URL ya leídos en el servidor (ver page.tsx). */
+export type UrlParams = Record<string, string | undefined>;
+
+export default function SociosClient({ params }: { params: UrlParams }) {
+  // Antes useSearchParams: obligaba a renderizar la página solo en el navegador
+  // y Google recibía "Cargando comparativa..." en vez del formulario.
+  const searchParams = { get: (k: string): string | null => params[k] ?? null };
 
   const [mode, setMode] = useState<Mode>((searchParams.get("mode") as Mode) === "solo" ? "solo" : "compare");
 

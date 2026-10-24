@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -54,9 +54,14 @@ function isValidDate(dateStr: string): boolean {
   return d <= today && d.getFullYear() >= 1900;
 }
 
-export default function ParejaClient() {
+/** Parámetros de la URL ya leídos en el servidor (ver page.tsx). */
+export type UrlParams = Record<string, string | undefined>;
+
+export default function ParejaClient({ params }: { params: UrlParams }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // Antes useSearchParams: obligaba a renderizar la página solo en el navegador
+  // y Google recibía "Cargando comparativa..." en vez del formulario.
+  const searchParams = { get: (k: string): string | null => params[k] ?? null };
 
   const urlDateA = parseDateParam(searchParams.get("a"));
   const urlDateB = parseDateParam(searchParams.get("b"));

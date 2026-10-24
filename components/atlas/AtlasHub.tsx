@@ -18,6 +18,7 @@ import CountryGrid from "@/components/atlas/CountryGrid";
 import EntityVisual from "@/components/ui/EntityVisual";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import Link from "next/link";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 
@@ -52,6 +53,7 @@ function CategoryPreview({
           <span key={e.id} className="inline-flex items-center">
             <Link
               href={`/affinity/${e.type}/${e.id}`}
+              rel={entityLinkRel(e)}
               className="inline-flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors py-1 px-2 -mx-2 rounded-md hover:bg-ink/[0.04]"
             >
               <EntityVisual

@@ -7,6 +7,7 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
 import Link from "next/link";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import { getAllCountryISOs, getAtlasNeighbors } from "@/lib/data/atlas-queries";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { affinityListingOf } from "@/lib/data/brand-kinds";
@@ -181,6 +182,7 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
               <li key={e.id}>
                 <Link
                   href={`/affinity/${e.type}/${e.id}`}
+                  rel={entityLinkRel(e)}
                   className="flex items-baseline justify-between gap-4 py-2.5 min-h-[44px] hover:text-accent transition-colors"
                 >
                   <span className="text-foreground">{e.name}</span>

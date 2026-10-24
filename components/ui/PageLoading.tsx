@@ -1,4 +1,4 @@
-export default function RootLoading() {
+export default function PageLoading() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center bg-background px-4">
       <div className="relative flex items-center justify-center mb-6">

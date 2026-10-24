@@ -51,7 +51,7 @@ export default function AtlasSharePanel({ entities, category }: AtlasSharePanelP
         entity={selected}
         headline={`${selected.animal}`}
         subline="Afinidad simbólica según el zodíaco chino"
-        url={`${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${category}/${selected.id}`}
+        url={`${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${selected.type || category}/${selected.id}`}
       />
     </section>
   );

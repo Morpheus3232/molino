@@ -13,6 +13,23 @@ function yearsOf(animal: string): LunarYearRow[] {
 
 type Props = { params: Promise<{ animal: string }> };
 
+/**
+ * El slug llega a veces codificado ("drag%C3%B3n") y a veces no ("dragón"),
+ * según venga del prerender o de la URL pedida. Sin decodificar, la página
+ * del Dragón respondía 200 con "Animal no encontrado" y Search Console la
+ * marcaba como soft 404.
+ */
+function findAnimal(slug: string) {
+  let key = slug;
+  try {
+    key = decodeURIComponent(slug);
+  } catch {
+    // slug con % suelto: se compara tal cual
+  }
+  key = key.normalize("NFC").toLowerCase();
+  return CHINESE_ANIMALS.find((a) => a.name.normalize("NFC").toLowerCase() === key);
+}
+
 // Los 12 signos se pre-generan; cualquier otro slug es un 404 real del router.
 // Antes respondía 200 con canónica a la home (soft 404 en Search Console).
 export const dynamicParams = false;
@@ -23,7 +40,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { animal: animalId } = await params;
-  const animal = CHINESE_ANIMALS.find(a => a.name.toLowerCase() === animalId.toLowerCase());
+  const animal = findAnimal(animalId);
 
   if (!animal) {
     return { title: "Animal no encontrado" };
@@ -45,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function AnimalPage({ params }: Props) {
   const { animal: animalId } = await params;
-  const animal = CHINESE_ANIMALS.find(a => a.name.toLowerCase() === animalId.toLowerCase());
+  const animal = findAnimal(animalId);
 
   const jsonLd = animal ? [
     {

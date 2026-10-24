@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import type { ResonanceInfo } from "@/lib/resonance";
 
 interface EntityCardProps {
@@ -76,7 +77,8 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
       <Link
-        href={`/affinity/${category}/${entity.id}`}
+        href={`/affinity/${entity.type || category}/${entity.id}`}
+        rel={entityLinkRel(entity)}
         className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         {content}

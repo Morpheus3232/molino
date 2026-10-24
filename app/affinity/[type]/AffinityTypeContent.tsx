@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useUserContext } from "@/lib/hooks/useUserContext";
@@ -239,6 +240,7 @@ function ResultRow({
   return (
     <Link
       href={href}
+      rel={entityLinkRel(result)}
       className="block w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start sm:items-center gap-4">

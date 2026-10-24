@@ -8,6 +8,9 @@ export const metadata = createRouteMetadata({
   title: "Afinidad",
   description: "Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.",
   path: "/affinity",
+  // Sin perfil no hay nada que mostrar (pide crear el mapa): fuera del índice,
+  // pero los enlaces se siguen. Las listas por categoría sí se indexan.
+  noIndex: true,
   ogTitle: "Afinidad",
   ogDescription: "Afinidad simbólica entre vos y el mundo.",
   image: "/opengraph-image",

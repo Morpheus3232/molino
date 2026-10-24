@@ -1,5 +1,4 @@
 import SociosClient from "./SociosClient";
-import { Suspense } from "react";
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
@@ -11,18 +10,14 @@ export const metadata = createRouteMetadata({
   ogDescription: "Descubrí qué tan compatibles son dos personas trabajando juntas: numerología, signos solares, química elemental y zodíaco chino.",
 });
 
-export default function SociosPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-background pt-24 pb-24 text-center">
-          <div className="animate-pulse font-mono text-xs text-muted">
-            Cargando comparativa...
-          </div>
-        </div>
-      }
-    >
-      <SociosClient />
-    </Suspense>
+export default async function SociosPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const raw = await searchParams;
+  const params = Object.fromEntries(
+    Object.entries(raw).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v]),
   );
+  return <SociosClient params={params} />;
 }

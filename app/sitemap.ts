@@ -41,8 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/herramientas/signo-solar`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/herramientas/zodiaco-chino`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/herramientas/compatibilidad`, changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/affinity/recommendations/countries`, changeFrequency: "monthly" as const, priority: 0.5 },
-    { url: `${BASE_URL}/affinity/recommendations/brands`, changeFrequency: "monthly" as const, priority: 0.5 },
   ];
 
   // Sinastría — Programmatic SEO (144 combinaciones zodiacales)
@@ -52,7 +50,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Affinity hub + category listings
   const affinityPages = [
-    { url: `${BASE_URL}/affinity`, changeFrequency: "weekly" as const, priority: 0.8 },
     // Las marcas se listan en tres: /affinity/autos, /affinity/ropa y /affinity/brand.
     ...[...getAvailableTypes(), "autos", "ropa"].map((type) => ({
       url: `${BASE_URL}/affinity/${type}`,

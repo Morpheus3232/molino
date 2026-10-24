@@ -11,6 +11,9 @@ export const metadata = createRouteMetadata({
   title: "Destinos para priorizar este ciclo",
   description: "Prioridad del ciclo actual: qué destinos explorar ahora según tu perfil simbólico.",
   path: "/affinity/recommendations/countries",
+  // Sin perfil no hay nada que mostrar (pide crear el mapa): fuera del índice,
+  // pero los enlaces se siguen. Las listas por categoría sí se indexan.
+  noIndex: true,
 });
 
 export default function CountriesRecommendationPage() {

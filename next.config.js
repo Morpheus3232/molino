@@ -15,7 +15,7 @@ const SIGNOS = ['aries', 'tauro', 'geminis', 'cancer', 'leo', 'virgo', 'libra', 
 
 // /compatibility/<id viejo> → /affinity/<tipo>/<id del Atlas>, emparejados por
 // nombre con lib/data/entities.ts (2026-10-19). Los que no existen en el Atlas
-// (sushi, the-office, fire…) siguen cayendo en /affinity.
+// (sushi, the-office, fire…) responden 404.
 const LEGACY_COMPATIBILITY = { 'argentina': 'country/argentina', 'brasil': 'country/brasil', 'chile': 'country/chile', 'colombia': 'country/colombia', 'mexico': 'country/mexico', 'peru': 'country/peru', 'uruguay': 'country/uruguay', 'espana': 'country/espana', 'francia': 'country/francia', 'alemania': 'country/alemania', 'italia': 'country/italia', 'reino-unido': 'country/reino-unido', 'estados-unidos': 'country/usa', 'canada': 'country/canada', 'australia': 'country/australia', 'china': 'country/china', 'japan': 'country/japon', 'india': 'country/india', 'egipto': 'country/egipto', 'portugal': 'country/portugal', 'grecia': 'country/grecia', 'south-africa': 'country/sudafrica', 'south-korea': 'country/corea-sur', 'netherlands': 'country/paises-bajos', 'buenos-aires': 'city/buenos-aires', 'madrid': 'city/madrid', 'ciudad-de-mexico': 'city/cdmx', 'paris': 'city/paris-city', 'london': 'city/londres', 'barcelona': 'city/barcelona', 'berlin': 'city/berlin', 'apple': 'brand/apple-tech', 'google': 'brand/google', 'microsoft': 'brand/microsoft', 'amazon': 'brand/amazon', 'tesla': 'brand/tesla-autos', 'netflix': 'brand/netflix', 'nike': 'brand/nike-brand', 'adidas': 'brand/adidas', 'coca-cola': 'brand/coca-cola-beverage', 'soda-stereo': 'artist/soda-stereo', 'titanic': 'movie/titanic', 'matrix': 'movie/matrix', 'sydney': 'city/sydney' };
 
 const nextConfig = {
@@ -57,18 +57,29 @@ const nextConfig = {
     return [
       // Un par de signos = una URL (/compatibilidad, orden zodiacal). El par
       // invertido y la vieja /sinastria/a/b (duplicado, eliminado 2026-10-19)
-      // redirigen ahí; la sinastría invertida llega en dos saltos.
-      { source: '/sinastria/:a/:b', destination: '/compatibilidad/:a-:b', permanent: true },
+      // redirigen ahí.
+      // Cada /sinastria/a/b va directo a la URL canónica (orden zodiacal) en un
+      // solo salto: antes el par invertido daba dos redirects seguidos.
+      ...SIGNOS.flatMap((a, i) => SIGNOS.map((b, j) => ({
+        source: `/sinastria/${a}/${b}`,
+        destination: i <= j ? `/compatibilidad/${a}-${b}` : `/compatibilidad/${b}-${a}`,
+        permanent: true,
+      }))),
       ...SIGNOS.flatMap((a, i) => SIGNOS.slice(0, i).map((b) => ({
         source: `/compatibilidad/${a}-${b}`, destination: `/compatibilidad/${b}-${a}`, permanent: true,
       }))),
       { source: '/principios', destination: '/filosofia', permanent: true },
       // /transparencia se eliminó (2026-10-17); lo que importa de ella vive en /filosofia.
       { source: '/transparencia', destination: '/filosofia', permanent: true },
-      // Los equipos de fútbol salieron del sitio (2026-10-20): sus 91 fichas,
-      // la categoría y las listas del Atlas van a la página padre.
-      { source: '/affinity/team', destination: '/affinity', permanent: true },
-      { source: '/affinity/team/:path*', destination: '/affinity', permanent: true },
+      // Los equipos de fútbol salieron del sitio (2026-10-20). /affinity/team y
+      // sus fichas responden 410 (app/affinity/team): redirigirlas a /affinity
+      // era un "soft 404" para Google y las dejaba en "Descubierta: sin indexar".
+      // Las listas del Atlas sí van a la página padre.
+      // Fichas de marcas pedidas bajo el listado (/affinity/autos/x o
+      // /affinity/ropa/x): la ficha vive en /affinity/brand/x. El Atlas armaba
+      // esos enlaces rotos hasta 2026-10-24.
+      { source: '/affinity/autos/:id', destination: '/affinity/brand/:id', permanent: true },
+      { source: '/affinity/ropa/:id', destination: '/affinity/brand/:id', permanent: true },
       { source: '/atlas/:iso/team', destination: '/atlas/:iso', permanent: true },
       { source: '/atlas/explorar/:animal/team', destination: '/atlas/explorar/:animal', permanent: true },
       { source: '/patterns', destination: '/profile', permanent: true },
@@ -98,15 +109,14 @@ const nextConfig = {
       // Familia `/compatibility/*` → `/affinity/*` (misma dirección que `/entities/[id]`).
       { source: '/compatibility/brands', destination: '/affinity/brand', permanent: true },
       { source: '/compatibility/countries', destination: '/affinity/country', permanent: true },
-      // Wildcard para el resto de URLs legacy (142+ combinaciones y
-      // entidades que ya no existen) — evita 404s; el usuario llega
-      // al hub en vez de a una página de error.
       // Cada entidad vieja que existe en el Atlas va a su propia ficha, no al
       // hub: un redirect masivo a una página genérica Google lo trata como soft 404.
       ...Object.entries(LEGACY_COMPATIBILITY).map(([slug, target]) => ({
         source: `/compatibility/${slug}`, destination: `/affinity/${target}`, permanent: true,
       })),
-      { source: '/compatibility/:path*', destination: '/affinity', permanent: true },
+      // Sin comodín a /affinity: Search Console trataba ese redirect masivo como
+      // soft 404. Lo que no está en la lista lo resuelve
+      // app/compatibility/[entity] (ficha del Atlas si existe, 404 si no).
       // /precios redirige permanente a /premium: el pricing ladder de 3
       // planes se pausó; un solo pago de $8 desbloquea todo.
       { source: '/precios', destination: '/premium', permanent: true },

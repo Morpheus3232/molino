@@ -33,6 +33,8 @@ export interface LightAffinityResult {
   city?: string;
   type: string;
   category?: string;
+  /** Fecha exacta del origen (solo si el registro la trae): decide index/noindex de la ficha. */
+  originDate?: string;
   score: number;
   tier: LightTier;
   relationship: string;
@@ -118,6 +120,7 @@ export function sortLightEntities(
       city: e.city,
       type: e.type,
       category: e.category,
+      originDate: e.originDate,
       score: boostedScore,
       tier,
       relationship,
@@ -154,6 +157,7 @@ type LightweightLike = {
   category?: string;
   isApproximate?: boolean;
   origin?: string;
+  originDate?: string;
 };
 
 /**
