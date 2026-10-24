@@ -1067,7 +1067,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     category: "ropa",
     description: "La marca de las tres tiras, nacida de la rivalidad entre los hermanos Dassler y convertida en sinónimo de deporte y cultura urbana global.",
     keyThemes: ["Deporte", "Urbano", "Clásico", "Innovación"],
-    events: [{ id: "adidas-fund", type: "fundacion", label: "Fundación", year: 1949, confidence: "media", primaryForAffinity: true, description: "Adolf Dassler fundó Adidas en Herzogenaurach tras separarse del negocio familiar que compartía con su hermano Rudolf, quien crearía Puma.", source: "Documentación histórica" }],
+    events: [{ id: "adidas-fund", type: "fundacion", label: "Fundación", year: 1949, date: "1949-08-18", confidence: "exacta", primaryForAffinity: true, description: "Adolf Dassler fundó Adidas en Herzogenaurach tras separarse del negocio familiar que compartía con su hermano Rudolf, quien crearía Puma.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1949 por Adolf Dassler en Herzogenaurach.",
   },
   {

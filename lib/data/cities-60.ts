@@ -32,7 +32,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "La ciudad más grande de Nueva Zelanda, conocida como la Ciudad de las Velas.",
     keyThemes: ["Navegación", "Naturaleza", "Diversidad", "Puerto"],
-    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Establecida en 1840 por el gobernador William Hobson como nueva capital colonial sobre el istmo volcánico que los maoríes llamaban Tāmaki.", source: "Documentación histórica" }],
+    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1840, date: "1840-09-18", confidence: "exacta", primaryForAffinity: true, description: "Establecida en 1840 por el gobernador William Hobson como nueva capital colonial sobre el istmo volcánico que los maoríes llamaban Tāmaki.", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad en 1840 por colonos británicos.",
   },
   {

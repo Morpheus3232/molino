@@ -24,7 +24,7 @@ describe("getAtlasNeighbors", () => {
   });
 
   test("sin fecha exacta no hay vecinos", () => {
-    const n = getAtlasNeighbors("person-john-lennon");
+    const n = getAtlasNeighbors("person-william-shakespeare");
     expect(n.sameCountrySign).toEqual([]);
     expect(n.sameLunarYear).toEqual([]);
   });

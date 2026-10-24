@@ -227,7 +227,7 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     description: "Neuquén es capital provincial patagónica, centro de la industria petrolera argentina.",
     keyThemes: ["Petróleo", "Patagonia", "Comercio", "Tecnología"],
     sourceNote: "Fundada en 1904 como ciudad.",
-    events: [{ id: "neuquen-fund", type: "fundacion", label: "Fundación", year: 1904, description: "Se funda Neuquén como puerto sobre el río.", source: "Documentación histórica", confidence: "media", primaryForAffinity: true }],
+    events: [{ id: "neuquen-fund", type: "fundacion", label: "Fundación", year: 1904, date: "1904-09-12", description: "Neuquén celebra su fundación el 12 de septiembre de 1904, cuando se oficializó el traslado allí de la capital del territorio nacional.", source: "Documentación histórica", confidence: "exacta", primaryForAffinity: true }],
   },
   {
     id: "viedma", name: "Viedma", type: "city", country: "Argentina",
@@ -259,7 +259,7 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     description: "Puerto Madryn es ciudad chubutense sobre el océano, importante puerto pesquero y turístico.",
     keyThemes: ["Mar", "Pesca", "Turismo", "Patagonia"],
     sourceNote: "Fundada en 1865 como puerto galés.",
-    events: [{ id: "madryn-fund", type: "fundacion", label: "Fundación", year: 1865, description: "Se funda Puerto Madryn como puerto galés.", source: "Documentación histórica", confidence: "media", primaryForAffinity: true }],
+    events: [{ id: "madryn-fund", type: "fundacion", label: "Fundación", year: 1865, date: "1865-07-28", description: "El 28 de julio de 1865 desembarcaron los colonos galeses del velero Mimosa en el golfo Nuevo, origen de Puerto Madryn.", source: "Documentación histórica", confidence: "exacta", primaryForAffinity: true }],
   },
   {
     id: "rio-gallegos", name: "Río Gallegos", type: "city", country: "Argentina",

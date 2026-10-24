@@ -47,11 +47,11 @@ export const CITIES_ATLAS: AtlasEntityInput[] = [
     keyThemes: ["Ventana","Canales","Barroco","Palacios"],
     events: [{
       id: "city-san-petersburgo-event", type: "fundacion", label: "Fundación",
-      year: 1703, confidence: "media", primaryForAffinity: true,
-      description: "San Petersburgo — Fundación en 1703.",
+      year: 1703, date: "1703-05-27", confidence: "exacta", primaryForAffinity: true,
+      description: "Pedro el Grande fundó San Petersburgo el 27 de mayo de 1703 (16 de mayo del calendario juliano), con la fortaleza de Pedro y Pablo.",
       source: "Documentación histórica",
     }],
-    sourceNote: "Fundación en 1703.",
+    sourceNote: "Fundación: 27 de mayo de 1703.",
   },
   {
     id: "city-calcuta", name: "Calcuta", type: "city",
@@ -398,11 +398,11 @@ export const CITIES_ATLAS: AtlasEntityInput[] = [
     keyThemes: ["Capital","Monumentos","Smithsonian","Poder"],
     events: [{
       id: "city-washington-dc-event", type: "fundacion", label: "Fundación",
-      year: 1790, confidence: "media", primaryForAffinity: true,
-      description: "Washington DC — Fundación en 1790.",
+      year: 1790, date: "1790-07-16", confidence: "exacta", primaryForAffinity: true,
+      description: "La Ley de Residencia del 16 de julio de 1790 fijó a orillas del Potomac la sede de la capital de Estados Unidos.",
       source: "Documentación histórica",
     }],
-    sourceNote: "Fundación en 1790.",
+    sourceNote: "Fundación: 16 de julio de 1790.",
   },
   {
     id: "city-dallas", name: "Dallas", type: "city",
@@ -463,11 +463,11 @@ export const CITIES_ATLAS: AtlasEntityInput[] = [
     keyThemes: ["Mogol","Lutyens","Megalópolis","Asia"],
     events: [{
       id: "city-delhi-event", type: "fundacion", label: "Capital",
-      year: 1911, confidence: "media", primaryForAffinity: true,
-      description: "Delhi — Capital en 1911.",
+      year: 1911, date: "1911-12-12", confidence: "exacta", primaryForAffinity: true,
+      description: "El 12 de diciembre de 1911, en el Durbar de Delhi, se anunció el traslado de la capital de la India británica de Calcuta a Delhi.",
       source: "Documentación histórica",
     }],
-    sourceNote: "Capital en 1911.",
+    sourceNote: "Capital: 12 de diciembre de 1911.",
   },
   {
     id: "city-casablanca", name: "Casablanca", type: "city",

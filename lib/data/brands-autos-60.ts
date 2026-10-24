@@ -128,8 +128,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Hija de los propios inventores del automóvil, Mercedes-Benz convierte la ingeniería alemana en elegancia que envejece como el mejor de los orgullos.",
     keyThemes: ["Lujo", "Innovación", "Ingeniería", "Elegancia"],
-    events: [{ id: "mercedes-autos-fund", type: "fundacion", label: "Fundación", year: 1926, confidence: "media", primaryForAffinity: true, description: "Nació de la fusión en 1926 de las empresas de Carl Benz y Gottlieb Daimler, los inventores del automóvil.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1926.",
+    events: [{ id: "mercedes-autos-fund", type: "fundacion", label: "Fundación", year: 1926, date: "1926-06-28", confidence: "exacta", primaryForAffinity: true, description: "Nació de la fusión en 1926 de las empresas de Carl Benz y Gottlieb Daimler, los inventores del automóvil.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 28 de junio de 1926.",
   },
   // Tigre
   {

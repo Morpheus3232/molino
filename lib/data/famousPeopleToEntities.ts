@@ -1207,8 +1207,60 @@ function findPerson(sel: Selection): FamousPerson {
   return person;
 }
 
+/**
+ * Fechas de nacimiento documentadas (verificadas) para las personas del Atlas.
+ * Con fecha exacta el signo chino se afirma y la ficha se indexa; sin ella va
+ * noindex. Fuera de esta lista quedan Shakespeare (solo se conoce el bautismo,
+ * 26/4/1564) y Mozart (27/1/1756: cae en la ventana de Año Nuevo chino previa
+ * a 1886, donde el signo no es seguro).
+ */
+const BIRTH_DATES: Record<string, string> = {
+  "Marlon Brando": "1924-04-03",
+  "Taylor Swift": "1989-12-13",
+  "Bob Dylan": "1941-05-24",
+  "Frank Sinatra": "1915-12-12",
+  "Angelina Jolie": "1975-06-04",
+  "John Lennon": "1940-10-09",
+};
+
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+function fechaLarga(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} de ${MESES[m - 1]} de ${y}`;
+}
+
 function personToEntity(person: FamousPerson): AtlasEntityInput {
   const id = `person-${slugify(person.name)}`;
+  const date = BIRTH_DATES[person.name];
+  if (date && Number(date.slice(0, 4)) !== person.year) {
+    throw new Error(`famousPeopleToEntities: la fecha de "${person.name}" no coincide con el año ${person.year}`);
+  }
+  if (date) {
+    return {
+      id,
+      name: person.name,
+      type: "artist",
+      country: person.country,
+      emoji: person.emoji,
+      description: `${person.name} es una figura de referencia en ${person.field.toLowerCase()}, nacida el ${fechaLarga(date)}.`,
+      keyThemes: [person.field, person.westernSign],
+      category: person.field,
+      sourceNote: `Nacimiento: ${fechaLarga(date)}.`,
+      events: [
+        {
+          id: `${id}-nacimiento`,
+          type: "creacion",
+          label: "Nacimiento",
+          year: person.year,
+          date,
+          description: `${person.name} nace el ${fechaLarga(date)}.`,
+          source: "famousPeople.ts (selección curada)",
+          confidence: "exacta",
+          primaryForAffinity: true,
+        },
+      ],
+    };
+  }
   return {
     id,
     name: person.name,

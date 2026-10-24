@@ -171,7 +171,7 @@ export const FOOTBALL_PLAYERS_USA: AtlasEntityInput[] = [
     description: "Cobi Jones tiene el récord histórico de partidos con la selección de Estados Unidos (164), jugando tres Mundiales (1994, 1998, 2002).",
     keyThemes: ["Fútbol", "Selección de Estados Unidos", "Histórico"],
     category: "historico",
-    sourceNote: "Año de nacimiento verificado (1970) en Wikipedia; el día y mes exactos no pudieron confirmarse en una fuente primaria durante esta investigación, así que se deja como fecha aproximada en vez de inventarla.",
-    events: [{ id: "us-cobi-jones-nac", type: "creacion", label: "Nacimiento", year: 1970, description: "Cobi Jones nace en Estados Unidos en 1970 (día y mes exactos no confirmados).", source: "Wikipedia", confidence: "media", primaryForAffinity: true }],
+    sourceNote: "Nacimiento: 16 de junio de 1970.",
+    events: [{ id: "us-cobi-jones-nac", type: "creacion", label: "Nacimiento", year: 1970, date: "1970-06-16", description: "Cobi Jones nace el 16 de junio de 1970 en Detroit, Estados Unidos.", source: "Wikipedia", confidence: "exacta", primaryForAffinity: true }],
   },
 ];
