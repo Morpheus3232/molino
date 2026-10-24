@@ -284,7 +284,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "🐆",
     description: "Puma nació de una rivalidad fraternal y se convirtió en marca deportiva global asociada a la velocidad.",
     keyThemes: ["Deporte", "Velocidad", "Estilo", "Cultura"],
-    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1948, confidence: "alta", primaryForAffinity: true, description: "Rudolf Dassler fundó Puma en 1948 en Herzogenaurach, tras romper la sociedad con su hermano Adolf, creador de Adidas.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1948, date: "1948-10-01", confidence: "exacta", primaryForAffinity: true, description: "Rudolf Dassler fundó Puma en 1948 en Herzogenaurach, tras romper la sociedad con su hermano Adolf, creador de Adidas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1948 por Rudolf Dassler en Herzogenaurach, Alemania.",
   },
   {
@@ -310,7 +310,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "💡",
     description: "Pixar revolucionó la animación digital con historias emocionantes que conectan con todas las edades.",
     keyThemes: ["Creatividad", "Emoción", "Tecnología", "Narrativa"],
-    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1986, confidence: "alta", primaryForAffinity: true, description: "Steve Jobs compró en 1986 el departamento de gráficos de Lucasfilm, rebautizado Pixar, que estrenaría el primer largometraje animado por ordenador.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1986, date: "1986-02-03", confidence: "exacta", primaryForAffinity: true, description: "Steve Jobs compró en 1986 el departamento de gráficos de Lucasfilm, rebautizado Pixar, que estrenaría el primer largometraje animado por ordenador.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1986 por Ed Catmull y Alvy Ray Smith tras ser comprada por Steve Jobs en Richmond, California.",
   },
   {
@@ -344,7 +344,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "🎵",
     description: "TikTok transformó las redes sociales con videos cortos virales y un algoritmo de recomendación adictivo.",
     keyThemes: ["Creatividad", "Viral", "Música", "Juventud"],
-    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 2016, confidence: "alta", primaryForAffinity: true, description: "ByteDance lanzó en 2016 su app de vídeos cortos Douyin, luego internacionalizada como TikTok, el fenómeno viral de la década.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 2016, date: "2016-09-20", confidence: "exacta", primaryForAffinity: true, description: "ByteDance lanzó en 2016 su app de vídeos cortos Douyin, luego internacionalizada como TikTok, el fenómeno viral de la década.", source: "Documentación histórica" }],
     sourceNote: "Lanzada en septiembre de 2016 por ByteDance en Pekín, China.",
   },
   {
@@ -352,7 +352,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
     emoji: "🎧",
     description: "Spotify transformó la industria musical con streaming personalizado y descubrimiento algorítmico.",
     keyThemes: ["Música", "Conectividad", "Descubrimiento", "Innovación"],
-    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 2006, confidence: "media", primaryForAffinity: true, description: "Daniel Ek y Martin Lorentzon crearon Spotify en 2006 en Estocolmo para combatir la piratería musical con streaming legal.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 2006, date: "2006-04-23", confidence: "exacta", primaryForAffinity: true, description: "Daniel Ek y Martin Lorentzon crearon Spotify en 2006 en Estocolmo para combatir la piratería musical con streaming legal.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 2006 por Daniel Ek y Martin Lorentzon en Estocolmo, Suecia.",
   },
   {

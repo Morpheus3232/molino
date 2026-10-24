@@ -5,6 +5,9 @@ import { Compass, Asterisk, Sun, Heart, BookOpen, ArrowRight, Home } from "lucid
 export const metadata: Metadata = {
   title: "404 — Coordenada Fuera de Órbita",
   description: "Esta página no se encuentra en el mapa simbólico actual. Descubrí tu camino de vuelta.",
+  // Sin esto el 404 salía con dos robots: el "index, follow" del layout y el
+  // "noindex" que agrega Next. El estado 404 ya lo dice; esto evita la contradicción.
+  robots: { index: false, follow: true },
 };
 
 const SUGGESTED_ROUTES = [

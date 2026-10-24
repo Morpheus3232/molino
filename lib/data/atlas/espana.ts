@@ -156,13 +156,13 @@ export const UNIVERSITIES_ESPANA: AtlasEntityInput[] = [
     id: "uab", name: "Universidad Autónoma de Barcelona", type: "university", country: "España", emoji: "🎓",
     description: "La UAB es una de las universidades públicas más prestigiosas de Cataluña, con fuerte proyección internacional.",
     keyThemes: ["Pública", "Investigación", "Internacional", "Cataluña"],
-    sourceNote: "Fundada en 1968.",
+    sourceNote: "Fundación: 6 de junio de 1968.",
     events: [
       {
         id: "uab-fundacion", type: "fundacion", label: "Fundación",
-        year: 1968,
+        year: 1968, date: "1968-06-06",
         description: "Se funda la Universidad Autónoma de Barcelona, dentro de la reforma universitaria de 1968.",
-        source: "Universidad Autónoma de Barcelona — Historia institucional", confidence: "media", primaryForAffinity: true,
+        source: "Universidad Autónoma de Barcelona — Historia institucional", confidence: "exacta", primaryForAffinity: true,
       },
     ],
   },
@@ -170,13 +170,13 @@ export const UNIVERSITIES_ESPANA: AtlasEntityInput[] = [
     id: "comillas", name: "Universidad Pontificia Comillas", type: "university", country: "España", emoji: "🎓",
     description: "Comillas es una universidad jesuita madrileña reconocida por sus programas de derecho, económicas e ingeniería.",
     keyThemes: ["Jesuita", "Humanismo", "Formación", "Capital"],
-    sourceNote: "Fundada en 1890.",
+    sourceNote: "Fundación: 16 de diciembre de 1890.",
     events: [
       {
         id: "comillas-fundacion", type: "fundacion", label: "Fundación",
-        year: 1890,
+        year: 1890, date: "1890-12-16",
         description: "La Compañía de Jesús funda la Universidad Pontificia Comillas.",
-        source: "Universidad Pontificia Comillas — Historia institucional", confidence: "media", primaryForAffinity: true,
+        source: "Universidad Pontificia Comillas — Historia institucional", confidence: "exacta", primaryForAffinity: true,
       },
     ],
   },
@@ -206,9 +206,9 @@ export const BRANDS_ESPANA: AtlasEntityInput[] = [
     events: [
       {
         id: "inditex-fundacion", type: "fundacion", label: "Fundación",
-        year: 1985,
+        year: 1985, date: "1985-06-12",
         description: "Se constituye el Grupo Inditex, matriz de Zara.",
-        source: "Inditex — Historia corporativa", confidence: "media", primaryForAffinity: true,
+        source: "Inditex — Historia corporativa", confidence: "exacta", primaryForAffinity: true,
       },
     ],
   },

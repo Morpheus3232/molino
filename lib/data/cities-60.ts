@@ -155,7 +155,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Tailandia", emoji: "🇹🇭",
     description: "Capital tailandesa, ciudad de templos dorados y moderna energía urbana.",
     keyThemes: ["Templos", "Cortesía", "Gastronomía", "Exotismo"],
-    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "En 1782 el rey Rama I, fundador de la dinastía Chakri, la estableció como capital en la orilla este del río Chao Phraya.", source: "Documentación histórica" }],
+    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1782, date: "1782-04-21", confidence: "exacta", primaryForAffinity: true, description: "En 1782 el rey Rama I, fundador de la dinastía Chakri, la estableció como capital en la orilla este del río Chao Phraya.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1782 (dinastía Chakri).",
   },
   {
@@ -172,7 +172,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "China", emoji: "🇨🇳",
     description: "Capital financiera de China, ciudad del futuro con el horizonte más impactante del mundo.",
     keyThemes: ["Poder", "Futuro", "Comercio", "Innovación"],
-    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "En 1927 fue declarada municipio especial de China, afianzando su papel de puerta comercial del Pacífico.", source: "Documentación histórica" }],
+    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1927, date: "1927-07-07", confidence: "exacta", primaryForAffinity: true, description: "En 1927 fue declarada municipio especial de China, afianzando su papel de puerta comercial del Pacífico.", source: "Documentación histórica" }],
     sourceNote: "Municipio especial desde 1927.",
   },
   {
@@ -196,7 +196,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Emiratos Árabes Unidos", emoji: "🇦🇪",
     description: "Ciudad del lujo y la ambición arquitectónica en medio del desierto.",
     keyThemes: ["Lujo", "Ambición", "Futurismo", "Desierto"],
-    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1833, confidence: "exacta", primaryForAffinity: true, description: "En 1833 el jeque Maktum bin Butti, de la tribu Bani Yas, estableció el asentamiento junto al arroyo que fundó su linaje gobernante.", source: "Documentación histórica" }],
+    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1833, date: "1833-06-09", confidence: "exacta", primaryForAffinity: true, description: "En 1833 el jeque Maktum bin Butti, de la tribu Bani Yas, estableció el asentamiento junto al arroyo que fundó su linaje gobernante.", source: "Documentación histórica" }],
     sourceNote: "Asentamiento desde 1833 por la tribu Bani Yas.",
   },
   {
@@ -368,8 +368,8 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Hungría", emoji: "🇭🇺",
     description: "Capital húngara unión de Buda y Pest a orillas del Danubio.",
     keyThemes: ["Arquitectura", "Cultura", "Agua", "Ingenio"],
-    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1873, confidence: "exacta", primaryForAffinity: true, description: "En 1873 la unificación de Buda, Pest y Óbuda creó una sola capital a orillas del Danubio, a imagen de la Viena imperial.", source: "Documentación histórica" }],
-    sourceNote: "Unificación de Buda y Pest en 1873.",
+    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1873, date: "1873-11-17", confidence: "exacta", primaryForAffinity: true, description: "En 1873 la unificación de Buda, Pest y Óbuda creó una sola capital a orillas del Danubio, a imagen de la Viena imperial.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 17 de noviembre de 1873.",
   },
   // GALLO
   {

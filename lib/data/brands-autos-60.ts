@@ -48,8 +48,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Nacida en Turín para poner a Italia en movimiento, Fiat hizo del auto pequeño un lienzo de diseño que cabía en cada callejón.",
     keyThemes: ["Italiano", "Compacto", "Diseño", "Accesibilidad"],
-    events: [{ id: "fiat-1899-autos-fund", type: "fundacion", label: "Fundación", year: 1899, confidence: "media", primaryForAffinity: true, description: "Turín fue cuna de la 'Fabbrica Italiana Automobili Torino', que debutó con el pequeño Fiat 4 HP en 1899.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1899.",
+    events: [{ id: "fiat-1899-autos-fund", type: "fundacion", label: "Fundación", year: 1899, date: "1899-07-11", confidence: "exacta", primaryForAffinity: true, description: "Turín fue cuna de la 'Fabbrica Italiana Automobili Torino', que debutó con el pequeño Fiat 4 HP en 1899.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 11 de julio de 1899.",
   },
   // Buey
   {
@@ -138,8 +138,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "La marca que puso a España sobre ruedas, de la Barcelona industrial al orgullo joven, fusiona la sobriedad latina con carácter mediterráneo.",
     keyThemes: ["España", "Accesibilidad", "Diseño", "Juventud"],
-    events: [{ id: "seat-autos-fund", type: "fundacion", label: "Fundación", year: 1950, confidence: "media", primaryForAffinity: true, description: "El estado español y Fiat crearon en Barcelona la 'Sociedad Española de Automóviles de Turismo' para motorizar al país.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1950.",
+    events: [{ id: "seat-autos-fund", type: "fundacion", label: "Fundación", year: 1950, date: "1950-05-09", confidence: "exacta", primaryForAffinity: true, description: "El estado español y Fiat crearon en Barcelona la 'Sociedad Española de Automóviles de Turismo' para motorizar al país.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 9 de mayo de 1950.",
   },
   // Tigre
   {
@@ -308,8 +308,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "El horizonte infinito del lujo japonés, Infiniti elevó a Nissan hacia una elegancia que se siente antes de verse.",
     keyThemes: ["Japón", "Lujo", "Rendimiento", "Diseño"],
-    events: [{ id: "infiniti-autos-fund", type: "fundacion", label: "Fundación", year: 1989, confidence: "media", primaryForAffinity: true, description: "La división premium de Nissan debutó en Estados Unidos con el sedán Q45, rival directo del Lexus LS.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1989.",
+    events: [{ id: "infiniti-autos-fund", type: "fundacion", label: "Fundación", year: 1989, date: "1989-11-08", confidence: "exacta", primaryForAffinity: true, description: "La división premium de Nissan debutó en Estados Unidos con el sedán Q45, rival directo del Lexus LS.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 8 de noviembre de 1989.",
   },
   // Caballo
   {
@@ -378,8 +378,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Forjada por un hombre que diseñaba motores de avión, Bentley unió las victorias de Le Mans con la artesanía más exquisita de la isla.",
     keyThemes: ["Lujo", "Británico", "Velocidad", "Artesanía"],
-    events: [{ id: "bentley-autos-fund", type: "fundacion", label: "Fundación", year: 1919, confidence: "media", primaryForAffinity: true, description: "W.O. Bentley, obsesionado con el rendimiento, fundó la firma en Cricklewood, Londres, tras diseñar motores de aviación.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1919.",
+    events: [{ id: "bentley-autos-fund", type: "fundacion", label: "Fundación", year: 1919, date: "1919-01-18", confidence: "exacta", primaryForAffinity: true, description: "W.O. Bentley, obsesionado con el rendimiento, fundó la firma en Cricklewood, Londres, tras diseñar motores de aviación.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 18 de enero de 1919.",
   },
   // Cabra
   {
@@ -388,8 +388,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Del fabricante de engranajes André Citroën al de doble cheurón, Citroën convirtió la carretera en una nube y el diseño en vanguardia francesa.",
     keyThemes: ["Innovación", "Francés", "Diseño", "Comodidad"],
-    events: [{ id: "citroen-autos-fund", type: "fundacion", label: "Fundación", year: 1919, confidence: "media", primaryForAffinity: true, description: "El fabricante de engranajes André Citroën lanzó en 1919 el Type A, el primer auto europeo de producción masiva.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1919.",
+    events: [{ id: "citroen-autos-fund", type: "fundacion", label: "Fundación", year: 1919, date: "1919-06-04", confidence: "exacta", primaryForAffinity: true, description: "El fabricante de engranajes André Citroën lanzó en 1919 el Type A, el primer auto europeo de producción masiva.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 4 de junio de 1919.",
   },
   // Rata
   {
@@ -558,8 +558,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Diseñada por un ingeniero aeronáutico en la posguerra, la Vespa zumbó sobre las calles rotas de Italia y se volvió sinónimo de estilo y libertad.",
     keyThemes: ["Italiano", "Diseño", "Libertad", "Estilo"],
-    events: [{ id: "vespa-autos-fund", type: "fundacion", label: "Fundación", year: 1946, confidence: "media", primaryForAffinity: true, description: "El ingeniero aeronáutico Corradino D'Ascanio diseñó para Piaggio un escúter de chasis autoportante llamado 'avispa'.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1946.",
+    events: [{ id: "vespa-autos-fund", type: "fundacion", label: "Fundación", year: 1946, date: "1946-04-23", confidence: "exacta", primaryForAffinity: true, description: "El ingeniero aeronáutico Corradino D'Ascanio diseñó para Piaggio un escúter de chasis autoportante llamado 'avispa'.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 23 de abril de 1946.",
   },
   // Perro
   {
@@ -578,8 +578,8 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Del lazo dorado de Louis Chevrolet nació la marca que montó el sueño americano sobre cuatro ruedas y lo llevó por cada autopista del país.",
     keyThemes: ["Americano", "Tradición", "Potencia", "Libertad"],
-    events: [{ id: "chevrolet-autos-fund", type: "fundacion", label: "Fundación", year: 1911, confidence: "media", primaryForAffinity: true, description: "El piloto suizo Louis Chevrolet y William Durant fundaron en Detroit la marca del lazo dorado.", source: "Documentación histórica" }],
-    sourceNote: "Fundada en 1911.",
+    events: [{ id: "chevrolet-autos-fund", type: "fundacion", label: "Fundación", year: 1911, date: "1911-11-03", confidence: "exacta", primaryForAffinity: true, description: "El piloto suizo Louis Chevrolet y William Durant fundaron en Detroit la marca del lazo dorado.", source: "Documentación histórica" }],
+    sourceNote: "Fundación: 3 de noviembre de 1911.",
   },
   // Cerdo
   {

@@ -87,11 +87,11 @@ export const COUNTRIES_ATLAS: AtlasEntityInput[] = [
     keyThemes: ["Soberanía","Asia","Identidad","Historia"],
     events: [{
       id: "country-nepal-event", type: "fundacion", label: "Unificación",
-      year: 1768, confidence: "media", primaryForAffinity: true,
-      description: "Nepal logró su unificación en 1768, integrando regiones antes divididas en una sola entidad nacional.",
+      year: 1768, date: "1768-09-25", confidence: "exacta", primaryForAffinity: true,
+      description: "Prithvi Narayan Shah tomó Katmandú el 25 de septiembre de 1768 y unificó el reino de Nepal.",
       source: "Documentación histórica",
     }],
-    sourceNote: "Unificación en 1768.",
+    sourceNote: "Unificación: 25 de septiembre de 1768.",
   },
   {
     id: "country-sri-lanka", name: "Sri Lanka", type: "country",

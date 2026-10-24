@@ -233,7 +233,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Irán", emoji: "🇮🇷",
     description: "Heredero de Persépolis y de los poetas Hafez y Rumi, un país que escribió su historia en alfombras y versos mucho antes que en la geopolítica actual.",
     keyThemes: ["Persia", "Geopolítica", "Estrategia", "Espiritualidad"],
-    events: [{ id: "ir-revolucion", type: "fundacion", label: "Revolución Islámica", year: 1979, confidence: "exacta", primaryForAffinity: true, description: "El ayatolá Jomeini, desde el exilio en París, encabezó el derrocamiento de la dinastía Pahlavi y la instauración de una república islámica teocrática.", source: "Documentación histórica" }],
+    events: [{ id: "ir-revolucion", type: "fundacion", label: "Revolución Islámica", year: 1979, date: "1979-04-01", confidence: "exacta", primaryForAffinity: true, description: "El ayatolá Jomeini, desde el exilio en París, encabezó el derrocamiento de la dinastía Pahlavi y la instauración de una república islámica teocrática.", source: "Documentación histórica" }],
     sourceNote: "Revolución Islámica en febrero de 1979.",
   },
   {
