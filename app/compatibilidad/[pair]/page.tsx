@@ -5,6 +5,8 @@ import { SIGN_SLUGS, SIGN_NAMES, SIGN_PROFILES, canonicalPairSlug, pairMeta } fr
 import { SIGN_FACTS } from "@/lib/data/facts/astrology-facts";
 import { pairReading, harmoniousSigns } from "@/lib/seo/compat-matrix";
 import { siteUrl, SITE_URL } from "@/lib/seo";
+import { SectionDiptych } from "@/components/ui/SectionCover";
+import { signImageKey } from "@/lib/data/section-images";
 
 /**
  * /compatibilidad/[s1]-[s2] — 78 pares canónicos (orden zodiacal). El par
@@ -119,6 +121,8 @@ export default async function CompatibilidadPage({ params }: Props) {
             {factA.symbol} {nameA} ({factA.element}, {factA.modality}) · {factB.symbol} {nameB} ({factB.element}, {factB.modality})
           </p>
         </header>
+
+        <SectionDiptych imageKeys={[signImageKey(nameA), signImageKey(nameB)]} className="mb-10" />
 
         <div className="p-6 border border-ink/15 bg-card text-center mb-10">
           <span className="text-sm text-muted block mb-2 label-caps">

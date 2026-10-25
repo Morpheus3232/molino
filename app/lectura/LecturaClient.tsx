@@ -8,6 +8,7 @@ import { profileFromEncoded } from "@/lib/utils/profileShare";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { PremiumActivationProvider } from "@/components/premium/PremiumActivationContext";
 import LaLecturaExperience from "./LaLecturaExperience";
+import SectionCover from "@/components/ui/SectionCover";
 
 interface Props {
   catalog: LightweightEntity[];
@@ -71,6 +72,7 @@ export default function LecturaClient({ catalog }: Props) {
             tus sistemas, la sincronicidad y una conversación abierta con tu
             mapa.
           </p>
+          <SectionCover imageKey="paginas/lectura" priority className="mt-10" />
           <p className="mt-8 text-sm text-muted/70 label-caps">
             Tu lectura
           </p>

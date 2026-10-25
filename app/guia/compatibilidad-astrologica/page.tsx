@@ -3,6 +3,7 @@ import { createRouteMetadata } from "@/lib/seo";
 import { SIGN_FACTS, WESTERN_SIGNS, type WesternSign } from "@/lib/data/facts/astrology-facts";
 import { ASPECT_BY_DISTANCE, calculateElementSynergy, type ElementName } from "@/lib/seo/compat-matrix";
 import { SIGN_SLUGS, canonicalPairSlug } from "@/lib/seo/programmatic";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Compatibilidad astrológica: elementos, modalidades y aspectos",
@@ -48,6 +49,8 @@ export default function CompatibilidadAstrologicaPage() {
           La astrología clásica no compara signos por simpatía: mira tres cosas — de qué elemento es cada uno, qué
           modalidad tiene y a qué distancia quedan en la rueda. Con esas tres reglas se arma la lectura de cualquier par.
         </p>
+
+        <SectionCover imageKey="guia/compatibilidad-astrologica" priority className="mb-14" />
 
         <div className="space-y-16 text-base text-foreground/85 leading-relaxed">
           <section>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import { BookMarked, Compass, Github, Asterisk } from "lucide-react";
 import Card from "@/components/ui/Card";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Métodos y Fuentes",
@@ -125,6 +126,7 @@ export default function MetodosYFuentesPage() {
               tradicionales, no ciencia. Acá explicamos qué son, cómo los calculamos
               y qué podés esperar de los resultados.
             </p>
+            <SectionCover imageKey="paginas/metodos-y-fuentes" priority className="mt-8" />
           </header>
 
           <div className="space-y-6">

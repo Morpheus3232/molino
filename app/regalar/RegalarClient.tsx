@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Gift, ShieldCheck, Check, MessageCircle, Heart } from "lucide-react";
 import Button from "@/components/ui/Button";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function RegalarClient() {
   const [loading, setLoading] = useState(false);
@@ -45,6 +46,7 @@ export default function RegalarClient() {
             No necesitás saber su fecha de nacimiento: la ingresa quien lo recibe, cuando canjea el link.
           </strong>
         </p>
+        <SectionCover imageKey="paginas/regalar" priority className="mt-10 max-w-2xl mx-auto text-left" />
 
         <div className="mt-10 rounded-xl border border-accent/30 bg-card p-7 sm:p-9 text-left max-w-lg mx-auto shadow-xl relative overflow-hidden">
           <div className="flex items-center justify-between gap-2 mb-4">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUpDelayed, fadeUpMount, fadeUpMountDelayed, staggerItem } from "@/lib/utils/motion";
 import { useDictionary } from "@/lib/i18n/useDictionary";
+import SectionCover from "@/components/ui/SectionCover";
 
 const PRINCIPLE_ICONS: Record<string, string> = {
   "conocimiento-libre": "01",
@@ -90,6 +91,7 @@ export default function FilosofiaContent() {
             Molino no es una app más de predicciones. Es una herramienta de autoconocimiento construida
             sobre principios claros: libertad, privacidad, transparencia y honestidad intelectual.
           </p>
+          <SectionCover imageKey="paginas/filosofia" priority className="mt-8" />
           <Link
             href="/nosotros"
             className="inline-flex items-center gap-1.5 mt-4 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createRouteMetadata } from "@/lib/seo";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Guía",
@@ -26,6 +27,7 @@ export default function GuiaPage() {
           <p className="text-sm text-muted mt-4 max-w-xl">
             Contenido editorial sobre sistemas simbólicos, arquetipos y lectura de patrones.
           </p>
+          <SectionCover imageKey="guia/hub" priority className="mt-10" />
         </div>
 
         <div className="space-y-0 border-t border-ink/10">

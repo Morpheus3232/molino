@@ -21,6 +21,7 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
+import SectionCover from "@/components/ui/SectionCover";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -149,6 +150,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
             Ingresá dos fechas de nacimiento para cruzar sus caminos de vida, signos solares, zodíaco
             chino y química elemental.
           </p>
+          <SectionCover imageKey="paginas/pareja" priority className="mt-8 max-w-3xl" />
         </header>
 
         {/* View Mode: Comparison or Input Form */}

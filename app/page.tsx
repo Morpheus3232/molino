@@ -1,6 +1,7 @@
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import HomeBook from "@/components/sections/HomeBook";
 import HomeAlmanac from "@/components/sections/HomeAlmanac";
+import HomeGallery from "@/components/sections/HomeGallery";
 import { SITE_URL, createRouteMetadata } from "@/lib/seo";
 
 const homeSchemas = [
@@ -62,8 +63,9 @@ export default function HomePage() {
               abajo salta al hidratar y un click a "Ver tu mapa" cae en otro
               botón. Valores = el día más corto de los 9 números posibles,
               medido por ancho, en rem para que escale con la letra del
-              navegador: nunca deja hueco, y el día largo apenas empuja. */}
-          <div className="min-h-[97rem] sm:min-h-[92rem] md:min-h-[88rem]">
+              navegador: nunca deja hueco, y el día largo apenas empuja.
+              Incluye las dos láminas (número y Luna) de los capítulos I y II. */}
+          <div className="min-h-[129rem] sm:min-h-[141rem] md:min-h-[137rem]">
             <HomeBook />
           </div>
         </section>
@@ -72,6 +74,8 @@ export default function HomePage() {
         <div className="border-t border-border bg-paper-alt/60">
           <HeroInstrument />
         </div>
+
+        <HomeGallery />
       </main>
 
       {/* JSON-LD Schema */}

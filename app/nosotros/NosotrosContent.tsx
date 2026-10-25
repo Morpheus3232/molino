@@ -6,6 +6,7 @@ import { ArrowRight, Mail } from "lucide-react";
 import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import SectionCover from "@/components/ui/SectionCover";
 
 const origin = [
   "Molino nació de una frustración simple: pagar una suscripción mensual para leer un cálculo de numerología que se hace con una suma. La numerología pitagórica, la posición de un signo solar, el ciclo del zodíaco chino — nada de eso es un secreto propietario. Es conocimiento documentado hace siglos, y sin embargo casi toda la industria lo empaqueta detrás de un paywall recurrente.",
@@ -58,6 +59,7 @@ export default function NosotrosContent() {
           <h1 className="page-title text-foreground">
             Molino nació de una frustración
           </h1>
+          <SectionCover imageKey="paginas/nosotros" priority className="mt-8" />
           <div className="space-y-5 mt-8">
             {origin.map((paragraph, i) => (
               <p key={i} className="text-base sm:text-lg text-muted leading-relaxed">

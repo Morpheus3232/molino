@@ -7,6 +7,7 @@ import { fadeUp } from "@/lib/utils/motion";
 import Button from "@/components/ui/Button";
 import { getSunSign, getSunSignInfo, getSunSignSymbol } from "@/lib/engines/astrologyEngine";
 import { ZODIAC_SIGNS } from "@/lib/data/knowledge";
+import SectionCover from "@/components/ui/SectionCover";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -60,6 +61,7 @@ export default function SignoSolarPage() {
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
             Tu signo zodiacal solar está determinado por la posición del sol en el cielo en el momento de tu nacimiento. Cada signo tiene un elemento, una modalidad y cualidades asociadas.
           </p>
+          <SectionCover imageKey="herramientas/signo-solar" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
         {/* Formulario */}

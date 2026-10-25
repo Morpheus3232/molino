@@ -4,6 +4,7 @@ import CalendarioClient from "@/components/calendario/CalendarioClient";
 import { createRouteMetadata } from "@/lib/seo";
 import { Calendar, Zap, Lightbulb } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Calendario Numerológico",
@@ -39,6 +40,8 @@ export default function CalendarioPage() {
             Cada día del mes se reduce a un número del 1 al 9, y cada número tiene su propia energía, propósito y significado. 
             Los números maestros (11, 22, 33) revelan días con potencial amplificado, y el 28 es el número de la abundancia a largo plazo.
           </p>
+
+          <SectionCover imageKey="paginas/calendario" priority className="mb-10 max-w-4xl" />
 
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

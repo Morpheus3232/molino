@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUpDelayed, fadeUpMount } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
+import SectionCover from "@/components/ui/SectionCover";
 
 const SYSTEMS = [
   {
@@ -79,6 +80,7 @@ export default function ExplorePage() {
             Tu mapa combina múltiples sistemas simbólicos para construir tu perfil.
             Explorá cada sistema para entender cómo funciona.
           </p>
+          <SectionCover imageKey="paginas/explore" priority className="mt-10" />
         </motion.section>
 
         {/* ═══ LOS TRES SISTEMAS ═══ */}

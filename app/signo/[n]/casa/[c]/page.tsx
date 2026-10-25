@@ -4,6 +4,7 @@ import Link from "next/link";
 import { HOUSE_BY_NUMBER, HOUSE_NUMBERS } from "@/lib/seo/programmatic";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { siteUrl, SITE_URL } from "@/lib/seo";
+import SectionCover from "@/components/ui/SectionCover";
 
 /**
  * /signo/[n]/casa/[c] — programmatic SEO: 108 routes (9 numbers x 12 houses).
@@ -85,6 +86,8 @@ export default async function SignoCasaPage({ params }: Props) {
             {fact.title} · {house.name} — {house.area}
           </p>
         </header>
+
+        <SectionCover imageKey={`numerologia/${num}`} className="mb-10" />
 
         <div className="grid grid-cols-2 gap-4 mb-8 text-center">
           <div className="p-5 rounded-lg bg-card border border-ink/10">

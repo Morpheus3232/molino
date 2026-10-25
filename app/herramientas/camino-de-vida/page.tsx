@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { ARCHETYPES } from "@/lib/data";
 import { getCompatibilityDescription } from "@/lib/data";
+import SectionCover from "@/components/ui/SectionCover";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -74,6 +75,7 @@ export default function CaminoDeVidaPage() {
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
             Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número describe tu energía central.
           </p>
+          <SectionCover imageKey="herramientas/camino-de-vida" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
         {/* Formulario */}

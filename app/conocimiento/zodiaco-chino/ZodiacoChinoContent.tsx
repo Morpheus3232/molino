@@ -5,6 +5,7 @@ import Reveal from "@/components/ui/Reveal";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import { CHINESE_NEW_YEAR_DATES } from "@/lib/data/chinese-new-year";
 import { getChineseAnimal, getChineseElement } from "@/lib/engines/chineseZodiacEngine";
+import SectionCover from "@/components/ui/SectionCover";
 
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
@@ -31,6 +32,7 @@ export default function ZodiacoChinoContent() {
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             Los 12 animales, los 5 elementos y el ciclo de 60 a&#241;os.
           </h2>
+          <SectionCover imageKey="zodiaco-chino/hub" priority className="mt-10" />
         </Reveal>
 
         <Reveal tag="section" delay={0.05} className="mb-12">

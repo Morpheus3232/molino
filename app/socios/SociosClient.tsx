@@ -10,6 +10,7 @@ import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import { Handshake, ShieldCheck, User, UserPlus, Users } from "lucide-react";
 import TeamComparison from "@/components/couple/TeamComparison";
+import SectionCover from "@/components/ui/SectionCover";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -167,6 +168,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
             signos solares, zodíaco chino y química elemental trabajando en equipo. También podés analizar una sola
             fecha para ver el perfil de trabajo de esa persona.
           </p>
+          <SectionCover imageKey="paginas/socios" priority className="mt-8 max-w-3xl" />
 
           <div className="inline-flex items-center gap-1 mt-6 p-1 rounded-xl bg-ink/5 border border-ink/10">
             <button

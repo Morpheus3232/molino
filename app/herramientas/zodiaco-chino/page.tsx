@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { getChineseZodiac, getChineseZodiacInfo, getChineseElement } from "@/lib/engines/chineseZodiacEngine";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
+import SectionCover from "@/components/ui/SectionCover";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -79,6 +80,7 @@ export default function ZodiacoChinoCalcPage() {
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
             El zodiaco chino es un sistema de más de 2000 años que asigna un animal y un elemento a cada año en un ciclo de 60 combinaciones. Ingresá tu fecha de nacimiento para descubrir tu lugar en este ciclo.
           </p>
+          <SectionCover imageKey="herramientas/zodiaco-chino" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
         {/* Formulario */}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MasterNumberPersonalization from "@/components/guia/MasterNumberPersonalization";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function GuiaContent() {
   return (
@@ -18,6 +19,8 @@ export default function GuiaContent() {
         <p className="font-heading text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">
           11, 22, 33 — las frecuencias que no se reducen
         </p>
+
+        <SectionCover imageKey="guia/numeros-maestros" priority className="mb-12" />
 
         <MasterNumberPersonalization />
 

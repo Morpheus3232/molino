@@ -1,5 +1,6 @@
 import HoyClient from "./HoyClient";
 import { createRouteMetadata } from "@/lib/seo";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Hoy — Tu Energía y Foco Diario",
@@ -22,6 +23,7 @@ export default function HoyPage() {
             Vibración diaria, fase lunar y foco de acción calculados con numerología y astrología —
             100% en tu navegador. Si guardaste tu mapa, sumamos tu Año, Mes y Día Personal.
           </p>
+          <SectionCover imageKey="paginas/hoy" priority className="mt-8" />
         </header>
         <HoyClient />
       </main>

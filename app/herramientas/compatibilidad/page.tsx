@@ -9,6 +9,7 @@ import { getSunSign } from "@/lib/engines/astrologyEngine";
 import { getChineseZodiac } from "@/lib/engines/chineseZodiacEngine";
 import { getCompatibilityDescription } from "@/lib/data";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
+import SectionCover from "@/components/ui/SectionCover";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -101,6 +102,7 @@ export default function CompatibilidadCalcPage() {
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
             Ingresá las fechas de nacimiento de dos personas para ver cómo se conectan según el zodiaco chino. No se guardan datos.
           </p>
+          <SectionCover imageKey="herramientas/compatibilidad" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
         {/* Formulario */}

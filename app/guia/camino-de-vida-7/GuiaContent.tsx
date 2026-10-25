@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function GuiaContent() {
   return (
@@ -17,6 +18,8 @@ export default function GuiaContent() {
         <p className="font-heading text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">
           El buscador de la verdad
         </p>
+
+        <SectionCover imageKey="guia/camino-de-vida-7" priority className="mb-12" />
 
         <div className="space-y-10 text-base sm:text-lg text-foreground/80 leading-relaxed">
           <section>

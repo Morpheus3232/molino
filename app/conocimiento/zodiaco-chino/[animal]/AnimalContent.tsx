@@ -10,6 +10,8 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER, delAnimal } from "@/lib/data/zodiaco-chino-content";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
+import SectionCover from "@/components/ui/SectionCover";
+import { animalImageKey } from "@/lib/data/section-images";
 
 const cellPad = "p-8 lg:p-12";
 
@@ -102,6 +104,8 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                   ))}
                 </div>
               )}
+
+              <SectionCover imageKey={animalImageKey(animal.name)} priority className="mt-10" />
             </motion.div>
 
             <div className="h-16 lg:h-24" />

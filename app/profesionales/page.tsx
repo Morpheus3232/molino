@@ -3,6 +3,7 @@ import { createRouteMetadata } from "@/lib/seo";
 import { ShieldCheck, Users, BookOpen, Lock, Compass, CheckCircle2, ArrowRight, XCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import SectionCover from "@/components/ui/SectionCover";
 
 const WHAT_WE_DONT_DO = [
   "No reemplazamos terapia profesional",
@@ -62,6 +63,8 @@ export default function ProfesionalesPage() {
           <p className="text-base sm:text-lg text-muted mt-5 leading-relaxed">
             Molino es estructurada pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. <strong>Mapa básico:</strong> 100% local, sin servidor. <strong>Para interpretaciones IA:</strong> el perfil simbólico se envía a proveedores bajo Data Processing Agreements, nunca para entrenar modelos.
           </p>
+
+          <SectionCover imageKey="paginas/profesionales" priority className="mt-10 text-left" />
 
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <Link

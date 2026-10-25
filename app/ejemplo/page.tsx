@@ -7,6 +7,7 @@ import type { UserProfile } from "@/types/user";
 import ProfileHub from "@/components/profile/ProfileHub";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import SectionCover from "@/components/ui/SectionCover";
 
 export const metadata = createRouteMetadata({
   title: "Ejemplo de mapa personal",
@@ -69,6 +70,7 @@ export default function EjemploPage() {
             Este mapa usa un perfil de demostración para mostrar la estructura y los cálculos reales.
           </p>
         </div>
+        <SectionCover imageKey="paginas/ejemplo" priority className="mt-2 mb-8 max-w-4xl" />
       </div>
 
       <ProfileHub profile={demoProfile} catalog={catalog} isDemo />

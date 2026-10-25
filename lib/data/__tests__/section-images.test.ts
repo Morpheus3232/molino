@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { SECTION_IMAGES, signImageKey } from "../section-images";
+import { SECTION_IMAGES, signImageKey, animalImageKey, moonImageKey } from "../section-images";
+import { CHINESE_ANIMALS } from "../zodiaco-chino-content";
 import { NUMBERS } from "../numerologia-content";
 import { ZODIAC_SIGNS } from "../astrologia-content";
 import { SOURCES } from "../biblioteca-content";
@@ -24,6 +25,8 @@ describe("portadas de secciones", () => {
     ...[...new Set(SOURCES.map((s) => s.category))].map((c) => `biblioteca/${c}`),
     ...ACADEMY_PIECES.map((p) => `academia/${p.slug}`),
     ...ACADEMY_GUIDES.map((g) => `academia/${g.slug}`),
+    "zodiaco-chino/hub",
+    ...CHINESE_ANIMALS.map((a) => animalImageKey(a.name)),
   ];
 
   it("toda página tiene su imagen registrada", () => {
@@ -37,10 +40,22 @@ describe("portadas de secciones", () => {
     expect(missing).toEqual([]);
   });
 
-  it("cada imagen tiene texto alternativo y crédito a Unsplash", () => {
+  it("cada imagen tiene texto alternativo y crédito con enlace a la obra", () => {
     for (const [key, img] of Object.entries(SECTION_IMAGES)) {
       expect(img.alt.length, key).toBeGreaterThan(10);
-      expect(img.credit.url, key).toMatch(/^https:\/\/unsplash\.com\/photos\/[\w-]+$/);
+      if (img.source) {
+        expect(img.credit.url, key).toMatch(/^https:\/\/(www\.metmuseum\.org|clevelandart\.org|images\.nasa\.gov)\//);
+      } else {
+        expect(img.credit.url, key).toMatch(/^https:\/\/unsplash\.com\/photos\/[\w-]+$/);
+      }
+    }
+  });
+
+  it("las ocho fases de la Luna tienen imagen", () => {
+    const phases = ["Nueva", "Creciente", "Cuarto Creciente", "Gibosa Creciente", "Llena", "Gibosa Menguante", "Cuarto Menguante", "Menguante"];
+    for (const p of phases) {
+      const key = moonImageKey(p);
+      expect(key && SECTION_IMAGES[key], p).toBeTruthy();
     }
   });
 });

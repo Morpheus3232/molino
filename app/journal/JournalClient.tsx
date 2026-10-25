@@ -11,6 +11,7 @@ import { computeJournalStreak } from "@/lib/utils/journalStreak";
 import JournalEditor from "@/components/journal/JournalEditor";
 import JournalTimeline from "@/components/journal/JournalTimeline";
 import Link from "next/link";
+import SectionCover from "@/components/ui/SectionCover";
 
 function loadUser(): UserProfile | null {
   const stored = loadProfileFromStorage();
@@ -93,6 +94,7 @@ export default function JournalClient() {
               <p className="text-base sm:text-lg text-muted mt-3 leading-relaxed">
                 Lo que escribís acá queda en este navegador. Nadie más lo lee.
               </p>
+              <SectionCover imageKey="paginas/journal" priority className="mt-6" />
             </div>
 
             <div className="flex flex-wrap items-center gap-3 shrink-0">

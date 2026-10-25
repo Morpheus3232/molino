@@ -15,6 +15,8 @@ import { formatViewAll } from "@/lib/utils/plural";
 import EntityVisual from "@/components/ui/EntityVisual";
 import { affinityListingOf } from "@/lib/data/brand-kinds";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
+import SectionCover from "@/components/ui/SectionCover";
+import { animalImageKey } from "@/lib/data/section-images";
 
 const CATEGORY_ORDER = [
   { type: "country", label: "Países" },
@@ -107,6 +109,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
               <ZodiacAnimalIcon animal={animal} size={64} className="text-accent/30" />
             </div>
           </div>
+          <SectionCover imageKey={animalImageKey(animal)} className="mt-10" />
         </motion.header>
 
         {/* Categories */}

@@ -21,6 +21,7 @@ import Link from "next/link";
 import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
+import SectionCover from "@/components/ui/SectionCover";
 
 interface AtlasHubProps {
   countries: AtlasCountry[];
@@ -252,6 +253,8 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         </div>
 
         {/* Subtle bottom rule */}
+        <SectionCover imageKey="paginas/atlas" priority className="mt-10" />
+
         <motion.div
           className="mt-12 h-px bg-ink/10"
           initial={{ scaleX: 0 }}

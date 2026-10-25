@@ -14,6 +14,7 @@ import { PREMIUM_FAQS } from "@/components/pricing/pricing-data";
 import { ShieldCheck, ArrowDown, Compass, Heart, Gift } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import SectionCover from "@/components/ui/SectionCover";
 
 export default function PremiumClient() {
   const router = useRouter();
@@ -64,6 +65,8 @@ export default function PremiumClient() {
               </p>
             </>
           )}
+
+          <SectionCover imageKey="paginas/premium" priority className="mt-10 max-w-2xl mx-auto text-left" />
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Button

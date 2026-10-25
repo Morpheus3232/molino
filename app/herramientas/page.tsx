@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Hash, Sun, Moon, HeartHandshake, type LucideIcon } from "lucide-react";
 import { fadeUpDelayed, fadeUpMount } from "@/lib/utils/motion";
+import SectionCover from "@/components/ui/SectionCover";
 
 const TOOLS: { title: string; subtitle: string; description: string; href: string; icon: LucideIcon; color: string; labelColor: string }[] = [
   {
@@ -66,6 +67,7 @@ export default function HerramientasPage() {
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
             Sin servidor. Sin cuentas. Resultado inmediato.
           </p>
+          <SectionCover imageKey="herramientas/hub" priority className="mt-10" />
         </motion.section>
 
         <div className="space-y-4">
