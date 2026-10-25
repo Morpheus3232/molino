@@ -8,11 +8,12 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
-import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
+import { relacionCon, animalsByKind, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { TIER_META } from "@/lib/engines/affinityEngine";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import type { LightweightEntity, VisualType } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 interface AffinityTypeContentProps {
   meta: { label: string; plural: string; icon: string; description: string };
@@ -125,34 +126,86 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
             </motion.div>
           ) : (
             <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
-              {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
+              {/* SELECTOR DE ANIMAL — los 12 en una grilla pareja, en orden
+                  del ciclo. Cada casilla dice qué es respecto del signo
+                  elegido (amigo / enemigo), que es como se agrupa la lista. */}
               <div className="border-t border-ink/10 py-8">
-                <p className="label-micro mb-4">Signo</p>
-                <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
-                  {ANIMALS.map((animal) => {
+                <div className="flex items-baseline justify-between gap-4 mb-4">
+                  <p className="label-micro">Signo</p>
+                  <p className="text-xs text-muted" aria-hidden="true">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-vermilion align-middle mr-1" /> amigo{" "}
+                    <span className="mx-1">·</span>
+                    <span>✕</span> enemigo
+                  </p>
+                </div>
+                <div
+                  role="group"
+                  aria-label="Elegí un signo del zodíaco chino"
+                  className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 border-l border-t border-ink/15"
+                >
+                  {ANIMALS.map((animal, i) => {
                     const display = getZodiacDisplay(animal);
                     const isActive = animal === activeAnimal;
+                    const isMine = profile?.chineseZodiac === animal;
+                    const rel = isActive ? "mismo" : relacionCon(activeAnimal, animal);
                     return (
                       <button
                         key={animal}
                         type="button"
                         onClick={() => setSelectedAnimal(animal)}
                         aria-pressed={isActive}
-                        className={`shrink-0 flex items-center gap-2 px-3 py-2 min-h-[44px] border text-sm transition-colors ${
+                        aria-label={`${display.name}${isMine ? ", tu signo" : ""}${rel === "amigo" ? `, amigo de ${activeAnimal}` : rel === "enemigo" ? `, enemigo de ${activeAnimal}` : ""}`}
+                        className={`group relative flex flex-col items-center justify-center gap-1.5 px-1 pt-4 pb-3 min-h-[96px] border-r border-b border-ink/15 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
                           isActive
-                            ? "border-accent bg-accent/10 text-foreground"
-                            : "border-ink/10 text-muted hover:border-accent/40 hover:text-foreground"
+                            ? "bg-ink text-paper"
+                            : "text-foreground hover:bg-ink/[0.04]"
                         }`}
                       >
-                        <span className="text-base" aria-hidden="true">{display.emoji}</span>
-                        <span className="font-medium">{display.name}</span>
+                        <span
+                          className={`absolute top-1.5 left-2 font-mono text-[10px] ${isActive ? "text-paper/50" : "text-muted/60"}`}
+                          aria-hidden="true"
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {rel === "amigo" && (
+                          <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-vermilion" aria-hidden="true" />
+                        )}
+                        {rel === "enemigo" && (
+                          <span className="absolute top-1 right-2 text-xs text-muted" aria-hidden="true">✕</span>
+                        )}
+                        <ZodiacAnimalIcon
+                          animal={animal}
+                          size={38}
+                          className={isActive ? "text-paper" : "text-foreground/80 group-hover:text-foreground"}
+                        />
+                        <span className="text-sm leading-tight">{display.name}</span>
+                        <span
+                          className={`h-3 text-[10px] leading-3 label-caps ${isActive ? "text-paper/70" : "text-vermilion"}`}
+                          aria-hidden="true"
+                        >
+                          {isMine ? "tuyo" : ""}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
-                {profile?.chineseZodiac === activeAnimal && !selectedAnimal && (
-                  <p className="text-xs text-muted mt-3">Tu signo — {formatAnimalSimple(activeAnimal)}.</p>
-                )}
+                <p className="text-sm text-muted mt-4 leading-relaxed" aria-live="polite">
+                  {(() => {
+                    const kinds = animalsByKind(activeAnimal);
+                    const amigos = kinds.amigo;
+                    const enemigo = kinds.enemigo[0];
+                    return (
+                      <>
+                        <span className="text-foreground font-medium">
+                          {profile?.chineseZodiac === activeAnimal ? "Tu signo, " : ""}
+                          {activeAnimal}
+                        </span>
+                        {amigos.length > 0 && <> · amigos: {amigos.join(" y ")}</>}
+                        {enemigo && <> · enemigo: {enemigo}</>}.
+                      </>
+                    );
+                  })()}
+                </p>
               </div>
 
               {/* SEARCH — Available for all types, shows before selecting entity */}
