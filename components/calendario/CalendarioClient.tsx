@@ -49,19 +49,27 @@ export default function CalendarioClient() {
 
   // Calcular stats del mes
   const monthStats = useMemo(() => {
-    const numbers: Record<number, number> = {};
     const masters: number[] = [];
+    // Los días del mes agrupados por número: "para qué sirve cada día".
+    const groups = new Map<number, { number: number; title: string; purpose: string; special: boolean; days: number[] }>();
 
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const content = getCalendarDayContent(toLocalDateKey(date));
-      const num = content.number;
-
-      numbers[num] = (numbers[num] || 0) + 1;
       if (content.master || content.abundance) masters.push(day);
+      const g = groups.get(content.number);
+      if (g) g.days.push(day);
+      else
+        groups.set(content.number, {
+          number: content.number,
+          title: content.title,
+          purpose: content.purpose,
+          special: content.master || content.abundance,
+          days: [day],
+        });
     }
 
-    return { numbers, masters };
+    return { masters, groups: [...groups.values()].sort((a, b) => a.number - b.number) };
   }, [daysInMonth, year, month]);
 
   const special = (c: { master: boolean; abundance: boolean }) => c.master || c.abundance;
@@ -155,44 +163,61 @@ export default function CalendarioClient() {
           El punto rojo marca hoy. Los maestros (11, 22, 33) y el 28 no se reducen.
         </p>
 
-        {/* Cuántas veces cae cada número este mes */}
-        <h3 className="mt-12 font-display text-2xl text-foreground">Cómo se reparte el mes</h3>
-        <div className="mt-4 grid grid-cols-9 gap-px bg-ink/15 border border-ink/15">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => {
-            const count = monthStats.numbers[n] ?? 0;
+        {/* Para qué sirve cada día del mes: el número, qué propone y en qué fechas cae */}
+        <h3 className="mt-14 section-title text-foreground">Qué día conviene para qué</h3>
+        <p className="mt-2 text-lg text-muted max-w-2xl">
+          Los días del mes agrupados por su número. Tocá una fecha para ver el detalle.
+        </p>
+        <ul className="mt-6 border-t-2 border-ink">
+          {monthStats.groups.map((g) => {
+            const hasToday = today.getFullYear() === year && today.getMonth() === month && g.days.includes(today.getDate());
             return (
-              <div key={n} className="bg-background p-2 sm:p-3 flex flex-col items-center">
-                <span className="font-display text-xl sm:text-2xl text-foreground">{n}</span>
-                <span className="mt-2 w-full h-16 flex items-end justify-center" aria-hidden="true">
-                  <span className="w-3 sm:w-4 bg-ink" style={{ height: `${Math.max(4, (count / Math.max(1, ...Object.values(monthStats.numbers))) * 100)}%` }} />
-                </span>
-                <span className="mt-1 text-sm text-muted tabular-nums">{count}</span>
-              </div>
+              <li key={g.number} className="grid grid-cols-[3.5rem_1fr] sm:grid-cols-[4.5rem_minmax(0,1fr)_auto] gap-x-5 gap-y-3 py-5 border-b border-ink/15 items-center">
+                <span className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{g.number}</span>
+                <div className="min-w-0">
+                  <p className="font-display text-xl sm:text-2xl leading-tight text-foreground">
+                    {g.title}
+                    {g.special && <span className="ml-2 text-base text-muted">{g.number === 28 ? "abundancia" : "maestro"}</span>}
+                    {hasToday && <span className="ml-2 text-base text-vermilion">· hoy</span>}
+                  </p>
+                  <p className="mt-0.5 text-base text-muted leading-snug">{g.purpose}</p>
+                </div>
+                <div className="col-start-2 sm:col-start-auto flex flex-wrap gap-1.5 sm:justify-end">
+                  {g.days.map((day) => {
+                    const date = new Date(year, month, day);
+                    const isSel = selected ? isSameDay(date, selected) : false;
+                    const isToday = isSameDay(date, today);
+                    return (
+                      <button
+                        key={day}
+                        type="button"
+                        onClick={() => {
+                          setSelected(date);
+                          // En móvil el detalle queda debajo: lo traemos a la vista.
+                          if (window.matchMedia("(max-width: 1023px)").matches) {
+                            requestAnimationFrame(() => document.getElementById("calendario-detalle")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+                          }
+                        }}
+                        aria-pressed={isSel}
+                        aria-label={`${day} de ${MONTH_NAMES[month]}`}
+                        className={`relative w-11 h-11 text-base tabular-nums border transition-colors ${
+                          isSel ? "bg-ink text-paper border-ink" : "bg-background text-foreground border-ink/25 hover:border-ink"
+                        }`}
+                      >
+                        {day}
+                        {isToday && <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-vermilion" aria-hidden="true" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </li>
             );
           })}
-        </div>
-        {monthStats.masters.length > 0 && (
-          <p className="mt-4 text-base text-muted">
-            Días especiales:{" "}
-            {monthStats.masters.map((day, i) => {
-              const date = new Date(year, month, day);
-              const content = getCalendarDayContent(toLocalDateKey(date));
-              return (
-                <span key={day}>
-                  {i > 0 && ", "}
-                  <button type="button" onClick={() => setSelected(date)} className="text-foreground underline underline-offset-4 hover:no-underline">
-                    el {day} ({content.number})
-                  </button>
-                </span>
-              );
-            })}
-            .
-          </p>
-        )}
+        </ul>
       </div>
 
       {/* Detalle del día elegido */}
-      <aside className="lg:col-span-4 lg:sticky lg:top-24">
+      <aside id="calendario-detalle" className="lg:col-span-4 lg:sticky lg:top-24 scroll-mt-20">
         <AnimatePresence mode="wait">
           {selectedContent && selected && (
             <motion.div

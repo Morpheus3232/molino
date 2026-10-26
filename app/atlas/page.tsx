@@ -23,8 +23,8 @@ export default function AtlasPage() {
   const globalCurated = getCuratedGlobalEntities();
 
   return (
-    <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
-      <div className="mx-auto max-w-6xl px-4 sm:px-8">
+    <main id="main-content" className="bg-background pt-12 sm:pt-16 pb-24 text-foreground">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <AtlasHub
           countries={countries}
           topCountries={topCountries}

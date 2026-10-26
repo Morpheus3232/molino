@@ -12,23 +12,28 @@ export default function SectionCover({
   imageKey,
   priority = false,
   className = "",
+  aspect = "aspect-[16/9]",
+  sizes = "(max-width: 1200px) 100vw, 1100px",
 }: {
   imageKey: string;
   priority?: boolean;
   className?: string;
+  /** Clase de proporción de Tailwind (por defecto 16:9). */
+  aspect?: string;
+  sizes?: string;
 }) {
   const img = getSectionImage(imageKey);
   if (!img) return null;
 
   return (
     <figure className={className}>
-      <div className="relative aspect-[16/9] overflow-hidden border border-border bg-paper-alt">
+      <div className={`relative ${aspect} overflow-hidden border border-border bg-paper-alt`}>
         <Image
           src={img.src}
           alt={img.alt}
           fill
           priority={priority}
-          sizes="(max-width: 1200px) 100vw, 1100px"
+          sizes={sizes}
           className="object-cover"
         />
       </div>

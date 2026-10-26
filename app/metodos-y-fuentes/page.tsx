@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
-import { BookMarked, Compass, Github, Asterisk } from "lucide-react";
-import Card from "@/components/ui/Card";
-import SectionCover from "@/components/ui/SectionCover";
+import { Compass, Github, Asterisk } from "lucide-react";
+import { PageHero, CONTAINER } from "@/components/knowledge/Kit";
 
 export const metadata = createRouteMetadata({
   title: "Métodos y Fuentes",
@@ -112,55 +111,38 @@ export default function MetodosYFuentesPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
-        <div className="mx-auto max-w-3xl px-4 sm:px-8">
-          <header className="mb-10">
-            <p className="text-sm text-accent font-bold mb-3 label-caps">
-              Metodología
-            </p>
-            <h1 className="page-title text-foreground">
-              Métodos y Fuentes
-            </h1>
-            <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-              Numerología, astrología y zodíaco chino son sistemas simbólicos
-              tradicionales, no ciencia. Acá explicamos qué son, cómo los calculamos
-              y qué podés esperar de los resultados.
-            </p>
-            <SectionCover imageKey="paginas/metodos-y-fuentes" priority className="mt-8" />
-          </header>
-
-          <div className="space-y-6">
-            {SECTIONS.map(({ icon: Icon, title, body }) => (
-              <Card key={title} padding="lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-accent/10 text-accent border border-accent/20">
-                    <Icon className="w-5 h-5" aria-hidden="true" />
-                  </div>
-                  <h2 className="font-heading text-lg font-bold text-foreground">{title}</h2>
-                </div>
-                <div className="text-sm sm:text-base text-muted leading-relaxed space-y-3">
-                  {body}
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          <p className="text-xs text-muted mt-10 text-center">
-            Para lecturas y referencias externas, ver{" "}
-            <Link href="/biblioteca" className="text-accent underline hover:text-accent-hover">
-              Biblioteca
+      <main id="main-content" className="bg-background text-foreground">
+        <PageHero
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "Métodos y fuentes" }]}
+          eyebrow="Metodología"
+          title="Métodos y fuentes"
+          lead="Numerología, astrología y zodíaco chino son sistemas simbólicos tradicionales, no ciencia. Acá contamos qué son, cómo los calculamos y qué esperar de los resultados."
+          imageKey="paginas/metodos-y-fuentes"
+        />
+        {SECTIONS.map(({ title, body }, i) => (
+          <section key={title} className={`${i % 2 ? "bg-paper-alt/70" : "bg-background"} border-b border-ink/10`}>
+            <div className={`${CONTAINER} py-16 sm:py-20 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6`}>
+              <div className="lg:col-span-4">
+                <p className="text-sm text-muted mb-3 label-caps">{["Los sistemas", "El cálculo", "El uso"][i] ?? "Método"}</p>
+                <h2 className="section-title text-foreground">{title}</h2>
+              </div>
+              <div className="lg:col-span-8 max-w-3xl text-lg sm:text-xl text-foreground/85 leading-relaxed space-y-5 [&_a]:underline [&_a]:underline-offset-4">
+                {body}
+              </div>
+            </div>
+          </section>
+        ))}
+        <div className={`${CONTAINER} py-12 text-base text-muted space-y-2`}>
+          <p>
+            Para lecturas y referencias externas, mirá la{" "}
+            <Link href="/biblioteca" className="underline underline-offset-4 hover:text-foreground">
+              biblioteca
             </Link>
-            .{" "}
-            <BookMarked className="inline w-3.5 h-3.5 -mt-0.5" aria-hidden="true" />
+            .
           </p>
-          <p className="text-xs text-muted mt-3 text-center">
+          <p>
             Banderas de{" "}
-            <Link
-              href="https://github.com/jdecked/twemoji"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:text-accent-hover"
-            >
+            <Link href="https://github.com/jdecked/twemoji" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-foreground">
               Twemoji
             </Link>{" "}
             (CC BY 4.0) en los dispositivos que no traen las suyas.

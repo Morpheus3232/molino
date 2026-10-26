@@ -1,18 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUpDelayed, fadeUpMount, fadeUpMountDelayed, staggerItem } from "@/lib/utils/motion";
 import { useDictionary } from "@/lib/i18n/useDictionary";
-import SectionCover from "@/components/ui/SectionCover";
-
-const PRINCIPLE_ICONS: Record<string, string> = {
-  "conocimiento-libre": "01",
-  "privacidad-radical": "02",
-  "transparencia-total": "03",
-  "codigo-abierto": "04",
-  "sin-tracking": "05",
-};
+import { PageHero, KnowledgeSection, Columns, TextWithFigure } from "@/components/knowledge/Kit";
 
 const principles = [
   {
@@ -78,215 +68,97 @@ const contemporarySystems = [
 
 export default function FilosofiaContent() {
   const t = useDictionary();
+  const noes = [
+    {
+      q: "No es una predicción",
+      a: "Molino no predice el futuro. Los sistemas simbólicos ofrecen patrones para la reflexión, no destinos escritos. Tus decisiones son siempre tuyas.",
+    },
+    {
+      q: "No es ciencia",
+      a: "La astrología, la numerología y el zodíaco chino son sistemas simbólicos con coherencia interna, no disciplinas científicas. No reemplazan el consejo médico, psicológico ni legal.",
+    },
+    {
+      q: "No es terapia",
+      a: "Es una herramienta de autoconocimiento, no un sustituto de la terapia. Si estás pasando por un momento difícil, buscá apoyo profesional.",
+    },
+    {
+      q: "No es todo gratis",
+      a: `Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral es una capa Premium opcional de ${t.premium.priceLabel}, pago único y para siempre. Sin suscripciones.`,
+    },
+  ];
   return (
-    <div className="min-h-screen bg-background">
+    <main id="main-content" className="bg-background">
+      <PageHero
+        crumbs={[{ href: "/", label: "Inicio" }, { label: "Filosofía" }]}
+        eyebrow="Filosofía · cómo se hace Molino"
+        title="Principios y fundamentos"
+        lead="Molino no es otra app de predicciones. Es una herramienta de autoconocimiento con reglas claras: libertad, privacidad, transparencia y honestidad intelectual."
+        imageKey="paginas/filosofia"
+      >
+        <Link href="/nosotros" className="text-lg underline underline-offset-4 hover:no-underline">
+          Quiénes hacemos Molino
+        </Link>
+      </PageHero>
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-        {/* Hero */}
-        <motion.section {...fadeUpMount} className="mb-16 sm:mb-24">
-          <h1 className="page-title text-foreground">
-            Principios y fundamentos
-          </h1>
-          <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
-            Molino no es una app más de predicciones. Es una herramienta de autoconocimiento construida
-            sobre principios claros: libertad, privacidad, transparencia y honestidad intelectual.
+      <KnowledgeSection label="Los principios" title="Cinco reglas que no se negocian" intro="Cada decisión de producto pasa por estos filtros. Si no cumple, no entra.">
+        <ol className="border-t-2 border-ink" aria-label="Principios de Molino">
+          {principles.map((principle, i) => (
+            <li key={principle.id} id={principle.id} className="grid grid-cols-[3rem_1fr] sm:grid-cols-[5rem_minmax(0,4fr)_minmax(0,7fr)] gap-x-8 gap-y-2 py-8 border-b border-ink/15 items-baseline">
+              <span className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{i + 1}</span>
+              <h3 className="font-display text-2xl sm:text-3xl leading-tight text-foreground">{principle.title}</h3>
+              <p className="col-start-2 sm:col-start-auto text-lg text-foreground/80 leading-relaxed">{principle.description}</p>
+            </li>
+          ))}
+        </ol>
+      </KnowledgeSection>
+
+      <KnowledgeSection label="El método" title="Pilares metodológicos" intro="Cómo leemos los sistemas simbólicos sin caer en dogma ni en banalidad." tone="alt">
+        <Columns cols={pillars.map((p) => ({ title: p.title, body: p.description }))} />
+      </KnowledgeSection>
+
+      <KnowledgeSection label="Las fuentes" title="De dónde viene">
+        <TextWithFigure
+          figure={
+            <div className="space-y-10">
+              <div>
+                <h3 className="font-display text-2xl text-foreground border-b-2 border-ink pb-2">Tradición antigua</h3>
+                <ul className="mt-3 divide-y divide-ink/10 text-lg">
+                  {ancientTraditions.map((name) => (
+                    <li key={name} className="py-2 text-foreground/85">{name}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-display text-2xl text-foreground border-b-2 border-ink pb-2">Sistemas contemporáneos</h3>
+                <ul className="mt-3 divide-y divide-ink/10 text-lg">
+                  {contemporarySystems.map((sys) => (
+                    <li key={sys.name} className="py-2 text-foreground/85">
+                      {sys.name} <span className="text-muted">({sys.author}, {sys.year})</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          }
+        >
+          <p>
+            Molino se basa en la numerología pitagórica, un sistema simbólico con más de 2.500 años de historia y de
+            dominio público, y la combina con la astrología solar y el zodíaco chino.
           </p>
-          <SectionCover imageKey="paginas/filosofia" priority className="mt-8" />
-          <Link
-            href="/nosotros"
-            className="inline-flex items-center gap-1.5 mt-4 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
-          >
-            Conocé más sobre nuestro equipo →
-          </Link>
-        </motion.section>
+          <p>
+            Tu mapa se calcula solo con esos tres sistemas. Las demás corrientes son contexto que enriquece la
+            lectura, pero no entran en la cuenta.
+          </p>
+          <p>
+            Para estudiarlas en serio, la <Link href="/biblioteca" className="underline underline-offset-4 hover:no-underline">biblioteca</Link> reúne
+            las obras de referencia.
+          </p>
+        </TextWithFigure>
+      </KnowledgeSection>
 
-        {/* Principles */}
-        <motion.section {...fadeUpMountDelayed(0.05)} className="mb-20">
-          <div className="mb-10">
-            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
-              Cinco principios innegociables
-            </h2>
-            <p className="text-muted max-w-xl">
-              Cada decisión de producto pasa por estos filtros. Si no cumple, no entra.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4" role="list" aria-label="Principios de Molino">
-            {principles.map((principle, i) => (
-              <motion.article
-                key={principle.id}
-                role="listitem"
-                id={principle.id}
-                {...fadeUpMountDelayed(i * 0.08)}
-                className="group p-6 border border-ink/10 bg-background hover:bg-ink/[0.02] hover:border-ink/20 transition-all duration-300"
-              >
-                <div className="flex items-start gap-4">
-                  <span className="font-mono text-xs font-semibold tracking-wider text-accent shrink-0 mt-0.5">
-                    {PRINCIPLE_ICONS[principle.id]}
-                  </span>
-                  <div>
-                    <h3 className="font-heading text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
-                      {principle.title}
-                    </h3>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {principle.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Pillars */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-20">
-          <div className="mb-10">
-            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
-              Pilares metodológicos
-            </h2>
-            <p className="text-muted max-w-xl">
-              Cómo abordamos los sistemas simbólicos sin caer en dogmatismo ni banalidad.
-            </p>
-          </div>
-
-          <div className="space-y-px bg-ink/10" role="list" aria-label="Pilares metodológicos">
-            {pillars.map((pillar, i) => (
-              <motion.div
-                key={pillar.title}
-                role="listitem"
-                {...fadeUpMountDelayed(i * 0.06 + 0.1)}
-                className="p-6 sm:p-8 bg-background"
-              >
-                <div className="flex items-start gap-4">
-                  <span className="font-mono text-xs font-semibold tracking-wider text-muted shrink-0 mt-0.5">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="font-heading text-lg text-foreground mb-2">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {pillar.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Traditions */}
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-20">
-          <div className="mb-10">
-            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
-              Nuestras fuentes
-            </h2>
-            <p className="text-muted max-w-xl mb-4">
-              Molino se basa en la tradición de numerología pitagórica, un sistema de conocimiento
-              simbólico con más de 2.500 años de historia que pertenece al dominio público. Combinamos
-              esta tradición con astrología y zodíaco chino para crear una herramienta de
-              autoconocimiento estructurada y accesible.
-            </p>
-            <p className="text-muted max-w-xl mb-4">
-              Molino sintetiza múltiples corrientes, pero tu mapa se calcula únicamente a partir de esas
-              tres: numerología, astrología y zodíaco chino. El resto es contexto y lectura que enriquece
-              la interpretación — no alimenta el cálculo.
-            </p>
-            <p className="text-muted max-w-xl">
-              Si querés profundizar en el estudio formal de estas tradiciones, recomendamos buscar
-              fuentes académicas y profesionales certificados.
-            </p>
-          </div>
-
-          {/* Ancient traditions */}
-          <div className="mb-10">
-            <span className="inline-block text-sm font-semibold text-accent mb-4 px-3 py-1 border border-accent/20 label-caps">
-              Tradición ancestral
-            </span>
-            <div className="flex flex-wrap gap-3" role="list" aria-label="Tradiciones ancestrales">
-              {ancientTraditions.map((influence, i) => (
-                <motion.span
-                  key={influence}
-                  role="listitem"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.03, duration: 0.3 }}
-                  className="px-4 py-2 border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
-                >
-                  {influence}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-
-          {/* Contemporary systems */}
-          <div>
-            <span className="inline-block text-sm font-semibold text-ink/50 mb-4 px-3 py-1 border border-ink/10 label-caps">
-              Sistema contemporáneo
-            </span>
-            <div className="flex flex-wrap gap-3" role="list" aria-label="Sistemas contemporáneos">
-              {contemporarySystems.map((sys, i) => (
-                <motion.span
-                  key={sys.name}
-                  role="listitem"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.03 + 0.24, duration: 0.3 }}
-                  className="px-4 py-2 border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
-                >
-                  {sys.name} <span className="text-muted">({sys.author}, {sys.year})</span>
-                </motion.span>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        {/* FAQ / Qué NO es Molino */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-20">
-          <div className="mb-10">
-            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
-              Qué NO es Molino
-            </h2>
-            <p className="text-muted max-w-xl">
-              Para usar esta herramienta con claridad, es importante entender sus límites.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-px bg-ink/10">
-            {[
-              {
-                q: "No es una predicción",
-                a: "Molino no predice el futuro. Los sistemas simbólicos ofrecen patrones para la reflexión, no destinos escritos. Tu agencia y tus decisiones son siempre tuyas.",
-              },
-              {
-                q: "No es ciencia",
-                a: "La astrología, la numerología y el zodíaco chino son sistemas simbólicos con coherencia interna, no disciplinas científicas. No reemplazan el consejo médico, psicológico ni legal.",
-              },
-              {
-                q: "No es terapia",
-                a: "Molino es una herramienta de autoconocimiento, no un sustituto de la terapia profesional. Si estás pasando por un momento difícil, buscá apoyo profesional calificado.",
-              },
-              {
-                q: "No es un producto gratuito en su totalidad",
-                a: `Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral —la lectura que conecta todos tus sistemas— es una capa Premium opcional de ${t.premium.priceLabel}, pago único y acceso permanente. No hay suscripciones ni versiones por mes.`,
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.q}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06, duration: 0.3 }}
-                className="p-6 sm:p-8 bg-background"
-              >
-                <h3 className="font-heading text-base text-foreground mb-2">{item.q}</h3>
-                <p className="text-sm text-muted leading-relaxed">{item.a}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-      </main>
-
-    </div>
+      <KnowledgeSection label="Los límites" title="Qué no es Molino" intro="Para usar la herramienta con claridad, conviene saber hasta dónde llega." tone="alt">
+        <Columns cols={noes.map((n) => ({ title: n.q, body: n.a }))} />
+      </KnowledgeSection>
+    </main>
   );
 }

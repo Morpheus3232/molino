@@ -21,6 +21,7 @@ import Link from "next/link";
 import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
+import { Breadcrumb } from "@/components/knowledge/Kit";
 import SectionCover from "@/components/ui/SectionCover";
 
 interface AtlasHubProps {
@@ -201,67 +202,31 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
     <div>
       {/* ═══════════ HERO ═══════════ */}
       <section aria-label="Atlas — tu mapa de afinidades" className="relative mb-20 sm:mb-28">
-        <motion.p
-          className="text-sm text-accent font-semibold mb-8 label-caps"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          Atlas
-        </motion.p>
-
-        <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
-          <div className="flex-1">
-            <motion.h1
-              className="section-title text-foreground"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            >
+        <Breadcrumb items={[{ href: "/", label: "Inicio" }, { label: "Atlas" }]} />
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
+          <div className="lg:col-span-7">
+            <p className="text-sm text-accent mb-4 label-caps">Atlas · países, ciudades, marcas y personas</p>
+            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">
               Tu mapa de afinidades
-            </motion.h1>
+            </h1>
             {/* Qué es esta sección, para quien llega sin contexto: la regla
                 completa en dos párrafos, sin vender nada. */}
-            <motion.div
-              className="mt-5 max-w-xl space-y-3 text-base sm:text-lg text-muted leading-relaxed"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            >
+            <div className="mt-6 max-w-xl space-y-4 text-xl text-foreground/85 leading-snug">
               <p>
-                El Atlas reúne países, ciudades, marcas, universidades y
-                personas. Cada uno tiene una fecha de origen —el día en que se
-                fundó o nació— y esa fecha le da un signo del zodíaco chino, igual
-                que tu fecha de nacimiento te da el tuyo.
+                Cada entrada del Atlas tiene una fecha de origen —el día en que se fundó o nació— y esa fecha le da un
+                signo del zodíaco chino, igual que tu fecha de nacimiento te da el tuyo.
               </p>
-              <p>
-                Acá ves primero lo que comparte tu signo y, aparte, lo del signo
-                opuesto: lo que conviene mirar con más cuidado. Elegí tu signo
-                para empezar, o más abajo recorré todo el Atlas por país.
+              <p className="text-lg text-muted">
+                Primero ves lo que comparte tu signo y, aparte, lo del signo opuesto. Elegí tu signo para empezar, o más
+                abajo recorré todo el Atlas por país.
               </p>
-            </motion.div>
+            </div>
           </div>
-
-          <motion.div
-            className="shrink-0 w-full lg:w-[360px]"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-          >
+          <div className="lg:col-span-5 w-full">
             <AnimalSelector selected={userAnimal} onSelect={handleSelectAnimal} />
-          </motion.div>
+          </div>
         </div>
-
-        {/* Subtle bottom rule */}
-        <SectionCover imageKey="paginas/atlas" priority className="mt-10" />
-
-        <motion.div
-          className="mt-12 h-px bg-ink/10"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-          style={{ transformOrigin: "left" }}
-        />
+        <SectionCover imageKey="paginas/atlas" priority aspect="aspect-[21/9]" className="mt-14" />
       </section>
 
       {/* ═══════════ TU ATLAS (piloto: university/team/artist) ═══════════ */}
@@ -328,20 +293,20 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
       {/* ═══════════ EXPLORAR TODO EL ATLAS ═══════════ */}
       <motion.section
         aria-label="Explorar todo el Atlas"
-        className="border-t border-ink/10 pt-12"
+        className="border-t-2 border-ink pt-10"
         {...fadeUp}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-sm text-muted font-medium label-caps">
-            Explorar todo el Atlas
+          <h2 className="section-title text-foreground">
+            Todo el Atlas, por país
           </h2>
           {!countriesExpanded && (
             <button
               type="button"
               onClick={() => setCountriesExpanded(true)}
-              className="text-sm text-muted hover:text-accent transition-colors py-2 -my-2"
+              className="text-base underline underline-offset-4 hover:no-underline py-2 -my-2"
             >
-              {countries.length} países →
+              Ver los {countries.length} países
             </button>
           )}
         </div>
@@ -362,8 +327,8 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
             </button>
           </div>
         ) : (
-          <p className="text-xs text-muted">
-            {countries.length} países con entidades. Desplegá para navegar por país y categoría.
+          <p className="text-lg text-muted">
+            {countries.length} países con entradas. Desplegá la lista para navegar por país y categoría.
           </p>
         )}
 
@@ -386,7 +351,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               <Link
                 key={cat}
                 href={`/atlas/${userCountryISO}/${cat}`}
-                className="px-3 py-1.5 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 hover:text-accent transition-colors"
+                className="px-4 py-2.5 border border-ink/25 text-base text-foreground hover:border-ink hover:bg-paper-alt transition-colors"
               >
                 {label}
               </Link>

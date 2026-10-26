@@ -2,13 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { scaleUpMount, staggerContainer } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { BookOpen, Zap, Clock, Users, ArrowRight } from "lucide-react";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero, KnowledgeSection, Closing } from "@/components/knowledge/Kit";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -244,361 +241,157 @@ const COURSES: Course[] = [
 
 function KnowledgeNode({
   node,
-  index,
   isExpanded,
   onToggle,
 }: {
   node: AcademyPiece;
-  index: number;
   isExpanded: boolean;
   onToggle: () => void;
 }) {
+  const panelId = `academia-${node.slug}`;
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06, duration: 0.4 }}
-      className="relative pl-16"
-    >
-      {/* Dot — decorativo */}
-      <div
-        aria-hidden="true"
-        className={`absolute left-4 top-1 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors pointer-events-none ${
-          isExpanded ? "border-accent bg-accent/10" : "border-ink/10 bg-background"
-        }`}
-      >
-        <span className="text-sm">
-          {(() => {
-            const Icon = ICON_MAP[node.icon];
-            return Icon ? <Icon className="w-4 h-4" /> : null;
-          })()}
-        </span>
-      </div>
-
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={isExpanded}
-        className="w-full text-left group"
-      >
-        <p className="text-sm text-accent font-medium mb-1 label-caps">{node.era}</p>
-        <h3 className="font-heading text-xl font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">{node.title}</h3>
-        <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
-      </button>
-
-      <div className="flex items-center gap-4 mt-3">
-        <Link
-          href={`/academy/${node.slug}`}
-          className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors group"
+    <li className="border-b border-ink/15">
+      <div className="grid grid-cols-1 md:grid-cols-[11rem_1fr_auto] gap-x-10 gap-y-1 py-8 items-baseline">
+        <p className="text-base text-muted">{node.era}</p>
+        <div>
+          <h3 className="font-display text-[clamp(1.75rem,3vw,2.4rem)] leading-tight text-foreground">
+            <Link href={`/academy/${node.slug}`} className="hover:underline underline-offset-[6px]">
+              {node.title}
+            </Link>
+          </h3>
+          <p className="mt-2 text-lg text-foreground/80 leading-relaxed max-w-2xl">{node.idea}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isExpanded}
+          aria-controls={panelId}
+          className="justify-self-start md:justify-self-end text-base underline underline-offset-4 hover:no-underline min-h-[44px]"
         >
-          <span>Leer más</span>
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-        </Link>
+          {isExpanded ? "Cerrar" : "Qué tomó Molino"}
+        </button>
       </div>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="mt-4 p-6 rounded-lg border border-border bg-gradient-to-br from-card to-card/50 space-y-3">
-              <div>
-                <p className="text-sm text-muted font-semibold mb-1 label-caps">Origen</p>
-                <p className="text-sm text-foreground">{node.origin}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted font-semibold mb-2 label-caps">Influencia en Molino</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {node.influence.map((inf) => (
-                    <span key={inf} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
-                      {inf}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-muted font-semibold mb-1 label-caps">Cómo se usa</p>
-                <p className="text-sm text-foreground">{node.molino}</p>
-              </div>
+      {isExpanded && (
+        <dl id={panelId} className="md:ml-[13.5rem] mb-8 border-t-2 border-ink divide-y divide-ink/15 max-w-3xl">
+          {[
+            ["Origen", node.origin],
+            ["Influencia", node.influence.join(", ")],
+            ["Cómo se usa", node.molino],
+          ].map(([k, v]) => (
+            <div key={k} className="grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-1 py-4">
+              <dt className="font-display text-xl text-foreground">{k}</dt>
+              <dd className="text-lg text-foreground/85 leading-relaxed">{v}</dd>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+          ))}
+        </dl>
+      )}
+    </li>
   );
 }
 
 export default function AcademyContent() {
-  const router = useRouter();
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"history" | "courses">("history");
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-6xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+    <main id="main-content" className="bg-background">
+      <PageHero
+        crumbs={[{ href: "/", label: "Inicio" }, { label: "Academia" }]}
+        eyebrow="Academia · historia y método"
+        title="De dónde viene este sistema"
+        lead="Molino no inventó nada: junta tradiciones de miles de años, de los ciclos babilónicos a la numerología pitagórica y el zodíaco chino. Este recorrido muestra cómo se arma tu mapa."
+        imageKey="academia/hub"
+      />
 
-        {/* ═══════════════════════════════════════════════
-            HERO — Impactante con mejor contexto
-            ═══════════════════════════════════════════════ */}
-        <motion.section {...scaleUpMount} className="mb-20">
-          <div className="page-eyebrow mb-6">
-            <BookOpen className="w-4 h-4 text-accent" />
-            <span className="text-sm text-accent font-bold label-caps">Academia de Molino</span>
-          </div>
-
-          <h1 className="page-title text-foreground mb-6">
-            De dónde viene este sistema
-          </h1>
-
-          <p className="text-lg sm:text-xl text-muted max-w-3xl leading-relaxed mb-8">
-            Molino no inventó nada. Es un pórtico a tradiciones milenarias: desde los ciclos babilónicos hasta la numerología pitagórica, 
-            pasando por la astrología helenística y el zodíaco chino. Este recorrido te ayuda a entender cómo se construye tu mapa.
-          </p>
-          <SectionCover imageKey="academia/hub" priority />
-        </motion.section>
-
-        {/* ═══════════════════════════════════════════════
-            EMPEZÁ POR ACÁ — ruta editorial de las guías prácticas.
-            Capa "Aprender": entender Molino, no la historia de las
-            tradiciones (eso vive en las tabs de abajo, capa "Explorar").
-            ═══════════════════════════════════════════════ */}
-        <motion.section {...scaleUpMount} className="mb-20">
-          <div className="mb-8">
-            <p className="text-sm text-accent font-bold mb-3 label-caps">Empezá por acá</p>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Entendé Molino en 10 minutos
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {ACADEMY_GUIDES.map((guide, idx) => (
-              <Link
-                key={guide.slug}
-                href={`/academy/${guide.slug}`}
-                className="flex items-start gap-4 p-5 rounded-lg border border-border bg-card hover:border-accent/50 transition-all group"
-              >
-                <span className="font-mono text-xs font-bold text-accent/60 shrink-0 pt-0.5">
-                  {String(idx + 1).padStart(2, "0")}
+      <KnowledgeSection label="Empezá por acá" title="Entendé Molino en diez minutos" intro="Guías cortas y prácticas, en orden: cada una se apoya en la anterior.">
+        <ol className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
+          {ACADEMY_GUIDES.map((guide, idx) => (
+            <li key={guide.slug} className="bg-background">
+              <Link href={`/academy/${guide.slug}`} className="group grid grid-cols-[3rem_1fr] gap-x-4 h-full p-7 sm:p-8 hover:bg-paper-alt/70 transition-colors">
+                <span className="font-display text-4xl leading-none text-muted tabular-nums">{idx + 1}</span>
+                <span>
+                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{guide.title}</span>
+                  <span className="mt-2 block text-lg text-foreground/80 leading-relaxed">{guide.subtitle}</span>
                 </span>
-                <div>
-                  <h3 className="font-heading text-base font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">
-                    {guide.title}
-                  </h3>
-                  <p className="text-sm text-muted leading-relaxed">{guide.subtitle}</p>
-                </div>
               </Link>
-            ))}
-          </div>
-        </motion.section>
+            </li>
+          ))}
+        </ol>
+      </KnowledgeSection>
 
-        {/* ═══════════════════════════════════════════════
-            EXPLORAR — capa histórica existente (timeline + cursos),
-            sin modificar contenido ni arquitectura.
-            ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerContainer} className="mb-8">
-          <p className="text-sm text-muted font-bold mb-3 label-caps">Explorar</p>
-          <div className="flex flex-wrap gap-3">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              onClick={() => setActiveTab("history")}
-              className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
-                activeTab === "history"
-                  ? "bg-accent text-accent-foreground shadow-lg"
-                  : "bg-card border border-border hover:border-accent/50"
-              }`}
-            >
-              Viajeros del tiempo
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              onClick={() => setActiveTab("courses")}
-              className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
-                activeTab === "courses"
-                  ? "bg-accent text-accent-foreground shadow-lg"
-                  : "bg-card border border-border hover:border-accent/50"
-              }`}
-            >
-              Cursos temáticos
-            </motion.button>
-          </div>
-        </motion.section>
+      <KnowledgeSection
+        label="Las tradiciones"
+        title="Viajeros del tiempo"
+        intro="Las grandes tradiciones simbólicas y quienes las llevaron de la antigüedad hasta hoy, en orden."
+        tone="alt"
+      >
+        <ol className="border-t-2 border-ink">
+          {ACADEMY_PIECES.map((piece) => (
+            <KnowledgeNode
+              key={piece.slug}
+              node={piece}
+              isExpanded={expandedNode === piece.slug}
+              onToggle={() => setExpandedNode(expandedNode === piece.slug ? null : piece.slug)}
+            />
+          ))}
+        </ol>
+      </KnowledgeSection>
 
-        <AnimatePresence mode="wait">
-          {/* ═══════════════════════════════════════════════
-              TAB: HISTORY — Tradiciones y sus autores
-              ═══════════════════════════════════════════════ */}
-          {activeTab === "history" && (
-            <motion.section
-              key="history"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="mb-20"
-            >
-              <div className="mb-12">
-                <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Viajeros del tiempo</h2>
-                <p className="text-muted max-w-2xl">
-                  Las grandes tradiciones simbólicas y los maestros que las llevaron desde la antigüedad hasta hoy.
+      <KnowledgeSection label="Cursos" title="Recorridos por tema" intro="Los mismos capítulos, agrupados por sistema.">
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
+          {COURSES.map((course) => {
+            const relatedGuide = course.guideSlug ? getAcademyGuideBySlug(course.guideSlug) : undefined;
+            return (
+              <li key={course.id} className="bg-background p-7 sm:p-9 flex flex-col">
+                <p className="text-base text-muted">
+                  {course.pieces.length} capítulo{course.pieces.length !== 1 ? "s" : ""}
                 </p>
-              </div>
+                <h3 className="mt-2 font-display text-3xl leading-tight text-foreground">{course.title}</h3>
+                <p className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{course.description}</p>
+                <ol className="mt-5 border-t border-ink/15 divide-y divide-ink/10 text-base">
+                  {course.pieces.map((p) => (
+                    <li key={p.slug}>
+                      <Link href={`/academy/${p.slug}`} className="block py-2.5 hover:underline underline-offset-4">
+                        {p.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+                {relatedGuide && (
+                  <Link href={`/academy/${relatedGuide.slug}`} className="mt-5 text-base text-muted underline underline-offset-4 hover:text-foreground">
+                    ¿Ya sabés la historia? La guía práctica
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </KnowledgeSection>
 
-              <div className="space-y-8">
-                {ACADEMY_PIECES.map((piece, idx) => (
-                  <KnowledgeNode
-                    key={piece.slug}
-                    node={piece}
-                    index={idx}
-                    isExpanded={expandedNode === piece.slug}
-                    onToggle={() => setExpandedNode(expandedNode === piece.slug ? null : piece.slug)}
-                  />
-                ))}
-              </div>
-            </motion.section>
-          )}
-
-          {/* ═══════════════════════════════════════════════
-              TAB: COURSES — Cursos temáticos
-              ═══════════════════════════════════════════════ */}
-          {activeTab === "courses" && (
-            <motion.section
-              key="courses"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="mb-20"
-            >
-              <div className="mb-12">
-                <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Cursos temáticos</h2>
-                <p className="text-muted max-w-2xl">
-                  Recorridos estructurados por tema: desde numerología hasta astrología oriental.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {COURSES.map((course, idx) => {
-                  const CourseIcon = ICON_MAP[course.icon];
-                  const relatedGuide = course.guideSlug ? getAcademyGuideBySlug(course.guideSlug) : undefined;
-                  return (
-                    <motion.div
-                      key={course.id}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: idx * 0.08 }}
-                      className={`p-8 rounded-xl border border-border bg-gradient-to-br ${course.color} to-background hover:border-accent/50 transition-all group cursor-pointer`}
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
-                          {CourseIcon && <CourseIcon className="w-6 h-6 text-accent" />}
-                        </div>
-                        <span className="text-xs font-mono font-bold text-accent/60">
-                          {course.pieces.length} capítulo{course.pieces.length !== 1 ? "s" : ""}
-                        </span>
-                      </div>
-
-                      <h3 className="font-heading text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
-                        {course.title}
-                      </h3>
-                      <p className="text-sm text-muted mb-6 leading-relaxed">{course.description}</p>
-
-                      <div className="flex items-center justify-between pt-6 border-t border-border">
-                        <span className="text-sm text-muted label-caps">Inicia aquí</span>
-                        <Link
-                          href={`/academy/${course.pieces[0]?.slug || "babilonia"}`}
-                          className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors group/link"
-                        >
-                          <span className="text-sm font-semibold">Empezar</span>
-                          <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                        </Link>
-                      </div>
-                      {relatedGuide && (
-                        <div className="mt-3 pt-3 border-t border-border/60">
-                          <Link
-                            href={`/academy/${relatedGuide.slug}`}
-                            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors"
-                          >
-                            <span>¿Ya sabés la historia? Vas directo a la guía práctica</span>
-                            <ArrowRight className="w-3 h-3" />
-                          </Link>
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.section>
-          )}
-        </AnimatePresence>
-
-        {/* ═══════════════════════════════════════════════
-            CÓMO FUNCIONA — Proceso paso a paso
-            ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerContainer} className="mb-20">
-          <div className="mb-12">
-            <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Cómo Molino usa esto</h2>
-            <p className="text-muted max-w-2xl">
-              Del conocimiento antiguo al mapa personal moderno: estos son los cuatro pilares de tu lectura.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {HOW_IT_WORKS.map((item, idx) => {
-              const StepIcon = ICON_MAP[item.icon];
-              return (
-                <motion.div
-                  key={item.step}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-8 rounded-xl border border-border bg-card hover:border-accent/50 transition-all"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 font-mono text-sm font-bold text-accent">
-                      {item.step}
-                    </span>
-                    {StepIcon && <StepIcon className="w-6 h-6 text-accent" />}
-                  </div>
-
-                  <h3 className="font-heading text-lg font-bold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted mb-4">{item.description}</p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {item.items.map((itemText) => (
-                      <span key={itemText} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
-                        {itemText}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.section>
-
-        {/* ═══════════════════════════════════════════════
-            CTA — Ir a generar tu mapa
-            ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerContainer} className="py-16 px-8 sm:px-12 rounded-xl border border-border bg-gradient-to-br from-accent/10 to-accent/5 text-center">
-          <h2 className="font-heading text-3xl font-bold text-foreground mb-3">Listo para tu mapa</h2>
-          <p className="text-muted max-w-2xl mx-auto mb-6">
-            Ahora que conocés la historia y la teoría, generá tu mapa personal en segundos y descubrí cómo estos sistemas ancestrales hablan de vos.
-          </p>
-          <Link
+      <KnowledgeSection
+        label="El método"
+        title="Cómo Molino usa esto"
+        intro="Del conocimiento antiguo al mapa personal: los cuatro pasos de tu lectura."
+        tone="alt"
+      >
+        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/15 border border-ink/15">
+          {HOW_IT_WORKS.map((item) => (
+            <li key={item.step} className="bg-background p-7 sm:p-8">
+              <span className="font-display text-5xl leading-none text-foreground tabular-nums">{item.step}</span>
+              <h3 className="mt-4 font-display text-2xl text-foreground">{item.title}</h3>
+              <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{item.description}</p>
+              <p className="mt-4 text-base text-muted">{item.items.join(" · ")}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-16">
+          <Closing
+            title="Listo para tu mapa"
+            text="Ya conocés la historia y el método. Tu mapa aplica los tres sistemas a tu fecha de nacimiento, con la cuenta a la vista."
             href="/profile"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors group"
-          >
-            <span>Crear mi mapa</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.section>
-      </main>
-    </div>
+            cta="Crear mi mapa"
+          />
+        </div>
+      </KnowledgeSection>
+    </main>
   );
 }

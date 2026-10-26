@@ -2,19 +2,14 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
-import Chip from "@/components/ui/Chip";
-import { BookOpen, Asterisk, Compass, ArrowRight } from "lucide-react";
-import Card from "@/components/ui/Card";
+import { PageHero, KnowledgeSection, CONTAINER } from "@/components/knowledge/Kit";
 import {
   SOURCES,
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   type BibliotecaSource,
 } from "@/lib/data/biblioteca-content";
-import SectionCover from "@/components/ui/SectionCover";
 
 export const TYPE_META = {
   libro: { label: "Libro", color: "#626262" },
@@ -53,7 +48,6 @@ const CONTEXT_PATHS = [
 export default function BibliotecaContent() {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedDescription, setExpandedDescription] = useState<string | null>(null);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -86,164 +80,124 @@ export default function BibliotecaContent() {
 
   const hasAnyResults = Object.values(grouped).some((g) => g.length > 0);
 
+  const pickTag = (tag: string) => {
+    setActiveTag(tag);
+    document.getElementById("biblioteca-obras")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-        {/* Hero */}
-        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
-          <p className="text-sm text-muted font-medium mb-4 label-caps">Biblioteca de Fuentes</p>
-          <h1 className="page-title text-foreground">
-            Fuentes, Autores & Contexto
-          </h1>
-          <p className="text-base sm:text-lg text-muted mt-4 max-w-2xl leading-relaxed">
-            Molino integra tres sistemas simbólicos tradicionales: <strong>numerología pitagórica</strong>, <strong>astrología solar</strong> y <strong>zodíaco chino</strong>. Esta biblioteca documenta las obras y corrientes teóricas que fundamentan nuestros algoritmos de lectura.
-          </p>
-          <SectionCover imageKey="biblioteca/hub" priority className="mt-10" />
-        </motion.section>
+    <main id="main-content" className="bg-background">
+      <PageHero
+        crumbs={[{ href: "/", label: "Inicio" }, { label: "Biblioteca" }]}
+        eyebrow={`Biblioteca · ${SOURCES.length} obras`}
+        title="De dónde sale cada lectura"
+        lead="Las obras y corrientes detrás de los tres sistemas que usa Molino: numerología pitagórica, astrología solar y zodíaco chino."
+        imageKey="biblioteca/hub"
+      />
 
-        {/* Tu mapa en contexto — Guía de lectura temática */}
-        <section className="mb-14">
-          <div className="flex items-center gap-2 mb-4">
-            <Compass className="w-4 h-4 text-accent" />
-            <h2 className="font-heading text-sm font-bold text-accent label-caps">
-              Tu mapa en contexto: cómo orientar tu lectura
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {CONTEXT_PATHS.map((item) => (
-              <div
-                key={item.title}
-                role="button"
-                tabIndex={0}
-                className="p-5 rounded-lg bg-card/70 border border-ink/10 hover:border-accent/30 transition-all cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                onClick={() => {
-                  setActiveTag(item.tag);
-                  document.getElementById("biblioteca-search")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    setActiveTag(item.tag);
-                    document.getElementById("biblioteca-search")?.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
+      <KnowledgeSection
+        label="Por dónde empezar"
+        title="Cuatro caminos de lectura"
+        intro="Elegí un tema y la biblioteca se filtra a las obras que lo sostienen."
+      >
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
+          {CONTEXT_PATHS.map((item) => (
+            <li key={item.title} className="bg-background">
+              <button
+                type="button"
+                onClick={() => pickTag(item.tag)}
+                className="group w-full h-full text-left p-7 sm:p-9 hover:bg-paper-alt/70 transition-colors flex flex-col"
               >
-                <h3 className="font-heading text-sm font-bold text-foreground mb-1">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-muted leading-relaxed mb-3">
-                  {item.desc}
-                </p>
-                <div className="text-[11px] font-mono text-accent flex items-center justify-between pt-2 border-t border-ink/5">
-                  <span>{item.authors}</span>
-                  <span className="hover:underline">Filtrar obras →</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                <span className="font-display text-3xl leading-tight text-foreground group-hover:underline underline-offset-[5px]">{item.title}</span>
+                <span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{item.desc}</span>
+                <span className="mt-5 text-base text-muted">{item.authors}</span>
+                <span className="mt-4 text-base text-foreground underline underline-offset-4">Ver las obras</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </KnowledgeSection>
 
-        {/* Filter + Search */}
-        <motion.section {...fadeUpMountDelayed(0.05)} className="mb-10">
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <div className="flex-1">
+      <section id="biblioteca-obras" className="bg-background scroll-mt-20">
+        <div className={`${CONTAINER} py-16 sm:py-24`}>
+          <p className="text-sm text-muted mb-3 label-caps">Las obras</p>
+          <h2 className="section-title text-foreground">Todo el catálogo</h2>
+
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-x-10 gap-y-5 items-start">
+            <div className="lg:col-span-5">
               <SearchInput
                 id="biblioteca-search"
                 value={searchQuery}
                 onValueChange={setSearchQuery}
-                placeholder="Buscar por título, autor, descripción o etiqueta…"
+                placeholder="Título, autor o tema"
                 label="Buscar en la biblioteca"
               />
             </div>
-            <div className="flex flex-wrap gap-2 sm:flex-1 sm:justify-end">
-              <Chip selected={!activeTag} onClick={() => setActiveTag(null)}>
-                Todas
-              </Chip>
-              {allTags.map((tag) => (
-                <Chip
-                  key={tag}
-                  selected={activeTag === tag}
-                  onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                >
-                  #{tag}
-                </Chip>
-              ))}
+            <div className="lg:col-span-7 flex flex-wrap gap-x-5 gap-y-2 text-base" role="group" aria-label="Filtrar por tema">
+              {[null, ...allTags].map((tag) => {
+                const on = activeTag === tag;
+                return (
+                  <button
+                    key={tag ?? "todas"}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setActiveTag(on && tag ? null : tag)}
+                    className={`py-1 border-b-2 transition-colors ${on ? "border-ink text-foreground" : "border-transparent text-muted hover:text-foreground"}`}
+                  >
+                    {tag ?? "Todas"}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </motion.section>
 
-        {hasAnyResults ? (
-          CATEGORY_ORDER.map((catKey) => {
-            const sources = grouped[catKey];
-            if (sources.length === 0) return null;
-            return (
-              <section key={catKey} className="mb-14">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-sm text-muted font-medium label-caps">
-                    {CATEGORY_LABELS[catKey]}
-                  </h2>
-                  <span className="font-mono text-xs text-muted">{sources.length}</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {sources.map((source, i) => {
-                    const meta = TYPE_META[source.type as keyof typeof TYPE_META] || TYPE_META.libro;
-                    return (
-                      <motion.div
-                        key={source.id}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: Math.min(i, 8) * 0.03, duration: 0.35 }}
-                        className="p-6 rounded-lg border border-ink/10 bg-card flex flex-col justify-between hover:border-ink/25 transition-all"
-                      >
-                        <div>
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <Link
-                              href={`/biblioteca/${source.slug}`}
-                              className="font-heading text-sm font-bold text-foreground hover:text-accent transition-colors"
-                            >
-                              {source.title}
-                            </Link>
-                            <span
-                              className="text-sm font-semibold px-2 py-0.5 rounded-full shrink-0 label-caps"
-                              style={{ backgroundColor: `${meta.color}20`, color: meta.color }}
-                            >
-                              {meta.label}
-                            </span>
-                          </div>
-
-                          <p className="text-xs font-mono text-muted mb-3">
-                            {source.author} {source.year ? `(${source.year})` : ""}
-                          </p>
-
-                          <p className="text-xs text-muted leading-relaxed">
-                            {source.description}
-                          </p>
-                        </div>
-
-                        {source.tags && source.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-ink/5">
-                            {source.tags.map((t) => (
-                              <span key={t} className="text-[10px] font-mono text-muted/70 bg-background px-1.5 py-0.5 rounded border border-ink/5">
-                                #{t}
+          {hasAnyResults ? (
+            CATEGORY_ORDER.map((catKey) => {
+              const sources = grouped[catKey];
+              if (sources.length === 0) return null;
+              return (
+                <section key={catKey} className="mt-14" aria-labelledby={`cat-${catKey}`}>
+                  <h3 id={`cat-${catKey}`} className="flex items-baseline justify-between border-b-2 border-ink pb-3">
+                    <span className="font-display text-3xl text-foreground">{CATEGORY_LABELS[catKey]}</span>
+                    <span className="text-base text-muted tabular-nums">{sources.length}</span>
+                  </h3>
+                  <ul className="divide-y divide-ink/15">
+                    {sources.map((source) => {
+                      const meta = TYPE_META[source.type as keyof typeof TYPE_META] || TYPE_META.libro;
+                      return (
+                        <li key={source.id}>
+                          <Link
+                            href={`/biblioteca/${source.slug}`}
+                            className="group grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-x-10 gap-y-2 py-6 hover:bg-paper-alt/50 transition-colors"
+                          >
+                            <span>
+                              <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">
+                                {source.title}
                               </span>
-                            ))}
-                          </div>
-                        )}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })
-        ) : (
-          <div className="p-12 text-center rounded-lg border border-dashed border-ink/15 text-muted font-mono text-xs">
-            No se encontraron obras para los filtros seleccionados.
-          </div>
-        )}
-      </main>
-    </div>
+                              <span className="mt-1 block text-base text-muted">
+                                {source.author}
+                                {source.year ? `, ${source.year}` : ""} · {meta.label}
+                              </span>
+                            </span>
+                            <span className="text-lg text-foreground/80 leading-relaxed">{source.description}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              );
+            })
+          ) : (
+            <p className="mt-14 text-lg text-muted">
+              No hay obras con ese filtro.{" "}
+              <button type="button" onClick={() => { setActiveTag(null); setSearchQuery(""); }} className="underline underline-offset-4 text-foreground">
+                Ver todas
+              </button>
+            </p>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }

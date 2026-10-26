@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import WheelMark from "@/components/knowledge/WheelMark";
+import SectionCover from "@/components/ui/SectionCover";
 
 /**
  * Piezas comunes de las fichas de Conocimiento (número, signo, animal), con
@@ -102,6 +103,93 @@ export function KnowledgeHero({
         </div>
       </div>
     </header>
+  );
+}
+
+/**
+ * Portada de cualquier página del sitio con el lenguaje de Mi Mapa: miga,
+ * antetítulo, titular grande en Garamond, bajada y, a la derecha, la lámina
+ * de la sección (o lo que se pase en `aside`). `children` va debajo de la
+ * bajada: botones, datos, un buscador.
+ */
+export function PageHero({
+  crumbs,
+  eyebrow,
+  title,
+  lead,
+  children,
+  imageKey,
+  aside,
+  titleClassName,
+}: {
+  crumbs: { href?: string; label: string }[];
+  eyebrow?: string;
+  title: ReactNode;
+  lead?: ReactNode;
+  children?: ReactNode;
+  imageKey?: string;
+  aside?: ReactNode;
+  titleClassName?: string;
+}) {
+  const side = aside ?? (imageKey ? (
+    <SectionCover imageKey={imageKey} priority aspect="aspect-[4/3]" sizes="(max-width: 1024px) 100vw, 46vw" />
+  ) : null);
+  return (
+    <header className="border-b border-ink/10">
+      <div className={`${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
+        <Breadcrumb items={crumbs} />
+        <div className={`mt-10 grid grid-cols-1 ${side ? "lg:grid-cols-12" : ""} gap-x-16 gap-y-10 items-center`}>
+          <div className={side ? "lg:col-span-6" : "max-w-4xl"}>
+            {eyebrow && <p className="text-sm text-accent mb-4 label-caps">{eyebrow}</p>}
+            <h1 className={`font-display font-normal leading-[0.95] tracking-tight text-foreground text-balance ${titleClassName ?? "text-[clamp(3rem,7.5vw,6rem)]"}`}>
+              {title}
+            </h1>
+            {lead && <p className="mt-6 text-xl sm:text-2xl text-foreground/85 leading-snug max-w-xl">{lead}</p>}
+            {children && <div className="mt-8">{children}</div>}
+          </div>
+          {side && <div className="lg:col-span-6">{side}</div>}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+/** Botón principal (bermellón) y secundario (subrayado), los mismos de Mi Mapa. */
+export function PrimaryLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps min-h-[48px]"
+    >
+      {children}
+    </Link>
+  );
+}
+
+/** Índice con filetes: título grande, antetítulo y bajada por celda. */
+export function IndexGrid({
+  items,
+  cols = 2,
+}: {
+  items: { href: string; title: ReactNode; kicker?: ReactNode; text?: ReactNode; cta?: string }[];
+  cols?: 2 | 3 | 4;
+}) {
+  const grid = cols === 4 ? "sm:grid-cols-2 lg:grid-cols-4" : cols === 3 ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2";
+  return (
+    <ul className={`grid grid-cols-1 ${grid} gap-px bg-ink/15 border border-ink/15`}>
+      {items.map((it) => (
+        <li key={it.href} className="bg-background">
+          <Link href={it.href} className="group flex flex-col h-full p-7 sm:p-9 hover:bg-paper-alt/70 transition-colors">
+            {it.kicker && <span className="text-sm text-muted">{it.kicker}</span>}
+            <span className="mt-2 font-display text-3xl sm:text-[2.1rem] leading-tight text-foreground group-hover:underline underline-offset-[5px]">
+              {it.title}
+            </span>
+            {it.text && <span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{it.text}</span>}
+            {it.cta && <span className="mt-6 text-base text-foreground underline underline-offset-4">{it.cta}</span>}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createRouteMetadata } from "@/lib/seo";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero, CONTAINER } from "@/components/knowledge/Kit";
 
 export const metadata = createRouteMetadata({
   title: "Guía",
@@ -18,48 +18,45 @@ const articles = [
 
 export default function GuiaPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-        <div className="border-t border-ink/10 py-10 sm:py-16">
-          <h1 className="page-title text-foreground">
-            Artículos y guías
-          </h1>
-          <p className="text-sm text-muted mt-4 max-w-xl">
-            Contenido editorial sobre sistemas simbólicos, arquetipos y lectura de patrones.
-          </p>
-          <SectionCover imageKey="guia/hub" priority className="mt-10" />
-        </div>
-
-        <div className="space-y-0 border-t border-ink/10">
-          {articles.map((article, i) => (
-            <Link
-              key={article.slug}
-              href={`/guia/${article.slug}`}
-              className="group block py-8 border-b border-ink/10 last:border-b-0 hover:bg-accent/5 transition-colors"
-            >
-              <div className="flex items-start gap-6">
-                <span className="font-mono text-3xl sm:text-4xl text-accent font-bold mt-1 w-12 shrink-0">
-                  {article.icon}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className="label-micro mb-2">
-                    {article.subtitle}
-                  </p>
-                  <h2 className="font-display text-3xl sm:text-4xl text-foreground group-hover:text-accent transition-colors leading-tight">
-                    {article.title}
-                  </h2>
-                  <p className="text-sm text-muted mt-2 leading-relaxed max-w-lg">
-                    {article.description}
-                  </p>
-                  <span className="inline-flex items-center gap-1 mt-3 text-xs text-accent font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Leer artículo →
+    <main id="main-content" className="bg-background">
+      <PageHero
+        crumbs={[{ href: "/", label: "Inicio" }, { label: "Guía" }]}
+        eyebrow={`Guía · ${articles.length} lecturas largas`}
+        title="Para entrar en profundidad"
+        lead="Guías completas sobre un número, una familia de números o una forma de cruzar signos. Para leer de punta a punta."
+        imageKey="guia/hub"
+      />
+      <section className="bg-background">
+        <div className={`${CONTAINER} py-16 sm:py-24`}>
+          <ol className="border-t-2 border-ink">
+            {articles.map((article) => (
+              <li key={article.slug} className="border-b border-ink/15">
+                <Link
+                  href={`/guia/${article.slug}`}
+                  className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[8rem_1fr_auto] gap-x-6 sm:gap-x-10 items-baseline py-10 hover:bg-paper-alt/60 transition-colors"
+                >
+                  <span className="font-display text-5xl sm:text-7xl leading-none text-foreground text-center" aria-hidden="true">
+                    {article.icon}
                   </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+                  <span>
+                    <span className="block text-base text-muted">{article.subtitle}</span>
+                    <span className="mt-1 block font-display text-[clamp(2rem,4vw,3rem)] leading-tight text-foreground group-hover:underline underline-offset-[6px]">
+                      {article.title}
+                    </span>
+                    <span className="mt-3 block text-lg text-foreground/80 leading-relaxed max-w-2xl">{article.description}</span>
+                  </span>
+                  <span className="hidden sm:block text-base underline underline-offset-4 pr-2">Leer la guía</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-10 text-lg text-muted max-w-2xl">
+            ¿Buscás algo más corto? En el <Link href="/blog" className="underline underline-offset-4 hover:no-underline text-foreground">blog</Link> hay
+            artículos de cinco minutos, y en <Link href="/conocimiento" className="underline underline-offset-4 hover:no-underline text-foreground">Conocimiento</Link> la
+            ficha de cada número, signo y animal.
+          </p>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
