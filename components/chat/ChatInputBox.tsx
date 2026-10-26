@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { ArrowUp, CornerDownLeft, } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 interface ChatInputBoxProps {
   input: string;
@@ -55,7 +55,7 @@ export default function ChatInputBox({
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative rounded-[--radius-lg] border border-paper/15 bg-paper/[0.05] p-2.5 sm:p-3 transition-all focus-within:border-accent-light/60 focus-within:ring-2 focus-within:ring-accent-light/20 shadow-lg"
+      className="relative border-2 border-ink bg-background p-2.5 sm:p-3 transition-shadow focus-within:shadow-[4px_4px_0_0_rgb(var(--color-ink-rgb))]"
     >
       <div className="flex items-end gap-2 sm:gap-3">
         <textarea
@@ -66,7 +66,7 @@ export default function ChatInputBox({
           onKeyDown={handleKeyDown}
           placeholder={isExhausted ? "Te quedaste sin preguntas. Recargá tu saldo para continuar." : placeholder}
           disabled={isLoading || isExhausted}
-          className="w-full resize-none bg-transparent px-3 py-2 text-sm sm:text-base text-paper placeholder:text-paper/40 focus:outline-none disabled:opacity-50 min-h-[44px] max-h-[180px] font-sans leading-relaxed"
+          className="w-full resize-none bg-transparent px-3 py-2 text-lg sm:text-xl text-foreground placeholder:text-muted/70 focus:outline-none disabled:opacity-50 min-h-[48px] max-h-[180px] font-display leading-relaxed"
           aria-label="Escribí tu pregunta para Molino"
         />
 
@@ -74,7 +74,7 @@ export default function ChatInputBox({
           <button
             type="button"
             onClick={onOpenReloadModal}
-            className="shrink-0 min-h-[40px] px-4 rounded-[--radius-md] bg-accent-light text-ink font-heading text-sm font-bold hover:bg-accent-light/90 transition-colors flex items-center gap-1.5 label-caps"
+            className="shrink-0 min-h-[44px] px-5 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors flex items-center gap-1.5 label-caps"
           >
             <span>Recargar</span>
           </button>
@@ -82,7 +82,7 @@ export default function ChatInputBox({
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="shrink-0 h-10 w-10 rounded-[--radius-md] bg-accent-light text-ink flex items-center justify-center hover:bg-accent-light/90 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm"
+            className="shrink-0 h-11 w-11 bg-ink text-paper flex items-center justify-center hover:bg-vermilion active:scale-95 disabled:opacity-25 disabled:pointer-events-none transition-colors"
             aria-label="Enviar pregunta"
           >
             <ArrowUp className="w-5 h-5 stroke-[2.5]" />
@@ -90,9 +90,9 @@ export default function ChatInputBox({
         )}
       </div>
 
-      <div className="flex items-center justify-between px-3 pt-2 text-[11px] font-mono text-paper/40 select-none">
+      <div className="flex items-center justify-between px-3 pt-2 text-sm text-muted select-none">
         <span>Molino lee tus coordenadas en cada consulta</span>
-        <span className="hidden sm:inline">Enter para enviar · Shift+Enter para nueva línea</span>
+        <span className="hidden sm:inline">Enter envía; Shift+Enter, nueva línea</span>
       </div>
     </form>
   );

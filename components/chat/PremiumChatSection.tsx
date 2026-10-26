@@ -206,11 +206,11 @@ export default function PremiumChatSection({
 
   if (isPremium === false) {
     return (
-      <div className="rounded-[--radius-xl] bg-ink text-paper p-8 border border-paper/10 text-center">
-        <h3 className="section-title text-paper mb-2">
+      <div className="border-y-2 border-ink py-10 text-center">
+        <h3 className="font-display text-3xl text-foreground mb-3">
           Preguntale a tu mapa
         </h3>
-        <p className="text-sm text-paper/70 max-w-md mx-auto leading-relaxed">
+        <p className="text-base text-muted max-w-md mx-auto leading-relaxed">
           Esta conversación contextual con tu mapa forma parte de tu lectura Premium. Desbloqueala arriba para acceder.
         </p>
       </div>
@@ -223,11 +223,11 @@ export default function PremiumChatSection({
 
   return (
     <section
-      className={`rounded-[--radius-xl] bg-ink text-paper p-6 sm:p-8 lg:p-10 border border-paper/15 shadow-2xl relative overflow-hidden ${className}`}
+      className={`relative border-y-2 border-ink py-8 sm:py-12 ${className}`}
       aria-label="Preguntale a tu mapa"
     >
       {/* Barra superior de créditos y estado */}
-      <div className="mb-6 pb-4 border-b border-paper/10">
+      <div className="mb-10 pb-5 border-b border-ink/15">
         <ChatCreditsBadge
           remaining={credits.remaining}
           total={credits.total}
@@ -244,13 +244,13 @@ export default function PremiumChatSection({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mb-6 p-4 rounded-[--radius-md] bg-success/15 border border-success/30 text-paper text-xs sm:text-sm flex items-center justify-between gap-3 font-sans"
+            className="mb-6 p-4 border border-ink/20 text-foreground text-base flex items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{reloadNotice}</span>
             </div>
-            <span className="text-accent-light font-mono text-xs font-semibold">
+            <span className="text-sm text-muted">
               Listo para seguir
             </span>
           </motion.div>
@@ -259,7 +259,7 @@ export default function PremiumChatSection({
 
       {/* Hero inicial (cuando no hay preguntas aún) */}
       {turns.length === 0 ? (
-        <div className="mb-8">
+        <div className="mb-10">
           <ChatHero
             profile={profile}
             onSelectStarter={(q) => {
@@ -270,7 +270,7 @@ export default function PremiumChatSection({
         </div>
       ) : (
         /* Historial de conversación */
-        <div className="mb-8 space-y-2">
+        <div className="mb-8">
           {turns.map((turn, i) => (
             <ChatTurnItem
               key={i}
@@ -287,7 +287,7 @@ export default function PremiumChatSection({
       )}
 
       {/* Input de chat grande, minimalista */}
-      <div className="sticky bottom-0 pt-4 bg-ink/95 backdrop-blur-md">
+      <div className="sticky bottom-0 pt-4 pb-2 bg-background/95 backdrop-blur-sm">
         <ChatInputBox
           input={input}
           onChange={setInput}

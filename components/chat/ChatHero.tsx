@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo } from "react";
-import PersonalSigil from "@/components/ui/PersonalSigil";
 import type { UserProfile } from "@/types/user";
 import { generateChatContextualHook } from "@/lib/engines/chatContextualHook";
 import MapHighlightText from "./MapHighlightText";
@@ -17,106 +16,58 @@ export default function ChatHero({
   onSelectStarter,
   compact = false,
 }: ChatHeroProps) {
-  const { birthDay, birthMonth } = useMemo(() => {
-    const parts = (profile.birthDate || "").split("-").map(Number);
-    return {
-      birthDay: Number.isFinite(parts[2]) ? parts[2] : 1,
-      birthMonth: Number.isFinite(parts[1]) ? parts[1] : 1,
-    };
-  }, [profile.birthDate]);
-
   const hookData = useMemo(() => generateChatContextualHook(profile), [profile]);
 
+  const coords = [
+    `Camino de Vida ${profile.lifePath}`,
+    `Sol en ${profile.sunSign}`,
+    ...(hookData.moonSign ? [`Luna en ${hookData.moonSign}`] : []),
+    ...(profile.chineseZodiac ? [`${profile.chineseZodiac} de ${profile.chineseZodiacInfo?.element || ""}`.trim()] : []),
+    `Año personal ${hookData.personalYear}`,
+  ];
+
   return (
-    <div className="relative overflow-hidden rounded-[--radius-xl] bg-ink text-paper p-6 sm:p-10 lg:p-12 border border-ink/20 shadow-xl select-none">
-      {/* Sello Personal determinístico grande centrado de fondo (20% opacidad) */}
-      <div
-        className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none overflow-hidden select-none"
-        aria-hidden="true"
-      >
-        <svg
-          viewBox="0 0 880 880"
-          className="w-[580px] h-[580px] sm:w-[840px] sm:h-[840px] max-w-none text-paper animate-pulse-slow"
-        >
-          <PersonalSigil
-            lifePath={profile.lifePath || 4}
-            birthDay={birthDay}
-            birthMonth={birthMonth}
-            width={880}
-            height={880}
-          />
-        </svg>
+    <div className="select-none">
+      <h2 className="font-display font-normal text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.04] tracking-tight text-foreground max-w-2xl">
+        Tu mapa ya está
+        <span className="block">sobre la mesa.</span>
+      </h2>
+
+      {/* Línea contextual: demuestra que Molino ya leyó tu mapa */}
+      <p className="mt-5 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed">
+        <MapHighlightText text={hookData.hookSentence} highlightClassName="text-foreground font-semibold" />
+      </p>
+
+      {/* Lo que Molino tiene a mano en cada respuesta */}
+      <div className="mt-6">
+        <p className="text-sm text-muted label-caps mb-2">Molino responde con</p>
+        <ul className="flex flex-wrap gap-x-6 gap-y-1 text-base text-foreground">
+          {coords.map((c) => (
+            <li key={c}>{c}</li>
+          ))}
+        </ul>
       </div>
 
-      {/* Contenido frontal */}
-      <div className="relative z-10 max-w-3xl mx-auto text-center">
-        {/* Micro-etiqueta superior */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-paper/10 border border-paper/15 text-accent-light text-sm mb-6 label-caps">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent-light animate-ping" />
-          Tu mapa, listo para usar
-        </div>
-
-        {/* Display Title */}
-        <h2 className="section-title text-paper max-w-2xl mx-auto">
-          Tu mapa ya está
-          <br />
-          <span className="text-accent-light italic font-normal">
-            sobre la mesa.
-          </span>
-        </h2>
-
-        {/* Línea contextual automática que demuestra conocimiento del mapa */}
-        <p className="mt-5 text-sm sm:text-base text-paper/85 max-w-xl mx-auto leading-relaxed font-serif">
-          <MapHighlightText
-            text={hookData.hookSentence}
-            highlightClassName="font-semibold text-accent-light"
-          />
-        </p>
-
-        {/* Coordenadas simbólicas cargadas en memoria */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono text-paper/70">
-          <span className="px-2.5 py-1 rounded-[--radius-sm] bg-paper/5 border border-paper/10">
-            Camino de Vida {profile.lifePath}
-          </span>
-          <span className="px-2.5 py-1 rounded-[--radius-sm] bg-paper/5 border border-paper/10">
-            Sol en {profile.sunSign}
-          </span>
-          {hookData.moonSign && (
-            <span className="px-2.5 py-1 rounded-[--radius-sm] bg-paper/5 border border-paper/10">
-              Luna en {hookData.moonSign}
-            </span>
-          )}
-          {profile.chineseZodiac && (
-            <span className="px-2.5 py-1 rounded-[--radius-sm] bg-paper/5 border border-paper/10">
-              {profile.chineseZodiac} ({profile.chineseZodiacInfo?.element || "Signo"})
-            </span>
-          )}
-          <span className="px-2.5 py-1 rounded-[--radius-sm] bg-accent-light/10 text-accent-light border border-accent-light/20">
-            Año Personal {hookData.personalYear}
-          </span>
-        </div>
-
-        {/* Preguntas de inicio rápido sugeridas si se requiere */}
-        {!compact && onSelectStarter && (
-          <div className="mt-8 pt-6 border-t border-paper/10 text-left">
-            <p className="text-sm text-paper/50 text-center mb-3 label-caps">
-              Para qué querés usarlo
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {hookData.suggestedStarters.map((q) => (
+      {/* Preguntas para empezar */}
+      {!compact && onSelectStarter && (
+        <div className="mt-10">
+          <p className="text-sm text-muted label-caps mb-2">Para empezar, elegí una</p>
+          <ul className="border-t border-ink/15">
+            {hookData.suggestedStarters.map((q) => (
+              <li key={q} className="border-b border-ink/15">
                 <button
-                  key={q}
                   type="button"
                   onClick={() => onSelectStarter(q)}
-                  className="text-left text-xs sm:text-sm px-3.5 py-2 rounded-[--radius-md] border border-paper/15 bg-paper/[0.04] text-paper/90 hover:border-accent-light hover:text-accent-light hover:bg-paper/[0.08] transition-all"
+                  className="group w-full flex items-baseline justify-between gap-4 py-4 text-left font-display text-xl sm:text-2xl leading-snug text-foreground hover:bg-ink/[0.03] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                 >
-                  {q}
+                  <span className="group-hover:underline underline-offset-4 decoration-1">{q}</span>
+                  <span className="shrink-0 text-base text-muted group-hover:text-foreground" aria-hidden="true">Preguntar</span>
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -48,9 +48,9 @@ export default function AiPage() {
           </p>
           <Link
             href="/onboarding"
-            className="mt-8 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
+            className="mt-8 inline-flex items-center justify-center gap-2 px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
           >
-            Crear mi mapa →
+            Crear mi mapa
           </Link>
         </div>
       </main>
@@ -59,13 +59,13 @@ export default function AiPage() {
 
   return (
     <main className="min-h-screen bg-background" id="main-content">
-      <div className="mx-auto max-w-[760px] px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-24">
-        <header className="border-b border-ink/10 pb-10">
+      <div className="mx-auto max-w-[960px] px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-24">
+        <header className="pb-10">
           <Link
             href="/profile"
-            className="text-sm text-muted hover:text-accent transition-colors label-caps"
+            className="text-sm text-muted hover:text-foreground hover:underline underline-offset-4 transition-colors"
           >
-            ← Mi Mapa
+            ← Volver a tu mapa
           </Link>
           <p className="mt-8 text-sm text-accent label-caps">Preguntale</p>
           <h1 className="page-title mt-2 text-foreground">
@@ -73,7 +73,7 @@ export default function AiPage() {
             <br />
             tu mapa dice.
           </h1>
-          <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
+          <p className="mt-6 max-w-xl text-lg text-muted leading-relaxed">
             Tu lectura te mostró patrones, convergencias y tensiones. Acá, esas
             mismas coordenadas se ponen al servicio de una pregunta tuya — la que
             sea, sobre el momento o la situación que te trae.
@@ -86,32 +86,26 @@ export default function AiPage() {
           </div>
         ) : (
           <div className="pt-10">
-            <div className="rounded-[--radius-lg] border border-ink/10 bg-paper p-6 sm:p-8">
-              <p className="text-sm text-accent mb-3 label-caps">
-                Ejemplos de lo que el mapa puede ayudarte a pensar
-              </p>
-              <ul className="space-y-3">
-                {EJEMPLOS.map((q) => (
-                  <li
-                    key={q}
-                    className="flex items-start gap-3 text-sm text-foreground leading-relaxed"
-                  >
-                    <span className="w-3 h-px bg-accent mt-[0.7em] shrink-0" aria-hidden="true" />
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-8 border-t border-ink/10 pt-8">
-              <p className="text-sm text-muted leading-relaxed max-w-xl">
+            <p className="text-sm text-muted mb-2 label-caps">
+              Ejemplos de lo que el mapa puede ayudarte a pensar
+            </p>
+            <ul className="border-t border-ink/15">
+              {EJEMPLOS.map((q) => (
+                <li key={q} className="py-4 border-b border-ink/15 font-display text-xl sm:text-2xl leading-snug text-foreground">
+                  {q}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-10 border-2 border-ink p-6 sm:p-8">
+              <p className="text-lg text-muted leading-relaxed max-w-xl">
                 La conversación con tu mapa forma parte de la Lectura Pro (pago único de
                 8 dólares, acceso permanente). Incluye 50 preguntas.
               </p>
               <Link
                 href={`/lectura`}
-                className="mt-5 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-[--radius-md] font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
+                className="mt-6 inline-flex items-center justify-center gap-2 px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
               >
-                Ver la Lectura Pro →
+                Ver la Lectura Pro
               </Link>
             </div>
           </div>

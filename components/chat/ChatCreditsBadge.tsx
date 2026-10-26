@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Asterisk, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 interface ChatCreditsBadgeProps {
   remaining: number;
@@ -18,30 +18,27 @@ export default function ChatCreditsBadge({
   onOpenReloadModal,
 }: ChatCreditsBadgeProps) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-      <div className="flex items-center gap-2 flex-wrap">
+    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <p className="text-base text-muted">
         {isExhausted ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-bold bg-red-500/15 text-red-300 border border-red-500/30 label-caps">
-            Sin preguntas restantes
-          </span>
-        ) : isLow ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse label-caps">
-            Te quedan {remaining} {remaining === 1 ? "pregunta" : "preguntas"}
-          </span>
-        ) : null}
-
-        <span className="font-mono text-xs text-paper/70 bg-paper/[0.06] px-3 py-1 rounded-[--radius-sm] border border-paper/10">
-          Preguntas restantes:{" "}
-          <strong className="text-paper font-bold">{remaining}</strong>
-        </span>
-      </div>
-
+          <span className="text-vermilion font-semibold">Te quedaste sin preguntas.</span>
+        ) : (
+          <>
+            Te quedan{" "}
+            <strong className={`font-display text-2xl font-normal tabular-nums ${isLow ? "text-vermilion" : "text-foreground"}`}>
+              {remaining}
+            </strong>{" "}
+            {remaining === 1 ? "pregunta" : "preguntas"}
+            {isLow && <span className="text-vermilion">, ya casi no quedan</span>}.
+          </>
+        )}
+      </p>
       <button
         type="button"
         onClick={onOpenReloadModal}
-        className="inline-flex items-center gap-1.5 font-mono text-xs text-accent-light hover:text-paper bg-accent-light/10 hover:bg-accent-light/20 px-3 py-1 rounded-[--radius-sm] border border-accent-light/30 transition-colors"
+        className="inline-flex items-center gap-1.5 text-base text-foreground underline underline-offset-4 hover:no-underline"
       >
-        <PlusCircle className="w-3.5 h-3.5" />
+        <PlusCircle className="w-4 h-4" aria-hidden="true" />
         <span>Recargar saldo</span>
       </button>
     </div>

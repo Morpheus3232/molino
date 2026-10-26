@@ -105,7 +105,7 @@ describe("Chat Redesign UI Components", () => {
         />
       );
 
-      expect(screen.getByText(/Preguntas restantes:/i)).toBeDefined();
+      expect(screen.getByText(/Te quedan/i)).toBeDefined();
       expect(screen.getByText("45")).toBeDefined();
 
       // Rerender as low credits (<5)
@@ -118,7 +118,8 @@ describe("Chat Redesign UI Components", () => {
           onOpenReloadModal={onOpenReload}
         />
       );
-      expect(screen.getByText(/Te quedan 3 preguntas/i)).toBeDefined();
+      expect(screen.getByText("3")).toBeDefined();
+      expect(screen.getByText(/ya casi no quedan/i)).toBeDefined();
 
       // Click reload
       fireEvent.click(screen.getByText(/Recargar saldo/i));
@@ -182,7 +183,7 @@ describe("Chat Redesign UI Components", () => {
         />
       );
 
-      expect(screen.getByText("Te quedaste sin saldo Molino")).toBeDefined();
+      expect(screen.getByText("Te quedaste sin preguntas")).toBeDefined();
       expect(screen.getByText(/28 preguntas adicionales/i)).toBeDefined();
       expect(screen.getByText(/Todavía no se puede comprar/i)).toBeDefined();
       // El botón que simulaba el cobro de USD 1.70 y regalaba 28 créditos ya no existe.
