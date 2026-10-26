@@ -4,9 +4,7 @@
    ya están optimizadas (WebP) y se repiten en fila; next/image no aporta. */
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import s from "./HomeOpening.module.css";
 
 /**
@@ -121,12 +119,6 @@ export default function HomeOpening() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [paused, setPaused] = useState(false);
-  const [hasMap, setHasMap] = useState(false);
-
-  useEffect(() => {
-    setHasMap(Boolean(getOrCreateProfile()?.birthDate));
-  }, []);
-
   // Fuera de pantalla no se gasta batería animando.
   useEffect(() => {
     const el = ref.current;
@@ -216,20 +208,6 @@ export default function HomeOpening() {
             »
           </span>
         </p>
-        <div
-          className={`${s.late} mt-7 flex flex-wrap items-center gap-x-6 gap-y-3`}
-          style={{ ["--d" as string]: "2s" }}
-        >
-          <Link
-            href={hasMap ? "/profile" : "#mapa-form"}
-            className="inline-flex items-center justify-center px-6 py-3 bg-vermilion text-paper font-heading font-bold label-caps transition-colors hover:bg-vermilion-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vermilion"
-          >
-            {hasMap ? "Ver mi mapa" : "Crear mi mapa"}
-          </Link>
-          <a href="#hoy-home" className="bg-paper px-2 py-1 -mx-2 text-base italic text-ink underline underline-offset-4 hover:no-underline">
-            Leer el día de hoy
-          </a>
-        </div>
       </motion.div>
 
       {/* Bandas de cinemascope */}
