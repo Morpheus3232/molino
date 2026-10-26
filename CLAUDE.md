@@ -322,8 +322,7 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
 - Portada, apertura (2026-10-26): `HomeOpening` es un travelling de cine —
   Quijote y Sancho galopando hacia la izquierda entre molinos, con el
-  epígrafe de Cervantes («Cada uno es artífice de su
-  ventura», II, LXVI), sin botones. Versión mínima por decisión del dueño
+  epígrafe de Cervantes («Yo sé quién soy», I, V), sin botones. Versión mínima por decisión del dueño
   (2026-10-26): sin bandas de cine, sol, pájaros, polvo ni sierra de fondo;
   paso largo y paisaje lento. Las capas salen de la
   ilustración licenciada con `python3 scripts/build-home-scene.py` (WebP en
@@ -338,6 +337,14 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   (`HomeGallery`) es un mosaico de láminas que se tiñen de bermellón al
   pasar el mouse. Las entradas animadas usan `useReveal`, que nunca deja
   contenido oculto si el observador falla.
+- Integridad de la portada (2026-10-26): las tres partes (el día, tu mapa,
+  el índice) van en la misma hoja blanca y se leen como un solo libro
+  ilustrado. Cada parte abre con `Eyebrow` (versalitas centradas entre
+  filetes, en tinta) y se separan con `Fleuron` (el molino de la ilustración,
+  chico y en tinta) — ambos en `components/sections/HomeOrnaments.tsx`. El ⁂
+  queda para los capítulos dentro del día. El rojo en la portada es solo el
+  de la ilustración y el botón principal. Todas las fotos van igual: gris,
+  contraste 1.12, filete de tinta y etiqueta "Fig."/"Lám.".
 - Portada: el día se cuenta como un capítulo de libro (`HomeBook`:
   epígrafe, capítulos I–III con número romano, capitular, índices con
   puntos guía, ⁂), no como tablero; el tablero de detalle sigue en `/hoy`.

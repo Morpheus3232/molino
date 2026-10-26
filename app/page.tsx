@@ -1,5 +1,6 @@
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import HomeOpening from "@/components/sections/HomeOpening";
+import { Fleuron } from "@/components/sections/HomeOrnaments";
 import HomeBook from "@/components/sections/HomeBook";
 import HomeAlmanac from "@/components/sections/HomeAlmanac";
 import HomeGallery from "@/components/sections/HomeGallery";
@@ -75,10 +76,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Hero — Date Input. Hoja aparte: el día es de todos, el mapa es tuyo. */}
-        <div className="border-t border-border bg-paper-alt/60">
-          <HeroInstrument />
-        </div>
+        {/* Las tres partes (el día, tu mapa, el índice) van en la misma hoja
+            blanca, separadas por el molino de la ilustración. */}
+        <Fleuron />
+
+        {/* Hero — Date Input: el día es de todos, el mapa es tuyo. */}
+        <HeroInstrument />
+
+        <Fleuron className="mt-12 sm:mt-16" />
 
         <HomeGallery />
       </main>

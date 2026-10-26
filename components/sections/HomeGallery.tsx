@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSectionImage } from "@/lib/data/section-images";
 import { useReveal } from "@/lib/hooks/useReveal";
+import { Eyebrow } from "@/components/sections/HomeOrnaments";
 
 /**
  * Índice ilustrado al pie de la portada: cada sección del sitio con su lámina,
@@ -37,9 +38,9 @@ export default function HomeGallery() {
   const { ref, hidden } = useReveal<HTMLUListElement>();
 
   return (
-    <section aria-labelledby="indice-home" className="border-t border-border">
+    <section aria-labelledby="indice-home">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 py-16 sm:py-24">
-        <p className="mb-3 text-center label-caps text-sm text-muted">Índice de láminas</p>
+        <Eyebrow className="mb-3">Índice de láminas</Eyebrow>
         <h2 id="indice-home" className="section-title text-center text-foreground">
           Para seguir leyendo
         </h2>
@@ -70,7 +71,7 @@ export default function HomeGallery() {
                       alt=""
                       fill
                       sizes={lead ? "(max-width: 1024px) 100vw, 560px" : "(max-width: 1024px) 50vw, 280px"}
-                      className="object-cover grayscale contrast-[1.08] transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06] motion-reduce:transition-none"
+                      className="object-cover grayscale contrast-[1.12] transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06] motion-reduce:transition-none"
                       style={{ transform: hidden ? "scale(1.18)" : undefined }}
                     />
                   )}

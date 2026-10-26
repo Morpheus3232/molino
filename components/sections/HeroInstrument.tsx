@@ -9,6 +9,7 @@ import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
+import { Eyebrow } from "@/components/sections/HomeOrnaments";
 import type { UserProfile } from "@/types/user";
 
 function isValidBirthDate(value: string): boolean {
@@ -126,11 +127,7 @@ export default function HeroInstrument() {
 
         <motion.div {...fadeUpMount} className="space-y-10">
           {/* Eyebrow */}
-          <p className="flex items-center justify-center gap-3 text-sm text-muted label-caps">
-            <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
-            Tres sistemas, una fecha
-            <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
-          </p>
+          <Eyebrow>Tres sistemas, una fecha</Eyebrow>
 
           {/* Molino context — qué es esta calculadora */}
           <p className="text-sm sm:text-base text-muted max-w-md mx-auto leading-relaxed">
@@ -141,7 +138,7 @@ export default function HeroInstrument() {
 
           {/* Headline dramático — serif editorial, remate en itálica con
               gradiente cálido animado */}
-          <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,7vw,5rem)]">
+          <h1 className="text-balance font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,7vw,5rem)]">
             Tu fecha no es un dato.
             <span className="block mt-2 italic text-gradient-warm">Es un patrón.</span>
           </h1>

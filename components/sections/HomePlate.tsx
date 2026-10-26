@@ -37,7 +37,7 @@ export default function HomePlate({
     <figure ref={ref} className={`md:-mx-[clamp(0rem,calc((100vw-38rem)/2-2rem),6rem)] ${className}`}>
       <div
         ref={frame}
-        className="relative aspect-[16/9] md:aspect-[2.35/1] overflow-hidden bg-ink transition-[clip-path] duration-[1300ms] ease-[cubic-bezier(0.7,0,0.2,1)] motion-reduce:transition-none"
+        className="relative aspect-[16/9] md:aspect-[2.35/1] overflow-hidden border border-ink bg-ink transition-[clip-path] duration-[1300ms] ease-[cubic-bezier(0.7,0,0.2,1)] motion-reduce:transition-none"
         style={{ clipPath: hidden ? "inset(50% 0 50% 0)" : "inset(0 0 0 0)" }}
       >
         <motion.div className="absolute inset-x-0 -inset-y-[9%]" style={{ y: reduce ? 0 : y }}>
@@ -46,7 +46,7 @@ export default function HomePlate({
             alt={img.alt}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
-            className="object-cover grayscale contrast-[1.06]"
+            className="object-cover grayscale contrast-[1.12]"
           />
         </motion.div>
         <span className="absolute left-0 top-0 bg-ink px-2.5 py-1 text-xs text-paper label-caps" aria-hidden="true">

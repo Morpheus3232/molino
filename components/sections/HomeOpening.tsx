@@ -30,8 +30,9 @@ const MILLS = [
   { x: 78, base: 38.58, h: 0.46, spin: "16s" },
 ];
 
-/** Don Quijote, segunda parte, cap. LXVI: la ventura no viene dada, se hace. */
-const LINE = "Cada uno es artífice de su ventura.";
+/** Don Quijote, primera parte, cap. V: la respuesta de don Quijote cuando
+ *  el vecino lo quiere convencer de que no es quien dice ser. */
+const LINE = "Yo sé quién soy.";
 
 /** Cuatro aspas en cruz con su enrejado, como las del original. */
 function Sails() {
@@ -166,7 +167,7 @@ export default function HomeOpening() {
       <motion.div className={s.copy} style={{ y: still("0%") ?? copyY, opacity: reduce ? 1 : copyOpacity }}>
         <p
           id="apertura-home"
-          className="font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(2.4rem,5vw,4.4rem)]"
+          className="text-balance font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(3.2rem,7.5vw,6.5rem)]"
         >
           <span className="sr-only">{LINE}</span>
           <span aria-hidden="true">
@@ -185,7 +186,7 @@ export default function HomeOpening() {
           </span>
         </p>
         <p className={`${s.late} mt-5 text-sm text-muted label-caps`} style={{ ["--d" as string]: "1.6s" }}>
-          Cervantes · <em className="not-italic">Don Quijote</em>, II, LXVI
+          Cervantes · <em className="not-italic">Don Quijote</em>, I, V
         </p>
       </motion.div>
 
