@@ -277,7 +277,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         </motion.div>
       )}
 
-      <div className="mx-auto max-w-[760px] px-6 sm:px-8 pb-32">
+      <div className={`mx-auto ${revealed && interpretation ? "max-w-[1000px]" : "max-w-[760px]"} px-6 sm:px-8 pb-32`}>
         {locked ? (
           /* Falta pagar ESTA lectura. PremiumGate ya es el dueño del checkout
              (Mercado Pago, cupón, recuperar compra) y del copy de venta, así
@@ -320,52 +320,51 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             </button>
           </div>
         ) : (
-          <section id="lectura-contenido" className="space-y-0">
+          <section id="lectura-contenido">
             <motion.section
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.1 }}
               className="mb-16 sm:mb-20"
             >
-              <p className="text-sm text-muted/70 mb-4 label-caps">
-                Lo que sigue sale de tu mapa
-              </p>
+              <p className="text-sm text-muted mb-6 label-caps">I · La frase que te resume</p>
               {interpretation.opening && (
                 <p className="text-center font-display italic text-lg sm:text-xl leading-[1.4] text-muted mb-10 max-w-xl mx-auto">
                   {interpretation.opening}
                 </p>
               )}
-              <p className="font-display italic text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.08] tracking-tight text-accent max-w-2xl">
+              <p className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[1.06] tracking-tight text-foreground max-w-2xl">
                 {interpretation.summary}
               </p>
               {interpretation.corePattern && (
-                <p className="text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl mt-6">
+                <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-xl mt-8 pt-6 border-t border-ink/15">
                   {interpretation.corePattern.whyItMatters}
                 </p>
               )}
             </motion.section>
 
             {/* Las dos alas — fortalezas y tensiones, abriéndose desde el centro */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10 mb-16 sm:mb-20">
+            <p className="text-sm text-muted mb-4 label-caps">II · Lo que te sostiene y lo que pide atención</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 mb-16 sm:mb-24">
               <motion.div
                 initial={reduceMotion ? false : { opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.25 }}
                 className="bg-paper p-8 sm:p-10"
               >
-                <h2 className="font-heading text-lg sm:text-xl text-foreground mb-5">Lo que te sostiene</h2>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">Lo que te sostiene</h2>
                 {interpretation.strengths.length > 0 && (
                   <ul className="space-y-3 mb-6">
                     {interpretation.strengths.map((s, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-foreground leading-relaxed">
-                        <span className="w-3 h-px bg-accent mt-[0.6em] shrink-0" aria-hidden="true" />
+                      <li key={i} className="flex items-start gap-3 text-base text-foreground leading-relaxed">
+                        <span className="w-3 h-px bg-ink mt-[0.75em] shrink-0" aria-hidden="true" />
                         {s}
                       </li>
                     ))}
                   </ul>
                 )}
                 {interpretation.howYouOperate && (
-                  <p className="text-sm text-muted leading-relaxed pt-4 border-t border-ink/10">
+                  <p className="text-base text-muted leading-relaxed pt-4 border-t border-ink/10">
                     {interpretation.howYouOperate}
                   </p>
                 )}
@@ -377,12 +376,12 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.25 }}
                 className="bg-paper-alt p-8 sm:p-10"
               >
-                <h2 className="font-heading text-lg sm:text-xl text-foreground mb-5">Lo que pide tu atención</h2>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">Lo que pide tu atención</h2>
                 {interpretation.tensions.length > 0 && (
                   <ul className="space-y-3 mb-6">
                     {interpretation.tensions.map((t, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-muted leading-relaxed">
-                        <span className="w-3 h-px bg-ink/30 mt-[0.6em] shrink-0" aria-hidden="true" />
+                      <li key={i} className="flex items-start gap-3 text-base text-foreground/85 leading-relaxed">
+                        <span className="w-3 h-px bg-ink/40 mt-[0.75em] shrink-0" aria-hidden="true" />
                         {t}
                       </li>
                     ))}
@@ -391,7 +390,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 {interpretation.whatToConsider.length > 0 && (
                   <ul className="space-y-2 pt-4 border-t border-ink/10">
                     {interpretation.whatToConsider.map((c, i) => (
-                      <li key={i} className="text-xs text-muted leading-relaxed">{c}</li>
+                      <li key={i} className="text-base text-muted leading-relaxed">{c}</li>
                     ))}
                   </ul>
                 )}
@@ -409,25 +408,20 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 initial={reduceMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.3 }}
-                className="section-dark rounded-[--radius-lg] p-8 sm:p-12 mb-16 sm:mb-20 shadow-lg"
+                className="section-dark p-8 sm:p-14 mb-16 sm:mb-24"
               >
                 {/* accent-light, no accent: --color-accent (#A83A23) está
                     calibrado contra el papel claro y sobre ink queda en 2.7:1,
                     abajo del 4.5:1 que pide un texto de 12px.
                     --color-accent-light (#D9805F) es el par del mismo acento
                     pensado para superficies oscuras. */}
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="w-6 h-px bg-accent-light" aria-hidden="true" />
-                  <p className="text-sm text-accent-light label-caps">
-                    El punto ciego
-                  </p>
-                </div>
+                <p className="text-sm text-paper/70 mb-6 label-caps">III · Tu punto ciego</p>
                 {/* text-paper explícito, no heredado: globals.css baja a
                     --color-muted los <p> dentro de .section-dark, lo que acá
                     dejaba el párrafo más importante de la lectura paga en
                     2.93:1 sobre el fondo ink — abajo del piso de 3:1 de WCAG
                     AA incluso contando como texto grande. */}
-                <p className="font-display italic text-[clamp(1.4rem,3.4vw,2rem)] leading-[1.3] max-w-2xl text-paper">
+                <p className="font-display text-[clamp(1.6rem,3.8vw,2.4rem)] leading-[1.25] max-w-2xl text-paper">
                   {interpretation.blindSpot}
                 </p>
               </motion.section>
@@ -444,26 +438,22 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.35 }}
                 className="mb-16 sm:mb-20"
               >
-                <h2 className="font-heading text-lg sm:text-xl text-foreground mb-1">
-                  Dónde se nota
+                <p className="text-sm text-muted mb-3 label-caps">IV · Dónde se nota</p>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-2">
+                  El mismo patrón, en tres lugares
                 </h2>
-                <p className="text-xs text-muted mb-6">
-                  El mismo patrón, manifestándose distinto en cada dominio.
+                <p className="text-base text-muted mb-6">
+                  Se manifiesta distinto en el trabajo, en los vínculos y en las decisiones.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
                   {([
-                    ["01", "Trabajo", interpretation.lifeAreas.work],
-                    ["02", "Vínculos", interpretation.lifeAreas.relationships],
-                    ["03", "Decisiones", interpretation.lifeAreas.decisions],
+                    ["trabajo", "Trabajo", interpretation.lifeAreas.work],
+                    ["vinculos", "Vínculos", interpretation.lifeAreas.relationships],
+                    ["decisiones", "Decisiones", interpretation.lifeAreas.decisions],
                   ] as const).map(([num, label, body]) => (
-                    <div key={label} className="bg-paper p-6 sm:p-7">
-                      <div className="flex items-baseline gap-2 mb-3">
-                        <span className="font-mono text-xs text-accent">{num}</span>
-                        <h3 className="font-heading text-sm text-foreground label-caps">
-                          {label}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-muted leading-relaxed">{body}</p>
+                    <div key={num} className="bg-paper p-6 sm:p-7">
+                      <h3 className="font-display text-xl text-foreground mb-3">{label}</h3>
+                      <p className="text-base text-muted leading-relaxed">{body}</p>
                     </div>
                   ))}
                 </div>
@@ -476,9 +466,10 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.4 }}
-                className="text-center mb-16 sm:mb-20 py-8 border-y border-ink/10"
+                className="mb-8 sm:mb-10 py-8 border-y-2 border-ink"
               >
-                <p className="text-base sm:text-lg text-foreground font-medium leading-relaxed max-w-xl mx-auto">
+                <p className="text-sm text-muted mb-3 label-caps">El paso siguiente</p>
+                <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug max-w-2xl">
                   {interpretation.suggestedNextStep}
                 </p>
               </motion.div>
@@ -490,9 +481,9 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 initial={reduceMotion ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.5 }}
-                className="text-center font-display italic text-xl sm:text-2xl leading-[1.5] text-foreground max-w-xl mx-auto mb-16 sm:mb-20"
+                className="text-center font-display italic text-2xl sm:text-3xl leading-[1.45] text-foreground max-w-xl mx-auto py-10 sm:py-16 mb-16 sm:mb-20"
               >
-                &ldquo;{interpretation.closingSynthesis}&rdquo;
+                &laquo;{interpretation.closingSynthesis}&raquo;
               </motion.blockquote>
             )}
 
@@ -503,6 +494,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.55 }}
               className="mb-20 sm:mb-24"
             >
+              <p className="text-sm text-muted mb-4 label-caps">V · Preguntale a Molino</p>
               <PremiumChatSection
                 profile={profile}
                 readingContext={{
@@ -541,9 +533,9 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           >
             ← Volver a tu mapa
           </Link>
-          <p className="text-xs text-muted leading-relaxed">
+          <p className="text-sm text-muted leading-relaxed">
             ¿Pensaste en alguien mientras leías?{" "}
-            <Link href="/regalar" className="text-accent hover:underline underline-offset-4">
+            <Link href="/regalar" className="text-foreground underline underline-offset-4 hover:no-underline">
               Regalale una lectura
             </Link>{" "}
             — no hace falta que sepas su fecha.
