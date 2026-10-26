@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { Asterisk, GitBranch, ShieldCheck, Zap, Heart, BookOpen, Code2, ArrowRight, Bookmark, Users, Sun, MapPin, Bitcoin, Gift } from "lucide-react";
-import Card from "@/components/ui/Card";
+import { Asterisk, ShieldCheck, Zap, Heart, BookOpen, Code2, Bookmark, Users, Sun, MapPin, Bitcoin, Gift } from "lucide-react";
+import { PageHero } from "@/components/knowledge/Kit";
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
@@ -157,93 +156,49 @@ const RELEASES = [
 
 export default function ChangelogPage() {
   return (
-    <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
-      <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-12">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="page-eyebrow mb-4">
-            <GitBranch className="w-3.5 h-3.5" />
-            <span className="text-sm font-bold label-caps">
-              Registro Público de Novedades
-            </span>
-          </div>
+    <main id="main-content" className="bg-background pt-12 sm:pt-16 pb-24 text-foreground">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "Novedades" }]}
+          eyebrow="Registro público de cambios"
+          title="Evolución de Molino"
+          lead="Cada cambio responde a dos reglas: privacidad total sin cuentas y claridad en cada lectura."
+        />
 
-          <h1 className="page-title text-foreground">
-            Evolución & Changelog
-          </h1>
-
-          <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Cada cambio en Molino responde a dos principios innegociables: <strong>privacidad total sin cuentas</strong> y <strong>claridad simbólica estructurada</strong>.
-          </p>
-        </div>
-
-        {/* Releases Timeline */}
-        <div className="space-y-12 relative before:absolute before:inset-0 before:left-4 md:before:left-8 before:w-0.5 before:bg-ink/10">
+        <ol>
           {RELEASES.map((release) => (
-            <div key={release.version} className="relative pl-10 md:pl-20">
-              {/* Timeline Dot */}
-              <div className="absolute left-2.5 md:left-6.5 top-1.5 w-3.5 h-3.5 rounded-full bg-accent border-4 border-background -translate-x-1/2" />
-
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="font-display text-2xl font-bold text-foreground">
-                  {release.version}
-                </span>
-                <span className="text-xs font-mono text-muted">
-                  {release.date}
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-bold label-caps">
-                  {release.badge}
-                </span>
+            <li key={release.version} className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6 py-12 border-b border-ink/15 first:pt-0">
+              <div className="lg:col-span-3 lg:sticky lg:top-24 self-start">
+                <p className="font-display text-5xl leading-none text-foreground">{release.version}</p>
+                <p className="mt-3 text-lg text-foreground">{release.date}</p>
+                <p className="mt-1 text-base text-muted">{release.badge}</p>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {release.highlights.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Card key={item.title} padding="md" className="border-ink/10 bg-card/60">
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <h3 className="font-heading text-sm font-bold text-foreground mb-1">
-                            {item.title}
-                          </h3>
-                          <p className="text-xs text-muted leading-relaxed">
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
+              <ul className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
+                {release.highlights.map((item) => (
+                  <li key={item.title} className="bg-background p-6 sm:p-7">
+                    <h3 className="font-display text-2xl leading-tight text-foreground">{item.title}</h3>
+                    <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{item.desc}</p>
+                  </li>
+                ))}
+              </ul>
+            </li>
           ))}
-        </div>
+        </ol>
 
-        {/* Open Source / GitHub Footer banner */}
-        <div className="mt-16 p-6 sm:p-8 rounded-xl bg-accent/5 border border-accent/20 text-center space-y-3">
-          <span className="text-sm text-accent font-bold label-caps">
-            Código Abierto & Transparencia
-          </span>
-          <h4 className="font-heading text-lg font-bold text-foreground">
-            Molino es un proyecto abierto y auditable
-          </h4>
-          <p className="text-xs text-muted max-w-md mx-auto">
-            Podés revisar cada línea de cálculo y contribuir en nuestro repositorio público de GitHub.
-          </p>
-          <div className="pt-2">
-            <a
-              href="https://github.com/Morpheus3232/molino"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-xs font-mono text-foreground font-semibold transition-colors"
-            >
-              <span>Ver repositorio en GitHub</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
+        <div className="mt-16 border-2 border-ink p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-xl">
+            <h2 className="font-display text-3xl sm:text-4xl leading-tight text-foreground">Un proyecto abierto y auditable</h2>
+            <p className="mt-3 text-lg text-muted">Cada línea de cálculo está a la vista en el repositorio público, y podés contribuir.</p>
           </div>
+          <a
+            href="https://github.com/Morpheus3232/molino"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 text-lg underline underline-offset-4 hover:no-underline"
+          >
+            Ver el repositorio en GitHub
+          </a>
         </div>
       </div>
     </main>

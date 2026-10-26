@@ -9,6 +9,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import WorldConnections from "@/components/profile/WorldConnections";
 import SharePublicButton from "@/components/profile/SharePublicButton";
 import Button from "@/components/ui/Button";
+import { PageHero, PrimaryLink } from "@/components/knowledge/Kit";
 import { hasStoredProfile } from "@/lib/session/localStorage";
 
 interface MundoClientProps {
@@ -100,46 +101,33 @@ export default function MundoClient({ refParam, catalog }: MundoClientProps) {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-          <h1 className="page-title text-foreground mb-4">
-            Tu mundo de conexiones
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">Para ver tu mundo, primero necesitás crear tu perfil personal.</p>
-          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
-            Crear mi perfil
-          </Button>
-        </main>
-      </div>
+      <main id="main-content" className="bg-background">
+        <PageHero
+          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Mundo" }]}
+          eyebrow="Mi mapa"
+          title="Tu mundo de conexiones"
+          lead="Los países, ciudades y marcas que nacieron en un año de tu mismo signo chino. Para verlo, primero creá tu mapa."
+        >
+          <PrimaryLink href="/onboarding">Crear mi mapa</PrimaryLink>
+        </PageHero>
+      </main>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20">
-        <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Inicio
-          </Link>
-          <span>›</span>
-          <Link href="/profile" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Mi mapa
-          </Link>
-          <span>›</span>
-          <span className="text-foreground font-medium">Mundo</span>
-        </nav>
-        <h1 className="page-title text-foreground mb-2">
-          Tu mundo
-        </h1>
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-12 sm:pt-16">
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Mundo" }]}
+          eyebrow="Mi mapa"
+          title="Tu mundo"
+          lead="Países, ciudades y marcas que nacieron en un año de tu mismo signo chino."
+        >
+          <SharePublicButton profile={profile} path="/mundo" label="Compartir mi mundo" />
+        </PageHero>
       </div>
       <main id="main-content">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4 mb-4 flex justify-end">
-          <SharePublicButton
-            profile={profile}
-            path="/mundo"
-            label="Compartir mi mundo"
-          />
-        </div>
         <WorldConnections profile={profile} catalog={catalog} />
       </main>
     </div>

@@ -10,7 +10,6 @@ import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import { buildInviteMessage } from "@/lib/viral/invite";
 import {
-  Heart,
   Users,
   Compass,
   ArrowRight,
@@ -21,7 +20,7 @@ import {
   Check,
 } from "lucide-react";
 import Link from "next/link";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero } from "@/components/knowledge/Kit";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -132,26 +131,17 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
   };
 
   return (
-    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-12 sm:pt-16 pb-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Header */}
-        <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
-          <div className="page-eyebrow mb-3">
-            <Heart className="w-3.5 h-3.5 text-accent animate-pulse" />
-            <span className="text-sm text-accent font-bold label-caps">
-              Modo Pareja · Sinergia Simbólica
-            </span>
-          </div>
-
-          <h1 className="page-title text-foreground">
-            Comparativa de Mapas
-          </h1>
-          <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
-            Ingresá dos fechas de nacimiento para cruzar sus caminos de vida, signos solares, zodíaco
-            chino y química elemental.
-          </p>
-          <SectionCover imageKey="paginas/pareja" priority className="mt-8 max-w-3xl" />
-        </header>
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "Modo Pareja" }]}
+          eyebrow="Modo Pareja · dos mapas cruzados"
+          title="Comparativa de mapas"
+          lead="Dos fechas de nacimiento y los tres sistemas cara a cara: Camino de Vida, signo solar, zodíaco chino y elementos."
+          imageKey="paginas/pareja"
+        />
 
         {/* View Mode: Comparison or Input Form */}
         <AnimatePresence mode="wait">

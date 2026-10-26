@@ -121,7 +121,10 @@ export function PageHero({
   imageKey,
   aside,
   titleClassName,
+  bare = false,
 }: {
+  /** Sin contenedor propio: para páginas que ya tienen el ancho del sitio. */
+  bare?: boolean;
   crumbs: { href?: string; label: string }[];
   eyebrow?: string;
   title: ReactNode;
@@ -135,8 +138,8 @@ export function PageHero({
     <SectionCover imageKey={imageKey} priority aspect="aspect-[4/3]" sizes="(max-width: 1024px) 100vw, 46vw" />
   ) : null);
   return (
-    <header className="border-b border-ink/10">
-      <div className={`${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
+    <header className={bare ? "pb-12 sm:pb-16 mb-12 sm:mb-16 border-b-2 border-ink" : "border-b border-ink/10"}>
+      <div className={bare ? "" : `${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
         <Breadcrumb items={crumbs} />
         <div className={`mt-10 grid grid-cols-1 ${side ? "lg:grid-cols-12" : ""} gap-x-16 gap-y-10 items-center`}>
           <div className={side ? "lg:col-span-6" : "max-w-4xl"}>

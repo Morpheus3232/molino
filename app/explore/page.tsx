@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { fadeUpDelayed, fadeUpMount } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero, KnowledgeSection, IndexGrid, Columns, Closing, CONTAINER } from "@/components/knowledge/Kit";
 
 const SYSTEMS = [
   {
@@ -50,11 +47,8 @@ const SOURCES = [
   { title: "Zodiaco Chino", author: "Tradición china", description: "Ciclo de 12 animales combinados con 5 elementos." },
 ];
 
-const colBorder = "border-ink/10";
-const cellPad = "p-8 lg:p-12";
 
 export default function ExplorePage() {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredConcepts = CONCEPTS.filter(
@@ -64,169 +58,61 @@ export default function ExplorePage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <main id="main-content" className="bg-background">
+      <PageHero
+        crumbs={[{ href: "/", label: "Inicio" }, { label: "Explorar" }]}
+        eyebrow="Explorar · tres sistemas"
+        title="El universo de tu conocimiento"
+        lead="Tu mapa combina tres sistemas simbólicos. Recorré cada uno para entender cómo funciona y qué mira."
+        imageKey="paginas/explore"
+      />
 
-      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+      <KnowledgeSection label="Los sistemas" title="Por dónde empezar">
+        <IndexGrid cols={3} items={SYSTEMS.map((s) => ({ href: s.href, kicker: s.subtitle, title: s.title, text: s.description, cta: "Explorar" }))} />
+      </KnowledgeSection>
 
-        {/* ═══ HERO — animación por montaje (no whileInView) ═══ */}
-        <motion.section {...fadeUpMount} className="mb-20 sm:mb-28">
-          <p className="label-micro mb-4">
-            Explorar
+      <KnowledgeSection label="Conceptos clave" title="Las palabras del sistema" intro="Buscá un concepto o recorré la lista." tone="alt">
+        <div className="max-w-xl mb-8">
+          <SearchInput value={searchTerm} onValueChange={setSearchTerm} placeholder="Buscar concepto" label="Buscar concepto" />
+        </div>
+        {filteredConcepts.length === 0 ? (
+          <p className="text-lg text-muted">
+            No hay conceptos para &ldquo;{searchTerm}&rdquo;.{" "}
+            <button type="button" onClick={() => setSearchTerm("")} className="underline underline-offset-4 text-foreground">
+              Ver todos
+            </button>
           </p>
-          <h1 className="page-title text-foreground max-w-3xl">
-            El universo de tu conocimiento
-          </h1>
-          <p className="mt-6 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
-            Tu mapa combina múltiples sistemas simbólicos para construir tu perfil.
-            Explorá cada sistema para entender cómo funciona.
-          </p>
-          <SectionCover imageKey="paginas/explore" priority className="mt-10" />
-        </motion.section>
-
-        {/* ═══ LOS TRES SISTEMAS ═══ */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-20 sm:mb-28">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-sm text-muted font-medium label-caps">Los tres sistemas</p>
-          </div>
-          <div className="flex flex-wrap border-t border-ink/10">
-            {SYSTEMS.map((system, i) => (
-              <motion.div
-                key={system.id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                className={`w-full md:w-1/3 flex flex-col ${i < 2 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
-              >
-                <Link
-                  href={system.href}
-                  className={`flex-1 ${cellPad} group block`}
-                >
-                  <p className="text-sm text-muted font-medium mb-2 label-caps">{system.subtitle}</p>
-                  <p className="font-heading text-lg sm:text-xl text-foreground group-hover:text-accent transition-colors mb-3">
-                    {system.title}
-                  </p>
-                  <p className="text-sm text-muted leading-relaxed">{system.description}</p>
-                  <p className="text-xs text-accent mt-4 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                    Explorar →
-                    </p>
+        ) : (
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
+            {filteredConcepts.map((concept) => (
+              <li key={concept.title} className="bg-background">
+                <Link href={concept.href} className="group block h-full p-6 sm:p-7 hover:bg-paper-alt/70 transition-colors">
+                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{concept.title}</span>
+                  <span className="mt-2 block text-base text-foreground/80 leading-relaxed">{concept.description}</span>
                 </Link>
-              </motion.div>
+              </li>
             ))}
-          </div>
-        </motion.section>
+          </ul>
+        )}
+      </KnowledgeSection>
 
-        {/* ═══ CONCEPTOS CLAVE ═══ */}
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-20 sm:mb-28">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-sm text-muted font-medium label-caps">Conceptos clave</p>
-          </div>
+      <KnowledgeSection label="Fuentes" title="Las obras de referencia">
+        <Columns cols={SOURCES.map((s) => ({ title: s.title, body: <><span className="block text-base text-muted">{s.author}</span><span className="mt-2 block">{s.description}</span></> }))} />
+        <p className="mt-6 text-lg">
+          <Link href="/biblioteca" className="underline underline-offset-4 hover:no-underline">Ver la biblioteca completa</Link>
+        </p>
+      </KnowledgeSection>
 
-          <div className="mb-8">
-            <SearchInput
-              value={searchTerm}
-              onValueChange={setSearchTerm}
-              placeholder="Buscar concepto..."
-              label="Buscar concepto"
-              className="max-w-md"
-            />
-          </div>
-
-          {filteredConcepts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-center py-16"
-            >
-              <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
-              <p className="text-sm text-muted mb-6 max-w-md mx-auto">
-                No se encontraron conceptos para &ldquo;{searchTerm}&rdquo;.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSearchTerm("")}
-                className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent/90 min-h-[44px]"
-              >
-                Limpiar búsqueda
-              </button>
-            </motion.div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-ink/10">
-              {filteredConcepts.map((concept, i) => (
-                <motion.button
-                  key={concept.title}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.4 }}
-                  onClick={() => router.push(concept.href)}
-                  className={`text-left px-6 sm:px-8 py-6 sm:py-6 border-b border-ink/10 ${(i % 3) < 2 ? "sm:border-r border-ink/10" : ""} group`}
-                >
-                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
-                    {concept.title}
-                  </p>
-                  <p className="text-xs text-muted mt-2 leading-relaxed">
-                    {concept.description}
-                  </p>
-                </motion.button>
-              ))}
-            </div>
-          )}
-        </motion.section>
-
-        {/* ═══ FUENTES ═══ */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-20 sm:mb-28">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-sm text-muted font-medium label-caps">Fuentes</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 border-t border-ink/10">
-            {SOURCES.map((source, i) => (
-              <div key={source.title} className={`px-6 sm:px-8 py-6 sm:py-8 border-b border-ink/10 ${i < 2 ? "md:border-r border-ink/10" : ""}`}>
-                <p className="text-sm font-medium text-foreground">{source.title}</p>
-                <p className="text-xs text-muted mt-1">{source.author}</p>
-                <p className="text-xs text-muted mt-2 leading-relaxed">{source.description}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6">
-            <Link href="/biblioteca" className="inline-flex items-center gap-2 text-xs font-medium text-accent hover:text-accent/80 transition-colors">
-              Ver biblioteca completa →
-            </Link>
-          </div>
-        </motion.section>
-
-        {/* ═══ AFINIDAD SIMBÓLICA ═══ */}
-        <motion.section {...fadeUpDelayed(0.25)}>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-sm text-muted font-medium label-caps">Afinidad Simbólica</p>
-          </div>
-          <p className="text-sm text-muted mb-6 max-w-lg leading-relaxed">
-            Mirá qué entidades resuenan con tu patrón. Países, marcas, universidades y más.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/affinity"
-              className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent/90 transition-colors min-h-[44px]"
-            >
-              Ver tu mapa de afinidades
-            </Link>
-            <Link
-              href="/affinity/country"
-              className="inline-flex items-center justify-center gap-2 font-medium px-6 py-3 text-sm border border-ink/10 text-foreground hover:border-ink/20 transition-colors min-h-[44px]"
-            >
-              Compatibilidad
-            </Link>
-          </div>
-        </motion.section>
-
-      </main>
-
-    </div>
+      <section className="bg-background">
+        <div className={`${CONTAINER} py-16 sm:py-20`}>
+          <Closing
+            title="¿Qué resuena con tu signo?"
+            text="Países, marcas, universidades y personas del Atlas, ordenados según tu animal del zodíaco chino."
+            href="/affinity"
+            cta="Ver mis afinidades"
+          />
+        </div>
+      </section>
+    </main>
   );
 }

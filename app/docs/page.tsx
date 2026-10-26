@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { PageHero, Columns } from "@/components/knowledge/Kit";
 import { siteUrl, SITE_URL, createRouteMetadata } from "@/lib/seo";
-import { Code2, ArrowRight, ShieldCheck, Terminal, Asterisk, Cpu, Layers, Heart, Sun } from "lucide-react";
-import Card from "@/components/ui/Card";
+import { ArrowRight } from "lucide-react";
 
 export const metadata = createRouteMetadata({
   title: "API Pública & Documentación para Desarrolladores",
@@ -76,66 +76,49 @@ const ENDPOINTS = [
 
 export default function DocsPage() {
   return (
-    <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
-      <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-12">
-        {/* Header */}
-        <header className="text-center max-w-2xl mx-auto mb-16">
-          <div className="page-eyebrow mb-4">
-            <Code2 className="w-3.5 h-3.5" />
-            <span className="text-sm font-bold label-caps">
-              Desarrolladores & API v1
-            </span>
-          </div>
+    <main id="main-content" className="bg-background pt-12 sm:pt-16 pb-24 text-foreground">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "API" }]}
+          eyebrow="Desarrolladores · API v1"
+          title="La API pública de Molino"
+          lead="El mismo motor de cálculo de la app, para tus aplicaciones, bots o sitios. Gratis, con CORS abierto y sin registro."
+          aside={
+            <div className="border-2 border-ink">
+              <p className="px-5 py-3 border-b border-ink/15 text-sm text-muted">Una consulta de ejemplo</p>
+              <pre className="p-5 text-sm sm:text-base font-mono text-foreground overflow-x-auto leading-relaxed bg-paper-alt/60">
+                <code>{`curl "${SITE_URL}/api/v1/map?date=1990-03-15"
 
-          <h1 className="page-title text-foreground">
-            API Pública de Molino
-          </h1>
-
-          <p className="text-sm sm:text-base text-muted mt-3 leading-relaxed">
-            Integrá el motor de cálculo simbólico de Molino en tus propias aplicaciones, bots, widgets o sitios de terapeutas. <strong>Gratuita, con soporte CORS y sin registrarte.</strong>
-          </p>
-        </header>
-
-        {/* Quick Features Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
-          <Card padding="md" className="border-ink/10 bg-card/60">
-            <div className="flex items-center gap-2.5 font-mono text-xs font-bold text-accent mb-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>100% Sin Guardado</span>
+"map": {
+  "numerology": { "lifePath": 1 },
+  "astrology": { "sunSign": "Piscis" },
+  "chineseZodiac": { "animal": "Caballo" },
+  ...
+}`}</code>
+              </pre>
             </div>
-            <p className="text-xs text-muted leading-relaxed">
-              Las consultas son stateless. No persistimos fechas ni identificadores en servidores.
-            </p>
-          </Card>
+          }
+        />
 
-          <Card padding="md" className="border-ink/10 bg-card/60">
-            <div className="flex items-center gap-2.5 font-mono text-xs font-bold text-accent mb-2">
-              <Terminal className="w-4 h-4 text-blue-400" />
-              <span>CORS Habilitado (*)</span>
-            </div>
-            <p className="text-xs text-muted leading-relaxed">
-              Consumible directamente desde navegadores (`fetch`), scripts frontend o backends Node/Python.
-            </p>
-          </Card>
-
-          <Card padding="md" className="border-ink/10 bg-card/60">
-            <div className="flex items-center gap-2.5 font-mono text-xs font-bold text-accent mb-2">
-              <Cpu className="w-4 h-4 text-amber-400" />
-              <span>Determinismo Puro</span>
-            </div>
-            <p className="text-xs text-muted leading-relaxed">
-              Mismos parámetros siempre devuelven exactamente los mismos resultados numéricos y astrológicos.
-            </p>
-          </Card>
+        <div className="mb-16">
+          <Columns
+            cols={[
+              { title: "Sin guardado", body: "Las consultas no guardan estado: no persistimos fechas ni identificadores en servidores." },
+              { title: "CORS abierto", body: "Se consume directo desde el navegador con fetch, o desde backends en Node o Python." },
+              { title: "Determinista", body: "Los mismos parámetros devuelven siempre exactamente el mismo resultado." },
+            ]}
+          />
         </div>
 
+        <h2 className="section-title text-foreground mb-8">Endpoints</h2>
         {/* Endpoints List */}
         <div className="space-y-12 mb-16">
           {ENDPOINTS.map((ep) => (
             <div
               key={ep.path}
               id={ep.path.replace(/[/]/g, "-")}
-              className="p-6 sm:p-8 rounded-xl bg-card border border-ink/10 shadow-sm space-y-6"
+              className="p-6 sm:p-8 border-2 border-ink bg-background space-y-6 scroll-mt-24"
             >
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
                 <div className="flex items-center gap-3">
@@ -215,44 +198,11 @@ export default function DocsPage() {
           ))}
         </div>
 
-        {/* Embed & Engines crosslinks */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Link
-            href="/embed"
-            className="p-6 rounded-xl bg-accent/5 border border-accent/20 hover:border-accent/40 transition-all flex items-center justify-between group"
-          >
-            <div>
-              <span className="text-sm text-accent font-bold block mb-1 label-caps">
-                Widget Embebible
-              </span>
-              <h4 className="font-heading text-base font-bold text-foreground">
-                Incrustar calculadora en tu sitio web
-              </h4>
-              <p className="text-xs text-muted mt-1">
-                Código iframe de 1 línea listo para usar.
-              </p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-accent group-hover:translate-x-1 transition-transform" />
-          </Link>
-
-          <Link
-            href="/docs/motores"
-            className="p-6 rounded-xl bg-card border border-ink/10 hover:border-accent/40 transition-all flex items-center justify-between group"
-          >
-            <div>
-              <span className="text-sm text-muted font-bold block mb-1 label-caps">
-                Fórmulas & Algoritmos
-              </span>
-              <h4 className="font-heading text-base font-bold text-foreground">
-                Documentación de Motores Matemáticos
-              </h4>
-              <p className="text-xs text-muted mt-1">
-                Explicación de Swiss Ephemeris y Pitágoras.
-              </p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-muted group-hover:text-accent group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
+        <Link href="/docs/motores" className="group block border-t-2 border-ink pt-6">
+          <span className="block text-sm text-muted label-caps">Fórmulas y algoritmos</span>
+          <span className="mt-2 block font-display text-3xl text-foreground group-hover:underline underline-offset-[5px]">Cómo funcionan los motores de cálculo</span>
+          <span className="mt-2 block text-lg text-muted">Swiss Ephemeris, la reducción pitagórica y el ciclo sexagenario, paso a paso.</span>
+        </Link>
       </div>
     </main>
   );

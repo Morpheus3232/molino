@@ -8,6 +8,7 @@ import { decodePublicShareData, profileFromPublicShareData } from "@/lib/utils/p
 import CircleAlignment from "@/components/profile/CircleAlignment";
 import SharePublicButton from "@/components/profile/SharePublicButton";
 import Button from "@/components/ui/Button";
+import { PageHero, PrimaryLink } from "@/components/knowledge/Kit";
 import { hasStoredProfile } from "@/lib/session/localStorage";
 
 interface CirculoClientProps {
@@ -98,47 +99,33 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-          <h1 className="page-title text-foreground mb-4">
-            Tu círculo de energías
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">Para ver tu círculo, primero necesitás crear tu perfil personal.</p>
-          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
-            Crear mi perfil
-          </Button>
-        </main>
-      </div>
+      <main id="main-content" className="bg-background">
+        <PageHero
+          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Círculo" }]}
+          eyebrow="Mi mapa"
+          title="Tu círculo de energías"
+          lead="Los animales del zodíaco chino que te acompañan y los que te desafían. Para verlo, primero creá tu mapa."
+        >
+          <PrimaryLink href="/onboarding">Crear mi mapa</PrimaryLink>
+        </PageHero>
+      </main>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20">
-        <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Inicio
-          </Link>
-          <span>›</span>
-          <Link href="/profile" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Mi mapa
-          </Link>
-          <span>›</span>
-          <span className="text-foreground font-medium">Círculo</span>
-        </nav>
-        {/* Igual que /mundo: la página tenía solo h2 y ningún título principal. */}
-        <h1 className="page-title text-foreground mb-2">
-          Tu círculo
-        </h1>
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-12 sm:pt-16">
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Círculo" }]}
+          eyebrow="Mi mapa"
+          title="Tu círculo"
+          lead="Los animales del ciclo chino que te acompañan y los que te desafían."
+        >
+          <SharePublicButton profile={profile} path="/circulo" label="Compartir mi círculo" />
+        </PageHero>
       </div>
       <main id="main-content">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4 mb-4 flex justify-end">
-          <SharePublicButton
-            profile={profile}
-            path="/circulo"
-            label="Compartir mi círculo"
-          />
-        </div>
         <CircleAlignment profile={profile} />
       </main>
     </div>

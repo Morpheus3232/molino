@@ -11,10 +11,9 @@ import PremiumPreview from "@/components/premium/PremiumPreview";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { PREMIUM_FAQS } from "@/components/pricing/pricing-data";
-import { ShieldCheck, ArrowDown, Compass, Heart, Gift } from "lucide-react";
-import Button from "@/components/ui/Button";
+import { ShieldCheck, Compass, Heart, Gift } from "lucide-react";
 import Link from "next/link";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero } from "@/components/knowledge/Kit";
 
 export default function PremiumClient() {
   const router = useRouter();
@@ -35,63 +34,40 @@ export default function PremiumClient() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-12 sm:pt-16 pb-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Hero Section */}
-        <header className="mb-14 sm:mb-16 text-center max-w-3xl mx-auto">
-          <div className="page-eyebrow mb-3">
-            <span className="text-sm text-accent font-bold label-caps">
-              Molino Premium · Síntesis Profunda
-            </span>
-          </div>
-
-          {hook ? (
-            <>
-              <h1 className="page-title text-foreground">
-                {hook.question}
-              </h1>
-              <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
-                {hook.context}
-              </p>
-            </>
-          ) : (
-            <>
-              <h1 className="page-title text-foreground">
-                Explorá tu mapa completo <br className="hidden sm:inline" />
-                <span className="text-accent">sin determinismo</span>
-              </h1>
-              <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
-                Tu mapa básico es gratuito siempre. Premium conecta numerología, astrología y zodíaco chino en una síntesis única: descubrí arquetipos, ciclos de vida y dinámicas entre tus energías. Una herramienta de reflexión honesta, no un oráculo.
-              </p>
-            </>
-          )}
-
-          <SectionCover imageKey="paginas/premium" priority className="mt-10 max-w-2xl mx-auto text-left" />
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button
-              variant="accent"
-              size="lg"
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "Premium" }]}
+          eyebrow="Molino Premium · la síntesis"
+          title={hook ? hook.question : "Tu mapa completo, sin determinismo"}
+          titleClassName={hook ? "text-[clamp(2.5rem,5.5vw,4.5rem)]" : undefined}
+          lead={
+            hook
+              ? hook.context
+              : "Tu mapa básico es gratis siempre. Premium conecta numerología, astrología y zodíaco chino en una sola lectura: arquetipos, ciclos y cómo dialogan tus energías. Reflexión honesta, no un oráculo."
+          }
+          imageKey="paginas/premium"
+        >
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <button
+              type="button"
               onClick={scrollToCheckout}
-              className="flex items-center gap-2 px-8 py-4 text-base font-bold shadow-xl"
+              className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps min-h-[48px]"
             >
               Desbloquear por $8 USD
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => {
-                const el = document.getElementById("preview-section");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="flex items-center gap-2 text-xs font-mono text-muted hover:text-foreground"
+            </button>
+            <button
+              type="button"
+              onClick={() => document.getElementById("preview-section")?.scrollIntoView({ behavior: "smooth" })}
+              className="text-lg underline underline-offset-4 hover:no-underline"
             >
-              <ArrowDown className="w-4 h-4" />
               Ver qué incluye
-            </Button>
+            </button>
           </div>
-        </header>
+          <p className="mt-4 text-base text-muted">Pago único. Sin suscripción.</p>
+        </PageHero>
 
         {/* 1. Live Interactive Preview */}
         <div id="preview-section">

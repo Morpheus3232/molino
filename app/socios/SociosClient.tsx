@@ -8,9 +8,9 @@ import PartnershipComparison from "@/components/couple/PartnershipComparison";
 import WorkProfilePanel from "@/components/couple/WorkProfilePanel";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
-import { Handshake, ShieldCheck, User, UserPlus, Users } from "lucide-react";
+import { ShieldCheck, User, UserPlus, Users } from "lucide-react";
 import TeamComparison from "@/components/couple/TeamComparison";
-import SectionCover from "@/components/ui/SectionCover";
+import { PageHero } from "@/components/knowledge/Kit";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -149,50 +149,38 @@ export default function SociosClient({ params }: { params: UrlParams }) {
   };
 
   return (
-    <main id="main-content" className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
+    <main id="main-content" className="min-h-screen bg-background pt-12 sm:pt-16 pb-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <header className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
-          <div className="page-eyebrow mb-3">
-            <Handshake className="w-3.5 h-3.5 text-accent" />
-            <span className="text-sm text-accent font-bold label-caps">
-              Modo Socios · Afinidad de Trabajo
-            </span>
+        <PageHero
+          bare
+          crumbs={[{ href: "/", label: "Inicio" }, { label: "Modo Socios" }]}
+          eyebrow="Modo Socios · afinidad de trabajo"
+          title="Comparativa de sociedad"
+          lead="Para socios, jefe y empleado o un equipo: de dos a cinco fechas de nacimiento, cruzadas de a pares. O una sola, para ver el perfil de trabajo de esa persona."
+          imageKey="paginas/socios"
+        >
+          <div className="inline-flex border-2 border-ink" role="group" aria-label="Modo">
+            {(
+              [
+                ["compare", "Comparar equipo", Users],
+                ["solo", "Analizar una fecha", User],
+              ] as const
+            ).map(([m, label, Icon]) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMode(m)}
+                aria-pressed={mode === m}
+                className={`inline-flex items-center gap-2 px-5 py-3 text-base transition-colors ${
+                  mode === m ? "bg-ink text-paper" : "bg-background text-foreground hover:bg-paper-alt"
+                }`}
+              >
+                <Icon className="w-4 h-4" aria-hidden="true" />
+                {label}
+              </button>
+            ))}
           </div>
-
-          <h1 className="page-title text-foreground">
-            Comparativa de Sociedad
-          </h1>
-          <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
-            Para socios, empleador y empleado, o un equipo armando un proyecto juntos: ingresá de dos a
-            cinco fechas de nacimiento y vean cómo se complementan, de a pares, sus caminos de vida,
-            signos solares, zodíaco chino y química elemental trabajando en equipo. También podés analizar una sola
-            fecha para ver el perfil de trabajo de esa persona.
-          </p>
-          <SectionCover imageKey="paginas/socios" priority className="mt-8 max-w-3xl" />
-
-          <div className="inline-flex items-center gap-1 mt-6 p-1 rounded-xl bg-ink/5 border border-ink/10">
-            <button
-              type="button"
-              onClick={() => setMode("compare")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors label-caps ${
-                mode === "compare" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
-              }`}
-            >
-              <Users className="w-3.5 h-3.5" />
-              Comparar equipo
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("solo")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors label-caps ${
-                mode === "solo" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
-              }`}
-            >
-              <User className="w-3.5 h-3.5" />
-              Analizar una
-            </button>
-          </div>
-        </header>
+        </PageHero>
 
         {mode === "solo" ? (
           <AnimatePresence mode="wait">
