@@ -1,4 +1,5 @@
 import HeroInstrument from "@/components/sections/HeroInstrument";
+import HomeOpening from "@/components/sections/HomeOpening";
 import HomeBook from "@/components/sections/HomeBook";
 import HomeAlmanac from "@/components/sections/HomeAlmanac";
 import HomeGallery from "@/components/sections/HomeGallery";
@@ -52,11 +53,15 @@ export const metadata = createRouteMetadata({
 export default function HomePage() {
   return (
     <>
-      <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden">
+      <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden pt-16">
+        {/* Apertura: Quijote y Sancho galopando entre molinos. Se lleva la
+            ilustración que antes iba chica al lado de la fecha. */}
+        <HomeOpening />
+
         {/* Hoy — los datos de /hoy contados como un capítulo de libro (la vista
             de detalle sigue en /hoy). Sin mapa es la energía universal del
             día; con mapa suma Año/Mes/Día Personal. */}
-        <section aria-labelledby="hoy-home" className="mx-auto max-w-5xl px-4 sm:px-8 pt-24 sm:pt-28 pb-16 sm:pb-24">
+        <section aria-labelledby="hoy-home" className="mx-auto max-w-5xl px-4 sm:px-8 pt-16 sm:pt-24 pb-16 sm:pb-24 scroll-mt-16">
           <HomeAlmanac />
           {/* Reserva la altura del capítulo mientras carga (se dibuja en el
               cliente: depende de la fecha local). Sin esto el formulario de

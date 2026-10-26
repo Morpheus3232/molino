@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 
 /**
- * Cabecera de la portada: la fecha de hoy como título de una hoja de
- * almanaque, al lado de la ilustración del Quijote y Sancho entre molinos
- * (línea de diseño del sitio: silueta negra, un solo rojo). La fecha se
+ * Cabecera del día en la portada: la fecha de hoy como título de una hoja
+ * de almanaque. La ilustración del Quijote y Sancho entre molinos ya no va
+ * acá: es la apertura animada de arriba (HomeOpening). La fecha se
  * calcula en el cliente porque "hoy" depende de la zona horaria de quien
  * mira; el servidor no la conoce.
  */
@@ -30,11 +29,11 @@ export default function HomeAlmanac() {
         {today && <span>{today.getFullYear()}</span>}
       </p>
 
-      <div className="mt-5 flex flex-col-reverse md:flex-row md:items-end gap-6 md:gap-10">
+      <div className="mt-5">
         <div className="flex-1 min-w-0">
           <h2
             id="hoy-home"
-            className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,6vw,4.5rem)] min-h-[1.9em]"
+            className="scroll-mt-28 font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,6vw,4.5rem)] min-h-[1.9em]"
           >
             {today ? (
               <>
@@ -56,15 +55,6 @@ export default function HomeAlmanac() {
           </p>
         </div>
 
-        <Image
-          src="/home/quijote-sancho.jpg"
-          alt="Don Quijote y Sancho Panza cabalgan sobre una loma entre molinos de viento."
-          width={2000}
-          height={986}
-          priority
-          sizes="(min-width: 768px) 460px, 100vw"
-          className="w-full md:w-[460px] h-auto shrink-0"
-        />
       </div>
     </header>
   );

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import SectionCover from "@/components/ui/SectionCover";
+import HomePlate from "@/components/sections/HomePlate";
 import { moonImageKey } from "@/lib/data/section-images";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
@@ -86,7 +86,7 @@ export default function HomeBook() {
 
       <section aria-labelledby="cap-numero">
         <Chapter numeral="I" title="El número del día" id="cap-numero" />
-        <SectionCover imageKey={`numerologia/${dayContent.number}`} className="mb-8" />
+        <HomePlate imageKey={`numerologia/${dayContent.number}`} numeral="I" className="mb-8" />
         <p className="sm:text-justify hyphens-auto first-letter:float-left first-letter:font-display first-letter:text-[3.6em] first-letter:leading-[0.78] first-letter:mr-2 first-letter:mt-1">
           Hoy es día {dayContent.number}, el de <em>{dayContent.title.toLowerCase().replace(/^\w|^./, (c) => c.toUpperCase())}</em>.{" "}
           {dayContent.description}
@@ -103,7 +103,7 @@ export default function HomeBook() {
 
       <section aria-labelledby="cap-trae">
         <Chapter numeral="II" title="Lo que trae" id="cap-trae" />
-        {moonKey && <SectionCover imageKey={moonKey} className="mb-8" />}
+        {moonKey && <HomePlate imageKey={moonKey} numeral="II" className="mb-8" />}
         <p className="sm:text-justify hyphens-auto">
           <em>{daily.theme}.</em> {daily.description}
         </p>

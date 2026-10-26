@@ -320,6 +320,21 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   `Sparkles`/✨ (donde un ícono es estructural, `Asterisk`). Emoji en Noto
   Emoji monocromo; no usar el selector U+FE0F. Sin gradientes de texto ni
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
+- Portada, apertura (2026-10-26): `HomeOpening` es un travelling de cine —
+  Quijote y Sancho galopando hacia la izquierda entre molinos, con bandas de
+  cinemascope y el epígrafe de Cervantes (I, VIII). Las capas salen de la
+  ilustración licenciada con `python3 scripts/build-home-scene.py` (WebP en
+  `public/home/escena/`): jinetes recortados del original, franjas
+  repetibles de sierra/lomas/suelo con su rojo, negro, grano y flores, y la
+  torre del molino; las aspas son SVG para que giren. Loops en CSS
+  (`HomeOpening.module.css`), parallax de scroll con framer, pausa fuera de
+  pantalla, quieta con "reducir movimiento". Si se regeneran las capas,
+  copiar las medidas de `escena.json` al componente. Las láminas de los
+  capítulos (`HomePlate`) son cinemascope 2,35:1 en escritorio con la misma
+  altura que la 16:9 en columna (no tocar la altura reservada), y el índice
+  (`HomeGallery`) es un mosaico de láminas que se tiñen de bermellón al
+  pasar el mouse. Las entradas animadas usan `useReveal`, que nunca deja
+  contenido oculto si el observador falla.
 - Portada: el día se cuenta como un capítulo de libro (`HomeBook`:
   epígrafe, capítulos I–III con número romano, capitular, índices con
   puntos guía, ⁂), no como tablero; el tablero de detalle sigue en `/hoy`.
