@@ -93,7 +93,7 @@ test.describe("Diario — la hoja con formato", () => {
     await expect(sheet).not.toContainText("**");
   });
 
-  test("6. cita y lista desde la barra y desde el teclado", async ({ page }) => {
+  test("6. cita y lista escribiendo > y -", async ({ page }) => {
     const sheet = await openSheet(page);
     await page.keyboard.type("> lo que me dijo");
     await expect(sheet.locator("blockquote")).toHaveText("lo que me dijo");
@@ -105,25 +105,23 @@ test.describe("Diario — la hoja con formato", () => {
     await expect(sheet.locator("ul li")).toHaveCount(2);
   });
 
-  test("7. quitar formato y deshacer", async ({ page }) => {
+  test("7. cada botón se apaga tocándolo de nuevo, y ⌘Z deshace", async ({ page }) => {
     const sheet = await openSheet(page);
     await page.keyboard.type("palabra suelta");
     await selectWord(page, sheet, "palabra");
-    await bubble(page).getByRole("button", { name: "Negrita" }).click();
     await bubble(page).getByRole("button", { name: "Resaltar" }).click();
-    await expect(sheet.locator("strong")).toHaveCount(1);
-    await bubble(page).getByRole("button", { name: "Quitar formato" }).click();
-    await expect(sheet.locator("strong, mark")).toHaveCount(0);
+    await expect(sheet.locator("mark")).toHaveCount(1);
+    await bubble(page).getByRole("button", { name: "Resaltar" }).click();
+    await expect(sheet.locator("mark")).toHaveCount(0);
     await page.keyboard.press(`${MOD}+z`);
     await expect(sheet.locator("mark")).toHaveCount(1);
   });
 
-  test("8. la barra fija de arriba también funciona", async ({ page }) => {
-    const sheet = await openSheet(page);
-    await page.keyboard.type("algo para subrayar");
-    await selectWord(page, sheet, "subrayar");
-    await page.getByRole("toolbar", { name: "Formato", exact: true }).getByRole("button", { name: "Cursiva" }).click();
-    await expect(sheet.locator("em")).toHaveText("subrayar");
+  test("8. la hoja vacía muestra la pregunta del día, sin carteles de ayuda", async ({ page }) => {
+    await openSheet(page);
+    await expect(page.locator(".ProseMirror p.is-editor-empty").first()).toHaveAttribute("data-placeholder", /\?$/);
+    await expect(page.getByText(/Seleccioná una parte del texto/)).toHaveCount(0);
+    await expect(page.getByRole("toolbar", { name: "Formato", exact: true })).toHaveCount(0);
   });
 
   test("9. guarda con formato (⌘↵) y la página lo muestra; la hoja queda limpia", async ({ page }) => {
@@ -138,18 +136,14 @@ test.describe("Diario — la hoja con formato", () => {
     await expect(saved).not.toContainText("**");
   });
 
-  test("10. el borrador vuelve con su formato y la sugerencia se agrega", async ({ page }) => {
-    const sheet = await openSheet(page);
+  test("10. el borrador vuelve con su formato", async ({ page }) => {
+    await openSheet(page);
     await page.keyboard.type("Borrador con **negrita** ");
     await page.waitForTimeout(1000);
     await page.reload();
     const again = page.getByRole("textbox", { name: "Lo que querés escribir hoy" });
     await expect(again.locator("strong")).toHaveText("negrita");
-    await expect(page.getByText("Recuperamos tu borrador de hoy")).toBeVisible();
-    await again.click();
-    await page.getByTitle("Agregarla a la hoja").click();
-    await expect(again.locator("p em").last()).toHaveText(/\?$/);
-    void sheet;
+    await expect(page.getByText("Borrador recuperado")).toBeVisible();
   });
 
   test("11. corregir una página la abre con su formato", async ({ page }) => {

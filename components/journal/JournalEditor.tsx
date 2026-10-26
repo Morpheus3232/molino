@@ -14,7 +14,7 @@ import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEng
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Check, RefreshCw, Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import DiaryEditor, { type DiaryEditorHandle } from "@/components/journal/DiaryEditor";
 import { plainText } from "@/lib/journal/markdown";
 
@@ -63,13 +63,8 @@ export default function JournalEditor({
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [draftNote, setDraftNote] = useState<string | null>(null);
-  const [isMac, setIsMac] = useState(false);
   const sheet = useRef<DiaryEditorHandle>(null);
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    setIsMac(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent));
-  }, []);
 
   // Borrador: lo que escribís se guarda solo mientras escribís, y vuelve si
   // cerrás la pestaña sin guardar. No aplica al corregir una página vieja.
@@ -92,7 +87,7 @@ export default function JournalEditor({
           setTags(d.tags);
           setShowTags(true);
         }
-        setDraftNote("Recuperamos tu borrador de hoy");
+        setDraftNote("Borrador recuperado");
       }
     } catch {
       /* sin almacenamiento: se escribe igual */
@@ -106,7 +101,7 @@ export default function JournalEditor({
       try {
         if (content.trim()) {
           localStorage.setItem(DRAFT_KEY, JSON.stringify({ date, content, mood, tags }));
-          setDraftNote((n) => (n === "Recuperamos tu borrador de hoy" ? n : "Borrador guardado"));
+          
         } else localStorage.removeItem(DRAFT_KEY);
       } catch {
         /* nada */
@@ -121,7 +116,7 @@ export default function JournalEditor({
     () => Math.floor(new Date().getDate() % DAILY_PROMPTS.length),
     []
   );
-  const [promptSeed, setPromptSeed] = useState(initialSeed);
+  const promptSeed = initialSeed;
 
   const currentPrompt = useMemo(
     () => contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length],
@@ -131,14 +126,7 @@ export default function JournalEditor({
   const plain = useMemo(() => plainText(content), [content]);
   const wordCount = plain.trim() ? plain.trim().split(/\s+/).length : 0;
 
-  const usePrompt = useCallback(() => {
-    if (!currentPrompt) return;
-    sheet.current?.insertPrompt(currentPrompt);
-  }, [currentPrompt]);
 
-  const nextPrompt = useCallback(() => {
-    setPromptSeed((s) => s + 1);
-  }, []);
 
   const cycleContext = useMemo<JournalCycleContext>(() => {
     const [y, m, d] = date.split("-").map(Number);
@@ -315,62 +303,27 @@ export default function JournalEditor({
           </p>
         </fieldset>
 
-        {/* 2. La hoja: se escribe con el formato a la vista */}
+        {/* 2. La hoja: la pregunta del día espera adentro, como sugerencia */}
         <div>
-          <div className="flex items-end justify-between gap-4 border-b-2 border-ink pb-2">
-            <span className="text-lg text-foreground">La página</span>
-            <span className="text-sm text-muted tabular-nums" aria-live="polite">
-              {wordCount} {wordCount === 1 ? "palabra" : "palabras"}
-              {wordCount > 0 && ` · ${Math.max(1, Math.round(wordCount / 200))} min de lectura`}
-            </span>
-          </div>
-
-          <div className="max-w-[46rem]">
+          <div className="border-t-2 border-ink max-w-[46rem]">
             <DiaryEditor
               ref={sheet}
               id="journal-content"
               ariaLabel="Lo que querés escribir hoy"
               initialMarkdown={editingEntry?.content ?? ""}
-              placeholder="Empezá por cualquier cosa: lo que pasó, lo que sentiste, lo que no querés olvidar."
-              isMac={isMac}
+              placeholder={editingEntry ? "" : currentPrompt}
               onChange={(md) => {
                 setContent(md);
-                if (draftNote === "Recuperamos tu borrador de hoy") setDraftNote(null);
+                setDraftNote(null);
               }}
               onSubmit={() => formRef.current?.requestSubmit()}
             />
           </div>
-
-          <div className="mt-4 max-w-[46rem] flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-            {!editingEntry && (
-              <div className="flex min-w-0 flex-1 items-start gap-2 text-base text-muted">
-                <span className="shrink-0 pt-1.5 text-sm label-caps">Si no sabés por dónde</span>
-                <button
-                  type="button"
-                  onClick={usePrompt}
-                  className="min-w-0 text-left text-foreground/85 hover:text-foreground py-1.5 -my-1.5 underline decoration-ink/20 underline-offset-4 hover:decoration-ink"
-                  title="Agregarla a la hoja"
-                >
-                  <span className="italic">{currentPrompt}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={nextPrompt}
-                  className="p-2 -m-1 text-muted hover:text-foreground transition-colors shrink-0"
-                  aria-label="Ver otra sugerencia"
-                  title="Otra pregunta"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-          </div>
-          <p className="mt-3 max-w-[46rem] text-sm text-muted">
-            Seleccioná una parte del texto y elegí negrita, cursiva, resaltado, cita o lista. También podés escribir{" "}
-            <span className="whitespace-nowrap">**así**</span>, <span className="whitespace-nowrap">*así*</span> o{" "}
-            <span className="whitespace-nowrap">==así==</span> y se aplica solo.
-            <span className="hidden sm:inline"> {isMac ? "⌘" : "Ctrl+"}↵ guarda.</span>
-            {draftNote && <span className="block mt-1 text-foreground/70">{draftNote}.</span>}
+          <p className="mt-2 max-w-[46rem] flex justify-between gap-4 text-sm text-muted" aria-live="polite">
+            <span>{draftNote}</span>
+            <span className="tabular-nums">
+              {wordCount > 0 && `${wordCount} ${wordCount === 1 ? "palabra" : "palabras"}`}
+            </span>
           </p>
         </div>
 
