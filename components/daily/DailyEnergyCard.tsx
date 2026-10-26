@@ -1,14 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { StreakBadge } from "@/lib/hooks/useStreak";
-import { Flame, Share2, ShieldCheck, ArrowRight } from "lucide-react";
-import { getCalendarDayContent, getDateNumberBreakdown, formatDateNumberBreakdown } from "@/lib/numerology/calendar";
-import { toLocalDateKey } from "@/lib/session/dailyHistory";
-import Link from "next/link";
 
 interface DailyEnergyCardProps {
   profile: UserProfile | null;
@@ -18,204 +12,43 @@ interface DailyEnergyCardProps {
   className?: string;
 }
 
-export default function DailyEnergyCard({
-  profile,
-  daily,
-  streakDays = 1,
-  streakBadge,
-  className = "",
-}: DailyEnergyCardProps) {
-  const todayKey = useMemo(() => toLocalDateKey(new Date()), []);
-  const todayNumber = useMemo(() => getCalendarDayContent(todayKey), [todayKey]);
-  const breakdown = useMemo(() => getDateNumberBreakdown(todayKey), [todayKey]);
-
-  const formattedToday = new Date().toLocaleDateString("es-AR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
+/**
+ * La energía del día: el tema en grande, qué significa y los datos que la
+ * arman (luna, año personal, elemento) en una grilla con filetes. El número
+ * del día y su cuenta viven en la portada de /hoy.
+ */
+export default function DailyEnergyCard({ profile, daily, streakDays = 1, className = "" }: DailyEnergyCardProps) {
+  const cells: { k: string; v: string; note?: string }[] = [
+    { k: "Fase lunar", v: daily.moonPhase?.phase ?? "—", note: daily.moonPhase?.description },
+    ...(daily.isPersonalized
+      ? [{ k: "Ciclo en curso", v: `Año Personal ${daily.personalYear}` }]
+      : [{ k: "Fortaleza del día", v: daily.strengths?.[0] || "Claridad" }]),
+    ...(profile
+      ? [
+          { k: "Tu elemento", v: `${profile.element || "Fuego"} en sintonía` },
+          { k: "Tu arquetipo", v: profile.archetype },
+        ]
+      : []),
+  ];
 
   return (
-    <div
-      className={`rounded-xl border border-accent/20 bg-card shadow-sm overflow-hidden ${className}`}
-    >
-      {/* ── 1. Top Bar: Fecha + Racha Amigable ─────────────────── */}
-      <div className="px-6 sm:px-8 py-4 border-b border-border/70 flex flex-wrap items-center justify-between gap-3 bg-background/50">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <span className="text-sm text-muted capitalize label-caps">
-            {formattedToday}
-          </span>
-        </div>
+    <div className={className}>
+      <h2 className="section-title text-foreground">Energía de {daily.theme}</h2>
+      <p className="mt-4 text-xl text-foreground/85 leading-relaxed max-w-2xl">{daily.description}</p>
 
-        <div className="page-eyebrow text-foreground font-mono text-xs">
-          <span>{streakBadge?.emoji || "🌱"}</span>
-          <span className="font-bold text-accent">
-            Día {streakDays} conociéndote
-          </span>
-          <span className="text-muted hidden sm:inline">· qué bueno tenerte por acá</span>
-        </div>
-      </div>
-
-      {/* ── 2. HERO PRINCIPAL: Hoy es día X (Numerología del día) ── */}
-      <div className="p-6 sm:p-10 border-b border-border/70 bg-gradient-to-br from-card via-card to-background">
-        <div className="flex flex-col md:flex-row md:items-start gap-6 sm:gap-8">
-          {/* Número Gigante */}
-          <div className="shrink-0 flex md:flex-col items-center md:items-start gap-4 md:gap-1">
-            <div className="text-left">
-              <span className="text-sm text-muted font-bold block label-caps">
-                Hoy es día
-              </span>
-              <span className="font-display text-6xl sm:text-7xl lg:text-8xl font-black text-accent leading-none block mt-1 tracking-tight">
-                {todayNumber.number}
-              </span>
-            </div>
-
-            {/* Fórmula de reducción */}
-            <div className="md:mt-2 pl-4 md:pl-0 border-l md:border-l-0 border-border/80">
-              <p className="font-mono text-xs text-muted/90 bg-background/80 px-2.5 py-1 rounded-md border border-border/60 inline-block">
-                {formatDateNumberBreakdown(breakdown)}
-                {breakdown.isMaster && <span className="ml-1.5 text-accent font-bold">· maestro</span>}
-                {breakdown.isAbundance && <span className="ml-1.5 text-accent font-bold">· abundancia</span>}
-              </p>
-            </div>
+      <dl className={`mt-10 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15`}>
+        {cells.map((c) => (
+          <div key={c.k} className="bg-background p-6">
+            <dt className="text-sm text-muted">{c.k}</dt>
+            <dd className="mt-1 font-display text-2xl text-foreground leading-tight">{c.v}</dd>
+            {c.note && <dd className="mt-2 text-base text-muted leading-snug">{c.note}</dd>}
           </div>
+        ))}
+      </dl>
 
-          {/* Arquetipo del día & Explicación */}
-          <div className="min-w-0 flex-1 space-y-3 pt-1">
-            <div className="inline-flex items-center gap-2">
-              <span className="text-sm text-accent font-bold px-2 py-0.5 rounded bg-accent/10 label-caps">
-                Arquetipo del día
-              </span>
-            </div>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-              {todayNumber.title}
-            </h2>
-            <p className="text-sm sm:text-base text-foreground/80 leading-relaxed font-normal">
-              {todayNumber.description}
-            </p>
-
-            {/* Recomendaciones / Acciones sugeridas */}
-            {todayNumber.recommendations && todayNumber.recommendations.length > 0 && (
-              <div className="pt-2 flex flex-wrap gap-2">
-                {todayNumber.recommendations.map((rec) => (
-                  <span
-                    key={rec}
-                    className="text-xs text-foreground/90 font-mono px-3 py-1 rounded-lg bg-accent/5 border border-accent/20 inline-flex items-center gap-1.5"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                    {rec}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Link al calendario completo */}
-        <div className="mt-6 pt-4 border-t border-border/40 flex justify-end">
-          <Link
-            href="/calendario"
-            className="inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-accent transition-colors py-1.5 -my-1.5"
-          >
-            <span>Ver calendario numerológico</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </div>
-
-      {/* ── 3. SECCIÓN: Energía del día & Pilares ── */}
-      <div className="p-6 sm:p-8 bg-background/50 space-y-6">
-        {/* Banner de Energía & Año Personal */}
-        <div className="p-6 rounded-xl bg-card border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1.5 max-w-2xl">
-            <div className="flex items-center gap-2">
-              <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-                Energía de {daily.theme}
-              </h3>
-            </div>
-            <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal">
-              {daily.description}
-            </p>
-          </div>
-
-          {daily.isPersonalized && (
-            <div className="shrink-0 p-3.5 rounded-xl bg-background/80 border border-border/70 text-right sm:text-left self-start sm:self-center">
-              <span className="text-sm text-muted font-semibold block label-caps">
-                Ciclo en curso
-              </span>
-              <span className="font-heading text-sm font-bold text-accent">
-                Año Personal {daily.personalYear}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* ── 4. Pilares: Fase Lunar, Elemento y Arquetipo Personal ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          {/* Fase Lunar */}
-          <div className="p-3.5 rounded-xl bg-card border border-border/70 flex items-center gap-3">
-            <span className="text-xl">{daily.moonPhase?.emoji || "🌙"}</span>
-            <div className="min-w-0">
-              <span className="text-sm text-muted font-semibold block label-caps">
-                Fase Lunar
-              </span>
-              <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
-                {daily.moonPhase?.phase}
-              </span>
-            </div>
-          </div>
-
-          {profile ? (
-            <>
-              {/* Elemento */}
-              <div className="p-3.5 rounded-xl bg-card border border-border/70 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 shrink-0">
-                  <Flame className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <span className="text-sm text-muted font-semibold block label-caps">
-                    Elemento
-                  </span>
-                  <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
-                    {profile.element || "Fuego"} en sintonía
-                  </span>
-                </div>
-              </div>
-
-              {/* Tu Arquetipo */}
-              <div className="p-3.5 rounded-xl bg-card border border-border/70 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
-                  <Share2 className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <span className="text-sm text-muted font-semibold block label-caps">
-                    Tu Arquetipo
-                  </span>
-                  <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
-                    {profile.archetype}
-                  </span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="sm:col-span-2 p-3.5 rounded-xl bg-card border border-border/70 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <span className="text-sm text-muted font-semibold block label-caps">
-                  Fortaleza del día
-                </span>
-                <span className="font-heading font-semibold text-foreground truncate block text-xs sm:text-sm">
-                  {daily.strengths?.[0] || "Claridad"}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <p className="mt-6 text-base text-muted">
+        Día {streakDays} conociéndote.
+      </p>
     </div>
   );
 }
-

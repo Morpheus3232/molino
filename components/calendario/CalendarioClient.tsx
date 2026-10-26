@@ -1,12 +1,11 @@
 "use client";
 /* eslint-disable react-hooks/preserve-manual-memoization */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Zap, Target, } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCalendarDayContent } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
-import { fadeUp } from "@/lib/utils/motion";
 
 const DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const MONTH_NAMES = [
@@ -18,26 +17,22 @@ function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-// Mapeo de colores por número
-const numberColors: Record<number, { bg: string; text: string; border: string }> = {
-  1: { bg: "from-red-500/10", text: "text-red-500", border: "border-red-500/30" },
-  2: { bg: "from-orange-500/10", text: "text-orange-500", border: "border-orange-500/30" },
-  3: { bg: "from-yellow-500/10", text: "text-yellow-500", border: "border-yellow-500/30" },
-  4: { bg: "from-green-500/10", text: "text-green-500", border: "border-green-500/30" },
-  5: { bg: "from-cyan-500/10", text: "text-cyan-500", border: "border-cyan-500/30" },
-  6: { bg: "from-blue-500/10", text: "text-blue-500", border: "border-blue-500/30" },
-  7: { bg: "from-indigo-500/10", text: "text-indigo-500", border: "border-indigo-500/30" },
-  8: { bg: "from-purple-500/10", text: "text-purple-500", border: "border-purple-500/30" },
-  9: { bg: "from-pink-500/10", text: "text-pink-500", border: "border-pink-500/30" },
-};
-
 export default function CalendarioClient() {
-  const today = useMemo(() => new Date(), []);
-  const [viewDate, setViewDate] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
-  const [selected, setSelected] = useState<Date | null>(today);
+  // La fecha de hoy recién en el navegador: la página se genera estática y,
+  // con new Date() en el render, el HTML quedaba con el día del build (y la
+  // hidratación fallaba al día siguiente).
+  const [today, setToday] = useState<Date | null>(null);
+  const [viewDate, setViewDate] = useState<Date | null>(null);
+  const [selected, setSelected] = useState<Date | null>(null);
+  useEffect(() => {
+    const now = new Date();
+    setToday(now);
+    setViewDate(new Date(now.getFullYear(), now.getMonth(), 1));
+    setSelected(now);
+  }, []);
 
-  const year = viewDate.getFullYear();
-  const month = viewDate.getMonth();
+  const year = viewDate?.getFullYear() ?? 2026;
+  const month = viewDate?.getMonth() ?? 0;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstWeekday = new Date(year, month, 1).getDay();
 
@@ -69,221 +64,190 @@ export default function CalendarioClient() {
     return { numbers, masters };
   }, [daysInMonth, year, month]);
 
-  return (
-    <div>
-      {/* Encabezado del calendario */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-        <div>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground capitalize mb-2">
-            {MONTH_NAMES[month]} {year}
-          </h2>
-          <p className="text-sm text-muted">
-            {/* Antes decía "… de hoy" con el día elegido, aunque se mirara otro mes. */}
-            {daysInMonth} días · {monthStats.masters.length}{" "}
-            {monthStats.masters.length === 1 ? "día especial" : "días especiales"} (maestros y 28)
-          </p>
-        </div>
+  const special = (c: { master: boolean; abundance: boolean }) => c.master || c.abundance;
 
-        {/* Controles de navegación */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => goToMonth(-1)}
-            aria-label="Mes anterior"
-            className="w-10 h-10 flex items-center justify-center border border-border rounded-lg text-muted hover:text-foreground hover:border-accent/50 hover:bg-accent/5 transition-all"
-          >
-            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => goToMonth(1)}
-            aria-label="Mes siguiente"
-            className="w-10 h-10 flex items-center justify-center border border-border rounded-lg text-muted hover:text-foreground hover:border-accent/50 hover:bg-accent/5 transition-all"
-          >
-            <ChevronRight className="w-5 h-5" aria-hidden="true" />
-          </button>
-        </div>
+  if (!today || !viewDate) {
+    return (
+      <div className="min-h-[52rem] animate-pulse" aria-hidden="true">
+        <div className="h-20 bg-ink/5 w-1/2" />
+        <div className="mt-8 h-[36rem] bg-ink/5 lg:w-2/3" />
       </div>
+    );
+  }
 
-      {/* Estadísticas del mes */}
-      {monthStats.masters.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 p-4 rounded-lg bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20"
-        >
-          <div className="flex items-start gap-2">
-            <div>
-              <p className="font-heading text-sm font-bold text-foreground mb-1">
-                Días especiales este mes
-              </p>
-              <p className="text-xs text-muted mb-2">
-                Números maestros (11, 22, 33) y el 28, número de la abundancia
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {monthStats.masters.map((day) => {
-                  const date = new Date(year, month, day);
-                  const content = getCalendarDayContent(toLocalDateKey(date));
-                  return (
-                    <button
-                      key={day}
-                      type="button"
-                      onClick={() => setSelected(date)}
-                      className="text-xs font-mono font-bold px-2.5 py-1 bg-accent text-accent-foreground rounded border border-accent/50 hover:bg-accent/90 transition-colors"
-                    >
-                      {day} ({content.number})
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-12 items-start">
+      <div className="lg:col-span-8">
+        {/* Encabezado del mes */}
+        <div className="flex items-end justify-between gap-4 pb-6 border-b-2 border-ink">
+          <div>
+            <h2 className="font-display font-normal text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight text-foreground">
+              {MONTH_NAMES[month]} {year}
+            </h2>
+            <p className="mt-2 text-base text-muted">
+              {daysInMonth} días · {monthStats.masters.length}{" "}
+              {monthStats.masters.length === 1 ? "día especial" : "días especiales"} (maestros y 28)
+            </p>
           </div>
-        </motion.div>
-      )}
+          <div className="flex items-center gap-px bg-ink/15 border border-ink/15 shrink-0">
+            <button
+              type="button"
+              onClick={() => goToMonth(-1)}
+              aria-label="Mes anterior"
+              className="w-12 h-12 flex items-center justify-center bg-background text-foreground hover:bg-ink hover:text-paper transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => goToMonth(1)}
+              aria-label="Mes siguiente"
+              className="w-12 h-12 flex items-center justify-center bg-background text-foreground hover:bg-ink hover:text-paper transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
 
-      {/* Grid del calendario */}
-      <div className="mb-12 p-6 rounded-xl border border-border bg-card">
-        {/* Header de días */}
-        <div className="grid grid-cols-7 mb-1">
+        {/* La grilla del mes */}
+        <div className="mt-6 grid grid-cols-7">
           {DAY_NAMES.map((d) => (
-            <div key={d} className="py-3 text-center text-sm text-muted font-semibold label-caps">
+            <div key={d} className="pb-3 text-center text-sm text-muted">
               {d}
             </div>
           ))}
         </div>
-
-        {/* Grid de días */}
-        <div className="grid grid-cols-7 gap-px bg-border rounded-lg p-px overflow-hidden">
+        <div className="grid grid-cols-7 gap-px bg-ink/15 border border-ink/15">
           {cells.map((day, i) => {
-            if (day === null) return <div key={`empty-${i}`} className="h-20 sm:h-24 bg-card" />;
+            if (day === null) return <div key={`empty-${i}`} className="aspect-square sm:aspect-auto sm:h-24 bg-paper-alt/60" />;
 
             const date = new Date(year, month, day);
             const content = getCalendarDayContent(toLocalDateKey(date));
             const isToday = isSameDay(date, today);
             const isSelected = selected ? isSameDay(date, selected) : false;
-            const colors = numberColors[content.number] || numberColors[1];
 
             return (
-              <motion.button
+              <button
                 key={day}
                 type="button"
                 onClick={() => setSelected(date)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`h-20 sm:h-24 flex flex-col items-center justify-center gap-1 transition-all p-2 bg-card hover:bg-accent/5 ${
-                  isSelected ? `bg-gradient-to-br ${colors.bg} border-l-4 ${colors.border}` : ""
-                } ${isToday ? "ring-2 ring-accent/50" : ""}`}
+                aria-pressed={isSelected}
+                aria-label={`${day} de ${MONTH_NAMES[month]}: número ${content.number}${isToday ? ", hoy" : ""}`}
+                className={`relative aspect-square sm:aspect-auto sm:h-24 flex flex-col items-center justify-center transition-colors ${
+                  isSelected ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt text-foreground"
+                }`}
               >
-                <span className={`text-xs font-mono font-bold ${isToday ? "text-accent font-bold" : "text-muted"}`}>
+                <span className={`absolute top-1.5 left-2 text-xs sm:text-sm tabular-nums ${isSelected ? "text-paper/70" : "text-muted"}`}>
                   {day}
                 </span>
-
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-sm font-bold transition-all border ${
-                    content.master || content.abundance
-                      ? "border-accent text-accent bg-accent/20 scale-110"
-                      : `${colors.border} ${colors.text} bg-background border-2`
-                  }`}
-                >
-                  {content.number}
-                </div>
-
-                {isToday && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="font-display text-2xl sm:text-4xl leading-none tabular-nums">{content.number}</span>
+                {special(content) && (
+                  <span className={`hidden sm:block mt-1 text-[11px] leading-none ${isSelected ? "text-paper/80" : "text-muted"}`}>
+                    {content.abundance ? "abundancia" : "maestro"}
+                  </span>
                 )}
-              </motion.button>
+                {isToday && <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-vermilion" aria-hidden="true" />}
+              </button>
             );
           })}
         </div>
+        <p className="mt-3 text-sm text-muted">
+          El punto rojo marca hoy. Los maestros (11, 22, 33) y el 28 no se reducen.
+        </p>
+
+        {/* Cuántas veces cae cada número este mes */}
+        <h3 className="mt-12 font-display text-2xl text-foreground">Cómo se reparte el mes</h3>
+        <div className="mt-4 grid grid-cols-9 gap-px bg-ink/15 border border-ink/15">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => {
+            const count = monthStats.numbers[n] ?? 0;
+            return (
+              <div key={n} className="bg-background p-2 sm:p-3 flex flex-col items-center">
+                <span className="font-display text-xl sm:text-2xl text-foreground">{n}</span>
+                <span className="mt-2 w-full h-16 flex items-end justify-center" aria-hidden="true">
+                  <span className="w-3 sm:w-4 bg-ink" style={{ height: `${Math.max(4, (count / Math.max(1, ...Object.values(monthStats.numbers))) * 100)}%` }} />
+                </span>
+                <span className="mt-1 text-sm text-muted tabular-nums">{count}</span>
+              </div>
+            );
+          })}
+        </div>
+        {monthStats.masters.length > 0 && (
+          <p className="mt-4 text-base text-muted">
+            Días especiales:{" "}
+            {monthStats.masters.map((day, i) => {
+              const date = new Date(year, month, day);
+              const content = getCalendarDayContent(toLocalDateKey(date));
+              return (
+                <span key={day}>
+                  {i > 0 && ", "}
+                  <button type="button" onClick={() => setSelected(date)} className="text-foreground underline underline-offset-4 hover:no-underline">
+                    el {day} ({content.number})
+                  </button>
+                </span>
+              );
+            })}
+            .
+          </p>
+        )}
       </div>
 
-      {/* Panel de detalle del día seleccionado */}
-      <AnimatePresence mode="wait">
-        {selectedContent && selected && (
-          <motion.div
-            key={selected.toDateString()}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="p-8 sm:p-10 rounded-xl border border-border bg-gradient-to-br from-card to-card/50"
-          >
-            {/* Header del panel */}
-            <div className="flex items-start gap-4 mb-6">
-              <div
-                className={`w-16 h-16 rounded-xl flex items-center justify-center font-mono text-2xl font-bold border-2 transition-all ${
-                  selectedContent.master || selectedContent.abundance
-                    ? "border-accent text-accent bg-accent/20"
-                    : "border-border text-foreground bg-background"
-                }`}
-              >
-                {selectedContent.number}
-              </div>
-
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <p className="font-display text-2xl sm:text-3xl tracking-tight text-foreground font-bold">
-                    {selectedContent.title}
-                  </p>
-                </div>
-                <p className="text-sm text-muted">
-                  {selected.getDate()} de {MONTH_NAMES[selected.getMonth()]} de {selected.getFullYear()}
-                  {selectedContent.master && " · Número maestro"}
-                  {selectedContent.abundance && " · Número de la abundancia"}
+      {/* Detalle del día elegido */}
+      <aside className="lg:col-span-4 lg:sticky lg:top-24">
+        <AnimatePresence mode="wait">
+          {selectedContent && selected && (
+            <motion.div
+              key={selected.toDateString()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="border-t-2 border-ink pt-6"
+              aria-live="polite"
+            >
+              <p className="text-sm text-muted label-caps">
+                {selected.getDate()} de {MONTH_NAMES[selected.getMonth()].toLowerCase()} de {selected.getFullYear()}
+              </p>
+              <p className="mt-4 font-display text-[7rem] leading-[0.8] text-foreground tabular-nums">{selectedContent.number}</p>
+              <h3 className="mt-4 font-display text-4xl leading-tight text-foreground">{selectedContent.title}</h3>
+              {(selectedContent.master || selectedContent.abundance) && (
+                <p className="mt-1 text-base text-muted">
+                  {selectedContent.master ? "Número maestro" : "Número de la abundancia"}
                 </p>
-              </div>
-            </div>
+              )}
 
-            {/* Propósito del día */}
-            <div className="mb-6 p-4 rounded-lg bg-accent/10 border border-accent/20 flex items-start gap-3">
-              <Target className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-              <div>
-                <p className="font-heading text-sm font-bold text-foreground mb-1">Propósito del día</p>
-                <p className="text-sm text-accent font-medium">{selectedContent.purpose}</p>
-              </div>
-            </div>
-
-            {/* Descripción */}
-            <p className="text-base text-foreground leading-relaxed mb-6">
-              {selectedContent.description}
-            </p>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {selectedContent.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-sm px-3 py-1.5 border border-border bg-background text-muted hover:border-accent/50 hover:text-accent transition-colors label-caps"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Recomendaciones */}
-            {selectedContent.recommendations && selectedContent.recommendations.length > 0 && (
-              <div className="pt-6 border-t border-border">
-                <div className="flex items-center gap-2 mb-3">
-                  <Zap className="w-4 h-4 text-accent" />
-                  <p className="text-sm text-muted font-semibold label-caps">
-                    Recomendado para hoy
-                  </p>
+              <dl className="mt-6 border-t border-ink/15 divide-y divide-ink/15">
+                <div className="py-4">
+                  <dt className="text-sm text-muted">Propósito del día</dt>
+                  <dd className="mt-1 text-lg text-foreground">{selectedContent.purpose}</dd>
                 </div>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {selectedContent.recommendations.map((rec) => (
-                    <li
-                      key={rec}
-                      className="text-sm text-foreground px-4 py-3 bg-accent/5 border border-accent/20 rounded-lg hover:bg-accent/10 transition-colors"
-                    >
-                      ✓ {rec}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <div className="py-4">
+                  <dd className="text-lg text-foreground/85 leading-relaxed">{selectedContent.description}</dd>
+                </div>
+                {selectedContent.recommendations && selectedContent.recommendations.length > 0 && (
+                  <div className="py-4">
+                    <dt className="text-sm text-muted">Recomendado para ese día</dt>
+                    <dd>
+                      <ul className="mt-2 space-y-2">
+                        {selectedContent.recommendations.map((rec) => (
+                          <li key={rec} className="flex items-start gap-3 text-base text-foreground/90 leading-snug">
+                            <span className="w-3 h-px bg-ink/50 mt-[0.75em] shrink-0" aria-hidden="true" />
+                            {rec}
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                )}
+                {selectedContent.tags.length > 0 && (
+                  <div className="py-4">
+                    <dd className="text-base text-muted">{selectedContent.tags.join(" · ").toLowerCase()}</dd>
+                  </div>
+                )}
+              </dl>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </aside>
     </div>
   );
 }

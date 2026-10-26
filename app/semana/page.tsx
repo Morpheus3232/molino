@@ -2,15 +2,13 @@
 
 import { useMemo } from "react";
 import { Suspense } from "react";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { getScoreColor } from "@/lib/utils/score";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
-import Button from "@/components/ui/Button";
+import { Breadcrumb, CONTAINER, KnowledgeSection } from "@/components/knowledge/Kit";
 
 export default function SemanaPage() {
   return (
@@ -58,142 +56,146 @@ function SemanaContent() {
   today.setHours(0, 0, 0, 0);
   const todayKey = toLocalDateKey(today);
 
+  const crumbs = [
+    { href: "/", label: "Inicio" },
+    { href: "/calendario", label: "Calendario" },
+    { label: "Semana" },
+  ];
+
   if (loading || !mounted) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
-          <div className="animate-pulse space-y-6">
-            <div className="h-3 bg-[var(--skeleton)] rounded w-32" />
-            <div className="h-10 bg-[var(--skeleton)] rounded w-3/4" />
-            <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-lg" />
+      <main id="main-content" className="bg-background">
+        <div className={`${CONTAINER} pt-12 sm:pt-16 pb-24`}>
+          <Breadcrumb items={crumbs} />
+          <div className="mt-10 animate-pulse space-y-6" aria-hidden="true">
+            <div className="h-20 bg-ink/5 w-1/2" />
+            <div className="h-64 bg-ink/5" />
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <h1 className="page-title text-foreground mb-4">
-            Creá tu mapa primero
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Necesitás tu perfil para ver el timing de tu semana.
-          </p>
-          <Button variant="primary" size="lg" onClick={() => router.push("/")}>
-            Crear mi mapa
-          </Button>
+      <main id="main-content" className="bg-background">
+        <div className={`${CONTAINER} pt-12 sm:pt-16 pb-24`}>
+          <Breadcrumb items={crumbs} />
+          <div className="mt-10 max-w-2xl">
+            <p className="text-sm text-accent mb-4 label-caps">Semana · requiere tu mapa</p>
+            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">
+              Creá tu mapa primero
+            </h1>
+            <p className="mt-6 text-xl text-foreground/85 leading-snug">
+              La semana se arma con tu Día Personal, que sale de tu fecha de nacimiento. Sin ella, mirá el número del día,
+              que es igual para todos.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <button
+                type="button"
+                onClick={() => router.push("/onboarding")}
+                className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
+              >
+                Crear mi mapa
+              </button>
+              <Link href="/calendario" className="text-base underline underline-offset-4 hover:no-underline">
+                Ver el calendario del mes
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   const weekRange = weekDays.length >= 2
     ? `${formatDate(weekDays[0], { day: "numeric", month: "long" })} – ${formatDate(weekDays[6], { day: "numeric", month: "long" })}`
     : "";
+  const todayResult = weekResults.find((d) => d.date === todayKey);
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="border-t border-ink/10 py-10 sm:py-16">
-          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-            <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
-            <span aria-hidden="true">›</span>
-            <Link href="/calendario" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Calendario</Link>
-            <span aria-hidden="true">›</span>
-            <span className="text-foreground font-medium">Semana</span>
-          </nav>
+    <main id="main-content" className="bg-background">
+      <header className="border-b border-ink/10">
+        <div className={`${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
+          <Breadcrumb items={crumbs} />
+          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6 items-end">
+            <div className="lg:col-span-7">
+              <p className="text-sm text-accent mb-4 label-caps">{weekRange}</p>
+              <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">
+                Tu semana
+              </h1>
+            </div>
+            <p className="lg:col-span-5 text-xl sm:text-2xl text-foreground/85 leading-snug">
+              Siete días con tu Día Personal: el número que sale de sumar tu fecha de nacimiento con cada fecha. Hoy va en
+              negro.
+            </p>
+          </div>
 
-          <h1 className="page-title text-foreground">
-            Tu semana
-          </h1>
-          <p className="text-sm text-muted mt-3">{weekRange}</p>
-        </motion.div>
-
-        {/* 7 días de la semana — mismo personalDay/theme/score que /hoy y
-            /calendario, no un engine propio de "viajes" desconectado. */}
-        <div className="grid grid-cols-1 sm:grid-cols-7 gap-px bg-ink/10">
-          {weekResults.map((day, i) => {
-            const color = getScoreColor(day.overallScore);
-            const isTodayCell = day.date === todayKey;
-            const date = new Date(day.date + "T12:00:00");
-            const dayName = date.toLocaleDateString("es-AR", { weekday: "short" });
-            const dayNum = date.getDate();
-
-            return (
-              <motion.div
-                key={day.date}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.04, duration: 0.3 }}
-                className={`bg-background p-4 sm:p-5 flex flex-col items-center text-center ${
-                  isTodayCell ? "ring-2 ring-accent" : ""
-                }`}
-              >
-                <span className="text-sm text-muted label-caps">{dayName}</span>
-                <span className={`font-heading text-2xl mt-1 ${isTodayCell ? "text-accent" : "text-foreground"}`}>{dayNum}</span>
-                {isTodayCell && (
-                  <span className="mt-0.5 text-sm text-accent font-semibold label-caps">HOY</span>
-                )}
-                <span
-                  className="mt-2 w-10 h-10 rounded-full flex items-center justify-center font-mono text-sm font-bold border-2"
-                  style={{
-                    borderColor: color,
-                    color: isTodayCell ? "var(--color-background)" : color,
-                    // `${color}12` daba CSS inválido ("var(--x)12"): ahora un
-                    // fondo suave con color-mix, y el día de hoy relleno.
-                    backgroundColor: isTodayCell ? color : `color-mix(in srgb, ${color} 7%, transparent)`,
-                  }}
+          {/* La semana como instrumento: siete columnas con filete */}
+          <ol className="mt-14 grid grid-cols-1 sm:grid-cols-7 gap-px bg-ink/15 border border-ink/15">
+            {weekResults.map((day) => {
+              const isTodayCell = day.date === todayKey;
+              const date = new Date(day.date + "T12:00:00");
+              const dayName = date.toLocaleDateString("es-AR", { weekday: "long" });
+              return (
+                <li
+                  key={day.date}
+                  className={`p-5 sm:p-4 lg:p-6 flex sm:flex-col items-center sm:items-start gap-x-5 ${
+                    isTodayCell ? "bg-ink text-paper" : "bg-background text-foreground"
+                  }`}
+                  aria-current={isTodayCell ? "date" : undefined}
                 >
-                  {day.personalDay}
-                </span>
-                {/* Solo el theme (Armonía, Introspección...) — el label de
-                    energía (Alta/Moderada) se repetía casi todos los días
-                    y era ruido: el color del círculo ya lo comunica. */}
-                <span className="mt-2 text-xs font-semibold text-foreground leading-tight">
-                  {day.theme}
-                </span>
-              </motion.div>
+                  <div className="w-24 sm:w-auto shrink-0">
+                    <p className={`text-sm capitalize ${isTodayCell ? "text-paper/75" : "text-muted"}`}>
+                      {dayName}
+                      {isTodayCell && " · hoy"}
+                    </p>
+                    <p className={`text-base tabular-nums ${isTodayCell ? "text-paper/75" : "text-muted"}`}>{date.getDate()}</p>
+                  </div>
+                  <p className={`sm:mt-6 font-display text-5xl lg:text-7xl leading-none tabular-nums ${isTodayCell ? "text-paper" : "text-foreground"}`}>{day.personalDay}</p>
+                  <p className={`sm:mt-3 font-display text-xl sm:text-base lg:text-xl leading-tight hyphens-auto break-words min-w-0 ${isTodayCell ? "text-paper" : "text-foreground"}`} lang="es">{day.theme}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </header>
+
+      {todayResult && (
+        <KnowledgeSection label="Tu día de hoy" title={<>Día {todayResult.personalDay}: {todayResult.theme}</>}>
+          <p className="text-xl text-foreground/85 leading-relaxed max-w-3xl">{todayResult.description}</p>
+          <p className="mt-6 text-base">
+            <Link href="/hoy" className="underline underline-offset-4 hover:no-underline">Ver todo el día de hoy</Link>
+          </p>
+        </KnowledgeSection>
+      )}
+
+      <KnowledgeSection label="Día por día" title="La semana entera" tone="alt">
+        <div className="border-t-2 border-ink">
+          {weekResults.map((day) => {
+            const date = new Date(day.date + "T12:00:00");
+            const isTodayCell = day.date === todayKey;
+            return (
+              <article key={day.date} className="grid grid-cols-1 md:grid-cols-[14rem_1fr] gap-x-10 gap-y-2 py-6 border-b border-ink/15">
+                <div className="flex items-baseline gap-4">
+                  <span className="font-display text-5xl leading-none text-foreground tabular-nums">{day.personalDay}</span>
+                  <span className="text-base text-foreground capitalize">
+                    {date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric" })}
+                    {isTodayCell && <span className="text-muted"> · hoy</span>}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-display text-2xl text-foreground">{day.theme}</h3>
+                  <p className="mt-1 text-lg text-foreground/85 leading-relaxed max-w-3xl">{day.description}</p>
+                </div>
+              </article>
             );
           })}
         </div>
-
-        {/* Detalle del día actual — misma descripción real que muestra /hoy
-            para ese personalDay, no un texto de plantilla por tema. */}
-        {weekResults.length > 0 && (() => {
-          const todayResult = weekResults.find(d => d.date === todayKey);
-          if (!todayResult) return null;
-          return (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.3 }}
-              className="border border-ink/10 p-6 mt-6"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground">Tu día de hoy</h3>
-                <span
-                  className="text-sm px-2 py-0.5 border border-ink/10 label-caps"
-                  style={{ color: getScoreColor(todayResult.overallScore) }}
-                >
-                  Día {todayResult.personalDay} · {todayResult.theme}
-                </span>
-              </div>
-              <p className="text-base text-foreground leading-relaxed">
-                {todayResult.description}
-              </p>
-            </motion.div>
-          );
-        })()}
-
-        <div className="mt-8">
-          <Link href="/calendario" className="text-sm text-accent hover:underline">
-            ← Volver al calendario
-          </Link>
-        </div>
-      </main>
-    </div>
+        <p className="mt-8 text-base">
+          <Link href="/calendario" className="underline underline-offset-4 hover:no-underline">Ver el mes completo</Link>
+        </p>
+      </KnowledgeSection>
+    </main>
   );
 }

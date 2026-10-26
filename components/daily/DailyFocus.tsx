@@ -1,24 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import type { JournalEntry } from "@/types/journal";
-import {
-  Target,
-  AlertOctagon,
-  Compass,
-  BookOpen,
-  ArrowRight,
-  Flame,
-  Briefcase,
-  Heart,
-  Palette,
-  Scale,
-} from "lucide-react";
-import Button from "@/components/ui/Button";
-import { getScoreColor } from "@/lib/utils/score";
+import { Briefcase, Heart, Palette, Scale } from "lucide-react";
 
 interface DailyFocusProps {
   daily: EnrichedDailyEnergy;
@@ -81,48 +67,32 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
     : `/journal?prompt=${encodeURIComponent(daily.dailyAdvice)}`;
 
   return (
-    <div className={`rounded-xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${className}`}>
-      <div className="space-y-2 flex-1">
-        <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
-          <Compass className="w-4 h-4" />
-          <span>Consejo del Momento</span>
-        </div>
-        <blockquote className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-3 py-0.5">
+    <div className={`border-2 border-ink p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${className}`}>
+      <div className="lg:col-span-8">
+        <p className="text-sm text-muted label-caps">Consejo del Momento</p>
+        <blockquote className="mt-4 font-display text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.12] text-foreground">
           &ldquo;{daily.dailyAdvice}&rdquo;
         </blockquote>
         {daily.orientationEvidence && daily.orientationEvidence.length > 0 && (
-          <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1">
+          <p className="mt-5 flex flex-wrap gap-x-6 gap-y-1 text-base text-muted">
             {daily.orientationEvidence.map((e) => (
-              <span key={e.label} className="text-[11px] font-mono text-muted">
-                <span className="text-muted/70">{e.label}:</span> {e.value}
+              <span key={e.label}>
+                {e.label}: <span className="text-foreground">{e.value}</span>
               </span>
             ))}
-          </div>
-        )}
-        {journalStreak >= 2 && (
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent">
-            <Flame className="w-3.5 h-3.5" />
-            {journalStreak} días escribiendo en tu Journal
           </p>
         )}
+        {journalStreak >= 2 && (
+          <p className="mt-3 text-base text-muted">{journalStreak} días seguidos escribiendo en tu diario.</p>
+        )}
       </div>
-
-      {/* Journal CTA */}
-      <div className="flex-shrink-0">
-        {/* El link ES el botón (asChild): un <button> dentro de un <a> es HTML
-            inválido y los lectores de pantalla lo anuncian como dos controles. */}
-        <Button
-          asChild
-          variant="accent"
-          size="md"
-          className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
+      <div className="lg:col-span-4 lg:justify-self-end">
+        <Link
+          href={journalHref}
+          className="inline-flex w-full sm:w-auto items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
         >
-          <Link href={journalHref}>
-            <BookOpen className="w-4 h-4" />
-            <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi diario"}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </Button>
+          {todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi diario"}
+        </Link>
       </div>
     </div>
   );
@@ -130,66 +100,40 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
 
 export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusProps, "todayEntry" | "journalStreak">) {
   return (
-    <div className={`space-y-6 ${className}`}>
-      {/* 2-Card Grid: Focus vs Avoid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-        {/* Card 1: Focus */}
-        <div className="rounded-xl border border-success/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-success text-sm font-bold label-caps">
-            <Target className="w-4 h-4" />
-            <span>Favorable hoy</span>
-          </div>
-          <h4 className="font-heading text-base sm:text-lg font-bold text-foreground">
-            Acción recomendada
-          </h4>
-          <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
-            {daily.focusAction}
-          </p>
+    <div className={className}>
+      {/* A favor / a observar */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
+        <div className="bg-background p-8 sm:p-10 border-t-4 border-t-vermilion">
+          <p className="text-sm text-muted label-caps">Favorable hoy</p>
+          <h3 className="mt-3 font-display text-3xl text-foreground">Acción recomendada</h3>
+          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{daily.focusAction}</p>
         </div>
-
-        {/* Card 2: Avoid */}
-        <div className="rounded-xl border border-error/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-error text-sm font-bold label-caps">
-            <AlertOctagon className="w-4 h-4" />
-            <span>Observar hoy</span>
-          </div>
-          <h4 className="font-heading text-base sm:text-lg font-bold text-foreground">
-            Punto de fricción a posponer
-          </h4>
-          <p className="text-xs sm:text-sm text-muted leading-relaxed">
-            {daily.avoidAction}
-          </p>
+        <div className="bg-background p-8 sm:p-10 border-t-4 border-t-ink">
+          <p className="text-sm text-muted label-caps">Observar hoy</p>
+          <h3 className="mt-3 font-display text-3xl text-foreground">Punto de fricción a posponer</h3>
+          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{daily.avoidAction}</p>
         </div>
       </div>
 
-      {/* Favorece Hoy: desglose por área — daily.areas ya lo calculaba el
-          motor (calculateAreaScores) pero no se renderizaba en ningún lado. */}
-      <div className="rounded-xl border border-ink/10 bg-card p-6 sm:p-7 space-y-4">
-        <div className="flex items-center gap-2 text-accent text-sm font-bold label-caps">
-          <span>Áreas del día</span>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {(Object.keys(AREA_META) as AreaKey[]).map((key) => {
-            const area = daily.areas[key];
-            const { name, icon: Icon } = AREA_META[key];
-            const advice = AREA_ADVICE[key][area.label] || AREA_ADVICE[key]["Neutral"];
-            return (
-              <div key={key} className="p-4 rounded-lg bg-background/70 border border-ink/5 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Icon className="w-4 h-4 text-accent shrink-0" />
-                  <span className="font-heading text-xs font-bold text-foreground">{name}</span>
-                </div>
-                <span
-                  className="inline-block text-sm font-semibold px-2 py-0.5 rounded-full label-caps"
-                  style={{ backgroundColor: `color-mix(in srgb, ${getScoreColor(area.score)} 12%, transparent)`, color: getScoreColor(area.score) }}
-                >
-                  {area.label}
-                </span>
-                <p className="text-[11px] text-muted leading-relaxed">{advice}</p>
+      {/* Áreas del día: el desglose que calcula el motor (calculateAreaScores) */}
+      <h3 className="mt-14 font-display text-3xl text-foreground">Áreas del día</h3>
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/15 border border-ink/15">
+        {(Object.keys(AREA_META) as AreaKey[]).map((key) => {
+          const area = daily.areas[key];
+          const { name, icon: Icon } = AREA_META[key];
+          const advice = AREA_ADVICE[key][area.label] || AREA_ADVICE[key]["Neutral"];
+          const strong = area.label === "Muy favorable" || area.label === "Favorable";
+          return (
+            <div key={key} className="bg-background p-6 sm:p-7">
+              <div className="flex items-center gap-2.5">
+                <Icon className="w-5 h-5 text-foreground shrink-0" aria-hidden="true" />
+                <span className="font-display text-2xl text-foreground">{name}</span>
               </div>
-            );
-          })}
-        </div>
+              <p className={`mt-3 text-base ${strong ? "text-vermilion" : "text-muted"}`}>{area.label}</p>
+              <p className="mt-2 text-base text-foreground/80 leading-relaxed">{advice}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
