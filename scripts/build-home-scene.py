@@ -11,7 +11,6 @@ Salida en `public/home/escena/` (WebP con transparencia):
 - molino.webp                 torre del molino grande, sin aspas (las aspas
                               las dibuja el componente para que puedan girar)
 - lomas.webp                  franja repetible de lomas rojas (plano medio)
-- sierra.webp                 franja repetible de sierras (plano de fondo)
 - suelo.webp                  franja repetible de loma negra con las flores
                               del original (primer plano)
 
@@ -231,23 +230,6 @@ def band(texture, top: np.ndarray, height: int, ink, soft=1.5):
     return np.dstack([rgb, a * 255]).clip(0, 255).astype(np.uint8)
 
 
-def peaks(width: int, height: int, n: int, seed: int) -> np.ndarray:
-    """Sierra de picos como la del fondo derecho del original: picos
-    redondeados con laderas largas, repetible."""
-    rng = np.random.default_rng(seed)
-    x = np.arange(width)
-    top = np.full(width, float(height))
-    for k in range(n):
-        cx = (k + rng.uniform(0.2, 0.8)) * width / n
-        h = rng.uniform(0.45, 0.95) * height
-        spread = rng.uniform(0.07, 0.13) * width
-        for off in (-width, 0, width):
-            dx = np.abs(x - cx - off) / spread
-            prof = height - h * np.exp(-dx ** 1.6)
-            top = np.minimum(top, prof)
-    return top
-
-
 # Franja de flores del original: lo blanco entre la loma negra y su borde de
 # abajo, de punta a punta. Se pega dos veces (la segunda espejada) para que
 # la franja repetible no tenga costura.
@@ -332,13 +314,6 @@ def main():
         base = float(top[win].max()) + Hm * 0.06
         mills.append({"x": round(frac * 100, 2), "base": round(base / Hm * 100, 2), "h": scale})
     meta["lomas"] = {"w": W, "h": Hm, "mills": mills}
-
-    # Fondo: sierra de picos, en el mismo rojo (el componente la aclara).
-    Hs = 360
-    top_s = peaks(W, Hs, 5, seed=7)
-    sierra = band(grain(W, Hs, RED, RED_GRAIN, 0.05, 12), top_s, Hs, RED)
-    save(sierra, "sierra.webp", quality=80)
-    meta["sierra"] = {"w": W, "h": Hs}
 
     # Primer plano: loma negra con las flores del original.
     Wg = strip.shape[1] * 2
