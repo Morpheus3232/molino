@@ -322,7 +322,8 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
 - Portada, apertura (2026-10-26): `HomeOpening` es un travelling de cine —
   Quijote y Sancho galopando hacia la izquierda entre molinos, con bandas de
-  cinemascope y el epígrafe de Cervantes (I, VIII). Las capas salen de la
+  cinemascope y el epígrafe de Cervantes («Cada uno es artífice de su
+  ventura», II, LXVI), sin botones. Las capas salen de la
   ilustración licenciada con `python3 scripts/build-home-scene.py` (WebP en
   `public/home/escena/`): jinetes recortados del original, franjas
   repetibles de sierra/lomas/suelo con su rojo, negro, grano y flores, y la

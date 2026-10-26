@@ -31,7 +31,8 @@ const MILLS = [
   { x: 78, base: 38.58, h: 0.46, spin: "9.5s" },
 ];
 
-const LINE = "En esto, descubrieron treinta o cuarenta molinos de viento que hay en aquel campo.";
+/** Don Quijote, segunda parte, cap. LXVI: la ventura no viene dada, se hace. */
+const LINE = "Cada uno es artífice de su ventura.";
 
 /** Cuatro aspas en cruz con su enrejado, como las del original. */
 function Sails() {
@@ -192,20 +193,22 @@ export default function HomeOpening() {
         </p>
         <p
           id="apertura-home"
-          className="mt-4 font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(1.85rem,3.6vw,3.1rem)]"
+          className="mt-4 font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(2.4rem,5vw,4.4rem)]"
         >
           <span className="sr-only">{LINE}</span>
           <span aria-hidden="true">
-            «
+            {/* Las comillas van pegadas a la primera y la última palabra para
+                que nunca queden solas en un renglón. */}
             {words.map((w, i) => (
               <span key={i}>
                 <span className={s.word} style={{ ["--i" as string]: i }}>
+                  {i === 0 ? "«" : ""}
                   {w}
+                  {i === words.length - 1 ? "»" : ""}
                 </span>
                 {i < words.length - 1 ? " " : ""}
               </span>
             ))}
-            »
           </span>
         </p>
       </motion.div>
@@ -214,7 +217,7 @@ export default function HomeOpening() {
       <div className={`${s.bar} ${s.barTop}`} aria-hidden="true" />
       <div className={`${s.bar} ${s.barBottom} text-xs label-caps`}>
         <span>
-          Cervantes, <em className="not-italic">Don Quijote</em>, I, VIII
+          Cervantes, <em className="not-italic">Don Quijote</em>, II, LXVI
         </span>
         <span className={s.cue} aria-hidden="true">
           Bajá
