@@ -14,8 +14,7 @@ import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEng
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Check, Tag, RefreshCw, Plus, ChevronDown } from "lucide-react";
-import Button from "@/components/ui/Button";
+import { Check, RefreshCw, Plus } from "lucide-react";
 
 interface JournalEditorProps {
   profile: UserProfile | null;
@@ -179,37 +178,37 @@ export default function JournalEditor({
 
   return (
     <div className={`relative ${className}`}>
-      {/* Toast de persistencia local */}
+      {/* Aviso de guardado */}
       <AnimatePresence>
         {savedSuccess && (
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-card border border-success/40 text-success text-xs font-mono shadow-sm"
+            className="absolute top-0 right-0 z-20 flex items-center gap-2 px-4 py-2 bg-background border-2 border-ink text-sm text-foreground"
+            role="status"
           >
-            <Check className="w-3.5 h-3.5" />
+            <Check className="w-4 h-4" />
             <span>Guardado en tu navegador</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Encabezado de diario: la fecha es el título de la página, y el
-          contexto del día va como una nota al margen, no como badges. */}
+      {/* La fecha es el título de la hoja; el contexto del día, su bajada. */}
       <header>
         <p className="text-sm text-muted label-caps">
           {editingEntry ? "Corrigiendo una página" : "Página de hoy"}
         </p>
-        <h2 className="mt-1 font-display italic font-normal text-3xl sm:text-4xl text-foreground first-letter:uppercase">
+        <h2 className="mt-2 font-display font-normal text-[clamp(2.25rem,5vw,3.75rem)] leading-[1] tracking-tight text-foreground first-letter:uppercase">
           {formattedDisplayDate}
         </h2>
         {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.dayEnergy?.moonPhase) && (
-          <p className="mt-2 text-sm italic text-muted">
+          <p className="mt-3 text-lg text-muted">
             {[
               cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
               cycle.dayEnergy?.theme,
-              cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase()}`,
+              cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
             ]
               .filter(Boolean)
               .join(" · ")}
@@ -217,26 +216,13 @@ export default function JournalEditor({
         )}
       </header>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-        {/* 1. ¿Cómo te sentís? — Escala horizontal minimalista (5 estados) */}
-        <div>
-          <p className="text-base italic text-muted mb-2">Hoy me siento…</p>
-          {/* Dos bugs de layout acá, los dos por lo mismo: cinco palabras de
-              hasta 11 caracteres no entran en una fila angosta.
-
-              1. `flex-1` sin `min-w-0`: min-width:auto le pone como piso el
-                 ancho intrínseco de la palabra, los botones no podían
-                 encogerse y desbordaban el contenedor (el `truncate` del span
-                 nunca se activaba porque el ítem flex es el button).
-              2. Mostrar los 5 labels y truncar da "Desafian…" / "En sinto…",
-                 que no dicen nada. Y ocultarlos por breakpoint de viewport no
-                 sirve: este editor vive en un card angosto incluso en desktop.
-
-              La escala se lee por los emoji (lluvia → sol → chispa) y el
-              label del estado elegido se confirma debajo. Funciona igual a
-              312px que a 1440px, sin recortes. El nombre completo de cada
-              opción sigue disponible en su aria-label. */}
-          <div className="flex items-stretch gap-1 border-y border-border py-1">
+      <form onSubmit={handleSubmit} className="mt-10 space-y-8">
+        {/* 1. El ánimo: cinco casillas con filete, la elegida en tinta. En
+            pantallas angostas se ven los iconos y el nombre se confirma abajo;
+            el nombre completo siempre está en el aria-label. */}
+        <fieldset>
+          <legend className="text-lg text-foreground mb-3">Hoy me siento…</legend>
+          <div className="grid grid-cols-5 gap-px bg-ink/15 border border-ink/15">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
               const isSelected = mood === m;
@@ -245,105 +231,89 @@ export default function JournalEditor({
                   key={m}
                   type="button"
                   onClick={() => setMood(m)}
-                  className={`flex-1 min-w-0 flex items-center justify-center rounded-sm transition-colors min-h-[44px] border text-xl leading-none ${
-                    isSelected
-                      ? "border-transparent border-b-foreground opacity-100"
-                      : "border-transparent opacity-40 hover:opacity-90"
+                  className={`min-w-0 flex flex-col items-center justify-center gap-1.5 py-4 min-h-[64px] transition-colors ${
+                    isSelected ? "bg-ink text-paper" : "bg-background text-muted hover:bg-paper-alt hover:text-foreground"
                   }`}
                   aria-pressed={isSelected}
                   aria-label={cfg.label}
                 >
-                  <span aria-hidden="true">{cfg.emoji}</span>
+                  <span aria-hidden="true" className={`text-2xl leading-none ${isSelected ? "" : "opacity-60"}`}>
+                    {cfg.emoji}
+                  </span>
+                  <span className="hidden sm:block text-sm leading-none" aria-hidden="true">{cfg.label}</span>
                 </button>
               );
             })}
           </div>
-          <p className="mt-2 text-center italic text-base text-foreground" aria-live="polite">
+          <p className="sm:hidden mt-2 text-center text-base text-foreground" aria-live="polite">
             {MOOD_CONFIG[mood].label}
           </p>
-        </div>
+        </fieldset>
 
-        {/* 2. ¿Qué querés registrar? — Textarea como protagonista absoluto */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label htmlFor="journal-content" className="sr-only">
-              Lo que querés escribir hoy
-            </label>
-          </div>
-
+        {/* 2. La hoja */}
+        <div>
+          <label htmlFor="journal-content" className="sr-only">
+            Lo que querés escribir hoy
+          </label>
           <textarea
             id="journal-content"
-            rows={9}
+            rows={10}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="diary-paper w-full text-lg text-foreground focus:outline-none resize-y font-sans"
+            className="diary-paper w-full border-t-2 border-ink text-xl text-foreground focus:outline-none resize-y font-serif"
             required
           />
 
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-1">
-            {/* Sugerencia subordinada y discreta */}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
             {!editingEntry && (
-              <div className="flex min-w-0 flex-1 items-center gap-1.5 text-xs text-muted">
+              <div className="flex min-w-0 flex-1 items-center gap-2 text-base text-muted">
                 <button
                   type="button"
                   onClick={usePrompt}
-                  className="min-w-0 text-left text-muted/80 hover:text-accent transition-colors flex items-center gap-1 py-1.5 -my-1.5"
+                  className="min-w-0 text-left hover:text-foreground transition-colors py-1.5 -my-1.5"
                   title="Usar como punto de partida"
                 >
-                  <span className="truncate italic">&ldquo;{currentPrompt}&rdquo;</span>
+                  <span className="italic">&ldquo;{currentPrompt}&rdquo;</span>
                 </button>
                 <button
                   type="button"
                   onClick={nextPrompt}
-                  className="p-2 -m-1 text-muted hover:text-accent rounded transition-colors shrink-0"
+                  className="p-2 -m-1 text-muted hover:text-foreground transition-colors shrink-0"
                   aria-label="Ver otra sugerencia"
                   title="Cambiar sugerencia"
                 >
-                  <RefreshCw className="w-3 h-3" />
+                  <RefreshCw className="w-4 h-4" />
                 </button>
               </div>
             )}
-
-            <span className="text-xs text-muted font-mono ml-auto shrink-0">
+            <span className="text-sm text-muted ml-auto shrink-0 tabular-nums">
               {wordCount} {wordCount === 1 ? "palabra" : "palabras"}
             </span>
           </div>
         </div>
 
-        {/* 3. Temas clave — Ocultos por defecto, desplegables discretamente */}
+        {/* 3. Temas: opcionales, se despliegan */}
         <div>
           {!showTags ? (
             <button
               type="button"
               onClick={() => setShowTags(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors py-1 min-h-[36px]"
+              className="inline-flex items-center gap-2 text-base text-muted hover:text-foreground transition-colors min-h-[44px]"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>Agregar tema {tags.length > 0 && `(${tags.length})`}</span>
             </button>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="space-y-2 pt-2"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-muted" />
-                  <span className="text-sm text-muted font-semibold label-caps">
-                    Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowTags(false)}
-                  className="text-xs font-mono text-muted hover:text-foreground transition-colors"
-                >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+              <div className="flex items-baseline justify-between">
+                <span className="text-base text-foreground">
+                  Temas <span className="text-muted">(opcional)</span>
+                </span>
+                <button type="button" onClick={() => setShowTags(false)} className="text-sm text-muted hover:text-foreground underline underline-offset-4">
                   Ocultar
                 </button>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {QUICK_TAGS.map((tag) => {
                   const selected = tags.includes(tag);
                   return (
@@ -352,10 +322,8 @@ export default function JournalEditor({
                       type="button"
                       onClick={() => toggleTag(tag)}
                       aria-pressed={selected}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-all border ${
-                        selected
-                          ? "bg-accent text-accent-foreground border-accent font-semibold"
-                          : "bg-background text-muted border-border hover:border-accent/40 hover:text-foreground"
+                      className={`px-3 py-1.5 text-sm transition-colors border ${
+                        selected ? "bg-ink text-paper border-ink" : "bg-background text-muted border-ink/25 hover:border-ink hover:text-foreground"
                       }`}
                     >
                       #{tag}
@@ -367,39 +335,29 @@ export default function JournalEditor({
           )}
         </div>
 
-        {/* 4. Guardar registro — CTA principal claro */}
-        <div className="flex items-center justify-end gap-3 pt-2">
+        {/* 4. Guardar */}
+        <div className="flex items-center justify-end gap-6 pt-6 border-t border-ink/15">
           {editingEntry && onCancelEdit && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={onCancelEdit}
-              className="text-muted hover:text-foreground min-h-[44px]"
-            >
+            <button type="button" onClick={onCancelEdit} className="text-base text-muted hover:text-foreground underline underline-offset-4 min-h-[44px]">
               Cancelar
-            </Button>
+            </button>
           )}
-
-          <Button
+          <button
             type="submit"
-            variant="accent"
             disabled={!content.trim() || isSaving}
-            className="flex items-center gap-2 px-7 py-2.5 font-bold shadow-sm min-h-[44px]"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps disabled:bg-ink/10 disabled:text-muted disabled:cursor-not-allowed"
           >
             {isSaving ? (
-              <>Guardando...</>
+              <>Guardando…</>
             ) : savedSuccess ? (
               <>
-                <Check className="w-4 h-4 text-success" />
-                ¡Guardado!
+                <Check className="w-4 h-4" />
+                Guardado
               </>
             ) : (
-              <>
-                {editingEntry ? "Guardar la corrección" : "Guardar en el diario"}
-              </>
+              <>{editingEntry ? "Guardar la corrección" : "Guardar en el diario"}</>
             )}
-          </Button>
+          </button>
         </div>
       </form>
     </div>

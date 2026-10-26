@@ -1,18 +1,17 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { JournalEntry, JournalMood } from "@/types/journal";
 import { MOOD_CONFIG } from "@/types/journal";
 import JournalInsights from "@/components/journal/JournalInsights";
-import { Search, Tag, Trash2, Edit2, ChevronDown } from "lucide-react";
+import { Search, Trash2, Edit2 } from "lucide-react";
 
 // recharts is heavy; keep it out of the initial client bundle by loading the
 // mood chart lazily (ssr:false). The rest of the timeline renders immediately.
 const MoodChart = dynamic(() => import("@/components/journal/MoodChart"), {
   ssr: false,
-  loading: () => <div className="w-full h-44 sm:h-52 animate-pulse bg-card border border-ink/10 rounded-xl" aria-hidden="true" />,
+  loading: () => <div className="w-full h-44 sm:h-52 animate-pulse bg-ink/5" aria-hidden="true" />,
 });
 
 interface JournalTimelineProps {
@@ -86,13 +85,13 @@ export default function JournalTimeline({
     }));
   }, [entries]);
 
-  // Estado de carga con Skeleton para evitar flash de "vacío"
+  // Estado de carga con esqueleto para evitar el destello de "vacío"
   if (loading) {
     return (
-      <div className={`space-y-4 ${className} animate-pulse`}>
-        <div className="h-14 rounded-xl bg-card border border-ink/10" />
-        <div className="h-44 rounded-xl bg-card border border-ink/10" />
-        <div className="h-36 rounded-xl bg-card border border-ink/10" />
+      <div className={`space-y-px ${className} animate-pulse`}>
+        <div className="h-14 bg-ink/5" />
+        <div className="h-44 bg-ink/5" />
+        <div className="h-36 bg-ink/5" />
       </div>
     );
   }
@@ -101,164 +100,174 @@ export default function JournalTimeline({
     return null;
   }
 
-  return (
-    <div className={`space-y-6 ${className}`}>
-      {/* Mood vs Time Chart Card */}
-      {chartData.length >= 2 && (
-        <div className="border-y border-ink/10 py-6">
-          <div className="flex items-baseline justify-between gap-3 mb-4">
-            <h3 className="font-display italic font-normal text-2xl text-foreground">
-              Cómo vino el ánimo
-            </h3>
-            <span className="text-sm text-muted label-caps">
-              {chartData.length} registros
-            </span>
-          </div>
+  const filtering = Boolean(selectedMood || selectedTag || searchQuery);
 
-          <MoodChart chartData={chartData} />
+  return (
+    <div className={className}>
+      {/* Cómo vino el ánimo */}
+      {chartData.length >= 2 && (
+        <div className="border-t-2 border-ink pt-6 pb-10">
+          <div className="flex items-baseline justify-between gap-3 mb-6">
+            <h3 className="font-display font-normal text-3xl text-foreground">Cómo vino el ánimo</h3>
+            <span className="text-base text-muted tabular-nums">{chartData.length} páginas</span>
+          </div>
+          <div className="bg-background border border-ink/15 p-4 sm:p-6">
+            <MoodChart chartData={chartData} />
+          </div>
         </div>
       )}
 
-      {/* Insights — promedios de mood agrupados, solo si hay al menos un
-          patrón real (≥2 entradas en algún grupo) */}
+      {/* Promedios por tema, luna y año: solo si hay algún patrón real */}
       <JournalInsights entries={entries} />
 
-      {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted" />
-          <input
-            type="text"
-            placeholder="Buscar en el diario…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-transparent border-0 border-b border-ink/20 text-base text-foreground placeholder:italic placeholder:text-muted/60 focus:outline-none focus:border-foreground"
-            aria-label="Buscar en las entradas del diario"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-foreground text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded p-0.5"
-              aria-label="Borrar búsqueda"
-            >
-              ✕
-            </button>
-          )}
-        </div>
-
-        {/* Mood & Tag Filter buttons */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          {/* Mood filter pills */}
-          {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
-            const cfg = MOOD_CONFIG[m];
-            const active = selectedMood === m;
-            return (
+      {/* Buscar y filtrar */}
+      <div className="border-t-2 border-ink pt-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="relative flex-1 max-w-xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+            <input
+              type="text"
+              placeholder="Buscar en el diario"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-10 py-3 bg-background border-2 border-ink text-lg text-foreground placeholder:text-muted/70 focus:outline-none"
+              aria-label="Buscar en las entradas del diario"
+            />
+            {searchQuery && (
               <button
-                key={m}
                 type="button"
-                onClick={() => setSelectedMood(active ? null : m)}
-                className={`px-2 py-1 rounded-lg text-xs font-mono transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                  active
-                    ? "border-accent bg-accent/20 text-accent font-bold"
-                    : "border-ink/10 bg-background text-muted hover:text-foreground"
-                }`}
-                title={cfg.label}
-                aria-label={`Filtrar por estado de ánimo: ${cfg.label}`}
-                aria-pressed={active}
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground text-sm p-1"
+                aria-label="Borrar búsqueda"
               >
-                {cfg.emoji}
+                ✕
               </button>
-            );
-          })}
+            )}
+          </div>
 
-          {/* Clear filters button */}
-          {(selectedMood || selectedTag || searchQuery) && (
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedMood(null);
-                setSelectedTag(null);
-                setSearchQuery("");
-              }}
-              className="px-2.5 py-1 text-[11px] font-mono text-accent hover:underline ml-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded"
-            >
-              Limpiar
-            </button>
-          )}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-base text-muted">Ánimo</span>
+            <div className="grid grid-cols-5 gap-px bg-ink/15 border border-ink/15">
+              {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
+                const cfg = MOOD_CONFIG[m];
+                const active = selectedMood === m;
+                return (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setSelectedMood(active ? null : m)}
+                    className={`w-11 h-11 flex items-center justify-center text-lg transition-colors ${
+                      active ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt"
+                    }`}
+                    title={cfg.label}
+                    aria-label={`Filtrar por estado de ánimo: ${cfg.label}`}
+                    aria-pressed={active}
+                  >
+                    <span aria-hidden="true" className={active ? "" : "opacity-60"}>{cfg.emoji}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {filtering && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedMood(null);
+                  setSelectedTag(null);
+                  setSearchQuery("");
+                }}
+                className="text-base text-foreground underline underline-offset-4 hover:no-underline"
+              >
+                Limpiar
+              </button>
+            )}
+          </div>
         </div>
+
+        {allTags.length > 0 && (
+          <div className="mt-4 flex items-center gap-2 flex-wrap">
+            <span className="text-base text-muted mr-1">Temas</span>
+            {allTags.map((tag) => {
+              const active = selectedTag === tag;
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setSelectedTag(active ? null : tag)}
+                  className={`px-3 py-1.5 text-sm transition-colors border ${
+                    active ? "bg-ink text-paper border-ink" : "bg-background text-muted border-ink/25 hover:border-ink hover:text-foreground"
+                  }`}
+                  aria-pressed={active}
+                  aria-label={`Filtrar por etiqueta ${tag}`}
+                >
+                  #{tag}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Tag filter pills if tags exist */}
-      {allTags.length > 0 && (
-        <div className="flex items-center gap-1.5 flex-wrap px-1">
-          <span className="text-[11px] font-mono text-muted flex items-center gap-1 mr-1">
-            <Tag className="w-3 h-3" /> Tags:
-          </span>
-          {allTags.map((tag) => {
-            const active = selectedTag === tag;
-            return (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => setSelectedTag(active ? null : tag)}
-                className={`px-2.5 py-0.5 rounded-md text-[11px] font-mono transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                  active
-                    ? "bg-accent text-background font-bold border-accent"
-                    : "bg-card text-muted border-ink/10 hover:border-ink/20 hover:text-foreground"
-                }`}
-                aria-pressed={active}
-                aria-label={`Filtrar por etiqueta ${tag}`}
-              >
-                #{tag}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Entries List */}
-      <div>
+      {/* Las páginas: la fecha al margen, el texto a la derecha */}
+      <div className="mt-8 border-t border-ink/15">
         {filteredEntries.length === 0 ? (
-          <div className="py-12 text-center text-base italic text-muted">
-            No se encontraron entradas con los filtros seleccionados.
-          </div>
+          <p className="py-12 text-lg text-muted">Ninguna página coincide con esos filtros.</p>
         ) : (
-          filteredEntries.map((entry, index) => {
+          filteredEntries.map((entry) => {
             const moodCfg = MOOD_CONFIG[entry.mood];
             const cycle = entry.cycleContext;
-
+            const d = new Date(entry.date + "T12:00:00");
             return (
-              <motion.article
+              <article
                 key={entry.id}
                 aria-label={formatDate(entry.date)}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0, margin: "50px" }}
-                transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.25), ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="group flex flex-col"
+                className="group grid grid-cols-1 md:grid-cols-[13rem_1fr] gap-x-10 gap-y-3 py-8 border-b border-ink/15"
               >
-                {/* Entre página y página, el asterismo de los libros. */}
-                {index > 0 && (
-                  <p className="text-center text-muted text-lg my-8 select-none" aria-hidden="true">⁂</p>
-                )}
                 <div>
-                  {/* La fecha es el título de la página; el ánimo, una nota al lado. */}
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-display italic font-normal text-2xl sm:text-3xl text-foreground first-letter:uppercase">
-                      {formatDate(entry.date)}
-                    </h3>
+                  <p className="font-display text-5xl leading-none text-foreground tabular-nums">{d.getDate()}</p>
+                  <p className="mt-1 text-base text-foreground first-letter:uppercase">
+                    {d.toLocaleDateString("es-AR", { weekday: "long" })}, {d.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}
+                  </p>
+                  <p className="mt-2 text-base text-muted">
+                    <span aria-hidden="true">{moodCfg.emoji}</span> {moodCfg.label.toLowerCase()}
+                  </p>
+                </div>
 
-                    <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                <div className="min-w-0">
+                  <div className="text-lg sm:text-xl text-foreground leading-relaxed whitespace-pre-wrap max-w-3xl">{entry.content}</div>
+
+                  {entry.tags && entry.tags.length > 0 && (
+                    <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-base text-muted">
+                      {entry.tags.map((t) => (
+                        <span key={t}>#{t}</span>
+                      ))}
+                    </p>
+                  )}
+
+                  <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                    {cycle && (cycle.dayEnergy || cycle.yearCycle) ? (
+                      <p className="text-sm text-muted">
+                        {[
+                          cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
+                          cycle.dayEnergy?.theme,
+                          cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
+                          cycle.yearCycle?.personalYear && `año ${cycle.yearCycle.personalYear}`,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    ) : (
+                      <span />
+                    )}
+                    <div className="flex items-center gap-5 text-sm">
                       {onEditEntry && (
                         <button
                           type="button"
                           onClick={() => onEditEntry(entry)}
-                          className="p-1.5 text-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                          className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
                           aria-label="Editar entrada"
                         >
-                          <Edit2 className="w-3.5 h-3.5" />
+                          <Edit2 className="w-3.5 h-3.5" /> Corregir
                         </button>
                       )}
                       {onDeleteEntry && (
@@ -269,49 +278,16 @@ export default function JournalTimeline({
                               onDeleteEntry(entry.id);
                             }
                           }}
-                          className="p-1.5 text-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                          className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
                           aria-label="Eliminar entrada"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-3.5 h-3.5" /> Borrar
                         </button>
                       )}
                     </div>
                   </div>
-                  <p className="mt-1 text-sm italic text-muted">
-                    <span aria-hidden="true">{moodCfg.emoji}</span> {moodCfg.label.toLowerCase()}
-                  </p>
-
-                  {/* Body Content — truncado con toggle de expandir */}
-                  <div className="my-5 text-lg text-foreground leading-relaxed whitespace-pre-wrap font-sans first-letter:float-left first-letter:font-display first-letter:text-[3.4em] first-letter:leading-[0.8] first-letter:mr-2 first-letter:mt-1">
-                    {entry.content}
-                  </div>
-
-                  {/* Tags */}
-                  {entry.tags && entry.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {entry.tags.map((t) => (
-                        <span key={t} className="text-sm italic text-muted">
-                          #{t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
                 </div>
-
-                {/* El día, como nota al pie de la página. */}
-                {cycle && (cycle.dayEnergy || cycle.yearCycle) && (
-                  <p className="text-sm italic text-muted">
-                    {[
-                      cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
-                      cycle.dayEnergy?.theme,
-                      cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase()}`,
-                      cycle.yearCycle?.personalYear && `año ${cycle.yearCycle.personalYear}`,
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </p>
-                )}
-              </motion.article>
+              </article>
             );
           })
         )}

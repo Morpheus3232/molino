@@ -11,13 +11,13 @@ function moodEmojiFor(avgMood: number): string {
 function InsightGroup({ title, groups }: { title: string; groups: MoodInsightGroup[] }) {
   if (groups.length === 0) return null;
   return (
-    <div>
-      <p className="text-sm text-muted mb-2 label-caps">{title}</p>
-      <div className="space-y-1.5">
+    <div className="bg-background p-6">
+      <p className="font-display text-xl text-foreground mb-3">{title}</p>
+      <div className="divide-y divide-ink/10">
         {groups.slice(0, 4).map((g) => (
-          <div key={g.label} className="flex items-center justify-between gap-3 text-xs">
+          <div key={g.label} className="flex items-center justify-between gap-3 py-2 text-base">
             <span className="text-foreground truncate">{g.label}</span>
-            <span className="flex items-center gap-1.5 text-muted font-mono shrink-0">
+            <span className="flex items-center gap-1.5 text-muted tabular-nums shrink-0">
               {moodEmojiFor(g.avgMood)} {g.avgMood.toFixed(1)}
               <span className="text-muted/60">({g.count})</span>
             </span>
@@ -40,17 +40,18 @@ export default function JournalInsights({ entries }: { entries: JournalEntry[] }
   const hasAnyInsight = insights.byTheme.length > 0 || insights.byMoonPhase.length > 0 || insights.byPersonalYear.length > 0;
 
   if (!hasAnyInsight) return null;
+  const cols = [insights.byTheme, insights.byMoonPhase, insights.byPersonalYear].filter((g) => g.length > 0).length;
 
   return (
-    <div className="border-b border-ink/10 pb-6">
-      <h3 className="font-display italic font-normal text-2xl text-foreground mb-4">Lo que se repite</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <div className="border-t-2 border-ink pt-6 pb-10">
+      <h3 className="font-display font-normal text-3xl text-foreground mb-6">Lo que se repite</h3>
+      <div className={`grid grid-cols-1 ${cols === 3 ? "md:grid-cols-3" : cols === 2 ? "md:grid-cols-2" : ""} gap-px bg-ink/15 border border-ink/15`}>
         <InsightGroup title="Por tema del día" groups={insights.byTheme} />
         <InsightGroup title="Por fase lunar" groups={insights.byMoonPhase} />
         <InsightGroup title="Por Año Personal" groups={insights.byPersonalYear} />
       </div>
-      <p className="text-sm italic text-muted mt-4">
-        Promedios simples sobre tus propias entradas — cuantas más registres, más se afina.
+      <p className="text-base text-muted mt-4">
+        Promedios simples sobre tus propias páginas: cuantas más escribas, más se afina.
       </p>
     </div>
   );
