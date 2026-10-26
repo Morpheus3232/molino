@@ -1449,21 +1449,26 @@ body { font-variant-numeric: oldstyle-nums proportional-nums; }
    scrollear el textarea (background-attachment: local). La línea de margen
    a la izquierda es la del cuaderno escolar. */
 .diary-paper {
-  --diary-line: 2.125rem;
-  --diary-pad: 0.375rem;
+  --diary-line: 2.25rem;
+  --diary-pad: 0.75rem;
   line-height: var(--diary-line);
-  padding: var(--diary-pad) 0 0 1.25rem;
+  padding: var(--diary-pad) 0.5rem var(--diary-line) 1.25rem;
+  text-wrap: pretty;
+  font-variant-ligatures: common-ligatures;
   background-color: transparent;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent calc(var(--diary-line) - 1px),
-    var(--color-border) calc(var(--diary-line) - 1px),
-    var(--color-border) var(--diary-line)
+    rgb(var(--color-ink-rgb) / 0.09) calc(var(--diary-line) - 1px),
+    rgb(var(--color-ink-rgb) / 0.09) var(--diary-line)
   );
   background-position: 0 var(--diary-pad);
   background-attachment: local;
   border-left: 1px solid rgb(var(--color-ink-rgb) / 0.25);
+}
+.diary-paper::selection {
+  background: rgb(var(--color-ink-rgb) / 0.14);
 }
 
 /* Migas de pan (27 instancias, todas con aria-label="Breadcrumb"): en

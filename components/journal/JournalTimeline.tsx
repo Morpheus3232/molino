@@ -1,5 +1,7 @@
 "use client";
 
+import RichText from "@/components/journal/RichText";
+
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import type { JournalEntry, JournalMood } from "@/types/journal";
@@ -234,7 +236,7 @@ export default function JournalTimeline({
                 </div>
 
                 <div className="min-w-0">
-                  <div className="text-lg sm:text-xl text-foreground leading-relaxed whitespace-pre-wrap max-w-3xl">{entry.content}</div>
+                  <RichText text={entry.content} className="text-lg sm:text-xl text-foreground leading-relaxed max-w-3xl font-serif" />
 
                   {entry.tags && entry.tags.length > 0 && (
                     <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-base text-muted">

@@ -229,7 +229,7 @@ export default function EvolutionPage() {
                               <span className="text-xs font-mono text-accent">· {entry.cycleContext.dayEnergy.theme}</span>
                             )}
                           </div>
-                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{entry.content}</p>
+                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{entry.content.replace(/\*\*|==|\*/g, "").replace(/^>\s?/gm, "")}</p>
                         </Link>
                       );
                     })}

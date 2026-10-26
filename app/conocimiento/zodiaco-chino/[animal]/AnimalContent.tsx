@@ -99,10 +99,6 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <KnowledgeSection label="Historia y simbolismo" title={<>El {animal.name} en la tradición china</>}>
           <TextWithFigure figure={<SectionCover imageKey={animalImageKey(animal.name)} priority />}>
             <p>{animal.history}</p>
-            <p className="text-lg text-muted">
-              La figura de la lámina es parte de un juego funerario de los doce animales del zodíaco, de cerámica, del
-              siglo VI: el mismo calendario que se usa hoy, enterrado hace casi mil quinientos años.
-            </p>
           </TextWithFigure>
         </KnowledgeSection>
 

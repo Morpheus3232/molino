@@ -77,7 +77,6 @@ export function SectionCredit({
             </a>
           </>
         )}
-        {img.source.name !== "NASA" && ", dominio público"}
       </figcaption>
     );
   }
