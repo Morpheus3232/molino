@@ -4,6 +4,31 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import JournalEditor from "@/components/journal/JournalEditor";
 
+// El editor real (Tiptap/ProseMirror) necesita un navegador: acá lo
+// reemplazamos por un textarea con la misma interfaz. Lo prueba e2e/diario.spec.ts.
+vi.mock("@/components/journal/DiaryEditor", async () => {
+  const React = await import("react");
+  const Stub = React.forwardRef(function Stub(
+    props: { id: string; ariaLabel: string; initialMarkdown?: string; onChange: (md: string) => void },
+    ref: React.Ref<unknown>,
+  ) {
+    const [v, setV] = React.useState(props.initialMarkdown ?? "");
+    React.useImperativeHandle(ref, () => ({
+      insertPrompt: (t: string) => { setV(t); props.onChange(t); },
+      setMarkdown: (md: string) => setV(md),
+      clear: () => setV(""),
+      focus: () => {},
+    }));
+    return React.createElement("textarea", {
+      id: props.id,
+      "aria-label": props.ariaLabel,
+      value: v,
+      onChange: (e: { target: { value: string } }) => { setV(e.target.value); props.onChange(e.target.value); },
+    });
+  });
+  return { default: Stub };
+});
+
 describe("JournalEditor component (Fase 2)", () => {
   it("renderiza la página del diario: fecha, ánimo, hoja y botón Guardar", () => {
     render(<JournalEditor profile={null} onSaveEntry={vi.fn()} />);

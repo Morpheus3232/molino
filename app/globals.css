@@ -1515,3 +1515,75 @@ body { font-variant-numeric: oldstyle-nums proportional-nums; }
 /* Fila desplazable sin barra visible (índices de pestañas en móvil) */
 .scrollbar-none { scrollbar-width: none; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ─────────── Diario: la página con formato (editor y lectura) ─────────── */
+.diary-prose { color: var(--color-foreground); }
+.diary-prose > * + * { margin-top: 1em; }
+.diary-prose p { color: inherit; line-height: inherit; margin: 0; }
+.diary-prose strong { font-weight: 600; }
+.diary-prose em { font-style: italic; }
+.diary-mark,
+.diary-prose mark {
+  background: rgb(var(--color-vermilion-rgb) / 0.16);
+  color: inherit;
+  padding: 0.05em 0.12em;
+  margin: 0 -0.06em;
+  border-radius: 1px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.diary-prose blockquote {
+  border-left: 2px solid var(--color-vermilion);
+  padding-left: 1.1em;
+  font-style: italic;
+  color: rgb(var(--color-ink-rgb) / 0.85);
+}
+.diary-prose ul,
+.diary-prose ol { padding-left: 1.4em; }
+.diary-prose ul { list-style: none; }
+.diary-prose ul > li { position: relative; }
+.diary-prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1.05em;
+  top: 0.78em;
+  width: 0.55em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.diary-prose ol { list-style: decimal; }
+.diary-prose li + li { margin-top: 0.25em; }
+.diary-prose li > p { margin: 0; }
+
+/* El editor: la hoja con renglones, que crece con el texto */
+.diary-editor .ProseMirror {
+  min-height: 22rem;
+  outline: none;
+  line-height: 2.25rem;
+  padding: 0.75rem 0.5rem 2.25rem 1.25rem;
+  border-left: 1px solid rgb(var(--color-ink-rgb) / 0.25);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2.25rem - 1px),
+    rgb(var(--color-ink-rgb) / 0.08) calc(2.25rem - 1px),
+    rgb(var(--color-ink-rgb) / 0.08) 2.25rem
+  );
+  background-position: 0 0.75rem;
+  text-wrap: pretty;
+  caret-color: var(--color-vermilion);
+}
+/* En la hoja con renglones, los bloques respetan el renglón */
+.diary-editor .ProseMirror > * + * { margin-top: 2.25rem; }
+.diary-editor .ProseMirror li + li { margin-top: 0; }
+.diary-editor .ProseMirror ::selection { background: rgb(var(--color-ink-rgb) / 0.14); }
+.diary-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--color-muted);
+  font-style: italic;
+  opacity: 0.75;
+}

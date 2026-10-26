@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import RichText, { toBlocks } from "@/components/journal/RichText";
+import RichText from "@/components/journal/RichText";
 
 describe("RichText del diario", () => {
   it("muestra negrita, cursiva y resaltado", () => {
@@ -11,10 +11,9 @@ describe("RichText del diario", () => {
     expect(container.querySelector("mark")?.textContent).toBe("claro");
   });
 
-  it("agrupa las citas y separa párrafos", () => {
-    const blocks = toBlocks("uno\ndos\n\n> cita\n> sigue\ntres");
-    expect(blocks.map((b) => b.kind)).toEqual(["p", "quote", "p"]);
-    render(<RichText text={"> una cita"} />);
+  it("muestra citas y listas", () => {
+    const { container } = render(<RichText text={"> una cita\n\n- uno\n- dos"} />);
     expect(screen.getByText("una cita").closest("blockquote")).not.toBeNull();
+    expect(container.querySelectorAll("ul li")).toHaveLength(2);
   });
 });

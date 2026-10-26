@@ -13,6 +13,7 @@ import DailyTimeline from "@/components/profile/DailyTimeline";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
+import { plainText } from "@/lib/journal/markdown";
 
 const ORIENTATION_ORDER: Orientation[] = ["ACTUAR", "ESPERAR", "OBSERVAR"];
 
@@ -229,7 +230,7 @@ export default function EvolutionPage() {
                               <span className="text-xs font-mono text-accent">· {entry.cycleContext.dayEnergy.theme}</span>
                             )}
                           </div>
-                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{entry.content.replace(/\*\*|==|\*/g, "").replace(/^>\s?/gm, "")}</p>
+                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{plainText(entry.content)}</p>
                         </Link>
                       );
                     })}

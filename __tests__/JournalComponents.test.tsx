@@ -5,6 +5,31 @@ import JournalTimeline from "@/components/journal/JournalTimeline";
 import type { JournalEntry } from "@/types/journal";
 import type { UserProfile } from "@/types/user";
 
+// El editor real (Tiptap/ProseMirror) necesita un navegador: acá lo
+// reemplazamos por un textarea con la misma interfaz. Lo prueba e2e/diario.spec.ts.
+vi.mock("@/components/journal/DiaryEditor", async () => {
+  const React = await import("react");
+  const Stub = React.forwardRef(function Stub(
+    props: { id: string; ariaLabel: string; initialMarkdown?: string; onChange: (md: string) => void },
+    ref: React.Ref<unknown>,
+  ) {
+    const [v, setV] = React.useState(props.initialMarkdown ?? "");
+    React.useImperativeHandle(ref, () => ({
+      insertPrompt: (t: string) => { setV(t); props.onChange(t); },
+      setMarkdown: (md: string) => setV(md),
+      clear: () => setV(""),
+      focus: () => {},
+    }));
+    return React.createElement("textarea", {
+      id: props.id,
+      "aria-label": props.ariaLabel,
+      value: v,
+      onChange: (e: { target: { value: string } }) => { setV(e.target.value); props.onChange(e.target.value); },
+    });
+  });
+  return { default: Stub };
+});
+
 // Mock recharts to avoid jsdom sizing issues
 vi.mock("recharts", async () => {
   const actual = await vi.importActual("recharts");

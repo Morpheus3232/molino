@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import {
@@ -14,37 +14,11 @@ import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEng
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Check, RefreshCw, Plus, Bold, Italic, Highlighter, Quote, RemoveFormatting } from "lucide-react";
-import RichText from "@/components/journal/RichText";
-import { toggleWrap, toggleQuote, clearFormat, insertAt, type Edit } from "@/lib/journal/format";
+import { Check, RefreshCw, Plus } from "lucide-react";
+import DiaryEditor, { type DiaryEditorHandle } from "@/components/journal/DiaryEditor";
+import { plainText } from "@/lib/journal/markdown";
 
 const DRAFT_KEY = "molino.journal-draft.v1";
-
-/** Posición (dentro del textarea) del carácter `pos`, con un espejo del textarea. */
-function caretPoint(el: HTMLTextAreaElement, pos: number) {
-  const cs = window.getComputedStyle(el);
-  const mirror = document.createElement("div");
-  const props = [
-    "boxSizing", "width", "fontFamily", "fontSize", "fontWeight", "fontStyle", "letterSpacing", "lineHeight",
-    "paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "borderTopWidth", "borderLeftWidth",
-    "borderRightWidth", "textTransform", "wordSpacing", "textIndent", "tabSize",
-  ] as const;
-  for (const k of props) (mirror.style as unknown as Record<string, string>)[k] = cs[k] as string;
-  mirror.style.position = "absolute";
-  mirror.style.visibility = "hidden";
-  mirror.style.whiteSpace = "pre-wrap";
-  mirror.style.overflowWrap = "break-word";
-  mirror.style.top = "0";
-  mirror.style.left = "-9999px";
-  mirror.textContent = el.value.slice(0, pos);
-  const mark = document.createElement("span");
-  mark.textContent = el.value.slice(pos) || ".";
-  mirror.appendChild(mark);
-  document.body.appendChild(mirror);
-  const point = { x: mark.offsetLeft, y: mark.offsetTop - el.scrollTop };
-  document.body.removeChild(mirror);
-  return point;
-}
 
 interface JournalEditorProps {
   profile: UserProfile | null;
@@ -88,12 +62,10 @@ export default function JournalEditor({
   const date = useMemo(() => editingEntry?.date || toLocalDateKey(new Date()), [editingEntry]);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
-  const [mode, setMode] = useState<"write" | "read">("write");
-  const [toolbar, setToolbar] = useState<{ x: number; y: number } | null>(null);
   const [draftNote, setDraftNote] = useState<string | null>(null);
   const [isMac, setIsMac] = useState(false);
-  const areaRef = useRef<HTMLTextAreaElement>(null);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const sheet = useRef<DiaryEditorHandle>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     setIsMac(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent));
@@ -109,6 +81,12 @@ export default function JournalEditor({
       const d = JSON.parse(raw) as { date: string; content: string; mood?: JournalMood; tags?: string[] };
       if (d.date === date && d.content?.trim()) {
         setContent(d.content);
+        // La hoja lo aplica en cuanto el editor existe.
+        const push = (tries = 0) => {
+          if (sheet.current) sheet.current.setMarkdown(d.content);
+          else if (tries < 40) window.setTimeout(() => push(tries + 1), 50);
+        };
+        push();
         if (d.mood) setMood(d.mood);
         if (d.tags?.length) {
           setTags(d.tags);
@@ -137,66 +115,6 @@ export default function JournalEditor({
     return () => window.clearTimeout(id);
   }, [content, mood, tags, date, editingEntry]);
 
-  // La hoja crece con el texto: nada de barra de desplazamiento adentro.
-  useLayoutEffect(() => {
-    const el = areaRef.current;
-    if (!el || mode !== "write") return;
-    el.style.height = "auto";
-    el.style.height = `${Math.max(el.scrollHeight, 360)}px`;
-  }, [content, mode]);
-
-  /** Muestra la barra de formato arriba de la selección (o la esconde). */
-  const updateToolbar = useCallback(() => {
-    const el = areaRef.current;
-    const sheet = sheetRef.current;
-    if (!el || !sheet || document.activeElement !== el || el.selectionStart === el.selectionEnd) {
-      setToolbar(null);
-      return;
-    }
-    const p = caretPoint(el, el.selectionStart);
-    const sheetBox = sheet.getBoundingClientRect();
-    const areaBox = el.getBoundingClientRect();
-    const x = Math.min(Math.max(areaBox.left - sheetBox.left + p.x - 12, 0), Math.max(sheetBox.width - 300, 0));
-    const y = areaBox.top - sheetBox.top + p.y - 52;
-    setToolbar({ x, y: Math.max(y, -52) });
-  }, []);
-
-  // La selección también cambia con el teclado, el mouse o el menú del sistema:
-  // escuchamos selectionchange (en el textarea y en el documento, según navegador).
-  useEffect(() => {
-    const el = areaRef.current;
-    const onChange = () => {
-      if (document.activeElement === areaRef.current) updateToolbar();
-    };
-    document.addEventListener("selectionchange", onChange);
-    el?.addEventListener("selectionchange", onChange);
-    el?.addEventListener("select", onChange);
-    return () => {
-      document.removeEventListener("selectionchange", onChange);
-      el?.removeEventListener("selectionchange", onChange);
-      el?.removeEventListener("select", onChange);
-    };
-  }, [updateToolbar]);
-
-  const apply = useCallback((fn: (v: string, s: number, e: number) => Edit) => {
-    const el = areaRef.current;
-    if (!el) return;
-    const r = fn(el.value, el.selectionStart, el.selectionEnd);
-    setContent(r.value);
-    requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(r.start, r.end);
-      updateToolbar();
-    });
-  }, [updateToolbar]);
-
-  const FORMATS = [
-    { key: "b", label: "Negrita", Icon: Bold, run: (v: string, s: number, e: number) => toggleWrap(v, s, e, "**") },
-    { key: "i", label: "Cursiva", Icon: Italic, run: (v: string, s: number, e: number) => toggleWrap(v, s, e, "*") },
-    { key: "e", label: "Resaltar", Icon: Highlighter, run: (v: string, s: number, e: number) => toggleWrap(v, s, e, "==") },
-    { key: "q", label: "Cita", Icon: Quote, run: toggleQuote },
-    { key: "0", label: "Quitar formato", Icon: RemoveFormatting, run: clearFormat },
-  ] as const;
 
   // Semilla de prompt diario
   const initialSeed = useMemo(
@@ -210,20 +128,13 @@ export default function JournalEditor({
     [contextualPrompt, promptSeed]
   );
 
-  const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+  const plain = useMemo(() => plainText(content), [content]);
+  const wordCount = plain.trim() ? plain.trim().split(/\s+/).length : 0;
 
   const usePrompt = useCallback(() => {
     if (!currentPrompt) return;
-    const el = areaRef.current;
-    const pos = el ? (document.activeElement === el ? el.selectionEnd : el.value.length) : content.length;
-    const r = insertAt(content, pos, currentPrompt);
-    setContent(r.value);
-    setMode("write");
-    requestAnimationFrame(() => {
-      areaRef.current?.focus();
-      areaRef.current?.setSelectionRange(r.start, r.end);
-    });
-  }, [currentPrompt, content]);
+    sheet.current?.insertPrompt(currentPrompt);
+  }, [currentPrompt]);
 
   const nextPrompt = useCallback(() => {
     setPromptSeed((s) => s + 1);
@@ -309,10 +220,10 @@ export default function JournalEditor({
           /* nada */
         }
         setDraftNote(null);
-        setMode("write");
 
         if (!editingEntry) {
           setContent("");
+          sheet.current?.clear();
           setMood(3);
           setTags([]);
           setShowTags(false);
@@ -370,7 +281,7 @@ export default function JournalEditor({
         )}
       </header>
 
-      <form onSubmit={handleSubmit} className="mt-10 space-y-8">
+      <form ref={formRef} onSubmit={handleSubmit} className="mt-10 space-y-8">
         {/* 1. El ánimo: cinco casillas con filete, la elegida en tinta. En
             pantallas angostas se ven los iconos y el nombre se confirma abajo;
             el nombre completo siempre está en el aria-label. */}
@@ -404,115 +315,30 @@ export default function JournalEditor({
           </p>
         </fieldset>
 
-        {/* 2. La hoja: escribir o leer cómo queda */}
+        {/* 2. La hoja: se escribe con el formato a la vista */}
         <div>
-          <div className="flex items-end justify-between gap-4 border-b-2 border-ink">
-            <div className="flex" role="tablist" aria-label="La hoja">
-              {(
-                [
-                  ["write", "Escribir"],
-                  ["read", "Leer"],
-                ] as const
-              ).map(([m, label]) => (
-                <button
-                  key={m}
-                  type="button"
-                  role="tab"
-                  aria-selected={mode === m}
-                  onClick={() => {
-                    setMode(m);
-                    setToolbar(null);
-                  }}
-                  className={`px-1 mr-6 py-2 -mb-0.5 border-b-[3px] text-lg transition-colors ${
-                    mode === m ? "border-ink text-foreground" : "border-transparent text-muted hover:text-foreground"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <span className="pb-2 text-sm text-muted tabular-nums" aria-live="polite">
+          <div className="flex items-end justify-between gap-4 border-b-2 border-ink pb-2">
+            <span className="text-lg text-foreground">La página</span>
+            <span className="text-sm text-muted tabular-nums" aria-live="polite">
               {wordCount} {wordCount === 1 ? "palabra" : "palabras"}
               {wordCount > 0 && ` · ${Math.max(1, Math.round(wordCount / 200))} min de lectura`}
             </span>
           </div>
 
-          <div ref={sheetRef} className="relative">
-            {/* Barra de formato: aparece al seleccionar una parte del texto */}
-            {toolbar && mode === "write" && (
-              <div
-                role="toolbar"
-                aria-label="Formato de la selección"
-                className="absolute z-30 flex items-stretch bg-ink text-paper shadow-[0_6px_20px_rgba(0,0,0,0.18)]"
-                style={{ left: toolbar.x, top: toolbar.y }}
-              >
-                {FORMATS.map(({ key, label, Icon, run }) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onMouseDown={(ev) => ev.preventDefault()}
-                    onClick={() => apply(run)}
-                    aria-label={label}
-                    title={key === "q" || key === "0" ? label : `${label} (${isMac ? "⌘" : "Ctrl+"}${key.toUpperCase()})`}
-                    className="w-11 h-11 flex items-center justify-center hover:bg-paper/15 transition-colors border-r border-paper/15 last:border-r-0"
-                  >
-                    <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-            )}
-
-            <label htmlFor="journal-content" className="sr-only">
-              Lo que querés escribir hoy
-            </label>
-            <textarea
+          <div className="max-w-[46rem]">
+            <DiaryEditor
+              ref={sheet}
               id="journal-content"
-              ref={areaRef}
-              rows={10}
-              value={content}
-              lang="es"
-              spellCheck
-              placeholder={content ? undefined : "Empezá por cualquier cosa: lo que pasó, lo que sentiste, lo que no querés olvidar."}
-              onChange={(e) => {
-                setContent(e.target.value);
+              ariaLabel="Lo que querés escribir hoy"
+              initialMarkdown={editingEntry?.content ?? ""}
+              placeholder="Empezá por cualquier cosa: lo que pasó, lo que sentiste, lo que no querés olvidar."
+              isMac={isMac}
+              onChange={(md) => {
+                setContent(md);
                 if (draftNote === "Recuperamos tu borrador de hoy") setDraftNote(null);
               }}
-              onSelect={updateToolbar}
-              onMouseUp={updateToolbar}
-              onKeyUp={(e) => {
-                if (e.shiftKey || e.key.startsWith("Arrow")) updateToolbar();
-              }}
-              onBlur={() => setToolbar(null)}
-              onScroll={updateToolbar}
-              onKeyDown={(e) => {
-                const mod = e.metaKey || e.ctrlKey;
-                if (e.key === "Escape") setToolbar(null);
-                if (!mod) return;
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  (e.currentTarget.form as HTMLFormElement | null)?.requestSubmit();
-                  return;
-                }
-                const f = FORMATS.find((x) => x.key === e.key.toLowerCase() && ["b", "i", "e"].includes(x.key));
-                if (f) {
-                  e.preventDefault();
-                  apply(f.run);
-                }
-              }}
-              className={`diary-paper block w-full max-w-[46rem] text-[1.3125rem] sm:text-[1.375rem] text-foreground placeholder:text-muted/70 placeholder:italic focus:outline-none resize-none overflow-hidden font-serif hyphens-auto ${
-                mode === "write" ? "" : "hidden"
-              }`}
-              required
+              onSubmit={() => formRef.current?.requestSubmit()}
             />
-            {mode === "read" && (
-              <div className="min-h-[360px] max-w-[46rem] pt-5 pl-5 border-l border-ink/25 text-[1.3125rem] sm:text-[1.375rem] leading-[1.65] text-foreground font-serif hyphens-auto">
-                {content.trim() ? (
-                  <RichText text={content} />
-                ) : (
-                  <p className="text-muted italic">Todavía no escribiste nada.</p>
-                )}
-              </div>
-            )}
           </div>
 
           <div className="mt-4 max-w-[46rem] flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
@@ -540,11 +366,10 @@ export default function JournalEditor({
             )}
           </div>
           <p className="mt-3 max-w-[46rem] text-sm text-muted">
-            Seleccioná una parte del texto para darle formato: negrita, cursiva, resaltado o cita.
-            <span className="hidden sm:inline">
-              {" "}
-              {isMac ? "⌘" : "Ctrl+"}B, {isMac ? "⌘" : "Ctrl+"}I y {isMac ? "⌘" : "Ctrl+"}E también sirven; {isMac ? "⌘" : "Ctrl+"}↵ guarda.
-            </span>
+            Seleccioná una parte del texto y elegí negrita, cursiva, resaltado, cita o lista. También podés escribir{" "}
+            <span className="whitespace-nowrap">**así**</span>, <span className="whitespace-nowrap">*así*</span> o{" "}
+            <span className="whitespace-nowrap">==así==</span> y se aplica solo.
+            <span className="hidden sm:inline"> {isMac ? "⌘" : "Ctrl+"}↵ guarda.</span>
             {draftNote && <span className="block mt-1 text-foreground/70">{draftNote}.</span>}
           </p>
         </div>

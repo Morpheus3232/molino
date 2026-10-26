@@ -1,6 +1,7 @@
 "use client";
 
 import RichText from "@/components/journal/RichText";
+import { plainText } from "@/lib/journal/markdown";
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -64,7 +65,7 @@ export default function JournalTimeline({
       if (selectedTag && !entry.tags.includes(selectedTag)) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const matchContent = entry.content.toLowerCase().includes(q);
+        const matchContent = plainText(entry.content).toLowerCase().includes(q);
         const matchTags = entry.tags.some((t) => t.toLowerCase().includes(q));
         const matchTheme = entry.cycleContext?.dayEnergy?.theme?.toLowerCase().includes(q);
         if (!matchContent && !matchTags && !matchTheme) return false;
@@ -267,7 +268,7 @@ export default function JournalTimeline({
                           type="button"
                           onClick={() => onEditEntry(entry)}
                           className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
-                          aria-label="Editar entrada"
+                          aria-label="Corregir esta página"
                         >
                           <Edit2 className="w-3.5 h-3.5" /> Corregir
                         </button>
@@ -281,7 +282,7 @@ export default function JournalTimeline({
                             }
                           }}
                           className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
-                          aria-label="Eliminar entrada"
+                          aria-label="Borrar esta página"
                         >
                           <Trash2 className="w-3.5 h-3.5" /> Borrar
                         </button>
