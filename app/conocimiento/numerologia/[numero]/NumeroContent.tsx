@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { NUMBERS, NUMEROLOGY_DISCLAIMER, MASTER_NUMBERS_NOTE, MASTER_NUMBERS } from "@/lib/data/numerologia-content";
-import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import SectionCover from "@/components/ui/SectionCover";
+import LoShuFigure, { loShuPlace } from "@/components/knowledge/LoShuFigure";
+import { KnowledgeHero, KnowledgeSection, Columns, TextWithFigure, Closing, Note, PrevNext, MARKS, CONTAINER } from "@/components/knowledge/Kit";
 
 export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] | null | undefined }) {
   if (!num) {
@@ -24,217 +23,159 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
   const currentIndex = allNumbers.findIndex(n => n.number === num.number);
   const prev = currentIndex > 0 ? allNumbers[currentIndex - 1] : null;
   const next = currentIndex < allNumbers.length - 1 ? allNumbers[currentIndex + 1] : null;
+  const isMaster = MASTER_NUMBERS.includes(num.number);
+  const digit = num.number > 9 ? Number(String(num.number)[0]) : num.number;
+  const place = loShuPlace(digit);
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+      <main id="main-content">
+        <KnowledgeHero
+          crumbs={[
+            { href: "/", label: "Inicio" },
+            { href: "/conocimiento/numerologia", label: "Numerología" },
+            { label: `Número ${num.number}` },
+          ]}
+          eyebrow={isMaster ? `Numerología · número maestro` : `Numerología · número ${num.number} de 9`}
+          title={
+            <>
+              <span className="block">{num.number}</span>
+              <span className="block text-[0.42em] leading-tight mt-3">{num.title}</span>
+            </>
+          }
+          lead={num.coreDrive}
+          meta={<>Palabras clave: {num.keywords.join(", ").toLowerCase()}.</>}
+          legend={
+            place
+              ? [
+                  {
+                    mark: MARKS.ink,
+                    text: isMaster ? (
+                      <>El {num.number} repite el <span className="text-foreground">{digit}</span>: en el cuadrado Lo Shu ocupa su lugar, {place.where}, dos veces.</>
+                    ) : (
+                      <>En el cuadrado Lo Shu, el <span className="text-foreground">{num.number}</span> está {place.where}.</>
+                    ),
+                  },
+                  {
+                    mark: MARKS.row,
+                    text: <>Su fila suma quince, como todas: <span className="text-foreground">{place.row.join(" + ")} = 15</span>.</>,
+                  },
+                ]
+              : undefined
+          }
+          aside={<LoShuFigure number={num.number} />}
+        />
 
-        {/* Breadcrumb */}
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
-          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/conocimiento/numerologia" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Numerología</Link>
-          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">Número {num.number}</span>
-        </nav>
-
-        {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 items-start">
-            <p className="number-display text-[6rem] sm:text-[8rem] number-display-accent leading-none">{num.number}</p>
-            <div>
-              <h1 className="page-title text-foreground">{num.title}</h1>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {num.keywords.map(kw => (
-                  <span key={kw} className="text-sm text-muted font-medium px-2 py-0.5 rounded-md border border-border label-caps">{kw}</span>
-                ))}
-              </div>
+        {isMaster && (
+          <section className="bg-background border-b border-ink/10">
+            <div className={`${CONTAINER} py-10`}>
+              <p className="max-w-3xl text-lg text-foreground/85 leading-relaxed border-l-2 border-vermilion pl-5">
+                <span className="text-sm text-muted label-caps mr-2">Número maestro</span>
+                {MASTER_NUMBERS_NOTE}{" "}
+                <Link href="/guia/numeros-maestros" className="underline underline-offset-4 hover:no-underline">Leer la guía</Link>.
+              </p>
             </div>
-          </div>
-          <SectionCover imageKey={`numerologia/${num.number}`} priority className="mt-10" />
-        </motion.section>
-
-        {/* Nota de números maestros — solo para 11, 22 y 33 */}
-        {MASTER_NUMBERS.includes(num.number) && (
-          <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-            <div className="p-6 border border-accent/20 bg-accent/[0.03]">
-              <p className="text-sm text-accent font-medium mb-2 label-caps">Número maestro</p>
-              <p className="text-sm text-foreground leading-relaxed">{MASTER_NUMBERS_NOTE}</p>
-            </div>
-          </motion.section>
+          </section>
         )}
 
-        {/* Significado */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Significado tradicional</h2>
-          </div>
-          <p className="text-base text-foreground leading-relaxed max-w-3xl">{num.meaning}</p>
-        </motion.section>
+        <KnowledgeSection label="Significado" title={<>Qué dice el {num.number}</>}>
+          <TextWithFigure figure={<SectionCover imageKey={`numerologia/${num.number}`} priority />}>
+            <p>{num.meaning}</p>
+            <div className="border-t border-ink/15 pt-6 space-y-4">
+              <p className="text-sm text-muted label-caps">Historia y simbolismo</p>
+              <p className="text-lg text-foreground/85">{num.history}</p>
+              <p className="text-lg text-muted">{num.symbolism}</p>
+            </div>
+          </TextWithFigure>
+        </KnowledgeSection>
 
-        {/* Historia */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia y simbolismo</h2>
-          </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-4">{num.history}</p>
-          <p className="text-sm text-muted leading-relaxed max-w-3xl">{num.symbolism}</p>
-        </motion.section>
+        <KnowledgeSection label="Estructura" title="Cómo funciona por dentro" tone="alt">
+          <dl className="border-t-2 border-ink max-w-4xl">
+            {[
+              ["Impulso central", <p key="a">{num.coreDrive}</p>],
+              ["Cómo suele expresarse", <p key="b">{num.behaviorPattern}</p>],
+              [
+                "Potencial",
+                <ul key="c" className="space-y-1.5">
+                  {num.potential.map((p) => (
+                    <li key={p} className="flex items-start gap-3">
+                      <span className="w-3 h-px bg-ink/50 mt-[0.8em] shrink-0" aria-hidden="true" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>,
+              ],
+              ["Sombra", <p key="d" className="text-muted">{num.shadow}</p>],
+              ["Qué necesita desarrollar", <p key="e">{num.growthEdge}</p>],
+            ].map(([k, v]) => (
+              <div key={k as string} className="grid grid-cols-1 sm:grid-cols-[14rem_1fr] gap-x-8 gap-y-1 py-5 border-b border-ink/15">
+                <dt className="font-display text-xl text-foreground">{k}</dt>
+                <dd className="text-lg leading-relaxed text-foreground/85">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </KnowledgeSection>
 
-        {/* Fortalezas y Desafíos */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-6 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fortalezas</h3>
-              <ul className="space-y-2">
-                {num.strengths.map(s => (
-                  <li key={s} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="text-accent mt-0.5">&bull;</span>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-6 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Desafíos</h3>
-              <ul className="space-y-2">
-                {num.challenges.map(c => (
-                  <li key={c} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="text-muted mt-0.5">&bull;</span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </motion.section>
+        <KnowledgeSection label="Rasgos" title="Lo que da y lo que cuesta">
+          <Columns
+            cols={[
+              { title: "Fortalezas", items: num.strengths },
+              { title: "Desafíos", items: num.challenges },
+            ]}
+          />
+        </KnowledgeSection>
 
-        {/* Estructura profunda: impulso, comportamiento, potencial, sombra, aprendizaje */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Estructura profunda</h2>
+        <KnowledgeSection label="En la práctica" title="Dónde se nota" tone="alt">
+          <Columns
+            cols={[
+              { title: "Decisiones", body: num.manifestation.decisions },
+              { title: "Relaciones", body: num.manifestation.relationships },
+              { title: "Trabajo", body: num.manifestation.work },
+            ]}
+          />
+        </KnowledgeSection>
+
+        <section className="bg-background border-b border-ink/10">
+          <div className={`${CONTAINER} py-16 sm:py-24`}>
+            <p className="text-sm text-muted label-caps text-center mb-6">Una pregunta para el {num.number}</p>
+            <blockquote className="mx-auto max-w-3xl text-center font-display italic text-3xl sm:text-4xl leading-snug text-foreground">
+              &laquo;{num.reflectionQuestion}&raquo;
+            </blockquote>
           </div>
-          <div className="space-y-6 max-w-3xl">
-            <div>
-              <p className="text-sm text-accent font-medium mb-2 label-caps">Impulso central</p>
-              <p className="text-sm text-foreground leading-relaxed">{num.coreDrive}</p>
+        </section>
+
+        <KnowledgeSection label="Interpretación de Molino" title={<>Cómo leemos el {num.number}</>}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+            <div className="lg:col-span-7 space-y-6 text-lg sm:text-xl leading-relaxed text-foreground/90">
+              <p>{num.interpretation}</p>
+              <p className="text-lg text-muted">{num.relationshipWithOther}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted font-medium mb-2 label-caps">Cómo suele expresarse</p>
-              <p className="text-sm text-foreground leading-relaxed">{num.behaviorPattern}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted font-medium mb-3 label-caps">Potencial</p>
-              <ul className="space-y-2">
-                {num.potential.map(p => (
-                  <li key={p} className="text-sm text-foreground flex items-start gap-2">
-                    <span className="text-accent mt-0.5">&bull;</span>
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <p className="text-sm text-muted font-medium mb-2 label-caps">Sombra o desequilibrio</p>
-              <p className="text-sm text-muted leading-relaxed">{num.shadow}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted font-medium mb-2 label-caps">Qué suele necesitar desarrollar</p>
-              <p className="text-sm text-foreground leading-relaxed">{num.growthEdge}</p>
+            <div className="lg:col-span-5 border-l-2 border-ink pl-6">
+              <p className="text-sm text-muted label-caps mb-2">Ejemplo</p>
+              <p className="text-lg leading-relaxed text-foreground/85">{num.example}</p>
             </div>
           </div>
-        </motion.section>
+        </KnowledgeSection>
 
-        {/* En la práctica: decisiones, relaciones, trabajo */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">En la práctica</h2>
+        <section className="bg-background">
+          <div className={`${CONTAINER} py-16 sm:py-24`}>
+            <Closing
+              title="¿Cuál es tu número?"
+              text="Calculá tu Camino de Vida con tu fecha de nacimiento: la cuenta queda a la vista, paso a paso."
+              href="/herramientas/camino-de-vida"
+              cta="Calcular mi número"
+            />
+            <Note>
+              <p>{num.scientificNote}</p>
+              <p>{NUMEROLOGY_DISCLAIMER}</p>
+            </Note>
+            <PrevNext
+              label="Navegación entre números"
+              prev={prev ? { href: `/conocimiento/numerologia/${prev.number}`, name: <>{prev.number} · {prev.title}</> } : null}
+              next={next ? { href: `/conocimiento/numerologia/${next.number}`, name: <>{next.number} · {next.title}</> } : null}
+            />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="p-6 border border-ink/10">
-              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Decisiones</h3>
-              <p className="text-sm text-foreground leading-relaxed">{num.manifestation.decisions}</p>
-            </div>
-            <div className="p-6 border border-ink/10">
-              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Relaciones</h3>
-              <p className="text-sm text-foreground leading-relaxed">{num.manifestation.relationships}</p>
-            </div>
-            <div className="p-6 border border-ink/10">
-              <h3 className="text-sm text-muted font-medium mb-3 label-caps">Trabajo</h3>
-              <p className="text-sm text-foreground leading-relaxed">{num.manifestation.work}</p>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Pregunta de reflexión */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <blockquote className="border-l-2 border-accent/40 pl-6 py-1">
-            <p className="font-heading text-lg sm:text-xl text-foreground italic leading-relaxed">{num.reflectionQuestion}</p>
-          </blockquote>
-        </motion.section>
-
-        {/* Interpretación + Ejemplo consolidados */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Interpretación de Molino</h2>
-          </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-6">{num.interpretation}</p>
-          <div className="p-6 border border-ink/10">
-            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Ejemplo práctico</h3>
-            <p className="text-sm text-foreground leading-relaxed">{num.example}</p>
-          </div>
-        </motion.section>
-
-        {/* Relación con otros */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="text-sm text-muted font-medium label-caps">Relación con otros números</h2>
-          </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
-        </motion.section>
-
-        {/* Aviso + Disclaimer consolidados */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-6 border border-ink/10">
-            <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
-            <p className="text-sm text-muted leading-relaxed">{num.scientificNote}</p>
-            <p className="text-xs text-muted leading-relaxed mt-3">{NUMEROLOGY_DISCLAIMER}</p>
-          </div>
-        </motion.section>
-
-        {/* Herramienta relacionada */}
-        <motion.section {...fadeUp} className="mb-12">
-          <div className="p-6 border border-ink/10">
-            <p className="text-sm text-muted font-medium mb-2 label-caps">Generá tu mapa</p>
-            <p className="text-sm text-muted leading-relaxed mb-3">
-              Descubrí tus números: Camino de Vida, Expresión y Personalidad.
-            </p>
-            <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
-              Ir a la calculadora →
-            </Link>
-          </div>
-        </motion.section>
-
-        {/* Navegación entre números */}
-        <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
-          {prev ? (
-            <Link href={`/conocimiento/numerologia/${prev.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              &larr; Número {prev.number} — {prev.title}
-            </Link>
-          ) : <div />}
-          {next ? (
-            <Link href={`/conocimiento/numerologia/${next.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              {next.number} — {next.title} &rarr;
-            </Link>
-          ) : <div />}
-        </motion.section>
-
+        </section>
       </main>
     </div>
   );

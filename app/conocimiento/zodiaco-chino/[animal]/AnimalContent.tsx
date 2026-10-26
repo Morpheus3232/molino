@@ -1,19 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { fadeUp } from "@/lib/utils/motion";
-import EditorialSection from "@/components/ui/EditorialSection";
-import Halftone from "@/components/ui/Halftone";
-import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import RelationWheel from "@/components/knowledge/RelationWheel";
+import { KnowledgeHero, KnowledgeSection, Columns, TextWithFigure, Closing, Note, PrevNext, MARKS, CONTAINER } from "@/components/knowledge/Kit";
 import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER, delAnimal } from "@/lib/data/zodiaco-chino-content";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import SectionCover from "@/components/ui/SectionCover";
 import { animalImageKey } from "@/lib/data/section-images";
-
-const cellPad = "p-8 lg:p-12";
 
 export interface LunarYearRow {
   year: number;
@@ -51,298 +45,132 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
   const currentIndex = CHINESE_ANIMALS.findIndex((a) => a.name === animal.name);
   const prev = currentIndex > 0 ? CHINESE_ANIMALS[currentIndex - 1] : null;
   const next = currentIndex < CHINESE_ANIMALS.length - 1 ? CHINESE_ANIMALS[currentIndex + 1] : null;
-
-  const blocks = [
-    { numeral: "01", label: "Características", items: animal.traits },
-    { numeral: "02", label: "Fortalezas", items: animal.strengths },
-    { numeral: "03", label: "Desafíos", items: animal.challenges },
-  ];
+  const slug = (name: string) => name.toLowerCase();
+  const friends = animal.compatibility.friendly;
+  const enemy = animal.compatibility.challenging[0];
+  // El año lunar en curso (si es de este animal) o el próximo que le toca.
+  const today = new Date().toISOString().slice(0, 10);
+  const current = years.find((y) => y.start <= today && today <= y.end);
+  const upcoming = years.find((y) => y.start > today);
+  const nextYear = current ?? upcoming;
 
   return (
     <div className="min-h-screen bg-background">
       <main id="main-content">
-        {/* ═══ HERO ═══ */}
-        <section className="relative overflow-hidden bg-background">
-          <div
-            className="pointer-events-none absolute -right-40 -top-40 w-[34rem] h-[34rem] text-ink"
-            style={{ opacity: 0.04 }}
-          >
-            <Halftone variant="circle" resolution={30} className="w-full h-full" />
-          </div>
-
-          <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 lg:pt-24">
-            <nav className="text-sm text-muted mb-10 label-caps" aria-label="Breadcrumb">
-              <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
-              <span className="mx-2" aria-hidden="true">/</span>
-              <Link href="/conocimiento/zodiaco-chino" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">
-                Zodiaco Chino
-              </Link>
-              <span className="mx-2" aria-hidden="true">/</span>
-              <span className="text-foreground" aria-current="page">{animal.name}</span>
-            </nav>
-
-            <motion.div {...fadeUp} className="border-t border-ink/10 pt-10 lg:pt-14">
-              <p className="text-sm font-semibold text-accent mb-6 label-caps">
-                Zodíaco chino · signo {currentIndex + 1} de 12
-              </p>
-
-              <div className="flex flex-wrap items-center gap-6 lg:gap-10">
-                <div className="text-accent shrink-0">
-                  <ZodiacAnimalIcon animal={animal.name} size={96} />
-                </div>
-                <h1 className="page-title text-foreground">
-                  {animal.name}
-                </h1>
-              </div>
-
-              <p className="font-mono text-sm text-muted mt-8 tracking-wide">{years.map((y) => y.year).join(", ")}</p>
-
-              {animal.traits.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-8">
-                  {animal.traits.slice(0, 5).map((tag) => (
-                    <Badge key={tag} variant="outline">{tag}</Badge>
-                  ))}
-                </div>
-              )}
-
-              <SectionCover imageKey={animalImageKey(animal.name)} priority className="mt-10" />
-            </motion.div>
-
-            <div className="h-16 lg:h-24" />
-          </div>
-        </section>
-
-        {/* ═══ SIGNIFICADO — negro full-bleed ═══ */}
-        <EditorialSection
-          tone="ink"
-          eyebrow="SIGNIFICADO"
-          title={<>Qué dice ser {animal.name}</>}
-          texture="spiral"
-        >
-          <div className="flex flex-wrap">
-            <div className={`w-full lg:w-1/2 ${cellPad} lg:border-r border-paper/15`}>
-              <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
-            </div>
-            <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
-              <p className="text-sm font-semibold text-accent-light mb-6 label-caps">
-                HISTORIA Y SIMBOLISMO
-              </p>
-              <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
-            </div>
-          </div>
-        </EditorialSection>
-
-        {/* ═══ RASGOS — numerales grandes ═══ */}
-        <EditorialSection
-          tone="paper"
-          eyebrow="RASGOS"
-          title="Cómo se manifiesta"
-        >
-          <div className="flex flex-wrap">
-            {blocks.map((block, i) => (
-              <motion.div
-                key={block.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className={`w-full md:w-1/3 ${cellPad} ${
-                  i < 2 ? "md:border-r border-ink/10" : ""
-                } ${i < blocks.length - 1 ? "border-b md:border-b-0 border-ink/10" : ""}`}
-              >
-                <span className="font-display text-5xl lg:text-6xl leading-none text-ink/15 block mb-8" aria-hidden="true">
-                  {block.numeral}
+        <KnowledgeHero
+          crumbs={[
+            { href: "/", label: "Inicio" },
+            { href: "/conocimiento/zodiaco-chino", label: "Zodíaco chino" },
+            { label: animal.name },
+          ]}
+          eyebrow={`Zodíaco chino · signo ${currentIndex + 1} de 12`}
+          title={animal.name}
+          lead={animal.meaning}
+          meta={
+            <>
+              Años: {years.map((y) => y.year).join(", ")}
+              {current ? (
+                <span className="block mt-1 text-foreground">
+                  Ahora mismo es año {delAnimal(animal.name)} de {current.element}, hasta el {fechaCorta(current.end)}.
                 </span>
-                <p className="text-sm font-semibold text-accent mb-6 label-caps">
-                  {block.label}
-                </p>
-                <ul className="space-y-3">
-                  {block.items.map((item) => (
-                    <li key={item} className="text-sm lg:text-base text-foreground leading-relaxed">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </EditorialSection>
+              ) : upcoming ? (
+                <span className="block mt-1 text-foreground">
+                  El próximo año {delAnimal(animal.name)} empieza el {fechaCorta(upcoming.start)} ({upcoming.element}).
+                </span>
+              ) : null}
+            </>
+          }
+          legend={[
+            { mark: MARKS.ink, text: <>En la rueda de los doce animales, en negro: <span className="text-foreground">{animal.name}</span>.</> },
+            { mark: MARKS.trine, text: <>El triángulo rojo lo une con sus dos amigos <span className="whitespace-nowrap">(三合)</span>: <span className="text-foreground">{friends.join(" y ")}</span>.</> },
+            ...(enemy ? [{ mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto <span className="whitespace-nowrap">(六冲)</span>: <span className="text-foreground">{enemy}</span>.</> }] : []),
+          ]}
+          aside={
+            <RelationWheel
+              items={CHINESE_ANIMALS.map((a) => ({ key: a.name, label: a.name, icon: <ZodiacAnimalIcon animal={a.name} size={40} /> }))}
+              active={currentIndex}
+              center={<ZodiacAnimalIcon animal={animal.name} size={64} />}
+              ariaLabel={`Rueda del zodíaco chino: ${animal.name}, con ${friends.join(" y ")} como amigos y ${enemy} como opuesto.`}
+              className="mx-auto max-w-[34rem]"
+            />
+          }
+        />
 
-        {/* ═══ AÑOS — con fecha exacta: el año chino no empieza el 1 de enero ═══ */}
-        <EditorialSection
-          tone="paperAlt"
-          eyebrow={`AÑOS ${delAnimal(animal.name).toUpperCase()}`}
+        <KnowledgeSection label="Historia y simbolismo" title={<>El {animal.name} en la tradición china</>}>
+          <TextWithFigure figure={<SectionCover imageKey={animalImageKey(animal.name)} priority />}>
+            <p>{animal.history}</p>
+            <p className="text-lg text-muted">
+              La figura de la lámina es parte de un juego funerario de los doce animales del zodíaco, de cerámica, del
+              siglo VI: el mismo calendario que se usa hoy, enterrado hace casi mil quinientos años.
+            </p>
+          </TextWithFigure>
+        </KnowledgeSection>
+
+        <KnowledgeSection label="Rasgos" title="Cómo se manifiesta" tone="alt">
+          <Columns
+            cols={[
+              { title: "Características", items: animal.traits },
+              { title: "Fortalezas", items: animal.strengths },
+              { title: "Desafíos", items: animal.challenges },
+            ]}
+          />
+        </KnowledgeSection>
+
+        <KnowledgeSection
+          label={`Años ${delAnimal(animal.name)}`}
           title={<>¿Naciste en un año {animal.name}?</>}
-          intro={`El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior.`}
+          intro="El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior."
         >
-          <div className={cellPad}>
-            <table className="w-full text-left text-sm sm:text-base tabular-nums">
+          <div className="max-w-3xl overflow-x-auto">
+            <table className="w-full text-left text-base sm:text-lg tabular-nums">
               <thead>
-                <tr className="border-b border-ink/20 text-sm text-muted">
-                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Año</th>
-                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Desde</th>
-                  <th scope="col" className="py-2 pr-4 font-normal label-caps">Hasta</th>
-                  <th scope="col" className="py-2 font-normal label-caps">Elemento</th>
+                <tr className="border-b-2 border-ink text-sm text-muted">
+                  <th scope="col" className="py-3 pr-4 font-normal label-caps">Año</th>
+                  <th scope="col" className="py-3 pr-4 font-normal label-caps">Desde</th>
+                  <th scope="col" className="py-3 pr-4 font-normal label-caps">Hasta</th>
+                  <th scope="col" className="py-3 font-normal label-caps">Elemento</th>
                 </tr>
               </thead>
               <tbody>
                 {years.map((y) => (
-                  <tr key={y.year} className="border-b border-ink/10">
-                    <th scope="row" className="py-2 pr-4 font-semibold">{y.year}</th>
-                    <td className="py-2 pr-4 whitespace-nowrap">{fechaCorta(y.start)}</td>
-                    <td className="py-2 pr-4 whitespace-nowrap">{fechaCorta(y.end)}</td>
-                    <td className="py-2">{y.element}</td>
+                  <tr key={y.year} className={`border-b border-ink/15 ${y.year === nextYear?.year ? "bg-ink/[0.04]" : ""}`}>
+                    <th scope="row" className="py-3 pr-4 font-display font-normal text-xl">{y.year}</th>
+                    <td className="py-3 pr-4 whitespace-nowrap">{fechaCorta(y.start)}</td>
+                    <td className="py-3 pr-4 whitespace-nowrap">{fechaCorta(y.end)}</td>
+                    <td className="py-3">{y.element}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </EditorialSection>
+        </KnowledgeSection>
 
-        {/* ═══ COMPATIBILIDADES — azul full-bleed ═══ */}
-        <EditorialSection
-          tone="accent"
-          eyebrow="AMIGOS Y ENEMIGO"
-          title="Con quién resuena"
-          texture="wave"
-        >
-          <div className="flex flex-wrap">
-            <div className={`w-full md:w-1/2 ${cellPad} md:border-r border-paper/20`}>
-              <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
-                SUS DOS AMIGOS (三合)
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {animal.compatibility.friendly.map((f) => (
-                  <span
-                    key={f}
-                    className="font-heading text-sm text-paper border border-paper/40 rounded-sm px-3 py-1.5 label-caps"
-                  >
-                    {f}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className={`w-full md:w-1/2 ${cellPad} border-t md:border-t-0 border-paper/20`}>
-              <p className="text-sm font-semibold text-paper/85 mb-6 label-caps">
-                SU ENEMIGO (六冲)
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {animal.compatibility.challenging.map((c) => (
-                  <span
-                    key={c}
-                    className="font-heading text-sm text-paper/85 border border-paper/20 rounded-sm px-3 py-1.5 label-caps"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </EditorialSection>
-
-        {/* ═══ LOS 5 ELEMENTOS ═══ */}
-        <EditorialSection
-          tone="paperAlt"
-          eyebrow="LOS 5 ELEMENTOS"
+        <KnowledgeSection
+          label="Los cinco elementos"
           title="Cinco versiones del mismo signo"
+          intro={`Cada ${animal.name} nace además con uno de cinco elementos, que cambia cada dos años. La tabla de arriba dice cuál le toca a cada año.`}
+          tone="alt"
         >
-          <div className="flex flex-wrap">
-            {animal.elements.map((el, i) => (
-              <motion.div
-                key={el.element}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-                className={`w-full sm:w-1/2 lg:w-1/5 ${cellPad} py-8 border-b lg:border-b-0 ${
-                  i < animal.elements.length - 1 ? "lg:border-r" : ""
-                } border-ink/10`}
-              >
-                <span className="font-display text-4xl leading-none text-ink/15 block mb-6" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <p className="font-heading text-lg text-foreground leading-tight">
-                  {el.element}
-                </p>
-                <p className="text-sm text-muted mt-3 leading-relaxed">{el.modifier}</p>
-              </motion.div>
-            ))}
-          </div>
-        </EditorialSection>
+          <Columns cols={animal.elements.map((el) => ({ title: el.element, body: el.modifier }))} />
+        </KnowledgeSection>
 
-        {/* ═══ CTA + AVISO ═══ */}
         <section className="bg-background">
-          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <motion.div {...fadeUp} className="border-t border-ink/10 pt-16 lg:pt-20">
-              <div className="accent-block rounded-lg p-10 lg:p-16 text-center">
-                <p className="font-display text-3xl sm:text-4xl lg:text-5xl text-paper leading-[0.92] mb-6">
-                  ¿CUÁL ES TU ANIMAL?
-                </p>
-                <p className="text-sm lg:text-base text-paper/85 max-w-lg mx-auto mb-10 leading-relaxed">
-                  Calculalo con tu fecha de nacimiento y mirá tu afinidad con entidades del mundo.
-                </p>
-                <Button asChild variant="inverse" size="lg">
-                  <Link href="/herramientas/zodiaco-chino">
-                    CALCULAR MI ANIMAL
-                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
-
-            <motion.div {...fadeUp} className="mt-12 border border-border rounded-md bg-card shadow-sm p-8">
-              <p className="text-sm font-semibold text-muted mb-4 label-caps">
-                AVISO IMPORTANTE
-              </p>
-              <p className="text-sm text-muted leading-relaxed">{animal.scientificNote}</p>
-              <p className="text-xs text-muted leading-relaxed mt-4">{CHINESE_ZODIAC_DISCLAIMER}</p>
-            </motion.div>
-
-            {/* Navegación prev/next */}
-            <nav
-              className="mt-12 flex flex-wrap justify-between items-stretch gap-4 border-t border-ink/10 pt-8"
-              aria-label="Navegación entre signos"
-            >
-              {prev ? (
-                <Link
-                  href={`/conocimiento/zodiaco-chino/${prev.name.toLowerCase()}`}
-                  className="group flex items-center gap-4 flex-1 min-w-[14rem]"
-                >
-                  <span className="text-sm text-muted group-hover:-translate-x-1 transition-transform label-caps">
-                    ←
-                  </span>
-                  <span>
-                    <span className="block text-sm text-muted label-caps">Anterior</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors inline-flex items-center gap-2">
-                      <ZodiacAnimalIcon animal={prev.name} size={20} className="text-accent" /> {prev.name}
-                    </span>
-                  </span>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-
-              {next ? (
-                <Link
-                  href={`/conocimiento/zodiaco-chino/${next.name.toLowerCase()}`}
-                  className="group flex items-center justify-end gap-4 flex-1 min-w-[14rem] text-right"
-                >
-                  <span>
-                    <span className="block text-sm text-muted label-caps">Siguiente</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors inline-flex items-center justify-end gap-2">
-                      {next.name} <ZodiacAnimalIcon animal={next.name} size={20} className="text-accent" />
-                    </span>
-                  </span>
-                  <span className="text-sm text-muted group-hover:translate-x-1 transition-transform label-caps">
-                    →
-                  </span>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-            </nav>
-
-            <div className="h-20" />
+          <div className={`${CONTAINER} py-16 sm:py-24`}>
+            <Closing
+              title="¿Cuál es tu animal?"
+              text="Calculalo con tu fecha de nacimiento, con el corte exacto del Año Nuevo chino, y mirá con qué países, marcas y personas comparte signo."
+              href="/herramientas/zodiaco-chino"
+              cta="Calcular mi animal"
+            />
+            <Note>
+              <p>{animal.scientificNote}</p>
+              <p>{CHINESE_ZODIAC_DISCLAIMER}</p>
+            </Note>
+            <PrevNext
+              label="Navegación entre signos"
+              prev={prev ? { href: `/conocimiento/zodiaco-chino/${slug(prev.name)}`, name: prev.name } : null}
+              next={next ? { href: `/conocimiento/zodiaco-chino/${slug(next.name)}`, name: next.name } : null}
+            />
           </div>
         </section>
       </main>

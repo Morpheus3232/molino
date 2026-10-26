@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 import SectionCover from "@/components/ui/SectionCover";
+import AstrologySignIcon from "@/components/ui/AstrologySignIcon";
+import RelationWheel from "@/components/knowledge/RelationWheel";
+import { KnowledgeHero, KnowledgeSection, Columns, TextWithFigure, Closing, Note, PrevNext, MARKS, CONTAINER } from "@/components/knowledge/Kit";
 import { signImageKey } from "@/lib/data/section-images";
 
 function normalize(str: string) {
@@ -19,7 +20,6 @@ function pairHref(a: string, b: string) {
   return `/compatibilidad/${normalize(x)}-${normalize(y)}`;
 }
 
-const chip = "text-sm text-foreground px-2 py-1 rounded bg-background border border-border hover:border-ink/40 transition-colors";
 
 export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[number] | null | undefined }) {
   if (!sign) {
@@ -37,131 +37,123 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
   const currentIndex = ZODIAC_SIGNS.findIndex(s => s.name === sign.name);
   const prev = currentIndex > 0 ? ZODIAC_SIGNS[currentIndex - 1] : null;
   const next = currentIndex < ZODIAC_SIGNS.length - 1 ? ZODIAC_SIGNS[currentIndex + 1] : null;
+  const trine = [currentIndex, (currentIndex + 4) % 12, (currentIndex + 8) % 12].sort((a, b) => a - b).map((i) => ZODIAC_SIGNS[i].name);
+  const opposite = ZODIAC_SIGNS[(currentIndex + 6) % 12].name;
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
-          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/conocimiento/astrologia" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Astrología</Link>
-          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">{sign.name}</span>
-        </nav>
+      <main id="main-content">
+        <KnowledgeHero
+          crumbs={[
+            { href: "/", label: "Inicio" },
+            { href: "/conocimiento/astrologia", label: "Astrología" },
+            { label: sign.name },
+          ]}
+          eyebrow={`Astrología · signo ${currentIndex + 1} de 12`}
+          title={sign.name}
+          lead={sign.meaning}
+          meta={
+            <dl className="grid grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-xl">
+              {[
+                ["Fechas", sign.dates],
+                ["Elemento", sign.element],
+                ["Modalidad", sign.modality],
+                ["Regente", sign.rulingPlanet],
+              ].map(([k, v]) => (
+                <div key={k} className="bg-background p-3">
+                  <dt className="text-sm text-muted label-caps">{k}</dt>
+                  <dd className="mt-1 text-base text-foreground leading-snug">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          }
+          legend={[
+            { mark: MARKS.ink, text: <>En la rueda del zodíaco, en negro: <span className="text-foreground">{sign.name}</span>.</> },
+            { mark: MARKS.trine, text: <>El triángulo rojo une los tres signos de {sign.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>. Comparten temperamento.</> },
+            { mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>. Lo que al otro le sobra, a este le falta.</> },
+          ]}
+          aside={
+            <RelationWheel
+              items={ZODIAC_SIGNS.map((s) => ({ key: s.name, label: s.name, icon: <AstrologySignIcon sign={s.name} size={40} /> }))}
+              active={currentIndex}
+              center={<AstrologySignIcon sign={sign.name} size={64} />}
+              ariaLabel={`Rueda del zodíaco: ${sign.name}, con ${trine.join(", ")} en el mismo elemento y ${opposite} como opuesto.`}
+              className="mx-auto max-w-[34rem]"
+            />
+          }
+        />
 
-        {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-5xl">{sign.symbol}</span>
-            <div>
-              <h1 className="page-title text-foreground">{sign.name}</h1>
-              <p className="text-sm text-muted mt-1">{sign.dates}</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {[sign.element, sign.modality, sign.polarity, sign.rulingPlanet].map((tag) => (
-              <span key={tag} className="text-sm text-muted font-medium px-2 py-0.5 border border-ink/10 label-caps">{tag}</span>
+        <KnowledgeSection label="Historia" title={<>{sign.name} en el cielo y en la tradición</>}>
+          <TextWithFigure figure={<SectionCover imageKey={signImageKey(sign.name)} priority />}>
+            <p>{sign.history}</p>
+          </TextWithFigure>
+        </KnowledgeSection>
+
+        <KnowledgeSection label="Rasgos" title="Cómo se manifiesta" tone="alt">
+          <Columns
+            cols={[
+              { title: "Fortalezas", items: sign.strengths },
+              { title: "Desafíos", items: sign.challenges },
+            ]}
+          />
+        </KnowledgeSection>
+
+        <KnowledgeSection
+          label="Compatibilidades"
+          title={<>{sign.name} con los demás signos</>}
+          intro="La astrología clásica mira el elemento, la modalidad y la distancia en la rueda. Tocá un par para leerlo completo."
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15 mb-10">
+            {[
+              { title: "Se entienden", list: sign.compatibility.friendly },
+              { title: "Les cuesta más", list: sign.compatibility.challenging },
+            ].map((col) => (
+              <div key={col.title} className="bg-background p-6 sm:p-8">
+                <h3 className="font-display font-normal text-2xl text-foreground">{col.title}</h3>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                  {col.list.map((o) => (
+                    <li key={o}>
+                      <Link href={pairHref(sign.name, o)} className="text-lg underline underline-offset-4 hover:no-underline">
+                        {sign.name} y {o}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
-          <SectionCover imageKey={signImageKey(sign.name)} priority className="mt-10" />
-        </motion.section>
-
-        {/* Significado */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Significado tradicional</h2>
-          </div>
-          <p className="text-base text-foreground leading-relaxed max-w-3xl">{sign.meaning}</p>
-        </motion.section>
-
-        {/* Historia */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia</h2>
-          </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl">{sign.history}</p>
-        </motion.section>
-
-        {/* Fortalezas y Desafíos */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-6 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fortalezas</h3>
-              <ul className="space-y-2">
-                {sign.strengths.map(s => (
-                  <li key={s} className="text-sm text-foreground flex items-start gap-2"><span className="text-accent mt-0.5">&bull;</span>{s}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="p-6 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Desafíos</h3>
-              <ul className="space-y-2">
-                {sign.challenges.map(c => (
-                  <li key={c} className="text-sm text-foreground flex items-start gap-2"><span className="text-muted mt-0.5">&bull;</span>{c}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Compatibilidades */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Compatibilidades tradicionales</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-accent mb-2">Compatibles</h3>
-              <div className="flex flex-wrap gap-2">
-                {sign.compatibility.friendly.map(f => (
-                  <Link key={f} href={pairHref(sign.name, f)} className={chip}>{f}</Link>
-                ))}
-              </div>
-            </div>
-            <div className="p-4 border border-ink/10">
-              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Desafiantes</h3>
-              <div className="flex flex-wrap gap-2">
-                {sign.compatibility.challenging.map(c => (
-                  <Link key={c} href={pairHref(sign.name, c)} className={chip}>{c}</Link>
-                ))}
-              </div>
-            </div>
-          </div>
-          <h3 className="font-heading text-lg font-semibold text-foreground mt-8 mb-3">{sign.name} con cada signo</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <p className="text-sm text-muted label-caps mb-3">{sign.name} con cada signo</p>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-ink/15">
             {ZODIAC_SIGNS.map((other) => (
-              <Link key={other.name} href={pairHref(sign.name, other.name)} className={chip}>
-                {sign.name} y {other.name}
-              </Link>
+              <li key={other.name} className="border-r border-b border-ink/15">
+                <Link href={pairHref(sign.name, other.name)} className="group flex items-center gap-3 p-4 hover:bg-ink/[0.03]">
+                  <AstrologySignIcon sign={other.name} size={22} className="text-muted group-hover:text-foreground shrink-0" />
+                  <span className="text-base group-hover:underline underline-offset-4">{other.name}</span>
+                </Link>
+              </li>
             ))}
-          </div>
-        </motion.section>
+          </ul>
+        </KnowledgeSection>
 
-        {/* Aviso + Disclaimer consolidados */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-6 border border-ink/10">
-            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Aviso importante</h3>
-            <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
-            <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>
+        <section className="bg-background">
+          <div className={`${CONTAINER} py-16 sm:py-24`}>
+            <Closing
+              title="¿Cuál es tu signo?"
+              text="Calculalo con tu fecha de nacimiento y mirá cómo se cruza con tu número y tu animal del zodíaco chino."
+              href="/herramientas/signo-solar"
+              cta="Calcular mi signo"
+            />
+            <Note>
+              <p>{sign.scientificNote}</p>
+              <p>{ASTROLOGY_DISCLAIMER}</p>
+            </Note>
+            <PrevNext
+              label="Navegación entre signos"
+              prev={prev ? { href: `/conocimiento/astrologia/${normalize(prev.name)}`, name: prev.name } : null}
+              next={next ? { href: `/conocimiento/astrologia/${normalize(next.name)}`, name: next.name } : null}
+            />
           </div>
-        </motion.section>
-
-        {/* Navegación */}
-        <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
-          {prev ? (
-            <Link href={`/conocimiento/astrologia/${normalize(prev.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              &larr; {prev.symbol} {prev.name}
-            </Link>
-          ) : <div />}
-          {next ? (
-            <Link href={`/conocimiento/astrologia/${normalize(next.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              {next.symbol} {next.name} &rarr;
-            </Link>
-          ) : <div />}
-        </motion.section>
+        </section>
       </main>
     </div>
   );
