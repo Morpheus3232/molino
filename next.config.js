@@ -69,6 +69,7 @@ const nextConfig = {
         source: `/compatibilidad/${a}-${b}`, destination: `/compatibilidad/${b}-${a}`, permanent: true,
       }))),
       { source: '/principios', destination: '/filosofia', permanent: true },
+      { source: '/widget', destination: '/', permanent: true },
       // /transparencia se eliminó (2026-10-17); lo que importa de ella vive en /filosofia.
       { source: '/transparencia', destination: '/filosofia', permanent: true },
       // Los equipos de fútbol salieron del sitio (2026-10-20). /affinity/team y

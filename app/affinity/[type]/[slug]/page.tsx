@@ -111,9 +111,10 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-          <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType} />
-          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} />
+        <main id="main-content">
+          <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType}>
+            <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} />
+          </AffinityEditorialContent>
         </main>
       </div>
     </>

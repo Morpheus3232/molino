@@ -161,9 +161,6 @@ export default function AffinityQuickEntryForm({
 
   return (
     <>
-      <p className="text-sm text-accent font-medium mb-4 text-center label-caps">
-        Cómo resuena · {meta.label}
-      </p>
 
       {/* Date input OR Result — AnimatePresence for smooth transition */}
       <AnimatePresence mode="wait">
@@ -177,11 +174,11 @@ export default function AffinityQuickEntryForm({
             >
           {/* Date input — shown when no date is saved */}
           <motion.section {...fadeUp} className="mb-12">
-            <div className="max-w-md mx-auto p-6 border border-ink/10 bg-transparent">
-              <p className="text-sm font-medium text-foreground mb-1 text-center">
-                Ingresá tu fecha de nacimiento para ver tu resonancia con {entity.name}
+            <div className="max-w-xl border-2 border-ink p-6 sm:p-8">
+              <p className="font-display text-2xl text-foreground leading-snug mb-1">
+                Escribí tu fecha de nacimiento para ver cómo resuena {entity.name} con vos
               </p>
-              <p className="text-xs text-muted mb-6 text-center">
+              <p className="text-base text-muted mb-6">
                 Solo necesitamos tu fecha. No se guarda permanentemente.
               </p>
 
@@ -192,7 +189,7 @@ export default function AffinityQuickEntryForm({
                     id="qa-day"
                     value={day}
                     onChange={e => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
@@ -206,7 +203,7 @@ export default function AffinityQuickEntryForm({
                     id="qa-month"
                     value={month}
                     onChange={e => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={m}>{MONTH_LABELS[i]}</option>
@@ -219,7 +216,7 @@ export default function AffinityQuickEntryForm({
                     id="qa-year"
                     value={year}
                     onChange={e => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
@@ -229,13 +226,13 @@ export default function AffinityQuickEntryForm({
               </div>
 
               {error && (
-                <p className="text-xs text-red-500 mb-3 text-center">{error}</p>
+                <p className="text-base text-vermilion mb-3">{error}</p>
               )}
 
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold bg-vermilion text-paper hover:bg-vermilion-hover transition-colors min-h-[48px] label-caps focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
                 Ver mi resonancia
               </button>
@@ -258,11 +255,11 @@ export default function AffinityQuickEntryForm({
 
             {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-6 border border-ink/10 bg-transparent">
+              <div className="mt-10 max-w-3xl border-t border-ink/15 pt-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-muted font-medium mb-1 label-caps">Guardá tu resultado</p>
-                    <p className="text-sm text-muted leading-relaxed">
+                    <p className="text-sm text-muted mb-1 label-caps">Guardá tu resultado</p>
+                    <p className="text-base text-muted leading-relaxed">
                       {saved
                         ? "Tu resonancia con esta entidad está guardada."
                         : "Guardá tu resonancia para accederla después sin reingresar tu fecha."
@@ -270,7 +267,7 @@ export default function AffinityQuickEntryForm({
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md font-medium px-4 py-2 text-sm text-accent bg-accent/10 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 text-base text-foreground min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
@@ -280,20 +277,20 @@ export default function AffinityQuickEntryForm({
                     <button
                       type="button"
                       onClick={handleSave}
-                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold bg-ink text-paper hover:bg-ink/90 min-h-[44px] label-caps focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                       Guardar mi resonancia
                     </button>
                   )}
                 </div>
                 {!saved && (
-                  <div className="mt-3 pt-3 border-t border-border">
+                  <div className="mt-3">
                     <button
                       type="button"
                       onClick={() => router.push("/onboarding")}
-                      className="text-xs text-muted hover:text-accent transition-colors"
+                      className="text-base underline underline-offset-4 hover:no-underline"
                     >
-                      Creá tu perfil para explorar más →
+                      Crear mi mapa para ver todas mis afinidades
                     </button>
                   </div>
                 )}

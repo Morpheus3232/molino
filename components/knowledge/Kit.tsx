@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import WheelMark from "@/components/knowledge/WheelMark";
 
 /**
  * Piezas comunes de las fichas de Conocimiento (número, signo, animal), con
@@ -36,19 +37,22 @@ export interface LegendRow {
 }
 
 export const MARKS = {
-  ink: <span className="block w-4 h-4 bg-ink" />,
-  trine: (
-    <svg viewBox="0 0 16 16" className="w-4 h-4 text-vermilion">
-      <polygon points="8,1.5 15,14.5 1,14.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+  ink: <WheelMark part="outer" />,
+  trine: <WheelMark part="trine" />,
+  dashed: <WheelMark part="opposite" />,
+  /** Cuadrado Lo Shu en miniatura: una casilla en tinta. */
+  cell: (
+    <svg viewBox="0 0 30 30" className="w-7 h-7 text-foreground" aria-hidden="true">
+      <rect x="10.5" y="0.5" width="9" height="9" fill="currentColor" />
+      <path d="M0.5 0.5h29v29h-29zM10.5 0.5v29M19.5 0.5v29M0.5 10.5h29M0.5 19.5h29" fill="none" stroke="currentColor" strokeOpacity="0.3" />
     </svg>
   ),
-  dashed: <span className="block w-4 mt-1.5 border-t-2 border-dashed border-ink/70" />,
+  /** Cuadrado Lo Shu en miniatura: una fila marcada. */
   row: (
-    <span className="grid grid-cols-3 w-4 mt-1 border-l border-t border-ink/60">
-      <span className="h-1.5 border-r border-b border-ink/60" />
-      <span className="h-1.5 border-r border-b border-ink/60" />
-      <span className="h-1.5 border-r border-b border-ink/60" />
-    </span>
+    <svg viewBox="0 0 30 30" className="w-7 h-7 text-foreground" aria-hidden="true">
+      <path d="M0.5 0.5h29v29h-29zM10.5 0.5v29M19.5 0.5v29M0.5 10.5h29M0.5 19.5h29" fill="none" stroke="currentColor" strokeOpacity="0.3" />
+      <rect x="1.3" y="1.3" width="27.4" height="8.4" fill="none" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
   ),
 };
 
@@ -60,7 +64,9 @@ export function KnowledgeHero({
   meta,
   legend,
   aside,
+  titleClassName,
 }: {
+  titleClassName?: string;
   crumbs: { href?: string; label: string }[];
   eyebrow: string;
   title: ReactNode;
@@ -76,7 +82,7 @@ export function KnowledgeHero({
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-center">
           <div className="lg:col-span-6">
             <p className="text-sm text-accent mb-4 label-caps">{eyebrow}</p>
-            <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">
+            <h1 className={`font-display font-normal leading-[0.95] tracking-tight text-foreground ${titleClassName ?? "text-[clamp(3.5rem,9vw,7rem)]"}`}>
               {title}
             </h1>
             {lead && <p className="mt-6 text-xl sm:text-2xl text-foreground/85 leading-snug max-w-xl">{lead}</p>}
@@ -84,8 +90,8 @@ export function KnowledgeHero({
             {legend && legend.length > 0 && (
               <dl className="mt-8 divide-y divide-ink/10 border-y border-ink/10 max-w-xl">
                 {legend.map((row, i) => (
-                  <div key={i} className="grid grid-cols-[2rem_1fr] gap-x-4 py-3 items-start">
-                    <dt className="pt-1.5 pl-1" aria-hidden="true">{row.mark}</dt>
+                  <div key={i} className="grid grid-cols-[2.5rem_1fr] gap-x-4 py-3 items-start">
+                    <dt className="pt-0.5" aria-hidden="true">{row.mark}</dt>
                     <dd className="text-base leading-snug text-muted">{row.text}</dd>
                   </div>
                 ))}

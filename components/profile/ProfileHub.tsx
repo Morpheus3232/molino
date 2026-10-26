@@ -10,6 +10,7 @@ import { useUserContext } from "@/lib/hooks/useUserContext";
 import { getRelationshipMap, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
+import WheelMark from "@/components/knowledge/WheelMark";
 import MapWheel, { type WheelPart } from "@/components/profile/MapWheel";
 import { animalsByKind } from "@/lib/engines/personalMapEngine";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
@@ -98,13 +99,13 @@ export default function ProfileHub({
   const wheelLegend = [
     {
       part: "sign" as WheelPart,
-      mark: <span className="block w-4 h-4 bg-ink" />,
+      mark: <WheelMark part="outer" rings={2} />,
       what: "Afuera, los doce signos del zodíaco. En negro, el tuyo:",
       yours: `${profile.sunSign}.`,
     },
     {
       part: "animal" as WheelPart,
-      mark: <span className="block w-4 h-4 bg-ink" />,
+      mark: <WheelMark part="inner" rings={2} />,
       what: "En el medio, los doce animales del zodíaco chino. En negro, el tuyo:",
       yours: `${display.name}.`,
     },
@@ -112,11 +113,7 @@ export default function ProfileHub({
       ? [
           {
             part: "trine" as WheelPart,
-            mark: (
-              <svg viewBox="0 0 16 16" className="w-4 h-4 text-vermilion">
-                <polygon points="8,1.5 15,14.5 1,14.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-              </svg>
-            ),
+            mark: <WheelMark part="trine" rings={2} />,
             what: "El triángulo rojo une tu animal con tus dos amigos del ciclo:",
             yours: `${kinds.amigo.join(" y ")}.`,
           },
@@ -126,7 +123,7 @@ export default function ProfileHub({
       ? [
           {
             part: "opposite" as WheelPart,
-            mark: <span className="block w-4 mt-1.5 border-t-2 border-dashed border-ink/70" />,
+            mark: <WheelMark part="opposite" rings={2} />,
             what: "La línea punteada cruza la rueda hasta tu opuesto:",
             yours: `${kinds.enemigo[0]}.`,
           },
@@ -134,7 +131,7 @@ export default function ProfileHub({
       : []),
     {
       part: "core" as WheelPart,
-      mark: <span className="block w-4 h-4 rounded-full border border-ink/60" />,
+      mark: <WheelMark part="core" rings={2} />,
       what: "En el centro, tu Camino de Vida:",
       yours: `${lifePath}${yearTheme ? `. Este año transitás el año personal ${personalYear}, ${yearTheme}.` : "."}`,
     },
@@ -209,11 +206,11 @@ export default function ProfileHub({
                     onBlur={() => setWheelFocus(null)}
                     tabIndex={0}
                     onClick={() => setWheelFocus((f) => (f === row.part ? null : row.part))}
-                    className={`grid grid-cols-[2rem_1fr] gap-x-4 py-3 items-start cursor-default transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                    className={`grid grid-cols-[2.5rem_1fr] gap-x-4 py-3 items-start cursor-default transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
                       wheelFocus === row.part ? "bg-ink/[0.03]" : ""
                     }`}
                   >
-                    <dt className="pt-1.5 pl-1" aria-hidden="true">{row.mark}</dt>
+                    <dt className="pt-0.5" aria-hidden="true">{row.mark}</dt>
                     <dd className="text-base leading-snug text-muted">
                       {row.what} <span className="text-foreground">{row.yours}</span>
                     </dd>

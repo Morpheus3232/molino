@@ -49,7 +49,6 @@ const FOOTER_COLUMNS = [
       { href: "/regalar", label: "Regalar un mapa" },
       { href: "/socios", label: "Modo Socios" },
       { href: "/profesionales", label: "Para profesionales" },
-      { href: "/widget", label: "Widget para tu sitio" },
       { href: "/privacidad", label: "Privacidad" },
       { href: "/terminos", label: "Términos" },
     ],

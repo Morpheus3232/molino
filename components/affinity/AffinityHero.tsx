@@ -1,82 +1,67 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { type AffinityResult } from "@/lib/engines/affinityEngine";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import EntityVisual from "@/components/ui/EntityVisual";
+import type { UserProfile } from "@/types/user";
+import { buildEntityConnectionStory } from "@/lib/engines/entityStoryEngine";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 /**
- * Discovery hero — entidad, la conexión concreta con el usuario (relación
- * de animal zodiacal), y la evidencia histórica detrás de esa relación. Sin
- * framing de "vs"/compatibilidad: no enfrenta a la entidad con el usuario,
- * muestra algo del mundo que se conecta con su mapa.
- * Shared by the with-profile flow and the P0 quick-entry flow.
+ * Tu afinidad con una entidad, en el lenguaje de Mi Mapa: el veredicto en
+ * grande, la cuenta a la vista (tu año → tu animal; su año → su animal) y la
+ * historia detrás. Lo usan el flujo con perfil y el de fecha rápida.
  */
 export default function AffinityHero({
   result,
   entity,
-  meta,
-  type,
 }: {
   result: AffinityResult;
   entity: SymbolicEntity;
-  meta: { label: string; plural: string; icon: string; description: string };
-  type: EntityType;
+  meta?: { label: string; plural: string; icon: string; description: string };
+  type?: EntityType;
 }) {
-  const router = useRouter();
+  // La historia solo necesita tu animal: sirve igual sin perfil guardado.
+  const story = buildEntityConnectionStory({ chineseZodiac: result.userAnimal } as UserProfile, entity);
+  const headline = story?.headline ?? `${entity.name} y vos: ${result.relationship}.`;
 
   return (
-    <motion.section
-      className="mb-12 text-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
-    >
-      {/* Entity */}
-      <EntityVisual
-        visualType={entity.visualType}
-        emoji={entity.emoji}
-        imageUrl={entity.imageUrl}
-        name={entity.name}
-        countryISO={entity.countryISO}
-        type={type}
-        category={entity.category}
-        size={72}
-        shape="circle"
-        className="mx-auto mb-4"
-      />
-      <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-tight mb-6">
-        {entity.name}
-      </p>
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+      <h3 className="font-display font-normal text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.05] tracking-tight text-foreground max-w-3xl">
+        {headline}
+      </h3>
+      {story?.subtitle && <p className="mt-4 text-lg sm:text-xl text-muted max-w-2xl">{story.subtitle}</p>}
 
-      {/* Framing — conexión, no comparación */}
-      <p className="text-sm text-accent font-medium mb-3 label-caps">
-        Una conexión con vos
-      </p>
-      <p className="text-sm text-foreground font-medium mb-8">
-        {formatAnimalSimple(result.entityAnimal)} · {result.relationship}
-      </p>
-
-      {/* Evidencia — historia detrás de la relación */}
-      <div className="mb-8 px-4">
-        <p className="text-sm text-foreground leading-relaxed max-w-md mx-auto">
-          {result.primaryEvent.description}
-        </p>
+      {/* La cuenta: dos años, dos animales */}
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-3xl">
+        {[
+          { label: "Tu año de nacimiento", year: result.userYear, animal: result.userAnimal },
+          { label: `${entity.name}: ${result.primaryEvent?.label ?? "origen"}`, year: result.entityYear, animal: result.entityAnimal },
+        ].map((c) => (
+          <div key={c.label} className="bg-background p-6 flex items-center gap-5">
+            <ZodiacAnimalIcon animal={c.animal} size={56} className="text-foreground shrink-0" />
+            <div className="min-w-0">
+              <p className="text-sm text-muted leading-snug">{c.label}</p>
+              <p className="mt-1 font-display text-4xl leading-none text-foreground tabular-nums">{c.year}</p>
+              <p className="mt-1 text-lg text-foreground">{c.animal}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* CTA — seguir descubriendo */}
-      <div className="flex justify-center">
-        <button
-          type="button"
-          onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-          className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        >
-          Explorar otra entidad
-          <span aria-hidden="true">→</span>
-        </button>
+      {story?.explanation && (
+        <p className="mt-8 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-3xl">{story.explanation}</p>
+      )}
+
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-base">
+        <Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">
+          Comparar {entity.name} con otra entrada
+        </Link>
+        <Link href="/lectura" className="underline underline-offset-4 hover:no-underline">
+          Abrir mi lectura completa
+        </Link>
       </div>
-    </motion.section>
+    </motion.div>
   );
 }

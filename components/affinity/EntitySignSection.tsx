@@ -55,11 +55,11 @@ export default function EntitySignSection({
   const own = lunarYearsOf(animal);
 
   return (
-    <section className="mb-10" aria-labelledby="section-signo-chino">
-      <h2 id="section-signo-chino" className="font-heading text-xl font-semibold text-foreground mb-3">
+    <section aria-labelledby="section-signo-chino">
+      <h2 id="section-signo-chino" className="section-title text-foreground mb-4">
         El signo chino de {name}: {animal}
       </h2>
-      <p className="text-sm text-foreground leading-relaxed mb-4">
+      <p className="text-lg sm:text-xl text-foreground/90 leading-relaxed mb-8 max-w-3xl">
         {eventLabel} el {corta(eventDate)}, en el año del{" "}
         <Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">
           {animal}
@@ -68,10 +68,10 @@ export default function EntitySignSection({
         nacimiento, contra el de {name}.
       </p>
 
-      <dl className="space-y-4 text-sm">
-        <div>
-          <dt className="font-semibold text-foreground">Mismo signo: {animal}</dt>
-          <dd className="text-muted leading-relaxed mt-1">
+      <dl className="border-t-2 border-ink max-w-4xl divide-y divide-ink/15">
+        <div className="py-5">
+          <dt className="font-display text-2xl text-foreground">Mismo signo: {animal}</dt>
+          <dd className="text-lg text-muted leading-relaxed mt-2">
             Resonás más con {name} si naciste entre{" "}
             {own.map((r, i) => (
               <span key={r.year}>
@@ -81,8 +81,8 @@ export default function EntitySignSection({
             ))}
           </dd>
         </div>
-        <div>
-          <dt className="font-semibold text-foreground">
+        <div className="py-5">
+          <dt className="font-display text-2xl text-foreground">
             Sus dos amigos (三合 San He):{" "}
             {friends.map((f, i) => (
               <span key={f}>
@@ -91,25 +91,25 @@ export default function EntitySignSection({
               </span>
             ))}
           </dt>
-          <dd className="text-muted leading-relaxed mt-1">
+          <dd className="text-lg text-muted leading-relaxed mt-2">
             También resuena con quienes nacieron en años {friends.join(" o ")}:{" "}
             {friends.map((f) => `${f}, ${lunarYearsOf(f).map((r) => r.year).join(", ")}`).join("; ")}.
           </dd>
         </div>
         {enemy && (
-          <div>
-            <dt className="font-semibold text-foreground">
+          <div className="py-5">
+            <dt className="font-display text-2xl text-foreground">
               Su enemigo (六冲 Liu Chong):{" "}
               <Link href={signoHref(enemy)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{enemy}</Link>
             </dt>
-            <dd className="text-muted leading-relaxed mt-1">
+            <dd className="text-lg text-muted leading-relaxed mt-2">
               La energía opuesta. Si naciste en año {enemy} ({lunarYearsOf(enemy).map((r) => r.year).join(", ")}),
               {" "}la de {name} es la relación que conviene evitar.
             </dd>
           </div>
         )}
       </dl>
-      <p className="text-xs text-muted mt-4">
+      <p className="text-base text-muted mt-6 max-w-3xl">
         El año chino empieza entre el 21 de enero y el 21 de febrero: si naciste en esas semanas, mirá el rango
         exacto en la página de tu signo.
       </p>

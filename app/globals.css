@@ -1506,3 +1506,7 @@ body { font-variant-numeric: oldstyle-nums proportional-nums; }
 @keyframes map-wheel-draw {
   to { stroke-dashoffset: 0; }
 }
+
+/* Fila desplazable sin barra visible (índices de pestañas en móvil) */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }

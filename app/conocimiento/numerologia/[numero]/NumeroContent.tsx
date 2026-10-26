@@ -49,7 +49,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
             place
               ? [
                   {
-                    mark: MARKS.ink,
+                    mark: MARKS.cell,
                     text: isMaster ? (
                       <>El {num.number} repite el <span className="text-foreground">{digit}</span>: en el cuadrado Lo Shu ocupa su lugar, {place.where}, dos veces.</>
                     ) : (

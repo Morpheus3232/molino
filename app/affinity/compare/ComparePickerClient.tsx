@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
+import { Breadcrumb, CONTAINER, Note } from "@/components/knowledge/Kit";
 import EntityVisual from "@/components/ui/EntityVisual";
 import type { LightweightEntity } from "@/types/atlas";
 
@@ -68,86 +69,77 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+      <main className={`${CONTAINER} pt-12 sm:pt-16 pb-24`} id="main-content">
+        <Breadcrumb items={[{ href: "/", label: "Inicio" }, { href: "/affinity", label: "Afinidades" }, { label: "Comparar" }]} />
 
-        {/* Back */}
-        <motion.div {...fadeUp}>
-          <button
-            type="button"
-            onClick={() => {
-              if (step === "pick-b") {
-                setStep("pick-a");
-                setSelectedA(null);
-                setSearch("");
-              } else {
-                router.push("/affinity");
-              }
-            }}
-            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
-          >
-            &larr; {step === "pick-b" ? "Cambiar primera entidad" : "Afinidad Personal"}
-          </button>
-        </motion.div>
-
-        {/* Header */}
-        <motion.section {...fadeUp} className="mb-8">
-          <p className="text-sm text-accent font-medium mb-4 label-caps">
-            Comparación Simbólica
-          </p>
-          <h1 className="page-title text-foreground mb-3">
-            {step === "pick-a" ? "Elegí la primera entidad" : "Elegí la segunda entidad"}
-          </h1>
-          <p className="text-sm text-muted">
-            {step === "pick-a"
-              ? "Seleccioná una entidad para comparar."
-              : `Comparando con ${selectedEntityA?.name ?? ""}. Seleccioná la segunda entidad.`}
-          </p>
-        </motion.section>
-
-        {/* Selected entity preview (step B) */}
-        {step === "pick-b" && selectedEntityA && (
-          <motion.section {...fadeUp} className="mb-6">
-            <div className="flex items-center gap-3 p-4 rounded-md border border-accent/30 bg-accent/5">
-              <EntityVisual
-                visualType={selectedEntityA.visualType}
-                emoji={selectedEntityA.emoji}
-                name={selectedEntityA.name}
-                type={selectedEntityA.type}
-                category={selectedEntityA.category}
-                countryISO={selectedEntityA.countryISO}
-                imageUrl={selectedEntityA.imageUrl}
-                size={32}
-              />
-              <div>
-                <p className="text-sm font-medium text-foreground">{selectedEntityA.name}</p>
-                <p className="text-xs text-muted">{TYPE_LABEL[selectedEntityA.type] ?? selectedEntityA.type} · {selectedEntityA.country}</p>
+        <header className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8 items-end pb-10 border-b-2 border-ink">
+          <div className="lg:col-span-7">
+            <p className="text-sm text-accent mb-4 label-caps">Comparar dos entradas · paso {step === "pick-a" ? "1" : "2"} de 2</p>
+            <h1 className="font-display font-normal text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-foreground">
+              {step === "pick-a" ? "Elegí la primera" : "Ahora, la segunda"}
+            </h1>
+            <p className="mt-5 text-xl text-foreground/85 leading-snug max-w-xl">
+              {step === "pick-a"
+                ? "Una marca, un país, una ciudad o una persona del Atlas. Después elegís con quién compararla."
+                : `Con qué querés comparar ${selectedEntityA?.name ?? "la primera"}.`}
+            </p>
+          </div>
+          <div className="lg:col-span-5">
+            {step === "pick-b" && selectedEntityA ? (
+              <div className="flex items-center gap-4 border-2 border-ink p-5">
+                <EntityVisual
+                  visualType={selectedEntityA.visualType}
+                  emoji={selectedEntityA.emoji}
+                  name={selectedEntityA.name}
+                  type={selectedEntityA.type}
+                  category={selectedEntityA.category}
+                  countryISO={selectedEntityA.countryISO}
+                  imageUrl={selectedEntityA.imageUrl}
+                  size={44}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-muted">Primera entrada</p>
+                  <p className="font-display text-2xl text-foreground truncate">{selectedEntityA.name}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep("pick-a");
+                    setSelectedA(null);
+                    setSearch("");
+                  }}
+                  className="text-base underline underline-offset-4 hover:no-underline shrink-0 min-h-[44px]"
+                >
+                  Cambiar
+                </button>
               </div>
-              <span className="text-xs text-accent font-medium ml-auto">Primera entidad</span>
-            </div>
-          </motion.section>
+            ) : (
+              <SearchInput
+                value={search}
+                onValueChange={setSearch}
+                placeholder="Buscar por nombre, país o tipo"
+                label="Buscar entrada"
+                autoFocus
+              />
+            )}
+          </div>
+        </header>
+
+        {step === "pick-b" && (
+          <div className="mt-8 max-w-xl">
+            <SearchInput value={search} onValueChange={setSearch} placeholder="Buscar por nombre, país o tipo" label="Buscar entrada" autoFocus />
+          </div>
         )}
 
-        {/* Search */}
-        <motion.div {...fadeUp} className="mb-6">
-          <SearchInput
-            value={search}
-            onValueChange={setSearch}
-            placeholder="Buscar entidad..."
-            label="Buscar entidad"
-            className="max-w-sm"
-            autoFocus
-          />
-        </motion.div>
-
         {/* Entity list */}
-        <motion.div {...fadeUp} className="space-y-2">
+        <motion.div {...fadeUp} className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
           {filtered.slice(0, search ? filtered.length : visible).map(entity => {
             return (
               <button
                 key={entity.id}
                 type="button"
                 onClick={() => handleSelect(entity.id)}
-                className="w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent transition-all group flex items-center gap-4"
+                className="w-full text-left p-5 bg-background hover:bg-paper-alt transition-colors group flex items-center gap-4 min-h-[88px]"
               >
                 <EntityVisual
                   visualType={entity.visualType}
@@ -157,34 +149,31 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                   category={entity.category}
                   countryISO={entity.countryISO}
                   imageUrl={entity.imageUrl}
-                  size={32}
+                  size={40}
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
+                  <p className="font-display text-xl text-foreground group-hover:underline underline-offset-4 truncate">
                     {entity.name}
                   </p>
-                  <p className="text-xs text-muted truncate">
+                  <p className="text-sm text-muted truncate">
                     {TYPE_LABEL[entity.type] ?? entity.type} · {entity.country}
                   </p>
                 </div>
-                <svg className="w-4 h-4 text-muted group-hover:text-accent transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
               </button>
             );
           })}
         </motion.div>
 
         {!search && filtered.length > visible && (
-          <div className="mt-6 flex flex-col items-center gap-2">
+          <div className="mt-8 flex flex-col items-center gap-2">
             <button
               type="button"
               onClick={() => setVisible((v) => v + PAGE * 2)}
-              className="inline-flex items-center justify-center min-h-[44px] px-6 border border-ink/20 text-sm text-foreground hover:border-ink transition-colors label-caps"
+              className="inline-flex items-center justify-center min-h-[48px] px-8 border-2 border-ink text-sm text-foreground hover:bg-ink hover:text-paper transition-colors label-caps"
             >
               Ver más
             </button>
-            <p className="text-xs text-muted">
+            <p className="text-base text-muted">
               {visible} de {filtered.length} · o buscá por nombre, país o tipo
             </p>
           </div>
@@ -198,30 +187,26 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
             transition={{ duration: 0.3 }}
             className="text-center py-16"
           >
-            <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
-            <p className="text-sm text-muted mb-6 max-w-md mx-auto">
+            <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
+            <p className="text-lg text-muted mb-6 max-w-md mx-auto">
               No se encontraron resultados para &ldquo;{search}&rdquo;.
             </p>
             <button
               type="button"
               onClick={() => router.push("/affinity")}
-              className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
             >
               Volver a Afinidad Personal
             </button>
           </motion.div>
         )}
 
-        {/* Disclaimer */}
-        <motion.section {...fadeUp} className="mt-16">
-          <div className="p-6 border border-ink/10 bg-transparent">
-            <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
-            <p className="text-xs text-muted leading-relaxed">
-              La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
-              Molino es una plataforma educativa y de entretenimiento.
-            </p>
-          </div>
-        </motion.section>
+        <Note>
+          <p>
+            La comparación es una lectura simbólica de la tradición del zodíaco chino, no una medición: cruza los signos de
+            los años de origen de las dos entradas.
+          </p>
+        </Note>
       </main>
     </div>
   );

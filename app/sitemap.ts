@@ -22,7 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/journal`, changeFrequency: "weekly" as const, priority: 0.7 },
     { url: `${BASE_URL}/premium`, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/profesionales`, changeFrequency: "monthly" as const, priority: 0.6 },
-    { url: `${BASE_URL}/widget`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/shortcuts`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/nosotros`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/filosofia`, changeFrequency: "monthly" as const, priority: 0.8 },
