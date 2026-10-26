@@ -31,9 +31,17 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-async function search(query: string) {
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * El listado muestra solo tu signo, tus amigos y tu enemigo. Para encontrar
+ * una universidad puntual se activa su propio signo: así cae en "Tu propio
+ * signo" y la búsqueda prueba lo que importa (una sola card, sin duplicados).
+ */
+async function search(query: string, nameFragment?: string) {
   const user = userEvent.setup();
-  render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
+  const target = nameFragment ? ENTITIES.find((e) => new RegExp(esc(nameFragment), "i").test(e.name)) : undefined;
+  render(<AffinityTypeContent meta={META} entities={ENTITIES} initialAnimal={target?.animal} />);
   const input = await screen.findByLabelText(/buscar universidades/i);
   await user.type(input, query);
   return { user };
@@ -48,19 +56,19 @@ describe("Catálogo real de universidades — búsqueda de las prioritarias", ()
     ["UCES", "Universidad de Ciencias Empresariales y Sociales"],
     ["Di Tella", "Universidad Torcuato Di Tella"],
   ])('buscar "%s" muestra exactamente una card de "%s"', async (query, expectedNameFragment) => {
-    await search(query);
-    const matches = await screen.findAllByText(new RegExp(expectedNameFragment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+    await search(query, expectedNameFragment);
+    const matches = await screen.findAllByText(new RegExp(esc(expectedNameFragment), "i"));
     expect(matches).toHaveLength(1);
   });
 
   it('buscar "UCEMA" no devuelve la Universidad CLAEH ni viceversa', async () => {
-    await search("UCEMA");
+    await search("UCEMA", "Universidad del CEMA");
     expect(await screen.findByText(/Universidad del CEMA/i)).toBeInTheDocument();
     expect(screen.queryByText(/CLAEH/i)).not.toBeInTheDocument();
   });
 
   it('buscar "La Plata" no muestra dos cards de UNLP con datos distintos', async () => {
-    await search("La Plata");
+    await search("La Plata", "Universidad Nacional de La Plata");
     const matches = await screen.findAllByText(/Universidad Nacional de La Plata/i);
     expect(matches).toHaveLength(1);
   });
@@ -68,7 +76,7 @@ describe("Catálogo real de universidades — búsqueda de las prioritarias", ()
 
 describe("Catálogo real de universidades — sin duplicados al limpiar la búsqueda", () => {
   it("cada universidad prioritaria aparece una sola vez en el listado completo", async () => {
-    const { user } = await search("UBA");
+    const { user } = await search("UBA", "Universidad de Buenos Aires");
     await screen.findByText(/Universidad de Buenos Aires/i);
     const input = screen.getByLabelText(/buscar universidades/i);
     await user.clear(input);

@@ -29,13 +29,12 @@ const transitionVariants = {
 
 type RelationGroupKey = MapRelation;
 
-// Orden de lectura de CLAUDE.md: tu propio signo → tus dos amigos → tu
-// enemigo (lo que conviene evitar) → el resto del ciclo.
+// Solo las tres casillas que dicen algo: tu propio signo → tus dos amigos →
+// tu enemigo (lo que conviene evitar). El resto del ciclo no se lista.
 const GROUPS: { key: RelationGroupKey; label: string; chinese: string; note?: string }[] = [
   { key: "mismo", label: "Tu propio signo", chinese: "本命" },
   { key: "amigo", label: "Tus dos amigos", chinese: "三合 San He" },
   { key: "enemigo", label: "Tu enemigo", chinese: "六冲 Liu Chong", note: "Lo que conviene evitar." },
-  { key: "otro", label: "El resto del ciclo", chinese: "" },
 ];
 
 const PAGE_SIZE = 8;
@@ -219,16 +218,20 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent rounded-lg"
                   aria-label={`Buscar ${meta.plural.toLowerCase()}`}
                 />
-                {searchQuery && (
-                  <p className="text-xs text-muted mt-2">
-                    {filteredSorted.length} resultado{filteredSorted.length !== 1 ? "s" : ""} para &quot;{searchQuery}&quot;
-                  </p>
-                )}
+                {searchQuery && (() => {
+                  const shown = groups.mismo.length + groups.amigo.length + groups.enemigo.length;
+                  return (
+                    <p className="text-sm text-muted mt-2">
+                      {shown > 0
+                        ? `${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`
+                        : `Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`}
+                    </p>
+                  );
+                })()}
               </div>
 
-              {/* RESULTADOS AGRUPADOS POR CASILLA: tu signo, tus dos amigos, tu
-                  enemigo y el resto del ciclo — ninguna entidad que pase el
-                  filtro de búsqueda queda sin grupo. */}
+              {/* RESULTADOS AGRUPADOS POR CASILLA: tu signo, tus dos amigos y tu
+                  enemigo. El resto del ciclo no se muestra. */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAnimal}

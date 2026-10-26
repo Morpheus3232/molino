@@ -108,7 +108,6 @@ export default function RecommendationContent({ entityType, catalog, title, subt
   const same = recommendations.filter(r => r.tier === "mismo");
   const friends = recommendations.filter(r => r.tier === "amigo");
   const enemy = recommendations.filter(r => r.tier === "enemigo");
-  const restCount = recommendations.filter(r => r.tier === "otro").length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -176,11 +175,6 @@ export default function RecommendationContent({ entityType, catalog, title, subt
               router={router}
               transitionDelay={0.15}
             />
-          )}
-          {restCount > 0 && (
-            <p key="resto" className="text-xs text-muted mb-10">
-              {restCount} más quedan en el resto del ciclo: ni tu signo, ni tus amigos, ni tu enemigo.
-            </p>
           )}
           {same.length === 0 && friends.length === 0 && enemy.length === 0 && (
             <motion.div

@@ -42,14 +42,16 @@ function university(id: string, name: string, foundingYear: number): Lightweight
   };
 }
 
-// Con Rata activa (default sin perfil): UADE (1957→Gallo) y UBA (1821→Serpiente)
-// son ambas "neutral" — exactamente el caso reportado.
-const UADE = university("uade", "Universidad Argentina de la Empresa (UADE)", 1957);
-const UBA = university("uba", "Universidad de Buenos Aires (UBA)", 1821);
-// Control: misma relación "same" con Rata, para confirmar que ese grupo no cambia.
+// Con Rata activa (default sin perfil): UADE como amiga (Dragón), UBA como
+// enemiga (Caballo), una del mismo signo y una del resto del ciclo (Gallo),
+// que no se lista: solo se muestran mismo signo, amigos y enemigo.
+const UADE = university("uade", "Universidad Argentina de la Empresa (UADE)", 1952);
+const UBA = university("uba", "Universidad de Buenos Aires (UBA)", 1954);
 const SAME_ANIMAL_ENTITY = university("rata-u", "Universidad Rata", 1900);
+const OTHER = university("gallo-u", "Universidad Gallo", 1957);
 
-const ENTITIES = [UADE, UBA, SAME_ANIMAL_ENTITY];
+const SHOWN = [UADE, UBA, SAME_ANIMAL_ENTITY];
+const ENTITIES = [...SHOWN, OTHER];
 
 beforeEach(() => {
   localStorage.clear();
@@ -101,12 +103,13 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
-    await user.type(search, "Universidad"); // matchea las 3
+    await user.type(search, "Universidad"); // matchea las 4; se muestran 3
 
     await waitFor(() => expect(screen.getByText(/3 resultados para/i)).toBeInTheDocument());
-    for (const entity of ENTITIES) {
+    for (const entity of SHOWN) {
       expect(screen.getByText(entity.name)).toBeInTheDocument();
     }
+    expect(screen.queryByText(OTHER.name)).not.toBeInTheDocument();
   });
 
   it("limpiar la búsqueda vuelve a mostrar todas las entidades sin duplicados", async () => {
@@ -118,7 +121,7 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     await screen.findByText(UADE.name);
     await user.clear(search);
 
-    for (const entity of ENTITIES) {
+    for (const entity of SHOWN) {
       expect(await screen.findAllByText(entity.name)).toHaveLength(1);
     }
   });
@@ -129,9 +132,12 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     expect(screen.getByRole("heading", { name: /Tu propio signo/ })).toBeInTheDocument();
   });
 
-  it("lo que no es signo, amigo ni enemigo aparece bajo 'El resto del ciclo'", async () => {
+  it("solo lista mismo signo, amigos y enemigo: el resto del ciclo no aparece", async () => {
     render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(UADE.name)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /El resto del ciclo/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Tus dos amigos/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Tu enemigo/ })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /El resto del ciclo/ })).not.toBeInTheDocument();
+    expect(screen.queryByText(OTHER.name)).not.toBeInTheDocument();
   });
 });
