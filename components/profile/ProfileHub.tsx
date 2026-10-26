@@ -7,10 +7,11 @@ import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { buildAtlasSections } from "@/lib/affinity-light";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
+import { getRelationshipMap, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES, archetypeDisplayName } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import PersonalSigil from "@/components/ui/PersonalSigil";
+import MapWheel, { type WheelPart } from "@/components/profile/MapWheel";
+import { animalsByKind } from "@/lib/engines/personalMapEngine";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
 import PersonalMapSection from "@/components/profile/PersonalMapSection";
 import BirthGridSection from "@/components/profile/BirthGridSection";
@@ -92,6 +93,53 @@ export default function ProfileHub({
   // para cumplir el contrato del componente sin descartarlas.
   const [, setPieces] = useState<LecturaPieces | null>(null);
 
+  const [wheelFocus, setWheelFocus] = useState<WheelPart | null>(null);
+  const kinds = useMemo(() => (ANIMALS.includes(display.name as Animal) ? animalsByKind(display.name as Animal) : null), [display.name]);
+  const wheelLegend = [
+    {
+      part: "sign" as WheelPart,
+      mark: <span className="block w-4 h-4 bg-ink" />,
+      what: "Afuera, los doce signos del zodíaco. En negro, el tuyo:",
+      yours: `${profile.sunSign}.`,
+    },
+    {
+      part: "animal" as WheelPart,
+      mark: <span className="block w-4 h-4 bg-ink" />,
+      what: "En el medio, los doce animales del zodíaco chino. En negro, el tuyo:",
+      yours: `${display.name}.`,
+    },
+    ...(kinds && kinds.amigo.length
+      ? [
+          {
+            part: "trine" as WheelPart,
+            mark: (
+              <svg viewBox="0 0 16 16" className="w-4 h-4 text-vermilion">
+                <polygon points="8,1.5 15,14.5 1,14.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+              </svg>
+            ),
+            what: "El triángulo rojo une tu animal con tus dos amigos del ciclo:",
+            yours: `${kinds.amigo.join(" y ")}.`,
+          },
+        ]
+      : []),
+    ...(kinds && kinds.enemigo[0]
+      ? [
+          {
+            part: "opposite" as WheelPart,
+            mark: <span className="block w-4 mt-1.5 border-t-2 border-dashed border-ink/70" />,
+            what: "La línea punteada cruza la rueda hasta tu opuesto:",
+            yours: `${kinds.enemigo[0]}.`,
+          },
+        ]
+      : []),
+    {
+      part: "core" as WheelPart,
+      mark: <span className="block w-4 h-4 rounded-full border border-ink/60" />,
+      what: "En el centro, tu Camino de Vida:",
+      yours: `${lifePath}${yearTheme ? `. Este año transitás el año personal ${personalYear}, ${yearTheme}.` : "."}`,
+    },
+  ];
+
   const signCards = [
     {
       system: "Numerología",
@@ -119,65 +167,77 @@ export default function ProfileHub({
   return (
     <div className="min-h-screen bg-background">
       {/* ═══════════════════════════════════════════════
-          HERO — El instrumento simbólico.
-          Sello Personal determinístico en el fondo (8-12% opacidad).
-          Tríada en tipografía display grande.
-          Jerarquía tipográfica pura, sin cards con sombras.
+          HERO — La rueda: los tres sistemas en un solo instrumento,
+          con su leyenda al lado para aprender a leerla.
           ═══════════════════════════════════════════════ */}
-      <header className="relative overflow-hidden border-b border-border bg-background">
-        {/* Sello Personal determinístico de fondo (8-12% opacidad) */}
-        <div
-          className="absolute inset-0 flex items-center justify-center opacity-[0.09] pointer-events-none overflow-hidden select-none"
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 880 880" className="w-[680px] h-[680px] sm:w-[960px] sm:h-[960px] max-w-none text-ink">
-            <PersonalSigil
-              lifePath={lifePath}
-              birthDay={birthD}
-              birthMonth={birthM}
-              width={880}
-              height={880}
-            />
-          </svg>
-        </div>
+      <header className="relative border-b border-border bg-background">
+        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
+            <div className="lg:col-span-6 lg:row-start-1 lg:pt-6">
+              <p className="text-sm text-accent mb-4 label-caps">
+                Mapa personal simbólico
+              </p>
+              <h1 className="page-title text-foreground" aria-label={`Camino de Vida ${lifePath} · ${archetypeName}`}>
+                <span className="block">Camino de Vida {lifePath}</span>
+                <span className="block">{archetypeName}</span>
+              </h1>
+              <p className="mt-5 text-lg sm:text-xl text-muted leading-relaxed max-w-xl italic">
+                {archetype.essence || archetype.description}
+              </p>
+            </div>
 
-        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-16 sm:pb-24">
-          <div className="max-w-4xl text-left">
-            <p className="text-sm text-accent mb-4 label-caps">
-              Mapa personal simbólico
-            </p>
+            <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2">
+              <MapWheel
+                lifePath={lifePath}
+                sunSign={profile.sunSign || "Aries"}
+                animal={display.name}
+                highlight={wheelFocus}
+                className="mx-auto w-full max-w-[34rem]"
+              />
+            </div>
 
-            <h1 className="page-title text-foreground">
-              Camino de Vida {lifePath} · {archetypeName}
-            </h1>
-            <p className="mt-5 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl italic">
-              {archetype.essence || archetype.description}
-            </p>
-
-            {/* Franja de datos: fecha, cálculo local, año y atlas */}
-            <div className="mt-8 pt-5 border-t border-border flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-6 gap-y-1.5 text-sm text-muted">
-              <span>Naciste el {birthDateFormatted}</span>
-              <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
-              <span>Calculado en tu dispositivo</span>
-              {yearTheme && (
-                <>
-                  <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
-                  <span className="text-foreground">
-                    Año personal {personalYear} · {yearTheme}
-                  </span>
-                </>
-              )}
-              {atlasEntityCount > 0 && (
-                <>
-                  <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
-                  <Link
-                    href={`/atlas/explorar/${userAnimal}`}
-                    className="underline decoration-dotted underline-offset-4 hover:text-foreground py-1.5 -my-1.5"
+            <div className="lg:col-span-6 lg:row-start-2">
+              {/* Leyenda de la rueda: cada marca, qué es y cuál es la tuya */}
+              <p className="text-sm text-muted label-caps mb-3">Cómo leer la rueda</p>
+              <dl className="divide-y divide-ink/10 border-y border-ink/10 max-w-xl">
+                {wheelLegend.map((row) => (
+                  <div
+                    key={row.what}
+                    onMouseEnter={() => setWheelFocus(row.part)}
+                    onMouseLeave={() => setWheelFocus(null)}
+                    onFocus={() => setWheelFocus(row.part)}
+                    onBlur={() => setWheelFocus(null)}
+                    tabIndex={0}
+                    onClick={() => setWheelFocus((f) => (f === row.part ? null : row.part))}
+                    className={`grid grid-cols-[2rem_1fr] gap-x-4 py-3 items-start cursor-default transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent ${
+                      wheelFocus === row.part ? "bg-ink/[0.03]" : ""
+                    }`}
                   >
-                    {atlasEntityCount} afinidades en tu Atlas
-                  </Link>
-                </>
-              )}
+                    <dt className="pt-1.5 pl-1" aria-hidden="true">{row.mark}</dt>
+                    <dd className="text-base leading-snug text-muted">
+                      {row.what} <span className="text-foreground">{row.yours}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              {/* Franja de datos: fecha, cálculo local, año y atlas */}
+              <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-6 gap-y-1.5 text-sm text-muted">
+                <span>Naciste el {birthDateFormatted}</span>
+                <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
+                <span>Calculado en tu dispositivo</span>
+                {atlasEntityCount > 0 && (
+                  <>
+                    <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
+                    <Link
+                      href={`/atlas/explorar/${userAnimal}`}
+                      className="underline decoration-dotted underline-offset-4 hover:text-foreground py-1.5 -my-1.5"
+                    >
+                      {atlasEntityCount} afinidades en tu Atlas
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 

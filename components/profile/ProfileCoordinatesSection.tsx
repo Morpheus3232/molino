@@ -81,7 +81,7 @@ function Pillar({
       id={id}
       className="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 py-12 lg:py-16 border-t border-ink/15"
     >
-      <header className="lg:col-span-4 flex lg:flex-col items-center lg:items-start gap-5">
+      <header className="lg:col-span-4 flex lg:flex-col items-center lg:items-start gap-5 lg:sticky lg:top-28 lg:self-start">
         <span className="shrink-0 inline-flex items-center justify-center w-20 h-20 lg:w-28 lg:h-28 border border-ink/15 bg-paper-alt text-foreground">
           {glyph}
         </span>
