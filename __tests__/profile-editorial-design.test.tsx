@@ -75,12 +75,16 @@ describe("ProfileHub — Hero Editorial y Tríada Simbólica", () => {
     // Line 2: Sol en Géminis
     expect(screen.getAllByText(/Sol en Géminis/i).length).toBeGreaterThan(0);
 
-    // Line 3: Caballo · Metal · Yang
-    expect(screen.getByText(/Caballo · Metal · Yang/i)).toBeInTheDocument();
+    // Tarjeta 3: Caballo de Metal, con su polaridad
+    expect(screen.getAllByText(/Caballo de Metal/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/polaridad Yang/i).length).toBeGreaterThan(0);
 
     // Local calculation & birth date
     expect(screen.getByText(/Naciste el 15 de junio de 1990/i)).toBeInTheDocument();
-    expect(screen.getByText(/Calculado 100% localmente en tu dispositivo/i)).toBeInTheDocument();
+    expect(screen.getByText(/Calculado en tu dispositivo/i)).toBeInTheDocument();
+
+    // Índice de capítulos
+    expect(screen.getByRole("navigation", { name: /Capítulos de tu mapa/i })).toBeInTheDocument();
   });
 });
 
@@ -88,22 +92,24 @@ describe("ProfileCoordinatesSection — Los Cuatro Pilares", () => {
   test("renderiza los 4 pilares: Numerología, Astrología, Zodíaco Chino y Ciclos", () => {
     render(<ProfileCoordinatesSection profile={PROFILE_LP4} />);
 
-    // Pilar 1: Numerología
-    expect(screen.getByText(/NUMEROLOGÍA PITAGÓRICA/i)).toBeInTheDocument();
+    // Pilar 1: Numerología, con la cuenta hecha (1+9+9+0+0+6+1+5 = 31 → 3+1 = 4)
+    expect(screen.getByText(/^Numerología pitagórica$/i)).toBeInTheDocument();
+    expect(screen.getByText("1+9+9+0+0+6+1+5 = 31 → 3+1 = 4")).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /Camino de Vida 4/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /El Constructor/i })).toBeInTheDocument();
 
     // Pilar 2: Astrología
-    expect(screen.getByText(/ASTROLOGÍA/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Astrología occidental$/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /Sol en Géminis/i })).toBeInTheDocument();
 
     // Pilar 3: Zodíaco Chino
-    expect(screen.getByText(/ZODÍACO CHINO/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Zodíaco chino$/i)).toBeInTheDocument();
     expect(screen.getByText(/Tus dos amigos.*三合/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tu energía opuesta.*六冲/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tu opuesto.*六冲/i)).toBeInTheDocument();
+    expect(screen.getByText(/27 de enero de 1990/)).toBeInTheDocument();
 
     // Pilar 4: Ciclos
-    expect(screen.getByText(/CICLOS DE TIEMPO/i)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 3, name: /Año Personal 4/i })).toBeInTheDocument();
+    expect(screen.getByText(/^Tus ciclos$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Año personal 4$/i)).toBeInTheDocument();
   });
 });

@@ -115,8 +115,10 @@ test.describe("Premium Funnel E2E", () => {
     await setupPremiumMocks(page);
     await page.goto("/profile");
     await page.waitForLoadState("networkidle");
-    await expect(page.getByText(/MAPA PERSONAL SIMBÓLICO/)).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText(/Camino de Vida 4/)).toBeVisible();
+    await expect(page.getByText(/Mapa personal simbólico/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("heading", { level: 1, name: /Camino de Vida 4/ })).toBeVisible();
+    // Índice de capítulos del mapa, arriba de todo.
+    await expect(page.getByRole("navigation", { name: /Capítulos de tu mapa/ })).toBeVisible();
     await expect(page.getByText("Sol en Géminis").first()).toBeVisible();
   });
 

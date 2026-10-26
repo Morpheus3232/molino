@@ -33,6 +33,9 @@ const config: Config = {
         display: ["var(--font-display)", "var(--font-emoji)", "Georgia", "serif"],
         heading: ["var(--font-heading)", "var(--font-emoji)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "var(--font-emoji)", "Georgia", "serif"],
+        // `font-serif` también es Garamond: sin esto caía en la serif del
+        // sistema (Georgia / Noto Serif) y Mi Mapa mezclaba dos letras.
+        serif: ["var(--font-sans)", "var(--font-emoji)", "Georgia", "serif"],
         mono: ["var(--font-mono)", "var(--font-emoji)", "Georgia", "serif"],
       },
       fontSize: {

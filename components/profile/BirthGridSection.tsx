@@ -41,7 +41,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
   return (
     <EditorialSection
       tone="paperAlt"
-      eyebrow="TU CUADRO DE NACIMIENTO"
+      eyebrow="Capítulo III · Tu fecha"
       title="Los dígitos de tu fecha"
       intro="Se cuenta cuántas veces aparece cada dígito del 1 al 9 en tu fecha y se ubica en la grilla Lo Shu. Podés rehacer la cuenta a mano."
     >
@@ -90,7 +90,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                       {c.digit}
                     </span>
                     <span
-                      className={`font-mono text-xs tabular-nums ${
+                      className={`font-mono text-sm tabular-nums ${
                         presente ? "text-accent" : "text-ink/25"
                       }`}
                     >
@@ -100,7 +100,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                 );
               })}
             </div>
-            <p className="mt-3 font-mono text-xs text-muted">Disposición Lo Shu</p>
+            <p className="mt-3 font-mono text-sm text-muted">Disposición Lo Shu</p>
           </div>
 
           <div className="min-w-0">
@@ -135,7 +135,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-xs text-muted">
+            <p className="mt-3 text-sm text-muted">
               {presentes.length} dígitos presentes
               {repeated.length > 0
                 ? `, ${repeated.length} repetido${repeated.length > 1 ? "s" : ""}`
@@ -176,7 +176,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
           </div>
         )}
 
-        <p className="mt-10 text-xs text-muted italic max-w-xl">
+        <p className="mt-10 text-sm text-muted italic max-w-xl">
           El conteo es aritmética verificable. Las lecturas de repeticiones,
           ausencias y líneas son interpretación de una tradición numerológica,
           no una medición de tu persona.

@@ -57,7 +57,7 @@ function ChapterNumber({
             style={{ backgroundColor: elementDot.color }}
             aria-hidden="true"
           />
-          <span className="font-mono text-xs text-muted">{elementDot.label}</span>
+          <span className="font-mono text-sm text-muted">{elementDot.label}</span>
         </span>
       )}
     </div>
@@ -80,7 +80,7 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
       <p className="text-sm text-accent mb-1.5 label-caps">
         ✦ Tus números maestros
       </p>
-      <p className="text-xs text-muted mb-5 max-w-md">
+      <p className="text-sm text-muted mb-5 max-w-md">
         11, 22 y 33 no se reducen como el resto de los números en numerología:
         se leen enteros, con un significado propio en cada posición de tu carta.
       </p>
@@ -141,7 +141,7 @@ function PatronCentral({
         {tension && (
           <div className="mt-10 pt-8 border-t border-ink/10">
             <p className="text-sm text-muted mb-1 label-caps">Tu tensión</p>
-            <p className="text-xs text-muted mb-3 max-w-lg">
+            <p className="text-sm text-muted mb-3 max-w-lg">
               El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.
             </p>
             <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
@@ -154,7 +154,7 @@ function PatronCentral({
         )}
 
         {/* Patrones secundarios — evidencia, no nuevas piezas */}
-        <div className="mt-6 text-xs text-muted leading-relaxed">
+        <div className="mt-6 text-sm text-muted leading-relaxed">
           <span className="text-sm text-accent label-caps">Evidencias · </span>
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
         </div>
@@ -256,7 +256,7 @@ function TuMomento({
                       factores a favor hoy" al lado de la barra: leía como
                       una alarma que la barra ya no necesita. */}
                   {area.reasons && area.reasons.length > 0 && (
-                    <p className="mt-1.5 font-mono text-xs text-accent">
+                    <p className="mt-1.5 font-mono text-sm text-accent">
                       A favor: {area.reasons.join(" · ")}
                     </p>
                   )}
@@ -335,7 +335,7 @@ function PiezasLibres({
       />
       {/* Puente hacia el gate */}
       {mainTension && (
-        <div className="flex items-center gap-4 text-xs text-muted">
+        <div className="flex items-center gap-4 text-sm text-muted">
           <span className="h-px flex-1 bg-ink/10" />
           <span>Más abajo: qué hacer cuando {mainTension.title.toLowerCase()}.</span>
           <span className="h-px flex-1 bg-ink/10" />
@@ -368,7 +368,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
       </button>
       {open && (
         <div className="mt-5">
-          <p className="text-xs text-muted mb-4">Esta lectura conecta:</p>
+          <p className="text-sm text-muted mb-4">Esta lectura conecta:</p>
           <ol className="relative border-l border-ink/15 pl-6 space-y-5">
             {nodes.map((n) => (
               <li key={`${n.kind}-${n.label}`} className="relative">
@@ -516,13 +516,13 @@ function LecturaProfundaDesbloqueada({
         <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
           <Link
             href="/journal"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-mono text-accent hover:underline"
           >
             ¿Querés registrar cómo te sentís con esta lectura? Anotar en mi Journal →
           </Link>
           <Link
             href="/hoy"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-mono text-muted hover:text-accent transition-colors"
           >
             Tu mapa también tiene ritmo diario — ver tu energía de hoy →
           </Link>
@@ -554,8 +554,8 @@ export function LecturaLibre({
   return (
     <EditorialSection
       as="h2"
-      tone="paperAlt"
-      eyebrow="TU MAPA"
+      tone="paper"
+      eyebrow="Capítulo IV · Tu lectura"
       title="Leer tu mapa en dos movimientos"
       intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Los principios que las ordenan están en la lectura completa."
     >

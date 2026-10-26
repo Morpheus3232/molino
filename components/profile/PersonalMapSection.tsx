@@ -160,7 +160,7 @@ function EntityRow({
               {entity.name}
             </span>
             {(entity.country && entity.country !== entity.name) || local ? (
-              <span className="block font-mono text-xs text-muted truncate mt-0.5">
+              <span className="block font-mono text-sm text-muted truncate mt-0.5">
                 {entity.country !== entity.name ? entity.country : ""}
                 {local && (
                   <span className="text-accent font-semibold ml-1">
@@ -170,14 +170,14 @@ function EntityRow({
               </span>
             ) : null}
           </span>
-          <span className="shrink-0 text-right font-mono text-xs tabular-nums">
+          <span className="shrink-0 text-right font-mono text-sm tabular-nums">
             <span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span>
             <span className="block text-accent">año {animal}</span>
           </span>
         </span>
 
         {entity.originNote && (
-          <span className="mt-2 block pl-12 sm:pl-13 text-xs sm:text-sm text-muted leading-relaxed font-serif">
+          <span className="mt-2 block pl-12 sm:pl-13 text-sm sm:text-base text-muted leading-relaxed font-serif">
             {entity.originLabel && (
               <span className="text-muted/70 text-sm label-caps">
                 {entity.originLabel} ·{" "}
@@ -218,19 +218,19 @@ function GroupBlock({
           {group.title}
         </h4>
         {group.chinese && (
-          <span className={`font-mono text-xs ${tone.accent}`}>{group.chinese}</span>
+          <span className={`font-mono text-sm ${tone.accent}`}>{group.chinese}</span>
         )}
         {group.kind === "enemigo" && (
           <span className="ml-2 text-sm bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold label-caps">
             Evitar
           </span>
         )}
-        <span className="font-mono text-xs text-muted tabular-nums ml-auto">
+        <span className="font-mono text-sm text-muted tabular-nums ml-auto">
           {group.total} {group.total === 1 ? "entrada" : "entradas"}
         </span>
       </div>
 
-      <p className="mt-2 max-w-2xl font-mono text-xs text-muted/80 leading-relaxed">{group.rule}</p>
+      <p className="mt-2 max-w-2xl font-mono text-sm text-muted/80 leading-relaxed">{group.rule}</p>
 
       <ul className="mt-4 border-t border-border">
         {visibleEntities.map((e) => (
@@ -248,7 +248,7 @@ function GroupBlock({
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="font-mono text-xs text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4 py-1"
+            className="font-mono text-sm text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4 py-1"
           >
             {expanded ? "− Ver menos" : `+ Ver más (${group.entities.length - initialLimit} restantes)`}
           </button>
@@ -257,7 +257,7 @@ function GroupBlock({
         {restantesAtlas > 0 && (
           <Link
             href={domainHref}
-            className="font-mono text-xs text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1 inline-flex items-center gap-1"
+            className="font-mono text-sm text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1 inline-flex items-center gap-1"
           >
             <span>+ {restantesAtlas} más en el Atlas</span>
             <ArrowRight className="w-3 h-3" />
@@ -307,7 +307,7 @@ function DomainBlock({
             <Link
               key={link.href}
               href={link.href}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-xs font-mono font-medium border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-mono font-medium border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
             >
               <span>{link.label}</span>
               <ExternalLink className="w-3 h-3 opacity-70" />
@@ -327,7 +327,7 @@ function DomainBlock({
         {domain.reading}
       </p>
 
-      <p className="mt-2 max-w-3xl font-mono text-xs text-muted/80 leading-relaxed">
+      <p className="mt-2 max-w-3xl font-mono text-sm text-muted/80 leading-relaxed">
         {domain.scope}
         {domain.descartadas > 0 && (
           <span className="text-muted/60">
@@ -337,7 +337,7 @@ function DomainBlock({
       </p>
 
       {isSecondary && (
-        <p className="mt-3 font-mono text-xs text-muted bg-paper-alt border border-border/80 rounded-[--radius-sm] px-3.5 py-2 inline-block">
+        <p className="mt-3 font-mono text-sm text-muted bg-paper-alt border border-border/80 rounded-[--radius-sm] px-3.5 py-2 inline-block">
           Este dominio cuenta con {domain.evaluated} entradas. Se muestran hasta 3 ejemplos por casilla para mantener la lectura ágil.
         </p>
       )}
@@ -488,14 +488,14 @@ export default function PersonalMapSection({
         {/* ── Encabezado Resumido ───────────────────────────────────── */}
         <motion.div {...editorialRevealMount} className="pt-16 lg:pt-24 pb-10">
           <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
-            <p className="text-sm font-semibold text-accent label-caps">
-              EL MAPA APLICADO
+            <p className="text-sm text-accent label-caps">
+              Capítulo II · El mundo
             </p>
 
             {/* Acceso rápido a Lectura */}
             <Link
               href={lecturaHref}
-              className="inline-flex items-center gap-2 text-xs font-mono text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1.5 -my-1.5"
+              className="inline-flex items-center gap-2 text-sm font-mono text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1.5 -my-1.5"
             >
               <BookOpen className="w-3.5 h-3.5 text-accent" />
               <span>Ver tu Lectura interpretativa →</span>
@@ -538,7 +538,7 @@ export default function PersonalMapSection({
 
         {/* ── Disclaimer final sutil ──────────────────────────────── */}
         <div className="mt-14 pt-8 border-t border-border space-y-4 max-w-3xl">
-          <p className="text-xs sm:text-sm text-muted font-serif leading-relaxed">
+          <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">
             <strong className="font-semibold text-foreground">Por qué hay entidades que no aparecen.</strong>{" "}
             El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero: un origen fechado solo
             por año podría pertenecer al signo anterior, y una fecha anterior a 1886 cae fuera de la
@@ -547,7 +547,7 @@ export default function PersonalMapSection({
             construida sobre una duda.
           </p>
 
-          <p className="text-xs sm:text-sm text-muted/80 font-serif italic leading-relaxed">
+          <p className="text-sm sm:text-base text-muted/80 font-serif italic leading-relaxed">
             El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad,
             cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan
             en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o
