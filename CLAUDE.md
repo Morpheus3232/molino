@@ -344,7 +344,8 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   chico y en tinta) — ambos en `components/sections/HomeOrnaments.tsx`. El ⁂
   queda para los capítulos dentro del día. El rojo en la portada es solo el
   de la ilustración y el botón principal. Todas las fotos van igual: gris,
-  contraste 1.12, filete de tinta y etiqueta "Fig."/"Lám.".
+  contraste 1.12 y filete de tinta; solo las del índice llevan etiqueta
+  ("Lám."), las de los capítulos del día van sin etiqueta.
 - Portada: el día se cuenta como un capítulo de libro (`HomeBook`:
   epígrafe, capítulos I–III con número romano, capitular, índices con
   puntos guía, ⁂), no como tablero; el tablero de detalle sigue en `/hoy`.

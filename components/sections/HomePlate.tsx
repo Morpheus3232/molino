@@ -17,11 +17,9 @@ import { useReveal } from "@/lib/hooks/useReveal";
  */
 export default function HomePlate({
   imageKey,
-  numeral,
   className = "",
 }: {
   imageKey: string;
-  numeral: string;
   className?: string;
 }) {
   const img = getSectionImage(imageKey);
@@ -49,9 +47,6 @@ export default function HomePlate({
             className="object-cover grayscale contrast-[1.12]"
           />
         </motion.div>
-        <span className="absolute left-0 top-0 bg-ink px-2.5 py-1 text-xs text-paper label-caps" aria-hidden="true">
-          Fig. {numeral}
-        </span>
       </div>
       <SectionCredit img={img} />
     </figure>
