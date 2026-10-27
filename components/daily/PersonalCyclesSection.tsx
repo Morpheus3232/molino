@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";

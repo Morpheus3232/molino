@@ -14,7 +14,7 @@
  * lengths always equals the input length.
  */
 import { describe, it, expect } from "vitest";
-import { groupByRelation } from "@/app/affinity/[type]/AffinityTypeContent";
+import { groupByRelation } from "@/app/[locale]/affinity/[type]/AffinityTypeContent";
 import { getChineseAnimal } from "@/lib/engines/chineseZodiacEngine";
 import { getRelation, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import type { LightAffinityResult } from "@/lib/affinity-light";

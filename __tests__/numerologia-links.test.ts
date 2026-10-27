@@ -13,8 +13,8 @@ function read(relPath: string): string {
 // en el clúster con más tracción real de Search Console.
 
 const FILES_WITH_NUMERO_LINKS = [
-  "app/conocimiento/numerologia/NumerologiaContent.tsx",
-  "app/conocimiento/numerologia/[numero]/NumeroContent.tsx",
+  "app/[locale]/conocimiento/numerologia/NumerologiaContent.tsx",
+  "app/[locale]/conocimiento/numerologia/[numero]/NumeroContent.tsx",
 ];
 
 describe("Links internos de /conocimiento/numerologia/[numero]", () => {
@@ -24,7 +24,7 @@ describe("Links internos de /conocimiento/numerologia/[numero]", () => {
   });
 
   test("el canonical de la página de detalle usa el mismo formato sin prefijo", () => {
-    const src = read("app/conocimiento/numerologia/[numero]/page.tsx");
+    const src = read("app/[locale]/conocimiento/numerologia/[numero]/page.tsx");
     expect(src).toContain("`/conocimiento/numerologia/${num.number}`");
   });
 

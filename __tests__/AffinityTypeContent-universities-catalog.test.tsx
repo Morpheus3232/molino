@@ -8,7 +8,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import AffinityTypeContent from "@/app/affinity/[type]/AffinityTypeContent";
+import AffinityTypeContent from "@/app/[locale]/affinity/[type]/AffinityTypeContent";
 import { getEntitiesByType, toLightweightEntity, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 
 vi.mock("next/navigation", () => ({

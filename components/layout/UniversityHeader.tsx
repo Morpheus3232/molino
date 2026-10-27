@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { Link, usePathname, useRouter } from "@/lib/i18n/navigation";
 import { createPortal } from "react-dom";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";

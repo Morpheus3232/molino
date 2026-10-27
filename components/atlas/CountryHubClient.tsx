@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { Search, MapPin, Building2, ArrowRight } from "lucide-react";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { ANIMAL_PROFILES, type Animal } from "@/lib/data/animalRelations";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, Link } from "@/lib/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bookmark,
@@ -24,7 +24,6 @@ import {
 } from "@/lib/session/multiProfiles";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { getProfileSalt } from "@/lib/profile-salt";
-import Link from "next/link";
 
 interface SavedProfilesDrawerProps {
   currentProfile?: UserProfile | null;

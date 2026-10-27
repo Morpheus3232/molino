@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import {
   getMasterNumbers,

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";

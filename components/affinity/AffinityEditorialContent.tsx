@@ -4,7 +4,7 @@ import type { Animal } from "@/lib/data/animalRelations";
 import EntitySignSection from "@/components/affinity/EntitySignSection";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import RelationWheel from "@/components/knowledge/RelationWheel";
 import { KnowledgeHero, KnowledgeSection, Note, MARKS, CONTAINER } from "@/components/knowledge/Kit";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";

@@ -54,7 +54,7 @@ const nextConfig = {
   },
   staticPageGenerationTimeout: 120,
   async redirects() {
-    return [
+    const base = [
       // Un par de signos = una URL (/compatibilidad, orden zodiacal). El par
       // invertido y la vieja /sinastria/a/b (duplicado, eliminado 2026-10-19)
       // redirigen ahí.
@@ -122,6 +122,15 @@ const nextConfig = {
       // planes se pausó; un solo pago de $8 desbloquea todo.
       { source: '/precios', destination: '/premium', permanent: true },
     ];
+    // Versión en inglés (/en/...): cada redirect interno se duplica con el
+    // prefijo, así /en/principios llega a /en/filosofia y no a un 404.
+    const withEn = (path) => (path === '/' ? '/en' : `/en${path}`);
+    const en = base
+      // URLs viejas que nunca existieron en inglés (/sinastria, /compatibility/<id>)
+      // no se duplican: solo sumarían reglas.
+      .filter((r) => r.destination.startsWith('/') && !/^\/(en|sinastria|compatibility)(\/|$)/.test(r.source))
+      .map((r) => ({ ...r, source: withEn(r.source), destination: withEn(r.destination) }));
+    return [...base, ...en];
   },
   async headers() {
     return [
@@ -190,4 +199,10 @@ const withBundleAnalyzer =
     ? require('@next/bundle-analyzer')({ enabled: true })
     : (config) => config;
 
-module.exports = withBundleAnalyzer(nextConfig);
+// next-intl: ruteo /en + locale por request (lib/i18n/request.ts).
+// (En vitest el config se importa para testear redirects; el plugin no hace falta.)
+const withNextIntl = process.env.VITEST
+  ? (config) => config
+  : require('next-intl/plugin')('./lib/i18n/request.ts');
+
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

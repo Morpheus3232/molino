@@ -11,7 +11,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import AffinityTypeContent from "@/app/affinity/[type]/AffinityTypeContent";
+import AffinityTypeContent from "@/app/[locale]/affinity/[type]/AffinityTypeContent";
 import { getChineseAnimal } from "@/lib/engines/chineseZodiacEngine";
 import type { LightweightEntity } from "@/types/atlas";
 

@@ -1,10 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
-import Link from "next/link";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import RelationWheel from "@/components/knowledge/RelationWheel";
 import LoShuFigure from "@/components/knowledge/LoShuFigure";
 import { KnowledgeHero, MARKS } from "@/components/knowledge/Kit";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/lib/i18n/navigation";
 import { analytics } from "@/lib/analytics/analytics";
 
 export default function AnalyticsProvider() {

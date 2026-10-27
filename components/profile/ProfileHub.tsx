@@ -20,7 +20,7 @@ import { LecturaLibre, type LecturaPieces } from "@/components/profile/LecturaPr
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import Image from "next/image";
 import { getSectionImage, signImageKey, animalImageKey } from "@/lib/data/section-images";
 

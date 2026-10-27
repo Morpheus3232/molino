@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";

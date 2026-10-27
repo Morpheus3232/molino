@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/i18n/navigation";
 import { loadProfileFromStorage, clearStoredProfile } from "@/lib/session/localStorage";
 import { getSession, clearSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";

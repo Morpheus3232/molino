@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { getMemberCount } from "@/lib/metrics";

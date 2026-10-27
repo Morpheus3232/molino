@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { getSectionImage } from "@/lib/data/section-images";
 import { useReveal } from "@/lib/hooks/useReveal";
 import { Eyebrow } from "@/components/sections/HomeOrnaments";

@@ -11,7 +11,8 @@ import path from "path";
 // Quedan /onboarding y /circulo (vistas privadas que siguen existiendo);
 // se suma /mundo, hermana de /circulo (vista pública para compartir).
 
-const APP_DIR = path.resolve(__dirname, "..", "app");
+const APP_DIR = path.resolve(__dirname, "..", "app", "[locale]");
+const APP_ROOT = path.resolve(__dirname, "..", "app");
 // Rutas confirmadas noIndex:true cuyo layout/page se leyó a mano. No es un
 // descubrimiento automático — evita que sitemap.ts vuelva a listarlas.
 const KNOWN_NOINDEX_ROUTES = ["onboarding", "circulo", "mundo"];
@@ -24,15 +25,16 @@ describe("sitemap.ts no contradice las rutas marcadas noIndex", () => {
   });
 
   test.each(KNOWN_NOINDEX_ROUTES)("%s no aparece en sitemap.ts", (route) => {
-    const sitemapSrc = fs.readFileSync(path.join(APP_DIR, "sitemap.ts"), "utf8");
+    const sitemapSrc = fs.readFileSync(path.join(APP_ROOT, "sitemap.ts"), "utf8");
     expect(sitemapSrc).not.toMatch(new RegExp("/" + route + "`"));
   });
 });
 
 describe("lang del documento coincide con la convención del proyecto (es-AR)", () => {
-  test("app/layout.tsx declara lang=\"es-AR\"", () => {
+  test("app/[locale]/layout.tsx declara lang=\"es-AR\"", () => {
     const src = fs.readFileSync(path.join(APP_DIR, "layout.tsx"), "utf8");
-    expect(src).toContain('lang="es-AR"');
+    // Bilingüe desde 2026-10: es-AR en español, en en inglés (sale de la URL).
+    expect(src).toContain('lang={en ? "en" : "es-AR"}');
     expect(src).not.toContain('lang="es"');
   });
 });

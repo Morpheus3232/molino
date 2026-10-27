@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { ANIMALS, ANIMAL_PROFILES, getClashPartner, type Animal } from "@/lib/data/animalRelations";
 import { CHINESE_NEW_YEAR_DATES } from "@/lib/data/chinese-new-year";
 

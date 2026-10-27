@@ -8,7 +8,7 @@
  */
 import { describe, it, expect } from "vitest";
 import { getEntitiesByType, getEntityById, toLightweightEntity } from "@/lib/data/symbolic-entities";
-import { groupByRelation } from "@/app/affinity/[type]/AffinityTypeContent";
+import { groupByRelation } from "@/app/[locale]/affinity/[type]/AffinityTypeContent";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 
 const universities = getEntitiesByType("university");

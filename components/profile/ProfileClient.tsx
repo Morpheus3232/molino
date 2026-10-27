@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/i18n/navigation";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";

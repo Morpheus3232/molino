@@ -15,6 +15,7 @@ const config = {
   test: {
     environment: 'jsdom',
     globals: true,
+    setupFiles: ['test/i18n-setup.ts'],
     include: ['**/__tests__/**/*.test.{ts,tsx}', '**/*.test.{ts,tsx}'],
     exclude: ['**/e2e/**', '**/node_modules/**', '**/.claude/worktrees/**', '**/.next/**', '**/playwright-report/**', '**/test-results/**'],
   },

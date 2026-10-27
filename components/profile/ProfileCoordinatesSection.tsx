@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { Animal } from "@/lib/data/animalRelations";

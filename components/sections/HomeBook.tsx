@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import HomePlate from "@/components/sections/HomePlate";
 import { moonImageKey } from "@/lib/data/section-images";
 import { useProfile } from "@/lib/hooks/useProfile";

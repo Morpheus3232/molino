@@ -14,23 +14,23 @@ function read(relPath: string): string {
 // inicial tenga contenido real sin tocar la interactividad post-hydration.
 
 describe("/hoy — contenido real en el HTML inicial (SSR)", () => {
-  test("app/hoy/page.tsx sigue siendo un Server Component (sin 'use client')", () => {
-    const src = read("app/hoy/page.tsx");
+  test("app/[locale]/hoy/page.tsx sigue siendo un Server Component (sin 'use client')", () => {
+    const src = read("app/[locale]/hoy/page.tsx");
     expect(src).not.toContain('"use client"');
   });
 
-  test("app/hoy/page.tsx renderiza un <h1> incondicional", () => {
-    const src = read("app/hoy/page.tsx");
+  test("app/[locale]/hoy/page.tsx renderiza un <h1> incondicional", () => {
+    const src = read("app/[locale]/hoy/page.tsx");
     expect(src).toMatch(/<h1[\s>]/);
   });
 
   test("HoyClient.tsx no duplica el <h1> (evita heading duplicado)", () => {
-    const src = read("app/hoy/HoyClient.tsx");
+    const src = read("app/[locale]/hoy/HoyClient.tsx");
     expect(src).not.toMatch(/<h1[\s>]/);
   });
 
   test("metadata de /hoy sigue describiendo la página real", () => {
-    const src = read("app/hoy/page.tsx");
+    const src = read("app/[locale]/hoy/page.tsx");
     expect(src).toContain("createRouteMetadata");
     expect(src).toMatch(/title:\s*"Hoy/);
   });

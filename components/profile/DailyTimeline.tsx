@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import type { UserProfile } from "@/types/user";
 import {
   getHistoryForProfile,

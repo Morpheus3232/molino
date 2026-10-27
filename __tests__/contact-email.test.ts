@@ -12,8 +12,8 @@ function read(relPath: string): string {
 // no afecta el envío de emails transaccionales).
 const FILES_WITH_CONTACT_EMAIL = [
   "components/layout/UniversityFooter.tsx",
-  "app/nosotros/page.tsx",
-  "app/nosotros/NosotrosContent.tsx",
+  "app/[locale]/nosotros/page.tsx",
+  "app/[locale]/nosotros/NosotrosContent.tsx",
   "app/api/mp/verify/route.ts",
   "app/api/mp/coupon/route.ts",
   "app/api/mp/recover/route.ts",

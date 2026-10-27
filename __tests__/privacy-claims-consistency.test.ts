@@ -15,18 +15,18 @@ function read(relPath: string): string {
 
 describe("Claims de privacidad — consistencia con la arquitectura real", () => {
   test("PrivacidadContent sigue documentando la excepción Premium (fuente de verdad)", () => {
-    const src = read("app/privacidad/PrivacidadContent.tsx");
+    const src = read("app/[locale]/privacidad/PrivacidadContent.tsx");
     expect(src).toContain("hash HMAC-SHA256");
     expect(src).toContain("base de datos");
   });
 
   test("Metadata de la homepage no promete 'sin datos guardados' de forma absoluta", () => {
-    const src = read("app/page.tsx");
+    const src = read("app/[locale]/page.tsx");
     expect(src).not.toContain("sin datos guardados");
   });
 
   test("El FAQPage JSON-LD embebido en la home no repite el claim absoluto (amplificado por Google)", () => {
-    const src = read("app/page.tsx");
+    const src = read("app/[locale]/page.tsx");
     expect(src).not.toMatch(
       /no se transmite ni se almacena en ninguna base de datos externa/i
     );

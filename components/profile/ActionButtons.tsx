@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/i18n/navigation";
 import { RotateCcw } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";

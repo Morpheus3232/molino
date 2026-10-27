@@ -17,7 +17,7 @@ import PersonalAtlasPilot from "@/components/atlas/PersonalAtlasPilot";
 import CountryGrid from "@/components/atlas/CountryGrid";
 import EntityVisual from "@/components/ui/EntityVisual";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { entityLinkRel } from "@/lib/seo/entity-links";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";

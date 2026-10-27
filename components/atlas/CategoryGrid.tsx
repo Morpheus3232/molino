@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
 import { Asterisk, Building2, Car, GraduationCap, Mic2, Clapperboard, Shirt, Trophy, type LucideIcon } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";

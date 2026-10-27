@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import type { ReactNode } from "react";
 import WheelMark from "@/components/knowledge/WheelMark";
 import SectionCover from "@/components/ui/SectionCover";

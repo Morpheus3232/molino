@@ -14,7 +14,7 @@ import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber, getScoreLabel, getScoreColor } from "@/lib/utils/score";
-import Link from "next/link";
+import { Link } from "@/lib/i18n/navigation";
 import {
   getMasterNumbers,
   getMasterPositionMeaning,
