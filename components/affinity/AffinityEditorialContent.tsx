@@ -187,15 +187,15 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
   const lists = [
     entity.country && n.sameCountrySign.length > 0 && {
       id: "section-mismo-signo-pais",
-      title: L(`También ${animal} en ${entity.country}`, `Also ${L.t(animal)} in ${entity.country}`),
-      intro: L(`${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`, `${L.t(n.sameCountrySignTotal === 1 ? "The other entry" : `The ${L.t(n.sameCountrySignTotal)} entries`)} in the Atlas of ${entity.country} whose origin falls in a ${L.t(animal)} year, like ${L.t(entity.name)}.`),
+      title: L(`También ${animal} en ${entity.country}`, `Also ${L.t(animal)} in ${L.t(entity.country)}`),
+      intro: L(`${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`, `${L.t(n.sameCountrySignTotal === 1 ? "The other entry" : `The ${L.t(n.sameCountrySignTotal)} entries`)} in the Atlas of ${L.t(entity.country)} whose origin falls in a ${L.t(animal)} year, like ${L.t(entity.name)}.`),
       items: n.sameCountrySign,
       total: n.sameCountrySignTotal,
     },
     n.lunarYear !== null && n.sameLunarYear.length > 0 && {
       id: "section-mismo-ano-chino",
       title: L(`Del mismo año chino: ${animal} de ${n.lunarYear}`, `From the same Chinese year: ${L.t(animal)} of ${n.lunarYear}`),
-      intro: L(`Entradas del Atlas fechadas dentro del mismo año del calendario chino que ${entity.name}${entity.country ? `, primero las de ${entity.country}` : ""}.`, `Atlas entries dated within the same Chinese calendar year as ${L.t(entity.name)}${entity.country ? `, those from ${entity.country} first` : ""}.`),
+      intro: L(`Entradas del Atlas fechadas dentro del mismo año del calendario chino que ${entity.name}${entity.country ? `, primero las de ${entity.country}` : ""}.`, `Atlas entries dated within the same Chinese calendar year as ${L.t(entity.name)}${entity.country ? `, those from ${L.t(entity.country)} first` : ""}.`),
       items: n.sameLunarYear,
       total: n.sameLunarYearTotal,
     },

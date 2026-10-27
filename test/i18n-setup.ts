@@ -12,11 +12,21 @@ vi.mock("next-intl", () => ({
 vi.mock("@/lib/i18n/navigation", async () => {
   const link = await import("next/link");
   const nav = await import("next/navigation");
+  // Algunos tests mockean next/navigation solo en parte: si falta un export,
+  // el acceso tira. Se resuelve al usarlo, con un valor neutro de respaldo.
+  const pick = <F,>(name: string, fallback: F): F => {
+    try {
+      return ((nav as Record<string, unknown>)[name] as F) ?? fallback;
+    } catch {
+      return fallback;
+    }
+  };
   return {
     Link: link.default,
-    usePathname: nav.usePathname,
-    useRouter: nav.useRouter,
-    redirect: nav.redirect,
+    usePathname: () => pick<() => string>("usePathname", () => "/")(),
+    useRouter: () => pick<() => unknown>("useRouter", () => ({ push() {}, replace() {}, back() {}, refresh() {}, prefetch() {} }))(),
+    redirect: (...a: unknown[]) => pick<(...x: unknown[]) => never>("redirect", () => { throw new Error("redirect"); })(...a),
+    permanentRedirect: (...a: unknown[]) => pick<(...x: unknown[]) => never>("permanentRedirect", () => { throw new Error("redirect"); })(...a),
     getPathname: ({ href }: { href: string }) => href,
   };
 });

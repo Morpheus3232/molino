@@ -31,7 +31,8 @@ describe("/hoy — contenido real en el HTML inicial (SSR)", () => {
 
   test("metadata de /hoy sigue describiendo la página real", () => {
     const src = read("app/[locale]/hoy/page.tsx");
-    expect(src).toContain("createRouteMetadata");
-    expect(src).toMatch(/title:\s*"Hoy/);
+    // metadataFor (lib/seo) envuelve createRouteMetadata con [es, en].
+    expect(src).toMatch(/createRouteMetadata|metadataFor/);
+    expect(src).toMatch(/title:\s*\[?"Hoy/);
   });
 });

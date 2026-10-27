@@ -2,8 +2,16 @@ import { describe, test, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 
+// Los textos de interfaz son bilingües (`L("es", "en")`): para estas
+// aserciones sobre el código se lee la versión en español.
+const STR = String.raw`"((?:[^"\\]|\\.)*)"`;
+const BILINGUAL_ATTR = new RegExp(String.raw`\{L\(` + STR + String.raw`,\s*` + STR + String.raw`\)\}`, "g");
+const BILINGUAL = new RegExp(String.raw`L\(` + STR + String.raw`,\s*` + STR + String.raw`\)`, "g");
 function read(relPath: string): string {
-  return fs.readFileSync(path.resolve(__dirname, "..", relPath), "utf8");
+  return fs
+    .readFileSync(path.resolve(__dirname, "..", relPath), "utf8")
+    .replace(BILINGUAL_ATTR, '"$1"')
+    .replace(BILINGUAL, '"$1"');
 }
 
 // Fase 3 — el header se reorganizó en 4 puertas conceptuales:

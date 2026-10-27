@@ -94,8 +94,8 @@ export default function EntitySignSection({
             ))}
           </dt>
           <dd className="text-lg text-muted leading-relaxed mt-2">
-            {L("También resuena con quienes nacieron en años ", "It also resonates with people born in years of the ")} {L.t(friends.map(L.t).join(" o "))}:{" "}
-            {friends.map((f) => `${f}, ${lunarYearsOf(f).map((r) => r.year).map(L.t).join(", ")}`).map(L.t).join("; ")}.
+            {L("También resuena con quienes nacieron en años ", "It also resonates with people born in years of the ")} {friends.map((f) => L.t(f)).join(L(" o ", " or "))}:{" "}
+            {friends.map((f) => `${L.t(f)}, ${lunarYearsOf(f).map((r) => r.year).join(", ")}`).join("; ")}.
           </dd>
         </div>
         {enemy && (

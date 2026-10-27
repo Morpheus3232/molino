@@ -39,7 +39,7 @@ export default function AffinityHero({
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-3xl">
         {[
           { label: L("Tu año de nacimiento", "Your year of birth"), year: result.userYear, animal: result.userAnimal },
-          { label: `${entity.name}: ${result.primaryEvent?.label ?? "origen"}`, year: result.entityYear, animal: result.entityAnimal },
+          { label: `${L.t(entity.name)}: ${L.t(result.primaryEvent?.label ?? L("origen", "origin"))}`, year: result.entityYear, animal: result.entityAnimal },
         ].map((c) => (
           <div key={c.label} className="bg-background p-6 flex items-center gap-5">
             <ZodiacAnimalIcon animal={c.animal} size={56} className="text-foreground shrink-0" />

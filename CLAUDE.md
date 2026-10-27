@@ -301,6 +301,18 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 ## Convenciones
 
 - Español rioplatense (vos), `lang="es-AR"` en todo el sitio
+- **Bilingüe (2026-10-27)**: español en la raíz, inglés bajo `/en/...` (next-intl,
+  `app/[locale]`, `localePrefix: "as-needed"`; los slugs de URL quedan en
+  castellano). Texto de interfaz: `L("es", "en")` (`useL` en cliente, `getL`
+  en servidor, `metaL`/`metadataFor` para metadata, con `localeAlternates`
+  para canonical + hreflang). Texto que sale de motores y datos se traduce al
+  mostrarlo con `L.t()` contra el diccionario `lib/i18n/content/en/*.json`
+  (frase exacta; comodines `{}` texto, `{#}` dígitos, `{w}` una palabra —
+  usar `{w}` para nombres de signo, si no `"El {} es…"` se traga oraciones
+  enteras). Nunca agregar combinadores genéricos tipo `"{} y {}"`: dejan un
+  "and" en medio del español. La lógica sigue trabajando con los valores en
+  español ("Caballo", "Fuego"). El selector de idioma está en el footer y la
+  IA responde en inglés si el request trae `locale: "en"`.
 - **Línea de diseño (2026-10-17): libro de Penguin + el Quijote de la
   portada.** Base blanco y negro: paper `#FFFFFF`, ink `#0A0A0A`, muted
   `#474747`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son

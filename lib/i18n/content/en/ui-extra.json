@@ -238,5 +238,15 @@
  "{#} nov": "Nov {}",
  "{#} dic {#}": "Dec {1}, {2}",
  "{#} dic": "Dec {}",
- "{#} — {}: {}.": "{1} — {2}: {3}."
+ "{#} — {}: {}.": "{1} — {2}: {3}.",
+ "Incierto": "Uncertain",
+ "En calma": "Calm",
+ "Favorable": "Favorable",
+ "En sintonía": "In tune",
+ "incierto": "uncertain",
+ "en calma": "calm",
+ "en sintonía": "in tune",
+ "desafiante": "challenging",
+ "favorable": "favorable",
+ " · {}": " · {}"
 }
