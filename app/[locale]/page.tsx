@@ -1,57 +1,59 @@
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import HomeOpening from "@/components/sections/HomeOpening";
 import { Fleuron } from "@/components/sections/HomeOrnaments";
 import HomeBook from "@/components/sections/HomeBook";
 import HomeAlmanac from "@/components/sections/HomeAlmanac";
 import HomeGallery from "@/components/sections/HomeGallery";
-import { SITE_URL, createRouteMetadata } from "@/lib/seo";
+import { SITE_URL, metadataFor } from "@/lib/seo";
 
-const homeSchemas = [
+const homeSchemas = (L: Pick2) => ([
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "Cómo calcular tu Mapa Personal de Autoconocimiento en Molino",
-    description: "Tres pasos sencillos para obtener tu mapa simbólico integrando numerología, astrología y zodíaco chino sin registrarte.",
+    name: L("Cómo calcular tu Mapa Personal de Autoconocimiento en Molino", "How to calculate your Personal Self-Knowledge Map on Molino"),
+    description: L("Tres pasos sencillos para obtener tu mapa simbólico integrando numerología, astrología y zodíaco chino sin registrarte.", "Three simple steps to get your symbolic map combining numerology, astrology and the Chinese zodiac without signing up."),
     totalTime: "PT30S",
     step: [
       {
         "@type": "HowToStep",
         position: 1,
-        name: "Ingresá tu fecha de nacimiento",
-        text: "Ingresá el día, mes y año de tu nacimiento en el instrumento interactivo de la portada.",
+        name: L("Ingresá tu fecha de nacimiento", "Enter your date of birth"),
+        text: L("Ingresá el día, mes y año de tu nacimiento en el instrumento interactivo de la portada.", "Enter the day, month and year you were born in the interactive instrument on the home page."),
         url: `${SITE_URL}#mapa-form`,
       },
       {
         "@type": "HowToStep",
         position: 2,
-        name: "Procesamiento local y cruce de patrones",
-        text: "El motor de Molino cruza en tu propio navegador el Camino de Vida numerológico, el signo solar astrológico y el animal del zodíaco chino.",
+        name: L("Procesamiento local y cruce de patrones", "Local processing and pattern crossing"),
+        text: L("El motor de Molino cruza en tu propio navegador el Camino de Vida numerológico, el signo solar astrológico y el animal del zodíaco chino.", "Molino's engine crosses, right in your own browser, your numerological Life Path, your astrological sun sign and your Chinese zodiac animal."),
         url: `${SITE_URL}/onboarding`,
       },
       {
         "@type": "HowToStep",
         position: 3,
-        name: "Explorá tu mapa y ganá perspectiva",
-        text: "Accedé a tu mapa interactivo con arquetipos, ciclos personales y sugerencias prácticas para la toma de decisiones.",
+        name: L("Explorá tu mapa y ganá perspectiva", "Explore your map and gain perspective"),
+        text: L("Accedé a tu mapa interactivo con arquetipos, ciclos personales y sugerencias prácticas para la toma de decisiones.", "Open your interactive map with archetypes, personal cycles and practical suggestions for making decisions."),
         url: `${SITE_URL}/profile`,
       },
     ],
   },
   // Sin FAQPage: la portada ya no muestra preguntas frecuentes, y Google pide
   // que el marcado coincida con lo que se ve en la página.
-];
+]);
 
-export const metadata = createRouteMetadata({
-  title: "Tu Mapa Personal de Autoconocimiento",
+export const generateMetadata = metadataFor({
+  title: ["Tu Mapa Personal de Autoconocimiento", "Your Personal Self-Knowledge Map"],
   description:
-    "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
+    ["Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.", "Discover your personal pattern: numerology, astrology, Chinese zodiac. Basic map 100% local, no sign-up. Radical transparency."],
   path: "",
-  ogTitle: "Tu Mapa Personal de Autoconocimiento",
+  ogTitle: ["Tu Mapa Personal de Autoconocimiento", "Your Personal Self-Knowledge Map"],
   ogDescription:
-    "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
+    ["Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.", "Discover your personal pattern: numerology, astrology, Chinese zodiac. Basic map 100% local, no sign-up. Radical transparency."],
 });
 
 export default function HomePage() {
+  const L = useL();
   return (
     <>
       <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden pt-16">
@@ -89,7 +91,7 @@ export default function HomePage() {
       </main>
 
       {/* JSON-LD Schema */}
-      <script type="application/ld+json">{JSON.stringify(homeSchemas)}</script>
+      <script type="application/ld+json">{JSON.stringify(homeSchemas(L))}</script>
     </>
   );
 }

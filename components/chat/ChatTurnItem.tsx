@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -25,6 +26,7 @@ export default function ChatTurnItem({
   index,
   onSelectSuggestion,
 }: ChatTurnItemProps) {
+  const L = useL();
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -34,9 +36,9 @@ export default function ChatTurnItem({
     >
       {/* Tu pregunta */}
       <div>
-        <p className="text-sm text-muted mb-2 label-caps">
+        <p className="text-sm text-muted mb-2 label-caps">{L(<>
           Pregunta {index + 1}
-        </p>
+        </>, <>Question {index + 1}</>)}</p>
         <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug">
           {turn.question}
         </p>
@@ -53,7 +55,7 @@ export default function ChatTurnItem({
               transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
             />
           </span>
-          <span className="text-base text-muted italic">Molino está leyendo tu mapa…</span>
+          <span className="text-base text-muted italic">{L("Molino está leyendo tu mapa…", "Molino is reading your map…")}</span>
         </div>
       )}
 
@@ -67,7 +69,7 @@ export default function ChatTurnItem({
       {/* Respuesta */}
       {turn.answer && (
         <div className="border-l-2 border-ink pl-5 sm:pl-8 space-y-5">
-          <p className="text-sm text-muted label-caps">Molino responde</p>
+          <p className="text-sm text-muted label-caps">{L("Molino responde", "Molino answers")}</p>
 
           <p className="text-lg sm:text-xl text-foreground leading-[1.7] max-w-2xl">
             <MapHighlightText
@@ -84,7 +86,7 @@ export default function ChatTurnItem({
 
           {turn.answer.suggestedNextStep && (
             <div className="border-t border-ink/15 pt-4 max-w-2xl">
-              <p className="text-sm text-muted label-caps mb-1">Para hacer</p>
+              <p className="text-sm text-muted label-caps mb-1">{L("Para hacer", "To do")}</p>
               <p className="text-base sm:text-lg text-foreground leading-relaxed">
                 <MapHighlightText text={turn.answer.suggestedNextStep} highlightClassName="font-semibold" />
               </p>
@@ -94,7 +96,7 @@ export default function ChatTurnItem({
           {/* Seguir por este lado */}
           {turn.answer.suggestedQuestions && turn.answer.suggestedQuestions.length > 0 && (
             <div className="pt-2">
-              <p className="text-sm text-muted label-caps mb-2">Seguir por acá</p>
+              <p className="text-sm text-muted label-caps mb-2">{L("Seguir por acá", "Keep going from here")}</p>
               <ul className="border-t border-ink/15">
                 {turn.answer.suggestedQuestions.map((sug, i) => (
                   <li key={i} className="border-b border-ink/15">

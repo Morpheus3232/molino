@@ -1,13 +1,13 @@
+import { useL } from "@/lib/i18n/useL";
 export default function PageLoading() {
+  const L = useL();
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center bg-background px-4">
       <div className="relative flex items-center justify-center mb-6">
         <div className="w-12 h-12 rounded-full border-2 border-accent/20 border-t-accent animate-spin" />
         <span className="absolute text-accent text-sm font-serif">✦</span>
       </div>
-      <p className="text-sm text-muted animate-pulse label-caps">
-        Calculando patrones…
-      </p>
+      <p className="text-sm text-muted animate-pulse label-caps">{L("Calculando patrones…", "Calculating patterns…")}</p>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import { Share2, Check } from "lucide-react";
@@ -17,11 +18,12 @@ export default function SharePublicButton({
   path,
   label = "Compartir",
 }: SharePublicButtonProps) {
+  const L = useL();
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
     const url = buildPublicShareUrl(profile, path);
-    const text = `Mirá mi ${path === "/circulo" ? "círculo" : "mundo"} de energías en Molino: ${url}`;
+    const text = L(`Mirá mi ${path === "/circulo" ? "círculo" : "mundo"} de energías en Molino: ${url}`, `Check out my ${path === "/circulo" ? "circle" : "world"} of energies on Molino: ${url}`);
 
     // Track share event
     analytics.trackFeatureUsed(`share_${path === "/circulo" ? "circulo" : "mundo"}`);
@@ -29,7 +31,7 @@ export default function SharePublicButton({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Mi ${path === "/circulo" ? "círculo" : "mundo"}`,
+          title: L(`Mi ${path === "/circulo" ? "círculo" : "mundo"}`, `My ${path === "/circulo" ? "circle" : "world"}`),
           text,
           url,
         });
@@ -59,7 +61,7 @@ export default function SharePublicButton({
       {copied ? (
         <>
           <Check className="w-4 h-4 text-accent" aria-hidden="true" />
-          <span className="text-accent">Copiado</span>
+          <span className="text-accent">{L("Copiado", "Copied")}</span>
         </>
       ) : (
         <>

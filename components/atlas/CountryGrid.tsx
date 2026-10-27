@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -16,6 +17,7 @@ interface CountryGridProps {
  * no rich data reaches the client. Marks the user's country when present.
  */
 export default function CountryGrid({ countries, userCountryISO }: CountryGridProps) {
+  const L = useL();
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       {countries.map((country, i) => {
@@ -36,9 +38,7 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
               }`}
             >
               {isUserCountry && (
-                <span className="absolute top-2 right-3 text-sm text-accent label-caps">
-                  Tu país
-                </span>
+                <span className="absolute top-2 right-3 text-sm text-accent label-caps">{L("Tu país", "Your country")}</span>
               )}
               <span className="flag-emoji text-4xl leading-none" role="img" aria-label={country.name}>
                 {country.flag}
@@ -46,9 +46,9 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
               <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
                 {country.name}
               </span>
-              <span className="text-sm text-muted label-caps">
+              <span className="text-sm text-muted label-caps">{L(<>
                 {country.count} entidades
-              </span>
+              </>, <>{country.count} entities</>)}</span>
             </Link>
           </motion.div>
         );

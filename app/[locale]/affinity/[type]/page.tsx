@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -61,6 +62,7 @@ export default async function AffinityTypePage({
   params: Promise<{ type: string }>;
   searchParams: Promise<{ animal?: string }>;
 }) {
+  const L = await getL();
   const { type } = await params;
   const { animal } = await searchParams;
   if (!VALID_TYPES.includes(type)) notFound();
@@ -81,17 +83,17 @@ export default async function AffinityTypePage({
       <AffinityTypeContent meta={meta} entities={entities} initialAnimal={animal} />
       {bySign.length > 0 && (
         <nav aria-labelledby="indice-por-signo" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-24">
-          <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">
+          <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">{L(<>
             {meta.plural} por signo chino
-          </h2>
+          </>, <>{meta.plural} by Chinese sign</>)}</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {bySign.map((g) => (
               <section key={g.animal}>
-                <h3 className="text-sm font-semibold text-foreground mb-2">
+                <h3 className="text-sm font-semibold text-foreground mb-2">{L(<>
                   <Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">
                     Signo {g.animal}
                   </Link>
-                </h3>
+                </>, <><Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">{g.animal} sign</Link></>)}</h3>
                 <ul className="text-sm text-muted space-y-1">
                   {g.items.map((e) => (
                     <li key={e.id}>

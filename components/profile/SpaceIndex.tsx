@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -24,22 +25,23 @@ interface SpaceIndexProps {
 // como una utilidad más. Ahora tiene su propio umbral (ReadingThreshold), y
 // esto queda como lo que realmente es: el índice de herramientas laterales.
 export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndexProps) {
+  const L = useL();
   const items = [
     {
-      label: "Hoy",
-      teaser: `Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`,
+      label: L("Hoy", "Today"),
+      teaser: L(`Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`, `Daily energy and moon phase for your Path ${profile.lifePath}.`),
       href: "/hoy",
       icon: Sun,
     },
     {
-      label: "Modo Pareja",
-      teaser: "Compará tu mapa con el de tu pareja, socio o familiar.",
+      label: L("Modo Pareja", "Couple Mode"),
+      teaser: L("Compará tu mapa con el de tu pareja, socio o familiar.", "Compare your map with your partner's, business partner's or a family member's."),
       href: `/pareja?a=${profile.birthDate || ""}`,
       icon: Heart,
     },
     {
-      label: "Círculo",
-      teaser: allyName ? `${circleName} tiene afinidad con ${allyName}.` : "Energías alrededor de tu signo.",
+      label: L("Círculo", "Circle"),
+      teaser: allyName ? L(`${circleName} tiene afinidad con ${allyName}.`, `${circleName} has an affinity with ${allyName}.`) : L("Energías alrededor de tu signo.", "Energies around your sign."),
       href: "/circulo",
       icon: Users,
     },
@@ -49,16 +51,11 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
     <motion.nav
       {...editorialReveal}
       className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-20 lg:py-28 border-t border-border"
-      aria-label="Explorá tu mapa"
+      aria-label={L("Explorá tu mapa", "Explore your map")}
     >
       <div className="max-w-3xl mb-10 lg:mb-12">
-        <span className="text-sm text-muted block mb-3 label-caps">
-          También con tus coordenadas
-        </span>
-        <p className="text-base text-muted leading-relaxed max-w-xl">
-          Herramientas que se desprenden de los mismos números, para cuando quieras mirar tu
-          mapa desde otro ángulo.
-        </p>
+        <span className="text-sm text-muted block mb-3 label-caps">{L("También con tus coordenadas", "Also with your coordinates")}</span>
+        <p className="text-base text-muted leading-relaxed max-w-xl">{L("Herramientas que se desprenden de los mismos números, para cuando quieras mirar tu mapa desde otro ángulo.", "Tools that come from the same numbers, for when you want to look at your map from another angle.")}</p>
       </div>
 
       <ul className="border-t border-border">

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { WESTERN_SIGNS } from "@/lib/data/facts/astrology-facts";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
@@ -54,6 +55,7 @@ export default function MapWheel({
   highlight?: WheelPart | null;
   className?: string;
 }) {
+  const L = useL();
   // Con una parte elegida, el resto baja a un cuarto de opacidad.
   const dim = (part: WheelPart | WheelPart[]) => {
     if (!highlight) return undefined;
@@ -90,11 +92,11 @@ export default function MapWheel({
       <svg
         viewBox="0 0 600 600"
         role="img"
-        aria-label={`Rueda de tu mapa: Camino de Vida ${lifePath}, Sol en ${sunSign}, ${animal}${
+        aria-label={L(`Rueda de tu mapa: Camino de Vida ${lifePath}, Sol en ${sunSign}, ${animal}${
           kinds
             ? `, con ${[...friends].join(" y ")} como amigos y ${enemy} como opuesto`
             : ""
-        }.`}
+        }.`, `Wheel of your map: Life Path ${lifePath}, Sun in ${sunSign}, ${animal}${kinds ? `, with ${[...friends].join(" and ")} as friends and ${enemy} as its opposite` : ""}.`)}
         className="w-full h-auto text-foreground map-wheel"
       >
         {/* Anillo de los signos */}

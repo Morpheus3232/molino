@@ -1,21 +1,22 @@
-import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { SITE_URL, siteUrl, metadataFor } from "@/lib/seo";
 import NosotrosContent from "./NosotrosContent";
 
-export const metadata = createRouteMetadata({
-  title: "Quiénes somos",
-  description: "Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.",
+export const generateMetadata = metadataFor({
+  title: ["Quiénes somos", "About us"],
+  description: ["Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.", "Why Molino exists: self-knowledge without sensationalism, crossing numerology, astrology and the Chinese zodiac in a single honest tool."],
   path: "/nosotros",
-  ogTitle: "Quiénes somos",
-  ogDescription: "La historia y los valores detrás de Molino: por qué lo construimos y en qué creemos.",
+  ogTitle: ["Quiénes somos", "About us"],
+  ogDescription: ["La historia y los valores detrás de Molino: por qué lo construimos y en qué creemos.", "The story and values behind Molino: why we built it and what we believe in."],
   image: "/opengraph-image",
 });
 
-const jsonLd = [
+const jsonLd = (L: Pick2) => ([
   {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: "Quiénes somos",
-    description: "Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.",
+    name: L("Quiénes somos", "About us"),
+    description: L("Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.", "Why Molino exists: self-knowledge without sensationalism, crossing numerology, astrology and the Chinese zodiac in a single honest tool."),
     url: siteUrl("/nosotros"),
   },
   {
@@ -31,16 +32,17 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Quiénes somos" },
+      { "@type": "ListItem", position: 1, name: L("Inicio", "Home"), item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: L("Quiénes somos", "About us") },
     ],
   },
-];
+]);
 
 export default function NosotrosPage() {
+  const L = useL();
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />
       <NosotrosContent />
     </>
   );

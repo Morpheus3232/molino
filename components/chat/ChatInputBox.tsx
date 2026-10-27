@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React, { useRef, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
@@ -22,6 +23,7 @@ export default function ChatInputBox({
   placeholder = "Escribí tu pregunta…",
   onOpenReloadModal,
 }: ChatInputBoxProps) {
+  const L = useL();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-resize textarea based on content
@@ -64,10 +66,10 @@ export default function ChatInputBox({
           value={input}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={isExhausted ? "Te quedaste sin preguntas. Recargá tu saldo para continuar." : placeholder}
+          placeholder={isExhausted ? L("Te quedaste sin preguntas. Recargá tu saldo para continuar.", "You're out of questions. Top up your balance to continue.") : placeholder}
           disabled={isLoading || isExhausted}
           className="w-full resize-none bg-transparent px-3 py-2 text-lg sm:text-xl text-foreground placeholder:text-muted/70 focus:outline-none disabled:opacity-50 min-h-[48px] max-h-[180px] font-display leading-relaxed"
-          aria-label="Escribí tu pregunta para Molino"
+          aria-label={L("Escribí tu pregunta para Molino", "Write your question for Molino")}
         />
 
         {isExhausted ? (
@@ -75,25 +77,25 @@ export default function ChatInputBox({
             type="button"
             onClick={onOpenReloadModal}
             className="shrink-0 min-h-[44px] px-5 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors flex items-center gap-1.5 label-caps"
-          >
+          >{L(<>
             <span>Recargar</span>
-          </button>
+          </>, <><span>Top up</span></>)}</button>
         ) : (
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
             className="shrink-0 h-11 w-11 bg-ink text-paper flex items-center justify-center hover:bg-vermilion active:scale-95 disabled:opacity-25 disabled:pointer-events-none transition-colors"
-            aria-label="Enviar pregunta"
+            aria-label={L("Enviar pregunta", "Send question")}
           >
             <ArrowUp className="w-5 h-5 stroke-[2.5]" />
           </button>
         )}
       </div>
 
-      <div className="flex items-center justify-between px-3 pt-2 text-sm text-muted select-none">
+      <div className="flex items-center justify-between px-3 pt-2 text-sm text-muted select-none">{L(<>
         <span>Molino lee tus coordenadas en cada consulta</span>
         <span className="hidden sm:inline">Enter envía; Shift+Enter, nueva línea</span>
-      </div>
+      </>, <><span>Molino reads your coordinates on every question</span><span className="hidden sm:inline">Enter sends; Shift+Enter, new line</span></>)}</div>
     </form>
   );
 }

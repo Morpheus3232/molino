@@ -1,31 +1,33 @@
-import { createRouteMetadata, siteUrl } from "@/lib/seo";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { siteUrl, metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Signo Solar",
+export const generateMetadata = metadataFor({
+  title: ["Signo Solar", "Sun Sign"],
   description:
-    "Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.",
+    ["Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.", "Calculate your sun sign from your date of birth. Get to know the 12 signs of the Western zodiac, their elements and modalities."],
   path: "/herramientas/signo-solar",
-  ogTitle: "Calculá tu Signo Solar",
-  ogDescription: "Signo zodiacal occidental a partir de tu fecha de nacimiento.",
+  ogTitle: ["Calculá tu Signo Solar", "Calculate your Sun Sign"],
+  ogDescription: ["Signo zodiacal occidental a partir de tu fecha de nacimiento.", "Your Western zodiac sign from your date of birth."],
   image: "/opengraph-image",
 });
 
-const jsonLd = {
+const jsonLd = (L: Pick2) => ({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Calculadora de Signo Solar",
+  name: L("Calculadora de Signo Solar", "Sun Sign Calculator"),
   description:
-    "Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.",
+    L("Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.", "Calculate your sun sign from your date of birth. Get to know the 12 signs of the Western zodiac, their elements and modalities."),
   url: siteUrl("/herramientas/signo-solar"),
   applicationCategory: "LifestyleApplication",
   operatingSystem: "Web",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-};
+});
 
 export default function SignoSolarLayout({ children }: { children: React.ReactNode }) {
+  const L = useL();
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />
       {children}
     </>
   );

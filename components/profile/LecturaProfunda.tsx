@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import type { UserProfile } from "@/types/user";
@@ -74,16 +75,12 @@ function ChapterNumber({
  * addendum del patrón central en vez de un capítulo nuevo.
  */
 function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
+  const L = useL();
   if (hits.length === 0) return null;
   return (
     <div className="mt-10 pt-8 border-t border-ink/10">
-      <p className="text-sm text-accent mb-1.5 label-caps">
-        ✦ Tus números maestros
-      </p>
-      <p className="text-sm text-muted mb-5 max-w-md">
-        11, 22 y 33 no se reducen como el resto de los números en numerología:
-        se leen enteros, con un significado propio en cada posición de tu carta.
-      </p>
+      <p className="text-sm text-accent mb-1.5 label-caps">{L("✦ Tus números maestros", "✦ Your master numbers")}</p>
+      <p className="text-sm text-muted mb-5 max-w-md">{L("11, 22 y 33 no se reducen como el resto de los números en numerología: se leen enteros, con un significado propio en cada posición de tu carta.", "11, 22 and 33 aren't reduced like the rest of the numbers in numerology: they're read whole, with a meaning of their own in each position of your chart.")}</p>
       <div className="space-y-6">
         {hits.map((hit) => (
           <div key={hit.position}>
@@ -104,9 +101,7 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
       <Link
         href="/guia/numeros-maestros"
         className="mt-6 inline-flex items-center gap-2 text-sm text-accent hover:underline underline-offset-4 label-caps"
-      >
-        Profundizá en los números maestros →
-      </Link>
+      >{L("Profundizá en los números maestros →", "Go deeper into master numbers →")}</Link>
     </div>
   );
 }
@@ -122,9 +117,10 @@ function PatronCentral({
   masterNumbers: MasterNumberHit[];
   elementDot: { color: string; label: string };
 }) {
+  const L = useL();
   return (
     <div>
-      <ChapterNumber number="01 · TU PATRÓN CENTRAL" elementDot={elementDot} />
+      <ChapterNumber number={L("01 · TU PATRÓN CENTRAL", "01 · YOUR CENTRAL PATTERN")} elementDot={elementDot} />
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
         <p className="text-sm text-muted mb-2 label-caps">
@@ -140,10 +136,8 @@ function PatronCentral({
         {/* Tensión — el pliegue del patrón */}
         {tension && (
           <div className="mt-10 pt-8 border-t border-ink/10">
-            <p className="text-sm text-muted mb-1 label-caps">Tu tensión</p>
-            <p className="text-sm text-muted mb-3 max-w-lg">
-              El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.
-            </p>
+            <p className="text-sm text-muted mb-1 label-caps">{L("Tu tensión", "Your tension")}</p>
+            <p className="text-sm text-muted mb-3 max-w-lg">{L("El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.", "The central pattern isn't even: here's the point where it pulls in two directions at once.")}</p>
             <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
               {tension.title}
             </p>
@@ -154,10 +148,10 @@ function PatronCentral({
         )}
 
         {/* Patrones secundarios — evidencia, no nuevas piezas */}
-        <div className="mt-6 text-sm text-muted leading-relaxed">
+        <div className="mt-6 text-sm text-muted leading-relaxed">{L(<>
           <span className="text-sm text-accent label-caps">Evidencias · </span>
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
-        </div>
+        </>, <><span className="text-sm text-accent label-caps">Evidence · </span>This pattern shows up in your birth chart and your yearly cycle.</>)}</div>
 
         <NumerosMaestros hits={masterNumbers} />
       </div>
@@ -186,6 +180,7 @@ function TuMomento({
   };
   elementDot: { color: string; label: string };
 }) {
+  const L = useL();
   const areas: {
     work: AreaScore;
     relationships: AreaScore;
@@ -200,30 +195,27 @@ function TuMomento({
 
   return (
     <div>
-      <ChapterNumber number="02 · TU MOMENTO" elementDot={elementDot} />
+      <ChapterNumber number={L("02 · TU MOMENTO", "02 · YOUR MOMENT")} elementDot={elementDot} />
       <div className="max-w-2xl">
         <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight text-accent">
           {personalYear}
         </p>
-        <p className="text-sm text-muted mt-2 label-caps">
+        <p className="text-sm text-muted mt-2 label-caps">{L(<>
           Año personal · {yearTheme ?? "—"}
-        </p>
-        <p className="mt-4 text-sm text-muted leading-relaxed max-w-md">
-          Tu año personal marca el clima de fondo de los próximos 12 meses.
-          Sobre ese clima, cada día suma o resta energía en cuatro áreas — es lo que muestran las barras de abajo.
-        </p>
+        </>, <>Personal year · {yearTheme ?? "—"}</>)}</p>
+        <p className="mt-4 text-sm text-muted leading-relaxed max-w-md">{L("Tu año personal marca el clima de fondo de los próximos 12 meses. Sobre ese clima, cada día suma o resta energía en cuatro áreas — es lo que muestran las barras de abajo.", "Your personal year sets the background climate for the next 12 months. On top of that climate, each day adds or subtracts energy in four areas — that's what the bars below show.")}</p>
 
         {Object.keys(areas).length > 0 && (
           <div className="mt-8 border-t border-ink/10">
             {Object.entries(areas).map(([key, area]) => {
               const nombre =
                 key === "relationships"
-                  ? "Relaciones"
+                  ? L("Relaciones", "Relationships")
                   : key === "work"
-                    ? "Trabajo"
+                    ? L("Trabajo", "Work")
                     : key === "creativity"
-                      ? "Creatividad"
-                      : "Decisiones";
+                      ? L("Creatividad", "Creativity")
+                      : L("Decisiones", "Decisions");
               const barColor = getScoreColor(area.score);
               return (
                 <div key={key} className="py-4 border-b border-ink/10">
@@ -244,7 +236,7 @@ function TuMomento({
                   <div
                     className="h-1.5 rounded-full bg-ink/8 overflow-hidden"
                     role="img"
-                    aria-label={`${nombre}: ${getScoreLabel(area.score)}, ${area.score} de 100`}
+                    aria-label={L(`${nombre}: ${getScoreLabel(area.score)}, ${area.score} de 100`, `${nombre}: ${getScoreLabel(area.score)}, ${area.score} out of 100`)}
                   >
                     <div
                       className="h-full rounded-full transition-[width]"
@@ -256,9 +248,9 @@ function TuMomento({
                       factores a favor hoy" al lado de la barra: leía como
                       una alarma que la barra ya no necesita. */}
                   {area.reasons && area.reasons.length > 0 && (
-                    <p className="mt-1.5 font-mono text-sm text-accent">
+                    <p className="mt-1.5 font-mono text-sm text-accent">{L(<>
                       A favor: {area.reasons.join(" · ")}
-                    </p>
+                    </>, <>In favor: {area.reasons.join(" · ")}</>)}</p>
                   )}
                 </div>
               );
@@ -287,6 +279,7 @@ function PiezasLibres({
     timing: ReturnType<typeof analyzeTiming>;
   }) => void;
 }) {
+  const L = useL();
   const [savedIntention, setSavedIntention] = useState<ReturnType<typeof loadTimingIntention>>(null);
 
   useEffect(() => {
@@ -294,7 +287,7 @@ function PiezasLibres({
   }, []);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: `Elemento ${element || "—"}` };
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${element || "—"}`) };
 
   const dailyEnergy = calculateDailyEnergy(profile);
   const patterns = buildPatterns(profile);
@@ -335,11 +328,11 @@ function PiezasLibres({
       />
       {/* Puente hacia el gate */}
       {mainTension && (
-        <div className="flex items-center gap-4 text-sm text-muted">
+        <div className="flex items-center gap-4 text-sm text-muted">{L(<>
           <span className="h-px flex-1 bg-ink/10" />
           <span>Más abajo: qué hacer cuando {mainTension.title.toLowerCase()}.</span>
           <span className="h-px flex-1 bg-ink/10" />
-        </div>
+        </>, <><span className="h-px flex-1 bg-ink/10" /><span>Further down: what to do when {mainTension.title.toLowerCase()}.</span><span className="h-px flex-1 bg-ink/10" /></>)}</div>
       )}
     </div>
   );
@@ -354,6 +347,7 @@ interface ConnectionNode {
 }
 
 function Connections({ nodes }: { nodes: ConnectionNode[] }) {
+  const L = useL();
   const [open, setOpen] = useState(false);
   if (nodes.length === 0) return null;
   return (
@@ -364,11 +358,11 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
         aria-expanded={open}
         className="text-sm text-accent hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent label-caps"
       >
-        {open ? "Ocultar conexiones" : "Ver conexiones"}
+        {open ? L("Ocultar conexiones", "Hide connections") : L("Ver conexiones", "Show connections")}
       </button>
       {open && (
         <div className="mt-5">
-          <p className="text-sm text-muted mb-4">Esta lectura conecta:</p>
+          <p className="text-sm text-muted mb-4">{L("Esta lectura conecta:", "This reading connects:")}</p>
           <ol className="relative border-l border-ink/15 pl-6 space-y-5">
             {nodes.map((n) => (
               <li key={`${n.kind}-${n.label}`} className="relative">
@@ -405,10 +399,11 @@ function LecturaProfundaDesbloqueada({
   } | null;
   justUnlocked?: boolean;
 }) {
+  const L = useL();
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretationType | null>(null);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: `Elemento ${element || "—"}` };
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${element || "—"}`) };
 
   // La Lectura en sí vive en su propia pestaña (app/lectura) — esta llamada
   // acá es silenciosa, solo para alimentar el trazado "Esta lectura conecta"
@@ -449,7 +444,7 @@ function LecturaProfundaDesbloqueada({
         ...pieces.patterns.map((p) => ({ kind: "Patrón", label: `${p.label}: ${p.keyword}` })),
         ...pieces.rules.slice(0, 1).map((r) => ({ kind: "Regla", label: r.rule })),
         ...pieces.tensions.map((t) => ({ kind: "Tensión", label: t.title })),
-        { kind: "Ciclo", label: `Año personal ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}` },
+        { kind: "Ciclo", label: L(`Año personal ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}`, `Personal year ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}`) },
       ]
     : [];
 
@@ -457,7 +452,7 @@ function LecturaProfundaDesbloqueada({
     <div className="space-y-20 sm:space-y-24">
       {/* 03 · Ciclos anuales — deterministic, extiende "02 · TU MOMENTO" hacia adelante */}
       <div>
-        <ChapterNumber number="03 · CICLOS ANUALES" elementDot={elementDot} />
+        <ChapterNumber number={L("03 · CICLOS ANUALES", "03 · ANNUAL CYCLES")} elementDot={elementDot} />
         <AnnualCyclesPreview profile={profile} />
       </div>
 
@@ -467,21 +462,17 @@ function LecturaProfundaDesbloqueada({
           si el navegador bloqueó ese popup como el punto de reingreso para
           quien vuelve otro día y ya es premium (justUnlocked=false). */}
       <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 py-16 sm:py-20 section-paper-alt overflow-hidden">
-        <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">
-          La Lectura
-        </h3>
-        <p className="text-sm text-muted mb-8 max-w-xl leading-relaxed">
+        <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">{L("La Lectura", "The Reading")}</h3>
+        <p className="text-sm text-muted mb-8 max-w-xl leading-relaxed">{L(<>
           La conversación entre tus sistemas, en su propio espacio — con tus mayores afinidades de países, ciudades y marcas.
           {justUnlocked && " Se abrió en una pestaña nueva."}
-        </p>
+        </>, <>The conversation between your systems, in its own space — with your strongest affinities among countries, cities and brands.{justUnlocked && " It opened in a new tab."}</>)}</p>
         <a
           href={`/lectura#${encodeProfileData(profile)}`}
           target="_blank"
           rel="noopener"
           className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-accent-foreground font-heading text-sm font-bold hover:bg-accent-hover transition-colors label-caps"
-        >
-          Abrir mi lectura →
-        </a>
+        >{L("Abrir mi lectura →", "Open my reading →")}</a>
         <div className="max-w-2xl">
           {aiInterpretation && <Connections nodes={connections} />}
         </div>
@@ -489,13 +480,9 @@ function LecturaProfundaDesbloqueada({
 
       {/* 05 · Preguntale a tu Molino */}
       <div>
-        <ChapterNumber number="04 · PREGUNTALE A TU MAPA" elementDot={elementDot} />
-        <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">
-          Ya conocés tu mapa. Ahora podés preguntarle qué significa.
-        </h3>
-        <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
-          Una pregunta concreta sobre tu momento, tu dirección o lo que estás sintiendo.
-        </p>
+        <ChapterNumber number={L("04 · PREGUNTALE A TU MAPA", "04 · ASK YOUR MAP")} elementDot={elementDot} />
+        <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">{L("Ya conocés tu mapa. Ahora podés preguntarle qué significa.", "You already know your map. Now you can ask it what it means.")}</h3>
+        <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">{L("Una pregunta concreta sobre tu momento, tu dirección o lo que estás sintiendo.", "A specific question about your moment, your direction or what you're feeling.")}</p>
         <div className="mt-8">
           <ChatWithMolino
             profile={profile}
@@ -513,7 +500,7 @@ function LecturaProfundaDesbloqueada({
             }
           />
         </div>
-        <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
+        <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">{L(<>
           <Link
             href="/journal"
             className="inline-flex items-center gap-1.5 text-sm font-mono text-accent hover:underline"
@@ -526,7 +513,7 @@ function LecturaProfundaDesbloqueada({
           >
             Tu mapa también tiene ritmo diario — ver tu energía de hoy →
           </Link>
-        </div>
+        </>, <><Link href="/journal" className="inline-flex items-center gap-1.5 text-sm font-mono text-accent hover:underline">Want to note how you feel about this reading? Write in my Journal →</Link><Link href="/hoy" className="inline-flex items-center gap-1.5 text-sm font-mono text-muted hover:text-accent transition-colors">Your map also has a daily rhythm — see your energy today →</Link></>)}</div>
       </div>
     </div>
   );
@@ -551,13 +538,14 @@ export function LecturaLibre({
   profile: UserProfile;
   onData: (data: LecturaPieces) => void;
 }) {
+  const L = useL();
   return (
     <EditorialSection
       as="h2"
       tone="paper"
-      eyebrow="Capítulo IV · Tu lectura"
-      title="Leer tu mapa en dos movimientos"
-      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Los principios que las ordenan están en la lectura completa."
+      eyebrow={L("Capítulo IV · Tu lectura", "Chapter IV · Your reading")}
+      title={L("Leer tu mapa en dos movimientos", "Reading your map in two movements")}
+      intro={L("Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Los principios que las ordenan están en la lectura completa.", "So far you've seen the pieces separately. This is the conversation — your identity and your moment seen as a single system. The principles that order them are in the complete reading.")}
     >
       <div className="pt-10 sm:pt-14">
         <PiezasLibres profile={profile} onData={onData} />
@@ -578,6 +566,7 @@ export function LecturaPremium({
   profile: UserProfile;
   pieces: LecturaPieces | null;
 }) {
+  const L = useL();
   const lifePath = safeNumber(profile.lifePath, 1);
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const name = typeof profile.name === "string" ? profile.name : undefined;
@@ -591,9 +580,9 @@ export function LecturaPremium({
     <EditorialSection
       as="h2"
       tone="paper"
-      eyebrow="TU MAPA"
-      title="Profundizá tu lectura"
-      intro="La síntesis entre tus sistemas y una conversación abierta con tu mapa."
+      eyebrow={L("TU MAPA", "YOUR MAP")}
+      title={L("Profundizá tu lectura", "Go deeper into your reading")}
+      intro={L("La síntesis entre tus sistemas y una conversación abierta con tu mapa.", "The synthesis between your systems and an open conversation with your map.")}
     >
       <div className="pt-10 sm:pt-14">
         <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension, hook }}>

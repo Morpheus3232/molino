@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -18,6 +19,7 @@ interface AffinityDetailContentProps {
 }
 
 export default function AffinityDetailContent({ entity, meta, type }: AffinityDetailContentProps) {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const [showOtherEvents, setShowOtherEvents] = useState(false);
@@ -26,8 +28,8 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   if (!mounted) {
     return (
-      <div role="status" aria-label="Cargando lectura personalizada..." className="animate-pulse">
-        <p className="sr-only">Cargando lectura personalizada...</p>
+      <div role="status" aria-label={L("Cargando lectura personalizada...", "Loading personalized reading...")} className="animate-pulse">
+        <p className="sr-only">{L("Cargando lectura personalizada...", "Loading personalized reading...")}</p>
         <div className="h-64 bg-[var(--skeleton)] border border-ink/10 mb-6" />
         <div className="space-y-px bg-ink/10">
           {Array.from({ length: 3 }).map((_, i) => (
@@ -62,9 +64,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         <button type="button" onClick={() => router.push(`/affinity/${affinityListingOf(entity)}`)} className="underline underline-offset-4 hover:no-underline">
           {formatViewAll(type, meta.plural)}
         </button>
-        <button type="button" onClick={() => router.push("/conocimiento/zodiaco-chino")} className="underline underline-offset-4 hover:no-underline">
-          Conocé el zodíaco chino
-        </button>
+        <button type="button" onClick={() => router.push("/conocimiento/zodiaco-chino")} className="underline underline-offset-4 hover:no-underline">{L("Conocé el zodíaco chino", "Get to know the Chinese zodiac")}</button>
       </div>
     </>
   );

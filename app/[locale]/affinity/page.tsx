@@ -2,17 +2,17 @@ import type { LightweightEntity } from "@/types/atlas";
 import { ENTITY_TYPES, getEntitiesByType, getAvailableTypes, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
 import AffinityClient from "./AffinityClient";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Afinidad",
-  description: "Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.",
+export const generateMetadata = metadataFor({
+  title: ["Afinidad", "Affinity"],
+  description: ["Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.", "Discover the symbolic affinity between you and the world: brands, countries, cities and historical figures."],
   path: "/affinity",
   // Sin perfil no hay nada que mostrar (pide crear el mapa): fuera del índice,
   // pero los enlaces se siguen. Las listas por categoría sí se indexan.
   noIndex: true,
-  ogTitle: "Afinidad",
-  ogDescription: "Afinidad simbólica entre vos y el mundo.",
+  ogTitle: ["Afinidad", "Affinity"],
+  ogDescription: ["Afinidad simbólica entre vos y el mundo.", "Symbolic affinity between you and the world."],
   image: "/opengraph-image",
 });
 

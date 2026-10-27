@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
@@ -36,9 +37,10 @@ export function PersonCard({
   badgeLabel: string;
   colorScheme?: "gold" | "blue";
 }) {
+  const L = useL();
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = archetypeDisplayName(archetype.name || "El Caminante");
+  const archetypeName = archetypeDisplayName(archetype.name || L("El Caminante", "The Wanderer"));
   const sunSign = profile.sunSign || "Aries";
   const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "☀";
   const zodiacDisplay = getZodiacDisplay(profile.chineseZodiac);
@@ -75,41 +77,41 @@ export function PersonCard({
         {/* 3 Pillars Grid */}
         <div className="grid grid-cols-3 gap-2 mt-5">
           {/* Life Path */}
-          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">{L(<>
             <span className="text-sm text-muted block label-caps">
               Camino
             </span>
             <span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>
               {lifePath}
             </span>
-          </div>
+          </>, <><span className="text-sm text-muted block label-caps">Path</span><span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>{lifePath}</span></>)}</div>
 
           {/* Sun Sign */}
-          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">{L(<>
             <span className="text-sm text-muted block label-caps">
               Solar
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
               {sunSymbol} {sunSign}
             </span>
-          </div>
+          </>, <><span className="text-sm text-muted block label-caps">Sun</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{sunSymbol} {sunSign}</span></>)}</div>
 
           {/* Chinese Zodiac */}
-          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">{L(<>
             <span className="text-sm text-muted block label-caps">
               Zodíaco
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
               {zodiacDisplay.emoji} {zodiacDisplay.name}
             </span>
-          </div>
+          </>, <><span className="text-sm text-muted block label-caps">Zodiac</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{zodiacDisplay.emoji} {zodiacDisplay.name}</span></>)}</div>
         </div>
       </div>
 
-      <div className="mt-4 pt-3 border-t border-ink/5 text-[11px] font-mono text-muted flex items-center justify-between">
+      <div className="mt-4 pt-3 border-t border-ink/5 text-[11px] font-mono text-muted flex items-center justify-between">{L(<>
         <span>Elemento {element}</span>
         <span>Arquetipo #{lifePath}</span>
-      </div>
+      </>, <><span>{element} element</span><span>Archetype #{lifePath}</span></>)}</div>
     </div>
   );
 }
@@ -120,6 +122,7 @@ export default function CoupleComparison({
   onReset,
   className = "",
 }: CoupleComparisonProps) {
+  const L = useL();
   const result = useMemo<CoupleCompatibilityResult>(
     () => calculateCoupleCompatibility(profileA, profileB),
     [profileA, profileB]
@@ -136,9 +139,7 @@ export default function CoupleComparison({
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Heart className="w-4 h-4 text-accent animate-pulse" />
-          <span className="text-sm text-accent font-bold label-caps">
-            Resonancia de la Pareja
-          </span>
+          <span className="text-sm text-accent font-bold label-caps">{L("Resonancia de la Pareja", "The Couple's Resonance")}</span>
         </div>
 
         {/* Level Display — sin número crudo, el nivel ya es descriptivo */}
@@ -170,8 +171,8 @@ export default function CoupleComparison({
 
       {/* Side-by-side Maps (Desktop side by side, Mobile stacked) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-        <PersonCard profile={profileA} badgeLabel="Persona A" colorScheme="gold" />
-        <PersonCard profile={profileB} badgeLabel="Persona B" colorScheme="blue" />
+        <PersonCard profile={profileA} badgeLabel={L("Persona A", "Person A")} colorScheme="gold" />
+        <PersonCard profile={profileB} badgeLabel={L("Persona B", "Person B")} colorScheme="blue" />
       </div>
 
       {/* Connection Points (Sinergias) */}
@@ -183,12 +184,10 @@ export default function CoupleComparison({
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
           <div>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
               Puntos de Conexión & Sinergia
-            </h3>
-            <p className="text-xs text-muted">
-              Donde las energías de ambos fluyen de forma natural y complementaria.
-            </p>
+            </>, <>Points of Connection & Synergy</>)}</h3>
+            <p className="text-xs text-muted">{L("Donde las energías de ambos fluyen de forma natural y complementaria.", "Where both people's energies flow in a natural, complementary way.")}</p>
           </div>
         </div>
 
@@ -233,12 +232,10 @@ export default function CoupleComparison({
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
               Puntos de Atención & Desafíos
-            </h3>
-            <p className="text-xs text-muted">
-              Diferencias de ritmo o polaridad que representan oportunidades de crecimiento.
-            </p>
+            </>, <>Points of Attention & Challenges</>)}</h3>
+            <p className="text-xs text-muted">{L("Diferencias de ritmo o polaridad que representan oportunidades de crecimiento.", "Differences in rhythm or polarity that represent opportunities for growth.")}</p>
           </div>
         </div>
 
@@ -248,18 +245,18 @@ export default function CoupleComparison({
               key={ch.id}
               className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2"
             >
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2">{L(<>
                 <span className="text-sm text-warning font-semibold label-caps">
                   Área: {ch.area}
                 </span>
-              </div>
+              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {ch.area}</span></>)}</div>
               <p className="text-xs sm:text-sm text-foreground leading-relaxed">
                 {ch.description}
               </p>
-              <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">
+              <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">{L(<>
                 <span className="text-accent font-bold">💡 Consejo:</span>
                 <span>{ch.recommendation}</span>
-              </div>
+              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{ch.recommendation}</span></>)}</div>
             </div>
           ))}
         </div>
@@ -274,9 +271,7 @@ export default function CoupleComparison({
       >
         <div className="flex items-center gap-2.5 mb-3">
           <Compass className="w-5 h-5 text-accent" />
-          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
-            Síntesis para la Dinámica Cotidiana
-          </h3>
+          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L("Síntesis para la Dinámica Cotidiana", "Synthesis for Everyday Dynamics")}</h3>
         </div>
         <blockquote className="text-sm sm:text-base text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-4 py-1">
           &ldquo;{result.dailyAdvice}&rdquo;
@@ -293,7 +288,7 @@ export default function CoupleComparison({
         <button
           type="button"
           onClick={() => {
-            const text = `Comparativa de Molino: ${profileA.name} + ${profileB.name}`;
+            const text = L(`Comparativa de Molino: ${profileA.name} + ${profileB.name}`, `Molino comparison: ${profileA.name} + ${profileB.name}`);
             if (navigator.share) {
               navigator.share({ title: text, text }).catch(() => {});
             } else {
@@ -307,7 +302,7 @@ export default function CoupleComparison({
             <polyline points="16 6 12 2 8 6" />
             <line x1="12" y1="2" x2="12" y2="15" />
           </svg>
-          Compartir comparativa
+          {L("Compartir comparativa", "Share comparison")}
         </button>
       </motion.div>
     </div>

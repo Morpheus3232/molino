@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,6 +64,7 @@ export function BtcPayOption({
   onOpen,
   className = "",
 }: BtcPayOptionProps) {
+  const L = useL();
   const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -93,7 +95,7 @@ export function BtcPayOption({
           className="w-full py-3.5 rounded-md border border-ink/15 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors inline-flex items-center justify-center gap-2 font-mono text-sm font-bold text-foreground"
         >
           <Bitcoin className="w-4 h-4 text-accent" />
-          Pagar con Bitcoin
+          {L("Pagar con Bitcoin", "Pay with Bitcoin")}
         </button>
       )}
       <AnimatePresence>
@@ -133,6 +135,7 @@ function BtcPanel({
   onUnlocked,
   onClose,
 }: BtcPanelProps) {
+  const L = useL();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteError, setQuoteError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -146,12 +149,12 @@ function BtcPanel({
       const res = await fetch("/api/btc/quote");
       const data = await res.json();
       if (!res.ok || !data.address) {
-        setQuoteError(data.error ?? "El pago en BTC no está disponible ahora.");
+        setQuoteError(data.error ?? L("El pago en BTC no está disponible ahora.", "BTC payment isn't available right now."));
         return;
       }
       setQuote(data);
     } catch {
-      setQuoteError("No pudimos cotizar BTC. Probá de nuevo en un minuto.");
+      setQuoteError(L("No pudimos cotizar BTC. Probá de nuevo en un minuto.", "We couldn't get a BTC quote. Try again in a minute."));
     }
   }, []);
 
@@ -186,7 +189,7 @@ function BtcPanel({
       const data = await res.json();
 
       if (!res.ok || !data.valid) {
-        setError(data.reason ?? "No pudimos verificar el pago.");
+        setError(data.reason ?? L("No pudimos verificar el pago.", "We couldn't verify the payment."));
         return;
       }
 
@@ -194,7 +197,7 @@ function BtcPanel({
       invalidatePremiumAccessCache(name, birthDate);
       onUnlocked?.(data.premiumToken);
     } catch {
-      setError("No pudimos verificar el pago. Probá de nuevo en un minuto.");
+      setError(L("No pudimos verificar el pago. Probá de nuevo en un minuto.", "We couldn't verify the payment. Try again in a minute."));
     } finally {
       setVerifying(false);
     }
@@ -210,15 +213,13 @@ function BtcPanel({
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-foreground">
           <Bitcoin className="w-3.5 h-3.5 text-accent" />
-          Pagar con Bitcoin
+          {L("Pagar con Bitcoin", "Pay with Bitcoin")}
         </span>
         <button
           type="button"
           onClick={onClose}
           className="text-xs text-muted hover:text-foreground"
-        >
-          Cancelar
-        </button>
+        >{L("Cancelar", "Cancel")}</button>
       </div>
 
       {quoteError && (
@@ -230,37 +231,31 @@ function BtcPanel({
             type="button"
             onClick={loadQuote}
             className="font-mono text-xs text-accent underline hover:opacity-80"
-          >
-            Reintentar
-          </button>
+          >{L("Reintentar", "Try again")}</button>
         </div>
       )}
 
       {!quote && !quoteError && (
         <p className="inline-flex items-center gap-2 font-mono text-xs text-muted">
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
-          Cotizando…
+          {L("Cotizando…", "Getting a quote…")}
         </p>
       )}
 
       {quote && (
         <>
           <div className="space-y-1">
-            <p className="text-sm text-muted label-caps">
-              Monto a enviar
-            </p>
+            <p className="text-sm text-muted label-caps">{L("Monto a enviar", "Amount to send")}</p>
             <p className="font-heading text-2xl font-bold text-foreground tabular-nums">
               {quote.btc} BTC
             </p>
-            <p className="font-mono text-xs text-muted">
+            <p className="font-mono text-xs text-muted">{L(<>
               ≈ USD {quote.usd} · 1 BTC = USD {Math.round(quote.rate).toLocaleString("es-AR")}
-            </p>
+            </>, <>≈ USD {quote.usd} · 1 BTC = USD {Math.round(quote.rate).toLocaleString("en-US")}</>)}</p>
           </div>
 
           <div className="space-y-1.5">
-            <p className="text-sm text-muted label-caps">
-              Dirección
-            </p>
+            <p className="text-sm text-muted label-caps">{L("Dirección", "Address")}</p>
             <div className="flex items-stretch gap-2">
               <code className="flex-1 min-w-0 break-all font-mono text-xs bg-ink/[0.04] border border-ink/10 rounded-md p-2.5 text-foreground">
                 {quote.address}
@@ -268,7 +263,7 @@ function BtcPanel({
               <button
                 type="button"
                 onClick={copyAddress}
-                aria-label="Copiar dirección"
+                aria-label={L("Copiar dirección", "Copy address")}
                 className="shrink-0 px-3 rounded-md border border-ink/10 hover:border-accent/40 hover:text-accent transition-colors"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -277,34 +272,26 @@ function BtcPanel({
             <a
               href={quote.uri}
               className="inline-block font-mono text-xs text-accent underline hover:opacity-80"
-            >
-              Abrir en mi billetera
-            </a>
+            >{L("Abrir en mi billetera", "Open in my wallet")}</a>
           </div>
 
           {/* Esto es plata y no tiene vuelta atrás: se dice antes, no después. */}
           <p className="flex items-start gap-2 text-xs text-muted leading-relaxed bg-ink/[0.03] border border-ink/10 rounded-md p-2.5">
             <AlertTriangle className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
-            <span>
-              Un pago en Bitcoin es irreversible: no hay contracargo ni
-              reembolso. Enviá el monto exacto y verificá la dirección antes de
-              confirmar en tu billetera.
-            </span>
+            <span>{L("Un pago en Bitcoin es irreversible: no hay contracargo ni reembolso. Enviá el monto exacto y verificá la dirección antes de confirmar en tu billetera.", "A Bitcoin payment is irreversible: there's no chargeback or refund. Send the exact amount and check the address before confirming in your wallet.")}</span>
           </p>
 
           <form onSubmit={handleVerify} className="space-y-2">
             <label
               htmlFor="btc-txid"
               className="block text-sm text-muted label-caps"
-            >
-              Ya pagué — ID de transacción
-            </label>
+            >{L("Ya pagué — ID de transacción", "I've paid — transaction ID")}</label>
             <input
               id="btc-txid"
               type="text"
               value={txid}
               onChange={(e) => setTxid(e.target.value)}
-              placeholder="64 caracteres, lo da tu billetera"
+              placeholder={L("64 caracteres, lo da tu billetera", "64 characters, your wallet gives it to you")}
               spellCheck={false}
               autoComplete="off"
               className="w-full font-mono text-xs bg-background border border-ink/15 rounded-md p-2.5 text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent"
@@ -315,12 +302,9 @@ function BtcPanel({
               </p>
             )}
             <Button type="submit" disabled={verifying || txid.trim().length < 64} className="w-full">
-              {verifying ? "Verificando en la red…" : "Verificar y activar"}
+              {verifying ? L("Verificando en la red…", "Verifying on the network…") : L("Verificar y activar", "Verify and activate")}
             </Button>
-            <p className="font-mono text-xs text-muted leading-relaxed">
-              Verificamos la transacción en la blockchain. No hace falta
-              esperar confirmaciones: apenas aparece en la red, se activa.
-            </p>
+            <p className="font-mono text-xs text-muted leading-relaxed">{L("Verificamos la transacción en la blockchain. No hace falta esperar confirmaciones: apenas aparece en la red, se activa.", "We verify the transaction on the blockchain. There's no need to wait for confirmations: as soon as it shows up on the network, it's activated.")}</p>
           </form>
         </>
       )}

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -23,6 +24,7 @@ const transitionVariants = {
 };
 
 export default function EvolutionPage() {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const { entries: journalEntries } = useJournal();
@@ -75,9 +77,7 @@ export default function EvolutionPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Cargando tu recorrido...">
-                Cargando tu recorrido...
-              </p>
+              <p className="sr-only" role="status" aria-label="Cargando tu recorrido...">{L("Cargando tu recorrido...", "Loading your journey...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
                 <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -98,15 +98,9 @@ export default function EvolutionPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
-              <h1 className="page-title text-foreground mb-4">
-                Tu recorrido
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
-                Para ver tu recorrido, primero necesitás crear tu perfil personal.
-              </p>
-              <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
-                Crear mi perfil
-              </Button>
+              <h1 className="page-title text-foreground mb-4">{L("Tu recorrido", "Your journey")}</h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">{L("Para ver tu recorrido, primero necesitás crear tu perfil personal.", "To see your journey, you first need to create your personal profile.")}</p>
+              <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>{L("Crear mi perfil", "Create my profile")}</Button>
             </main>
           </motion.div>
         ) : (
@@ -119,18 +113,14 @@ export default function EvolutionPage() {
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
-                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">{L(<>
                   <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
                   <span>›</span>
                   <span className="text-foreground font-medium">Evolución</span>
-                </nav>
+                </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Home</Link><span>›</span><span className="text-foreground font-medium">Evolution</span></>)}</nav>
 
-                <h1 className="page-title text-foreground">
-                  Tu recorrido
-                </h1>
-                <p className="text-sm text-muted mt-4 max-w-2xl">
-                  De dónde venís, dónde estás y qué ciclo se abre a continuación — según tu numerología. Además, cada vez que abrís Hoy, Molino guarda tu orientación del día para que con el tiempo puedas ver un historial real.
-                </p>
+                <h1 className="page-title text-foreground">{L("Tu recorrido", "Your journey")}</h1>
+                <p className="text-sm text-muted mt-4 max-w-2xl">{L("De dónde venís, dónde estás y qué ciclo se abre a continuación — según tu numerología. Además, cada vez que abrís Hoy, Molino guarda tu orientación del día para que con el tiempo puedas ver un historial real.", "Where you come from, where you are and which cycle opens next — according to your numerology. Also, every time you open Today, Molino saves your orientation for the day so that over time you can see a real history.")}</p>
               </motion.div>
 
               {/* TU CICLO — de dónde venís / dónde estás / qué viene, siempre disponible: no depende de historial acumulado */}
@@ -138,25 +128,25 @@ export default function EvolutionPage() {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mb-6">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
                     <div className="bg-background p-8 lg:p-10">
-                      <p className="label-micro mb-3">Año anterior · {cycleArc.previous.year}</p>
+                      <p className="label-micro mb-3">{L(<>Año anterior · {cycleArc.previous.year}</>, <>Previous year · {cycleArc.previous.year}</>)}</p>
                       <p className="font-display text-4xl text-muted mb-3">{cycleArc.previous.cycle}</p>
-                      <p className="text-sm text-muted leading-relaxed">Fue {cycleArc.previous.theme}.</p>
+                      <p className="text-sm text-muted leading-relaxed">{L(<>Fue {cycleArc.previous.theme}.</>, <>It was {cycleArc.previous.theme}.</>)}</p>
                     </div>
                     <div className="bg-background p-8 lg:p-10">
-                      <p className="label-micro mb-3 text-accent">Este año · {cycleArc.current.year}</p>
+                      <p className="label-micro mb-3 text-accent">{L(<>Este año · {cycleArc.current.year}</>, <>This year · {cycleArc.current.year}</>)}</p>
                       <p className="font-display text-4xl text-foreground mb-3">{cycleArc.current.cycle}</p>
-                      <p className="text-sm text-foreground leading-relaxed">Es {cycleArc.current.theme}.</p>
+                      <p className="text-sm text-foreground leading-relaxed">{L(<>Es {cycleArc.current.theme}.</>, <>It is {cycleArc.current.theme}.</>)}</p>
                     </div>
                     <div className="bg-background p-8 lg:p-10">
-                      <p className="label-micro mb-3">Próximo año · {cycleArc.next.year}</p>
+                      <p className="label-micro mb-3">{L(<>Próximo año · {cycleArc.next.year}</>, <>Next year · {cycleArc.next.year}</>)}</p>
                       <p className="font-display text-4xl text-muted mb-3">{cycleArc.next.cycle}</p>
-                      <p className="text-sm text-muted leading-relaxed">Va a ser {cycleArc.next.theme}.</p>
+                      <p className="text-sm text-muted leading-relaxed">{L(<>Va a ser {cycleArc.next.theme}.</>, <>It will be {cycleArc.next.theme}.</>)}</p>
                     </div>
                   </div>
                   <p className="text-xs text-muted mt-4">
                     {cycleArc.current.cycle === cycleArc.next.cycle
-                      ? `Tu ciclo personal se mantiene en ${cycleArc.current.cycle} el próximo año.`
-                      : `Tu ciclo personal pasa de ${cycleArc.current.cycle} a ${cycleArc.next.cycle} el próximo año.`}
+                      ? L(`Tu ciclo personal se mantiene en ${cycleArc.current.cycle} el próximo año.`, `Your personal cycle stays at ${cycleArc.current.cycle} next year.`)
+                      : L(`Tu ciclo personal pasa de ${cycleArc.current.cycle} a ${cycleArc.next.cycle} el próximo año.`, `Your personal cycle moves from ${cycleArc.current.cycle} to ${cycleArc.next.cycle} next year.`)}
                   </p>
                 </motion.div>
               )}
@@ -171,10 +161,8 @@ export default function EvolutionPage() {
                     transition={{ duration: 0.15 }}
                   >
                     <motion.div className="text-center py-16 border-t border-ink/10">
-                      <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">Todavía no registraste días</h2>
-                      <p className="text-muted mb-6 max-w-md mx-auto">
-                        Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación día a día.
-                      </p>
+                      <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">{L("Todavía no registraste días", "You haven't logged any days yet")}</h2>
+                      <p className="text-muted mb-6 max-w-md mx-auto">{L("Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación día a día.", "Come back to Today tomorrow. From the second day on you'll be able to see how your orientation changes day by day.")}</p>
                     </motion.div>
                   </motion.div>
                 ) : (
@@ -198,18 +186,16 @@ export default function EvolutionPage() {
                 <div className="flex items-center justify-between gap-3 mb-5">
                   <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-accent" />
-                    Tu Journal
+                    {L("Tu Journal", "Your Journal")}
                   </h2>
-                  <Link href="/journal" className="text-xs font-mono text-accent hover:underline whitespace-nowrap">
-                    Ver todo →
-                  </Link>
+                  <Link href="/journal" className="text-xs font-mono text-accent hover:underline whitespace-nowrap">{L("Ver todo →", "See all →")}</Link>
                 </div>
 
                 {recentJournalEntries.length === 0 ? (
                   <div className="rounded-lg border border-ink/10 bg-card p-6 text-center">
-                    <p className="text-sm text-muted mb-4">Todavía no registraste ninguna entrada en tu Journal.</p>
+                    <p className="text-sm text-muted mb-4">{L("Todavía no registraste ninguna entrada en tu Journal.", "You haven't written any entries in your Journal yet.")}</p>
                     <Link href="/journal">
-                      <Button variant="accent" size="sm">Escribir mi primera entrada</Button>
+                      <Button variant="accent" size="sm">{L("Escribir mi primera entrada", "Write my first entry")}</Button>
                     </Link>
                   </div>
                 ) : (
@@ -238,12 +224,8 @@ export default function EvolutionPage() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
-                <Button variant="primary" fullWidth onClick={() => router.push("/calendario")}>
-                  Ver calendario →
-                </Button>
-                <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
-                  Ver mi perfil
-                </Button>
+                <Button variant="primary" fullWidth onClick={() => router.push("/calendario")}>{L("Ver calendario →", "See calendar →")}</Button>
+                <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>{L("Ver mi perfil", "See my profile")}</Button>
               </motion.div>
             </main>
 

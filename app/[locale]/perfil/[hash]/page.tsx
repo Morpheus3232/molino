@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/user";
 import { verifyShareToken } from "@/lib/share";
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SharedProfilePage({ params }: Props) {
+  const L = await getL();
   const { hash } = await params;
 
   let profile: UserProfile | null = null;
@@ -67,12 +69,8 @@ export default async function SharedProfilePage({ params }: Props) {
   if (!profile) {
     return (
       <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center min-h-screen">
-        <h1 className="page-title text-foreground mb-4">
-          Este perfil compartido no existe
-        </h1>
-        <p className="text-muted mb-8 max-w-md mx-auto">
-          El enlace que seguiste podría estar vencido (expira a las 24 horas) o mal formado.
-        </p>
+        <h1 className="page-title text-foreground mb-4">{L("Este perfil compartido no existe", "This shared profile doesn't exist")}</h1>
+        <p className="text-muted mb-8 max-w-md mx-auto">{L("El enlace que seguiste podría estar vencido (expira a las 24 horas) o mal formado.", "The link you followed may have expired (it expires after 24 hours) or be malformed.")}</p>
       </div>
     );
   }

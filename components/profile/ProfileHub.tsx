@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import type { UserProfile } from "@/types/user";
@@ -31,12 +32,12 @@ const MESES = [
 
 const YANG_ANIMALS = new Set(["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Perro"]);
 
-const CHAPTERS = [
-  { numeral: "I", title: "Coordenadas", note: "Las cuatro piezas, qué son y la cuenta de cada una.", href: "#coordenadas" },
-  { numeral: "II", title: "El mundo", note: "Países, marcas y personas que comparten tu signo.", href: "#mundo" },
-  { numeral: "III", title: "Tu fecha", note: "Los dígitos de tu fecha en la grilla Lo Shu.", href: "#digitos" },
-  { numeral: "IV", title: "Tu lectura", note: "Identidad y momento, leídos como un solo sistema.", href: "#lectura" },
-];
+const CHAPTERS = (L: Pick2) => ([
+  { numeral: "I", title: L("Coordenadas", "Coordinates"), note: L("Las cuatro piezas, qué son y la cuenta de cada una.", "The four pieces, what they are and the math behind each one."), href: "#coordenadas" },
+  { numeral: "II", title: L("El mundo", "The world"), note: L("Países, marcas y personas que comparten tu signo.", "Countries, brands and people who share your sign."), href: "#mundo" },
+  { numeral: "III", title: L("Tu fecha", "Your date"), note: L("Los dígitos de tu fecha en la grilla Lo Shu.", "The digits of your date on the Lo Shu grid."), href: "#digitos" },
+  { numeral: "IV", title: L("Tu lectura", "Your reading"), note: L("Identidad y momento, leídos como un solo sistema.", "Identity and moment, read as a single system."), href: "#lectura" },
+]);
 
 export default function ProfileHub({
   profile,
@@ -51,6 +52,7 @@ export default function ProfileHub({
    * del visitante. Todo lo demás (estructura, cálculo, copy) es idéntico. */
   isDemo?: boolean;
 }) {
+  const L = useL();
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
   const chineseElement =
@@ -68,7 +70,7 @@ export default function ProfileHub({
     return [parts[0] || 1990, parts[1] || 1, parts[2] || 1];
   }, [profile.birthDate]);
 
-  const birthDateFormatted = `${birthD} de ${MESES[birthM - 1]} de ${birthY}`;
+  const birthDateFormatted = L(`${birthD} de ${MESES[birthM - 1]} de ${birthY}`, `${MESES[birthM - 1]} ${birthD}, ${birthY}`);
 
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
@@ -100,13 +102,13 @@ export default function ProfileHub({
     {
       part: "sign" as WheelPart,
       mark: <WheelMark part="outer" rings={2} />,
-      what: "Afuera, los doce signos del zodíaco. En negro, el tuyo:",
+      what: L("Afuera, los doce signos del zodíaco. En negro, el tuyo:", "On the outside, the twelve signs of the zodiac. In black, yours:"),
       yours: `${profile.sunSign}.`,
     },
     {
       part: "animal" as WheelPart,
       mark: <WheelMark part="inner" rings={2} />,
-      what: "En el medio, los doce animales del zodíaco chino. En negro, el tuyo:",
+      what: L("En el medio, los doce animales del zodíaco chino. En negro, el tuyo:", "In the middle, the twelve animals of the Chinese zodiac. In black, yours:"),
       yours: `${display.name}.`,
     },
     ...(kinds && kinds.amigo.length
@@ -114,7 +116,7 @@ export default function ProfileHub({
           {
             part: "trine" as WheelPart,
             mark: <WheelMark part="trine" rings={2} />,
-            what: "El triángulo rojo une tu animal con tus dos amigos del ciclo:",
+            what: L("El triángulo rojo une tu animal con tus dos amigos del ciclo:", "The red triangle links your animal with your two friends in the cycle:"),
             yours: `${kinds.amigo.join(" y ")}.`,
           },
         ]
@@ -124,7 +126,7 @@ export default function ProfileHub({
           {
             part: "opposite" as WheelPart,
             mark: <WheelMark part="opposite" rings={2} />,
-            what: "La línea punteada cruza la rueda hasta tu opuesto:",
+            what: L("La línea punteada cruza la rueda hasta tu opuesto:", "The dotted line crosses the wheel to your opposite:"),
             yours: `${kinds.enemigo[0]}.`,
           },
         ]
@@ -132,8 +134,8 @@ export default function ProfileHub({
     {
       part: "core" as WheelPart,
       mark: <WheelMark part="core" rings={2} />,
-      what: "En el centro, tu Camino de Vida:",
-      yours: `${lifePath}${yearTheme ? `. Este año transitás el año personal ${personalYear}, ${yearTheme}.` : "."}`,
+      what: L("En el centro, tu Camino de Vida:", "In the center, your Life Path:"),
+      yours: `${lifePath}${yearTheme ? L(`. Este año transitás el año personal ${personalYear}, ${yearTheme}.`, `. This year you're going through personal year ${personalYear}, ${yearTheme}.`) : "."}`,
     },
   ];
 
@@ -141,21 +143,21 @@ export default function ProfileHub({
     {
       system: "Numerología",
       value: `${lifePath} · ${archetypeName}`,
-      what: "Tu Camino de Vida: la suma de todos los dígitos de tu fecha.",
+      what: L("Tu Camino de Vida: la suma de todos los dígitos de tu fecha.", "Your Life Path: the sum of all the digits of your date."),
       image: `numerologia/${lifePath}`,
       href: "#pilar-numerologia",
     },
     {
       system: "Astrología",
       value: `Sol en ${profile.sunSign}`,
-      what: "El tramo del zodíaco que recorría el Sol el día que naciste.",
+      what: L("El tramo del zodíaco que recorría el Sol el día que naciste.", "The stretch of the zodiac the Sun was crossing on the day you were born."),
       image: signImageKey(profile.sunSign || "Aries"),
       href: "#pilar-astrologia",
     },
     {
-      system: "Zodíaco chino",
+      system: L("Zodíaco chino", "Chinese zodiac"),
       value: `${display.name} de ${chineseElement}`,
-      what: `El animal del año lunar en que naciste · polaridad ${polarity}.`,
+      what: L(`El animal del año lunar en que naciste · polaridad ${polarity}.`, `The animal of the lunar year you were born in · ${polarity} polarity.`),
       image: animalImageKey(display.name),
       href: "#pilar-zodiaco-chino",
     },
@@ -171,13 +173,11 @@ export default function ProfileHub({
         <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
             <div className="lg:col-span-6 lg:row-start-1 lg:pt-6">
-              <p className="text-sm text-accent mb-4 label-caps">
-                Mapa personal simbólico
-              </p>
-              <h1 className="page-title text-foreground" aria-label={`Camino de Vida ${lifePath} · ${archetypeName}`}>
+              <p className="text-sm text-accent mb-4 label-caps">{L("Mapa personal simbólico", "Personal symbolic map")}</p>
+              <h1 className="page-title text-foreground" aria-label={`Camino de Vida ${lifePath} · ${archetypeName}`}>{L(<>
                 <span className="block">Camino de Vida {lifePath}</span>
                 <span className="block">{archetypeName}</span>
-              </h1>
+              </>, <><span className="block">Life Path {lifePath}</span><span className="block">{archetypeName}</span></>)}</h1>
               <p className="mt-5 text-lg sm:text-xl text-muted leading-relaxed max-w-xl italic">
                 {archetype.essence || archetype.description}
               </p>
@@ -195,7 +195,7 @@ export default function ProfileHub({
 
             <div className="lg:col-span-6 lg:row-start-2">
               {/* Leyenda de la rueda: cada marca, qué es y cuál es la tuya */}
-              <p className="text-sm text-muted label-caps mb-3">Cómo leer la rueda</p>
+              <p className="text-sm text-muted label-caps mb-3">{L("Cómo leer la rueda", "How to read the wheel")}</p>
               <dl className="divide-y divide-ink/10 border-y border-ink/10 max-w-xl">
                 {wheelLegend.map((row) => (
                   <div
@@ -220,11 +220,11 @@ export default function ProfileHub({
 
               {/* Franja de datos: fecha, cálculo local, año y atlas */}
               <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-6 gap-y-1.5 text-sm text-muted">
-                <span>Naciste el {birthDateFormatted}</span>
+                <span>{L(<>Naciste el {birthDateFormatted}</>, <>Born on {birthDateFormatted}</>)}</span>
                 <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
-                <span>Calculado en tu dispositivo</span>
+                <span>{L("Calculado en tu dispositivo", "Calculated on your device")}</span>
                 {atlasEntityCount > 0 && (
-                  <>
+                  <>{L(<>
                     <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
                     <Link
                       href={`/atlas/explorar/${userAnimal}`}
@@ -232,7 +232,7 @@ export default function ProfileHub({
                     >
                       {atlasEntityCount} afinidades en tu Atlas
                     </Link>
-                  </>
+                  </>, <><span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" /><Link href={`/atlas/explorar/${userAnimal}`} className="underline decoration-dotted underline-offset-4 hover:text-foreground py-1.5 -my-1.5">{atlasEntityCount} affinities in your Atlas</Link></>)}</>
                 )}
               </div>
             </div>
@@ -241,7 +241,7 @@ export default function ProfileHub({
           {/* Tus tres signos — una tarjeta ilustrada por sistema; cada una
               baja a su pieza en el Capítulo I, con la cuenta hecha. */}
           <div className="mt-14 sm:mt-16">
-            <p className="text-sm text-muted label-caps mb-4">Tus tres signos</p>
+            <p className="text-sm text-muted label-caps mb-4">{L("Tus tres signos", "Your three signs")}</p>
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
               {signCards.map((card) => {
                 const img = getSectionImage(card.image);
@@ -264,9 +264,7 @@ export default function ProfileHub({
                         <p className="text-sm text-muted label-caps">{card.system}</p>
                         <p className="mt-2 font-display text-3xl leading-tight text-foreground">{card.value}</p>
                         <p className="mt-2 text-base text-muted leading-snug">{card.what}</p>
-                        <p className="mt-4 text-sm text-foreground underline underline-offset-4 group-hover:no-underline">
-                          Ver qué es y la cuenta ↓
-                        </p>
+                        <p className="mt-4 text-sm text-foreground underline underline-offset-4 group-hover:no-underline">{L("Ver qué es y la cuenta ↓", "See what it is and the math ↓")}</p>
                       </div>
                     </a>
                   </li>
@@ -276,10 +274,10 @@ export default function ProfileHub({
           </div>
 
           {/* Índice — cómo leer el mapa, de arriba abajo */}
-          <nav aria-label="Capítulos de tu mapa" className="mt-14 sm:mt-16">
-            <p className="text-sm text-muted label-caps mb-4">Cómo leer este mapa</p>
+          <nav aria-label={L("Capítulos de tu mapa", "Chapters of your map")} className="mt-14 sm:mt-16">
+            <p className="text-sm text-muted label-caps mb-4">{L("Cómo leer este mapa", "How to read this map")}</p>
             <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-ink/15">
-              {CHAPTERS.map((c) => (
+              {CHAPTERS(L).map((c) => (
                 <li key={c.href} className="border-r border-b border-ink/15">
                   <a href={c.href} className="group flex h-full gap-4 p-5 hover:bg-ink/[0.03] transition-colors">
                     <span className="font-display text-3xl leading-none text-muted group-hover:text-foreground">{c.numeral}</span>
@@ -335,7 +333,7 @@ export default function ProfileHub({
           ═══════════════════════════════════════════════ */}
       <SpaceIndex
         profile={profile}
-        circleName={`${display.name} de ${chineseElement}`}
+        circleName={L(`${display.name} de ${chineseElement}`, `${chineseElement} ${display.name}`)}
         allyName={allies[0] ?? null}
       />
     </div>

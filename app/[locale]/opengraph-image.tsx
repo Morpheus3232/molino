@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
@@ -5,6 +6,7 @@ export const contentType = "image/png";
 export const alt = "Mapa Personal de Autoconocimiento";
 
 export default function OpenGraphImage() {
+  const L = useL();
   return new ImageResponse(
     (
       <div
@@ -65,9 +67,7 @@ export default function OpenGraphImage() {
             marginTop: 8,
             textAlign: "center",
           }}
-        >
-          INTELIGENCIA PERSONAL
-        </div>
+        >{L("INTELIGENCIA PERSONAL", "PERSONAL INTELLIGENCE")}</div>
       </div>
     ),
     {

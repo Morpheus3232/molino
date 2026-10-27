@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useMemo, useState } from "react";
 import type { UserProfile } from "@/types/user";
@@ -50,20 +51,20 @@ function buildLifePathSteps(birthDate: string): LifePathStep[] {
   return steps;
 }
 
-const SUN_SIGN_RANGES: Record<string, [string, string]> = {
-  Aries: ["21 mar", "19 abr"],
-  Tauro: ["20 abr", "20 may"],
-  Géminis: ["21 may", "20 jun"],
-  Cáncer: ["21 jun", "22 jul"],
-  Leo: ["23 jul", "22 ago"],
-  Virgo: ["23 ago", "22 sep"],
-  Libra: ["23 sep", "22 oct"],
-  Escorpio: ["23 oct", "21 nov"],
-  Sagitario: ["22 nov", "21 dic"],
-  Capricornio: ["22 dic", "19 ene"],
-  Acuario: ["20 ene", "18 feb"],
-  Piscis: ["19 feb", "20 mar"],
-};
+const SUN_SIGN_RANGES = (L: Pick2): Record<string, [string, string]> => ({
+  Aries: [L("21 mar", "Mar 21"), L("19 abr", "Apr 19")],
+  Tauro: [L("20 abr", "Apr 20"), L("20 may", "May 20")],
+  Géminis: [L("21 may", "May 21"), L("20 jun", "Jun 20")],
+  Cáncer: [L("21 jun", "Jun 21"), L("22 jul", "Jul 22")],
+  Leo: [L("23 jul", "Jul 23"), L("22 ago", "Aug 22")],
+  Virgo: [L("23 ago", "Aug 23"), L("22 sep", "Sep 22")],
+  Libra: [L("23 sep", "Sep 23"), L("22 oct", "Oct 22")],
+  Escorpio: [L("23 oct", "Oct 23"), L("21 nov", "Nov 21")],
+  Sagitario: [L("22 nov", "Nov 22"), L("21 dic", "Dec 21")],
+  Capricornio: [L("22 dic", "Dec 22"), L("19 ene", "Jan 19")],
+  Acuario: [L("20 ene", "Jan 20"), L("18 feb", "Feb 18")],
+  Piscis: [L("19 feb", "Feb 19"), L("20 mar", "Mar 20")],
+});
 
 const FORMULA_URL =
   "https://github.com/search?q=path%3Alib%2Fengines%2FnumerologyEngine.ts&type=code";
@@ -89,6 +90,7 @@ export default function CalculationMatrix({
   profile: UserProfile | null;
   onComplete?: () => void;
 }) {
+  const L = useL();
   const reduceMotion = useSafeReducedMotion();
 
   const birthDate = profile?.birthDate || "1990-04-18";
@@ -100,7 +102,7 @@ export default function CalculationMatrix({
   const birthYear = birthDate.slice(0, 4);
 
   const steps = useMemo(() => buildLifePathSteps(birthDate), [birthDate]);
-  const sunRange = SUN_SIGN_RANGES[sunSign];
+  const sunRange = SUN_SIGN_RANGES(L)[sunSign];
 
   const rows = useMemo<CalcRow[]>(() => {
     const r: CalcRow[] = [];
@@ -108,22 +110,22 @@ export default function CalculationMatrix({
       r.push({ label: s.label, value: String(s.result) });
     });
     r.push({
-      label: "Camino de Vida",
+      label: L("Camino de Vida", "Life Path"),
       value: steps[steps.length - 1].master ? `${lifePath} · maestro` : String(lifePath),
       result: true,
       system: "Numerología",
     });
     r.push({
-      label: sunRange ? `${sunRange[0]} → ${sunRange[1]}` : "Rango solar",
+      label: sunRange ? `${sunRange[0]} → ${sunRange[1]}` : L("Rango solar", "Solar range"),
       value: sunSign,
       result: true,
       system: "Astrología",
     });
     r.push({
-      label: `Año ${birthYear}`,
+      label: L(`Año ${birthYear}`, `Year ${birthYear}`),
       value: `${animal} · ${element}`,
       result: true,
-      system: "Zodíaco chino",
+      system: L("Zodíaco chino", "Chinese zodiac"),
     });
     return r;
   }, [steps, lifePath, sunRange, sunSign, animal, element, birthYear]);
@@ -158,24 +160,19 @@ export default function CalculationMatrix({
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-8">
       <div className="w-full max-w-xl">
-        <p className="text-sm text-accent label-caps">
-          La cuenta
-        </p>
-        <h1 className="page-title mt-3 text-foreground">
+        <p className="text-sm text-accent label-caps">{L("La cuenta", "The math")}</p>
+        <h1 className="page-title mt-3 text-foreground">{L(<>
           Antes de interpretar
           <br />
           nada, la aritmética.
-        </h1>
-        <p className="mt-5 text-sm text-muted leading-relaxed max-w-md">
-          Tres sistemas, una sola fecha. Cada número de tu mapa sale de esta cuenta
-          — se puede rehacer a mano.
-        </p>
+        </>, <>Before interpreting<br />anything, the arithmetic.</>)}</h1>
+        <p className="mt-5 text-sm text-muted leading-relaxed max-w-md">{L("Tres sistemas, una sola fecha. Cada número de tu mapa sale de esta cuenta — se puede rehacer a mano.", "Three systems, a single date. Every number in your map comes from this math — you can redo it by hand.")}</p>
 
         <div
           className="mt-10 border-t border-ink/10"
           role="status"
           aria-live="polite"
-          aria-label={done ? "Cálculo completo" : "Calculando tu mapa"}
+          aria-label={done ? L("Cálculo completo", "Full calculation") : L("Calculando tu mapa", "Calculating your map")}
         >
           {rows.slice(0, count).map((row, i) => (
             <div
@@ -205,7 +202,7 @@ export default function CalculationMatrix({
           ))}
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-4">
+        <div className="mt-6 flex items-center justify-between gap-4">{L(<>
           <a
             href={FORMULA_URL}
             target="_blank"
@@ -217,7 +214,7 @@ export default function CalculationMatrix({
           <span className="text-sm text-muted label-caps">
             {done ? "Abriendo tu mapa" : "Calculando"}
           </span>
-        </div>
+        </>, <><a href={FORMULA_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline underline-offset-4 label-caps">See the formula on GitHub →</a><span className="text-sm text-muted label-caps">{done ? "Opening your map" : "Calculating"}</span></>)}</div>
       </div>
     </div>
   );

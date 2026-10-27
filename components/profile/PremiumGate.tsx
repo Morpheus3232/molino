@@ -1,4 +1,5 @@
 'use client';
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
@@ -76,6 +77,7 @@ function getSearchParam(key: string): string | null {
 }
 
 export default function PremiumGate({ name, birthDate, preview, children, currencyId = 'ARS' }: PremiumGateProps) {
+  const L = useL();
   const t = useDictionary();
   const [state, setState] = useState<GateState>('locked');
   // Distingue "acabo de pagar/recuperar en esta sesión" de "ya era premium al
@@ -187,12 +189,12 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             commitUnlock(data.premiumToken, { cleanUrl: true });
           } else {
             // El 503 trae su explicación en `error`, no en `reason`.
-            setVerificationError(data.reason || data.error || 'No se pudo verificar el pago');
+            setVerificationError(data.reason || data.error || L('No se pudo verificar el pago', "The payment couldn't be verified"));
             setState('pay_error');
           }
         })
         .catch(() => {
-          setVerificationError('Error al verificar el pago');
+          setVerificationError(L('Error al verificar el pago', "Error verifying the payment"));
           setState('pay_error');
         });
       return;
@@ -314,9 +316,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   return (
     <>
     {state === 'locked' && paymentFailed && (
-      <p role="status" className="mb-6 rounded-[--radius-md] border border-ink/10 bg-paper-alt px-4 py-3 text-sm text-muted">
-        El pago no se completó y no se te cobró nada. Podés intentarlo de nuevo con otro medio.
-      </p>
+      <p role="status" className="mb-6 rounded-[--radius-md] border border-ink/10 bg-paper-alt px-4 py-3 text-sm text-muted">{L("El pago no se completó y no se te cobró nada. Podés intentarlo de nuevo con otro medio.", "The payment wasn't completed and you weren't charged. You can try again with another method.")}</p>
     )}
     <AnimatePresence mode="wait">
       {state === 'locked' && (

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -32,12 +33,13 @@ interface AtlasShareCardProps {
 }
 
 export default function AtlasShareCard({ entity, headline, subline, url }: AtlasShareCardProps) {
+  const L = useL();
   const cardRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const shareText = [
-    headline ?? `Mi afinidad simbólica con ${entity.name}`,
+    headline ?? L(`Mi afinidad simbólica con ${entity.name}`, `My symbolic affinity with ${entity.name}`),
     subline,
   ]
     .filter(Boolean)
@@ -66,12 +68,12 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         const file = new File([blob], `molino-${sanitizeFilenamePart(entity.name) || "atlas"}.png`, { type: "image/png" });
         try {
           await navigator.share({
-            title: headline ?? `Afinidad con ${entity.name}`,
+            title: headline ?? L(`Afinidad con ${entity.name}`, `Affinity with ${entity.name}`),
             text: shareText,
             url: shareUrl,
             files: [file],
           });
-          toast.success("Tarjeta compartida");
+          toast.success(L("Tarjeta compartida", "Card shared"));
           return;
         } catch {
           // User dismissed — fall through to link copy silently.
@@ -81,7 +83,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
       await navigator.clipboard.writeText(`${shareText} — ${shareUrl}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
-      toast.success("Enlace copiado");
+      toast.success(L("Enlace copiado", "Link copied"));
     } catch {
       toast.error("No pudimos compartir. Intentá de nuevo.");
     } finally {
@@ -111,10 +113,10 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
 
         <div className="relative flex flex-col h-full p-7">
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">{L(<>
             <span className="font-heading text-sm font-semibold label-caps">Mapa personal</span>
             <span className="text-sm text-muted label-caps">Atlas</span>
-          </div>
+          </>, <><span className="font-heading text-sm font-semibold label-caps">Personal map</span><span className="text-sm text-muted label-caps">Atlas</span></>)}</div>
 
           {/* Center — entity visual + copy */}
           <div className="flex-1 flex flex-col items-center justify-center gap-5 text-center">
@@ -137,9 +139,9 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
           </div>
 
           {/* Footer */}
-          <div className="pt-5 border-t border-ink/10 flex items-center justify-between text-xs text-muted">
+          <div className="pt-5 border-t border-ink/10 flex items-center justify-between text-xs text-muted">{L(<>
             <span>Lectura simbólica del zodíaco chino</span>
-          </div>
+          </>, <><span>Symbolic reading of the Chinese zodiac</span></>)}</div>
         </div>
       </div>
 
@@ -154,12 +156,12 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
           {copied ? (
             <>
               <Check className="w-4 h-4 text-emerald-400" />
-              <span className="text-emerald-400">Copiado</span>
+              <span className="text-emerald-400">{L("Copiado", "Copied")}</span>
             </>
           ) : (
             <>
               <Share2 className="w-4 h-4" />
-              Compartir
+              {L("Compartir", "Share")}
             </>
           )}
         </button>
@@ -171,7 +173,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
               await navigator.clipboard.writeText(shareUrl);
               setCopied(true);
               setTimeout(() => setCopied(false), 2200);
-              toast.success("Enlace copiado");
+              toast.success(L("Enlace copiado", "Link copied"));
             } catch {
               toast.error("No pudimos copiar el enlace.");
             }
@@ -179,7 +181,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
           className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm border border-ink/10 bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px]"
         >
           <Copy className="w-4 h-4" />
-          Copiar enlace
+          {L("Copiar enlace", "Copy link")}
         </button>
       </div>
     </div>

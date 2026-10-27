@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,6 +45,7 @@ export default function PremiumCheckout({
   onUnlocked,
   className = "",
 }: PremiumCheckoutProps) {
+  const L = useL();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -82,13 +84,13 @@ export default function PremiumCheckout({
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || "Error al conectar con Mercado Pago");
+        throw new Error(err.error || L("Error al conectar con Mercado Pago", "Error connecting to Mercado Pago"));
       }
 
       const data = await res.json();
       window.location.href = data.checkoutUrl;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Error al iniciar el pago";
+      const msg = err instanceof Error ? err.message : L("Error al iniciar el pago", "Error starting the payment");
       setErrorMsg(msg);
       setCheckoutLoading(false);
     }
@@ -119,10 +121,10 @@ export default function PremiumCheckout({
         if (onUnlocked) onUnlocked();
         analytics.trackPremiumUnlocked();
       } else {
-        setRecoverError(data.error || data.reason || "No se encontró una compra válida para este ID");
+        setRecoverError(data.error || data.reason || L("No se encontró una compra válida para este ID", "No valid purchase was found for this ID"));
       }
     } catch {
-      setRecoverError("Error al intentar recuperar la compra");
+      setRecoverError(L("Error al intentar recuperar la compra", "Error trying to recover the purchase"));
     } finally {
       setIsRecovering(false);
     }
@@ -154,10 +156,10 @@ export default function PremiumCheckout({
         if (onUnlocked) onUnlocked();
         analytics.trackPremiumUnlocked();
       } else {
-        setCouponError(data.reason || "Código de cupón inválido o expirado");
+        setCouponError(data.reason || L("Código de cupón inválido o expirado", "Invalid or expired coupon code"));
       }
     } catch {
-      setCouponError("Error al aplicar el cupón");
+      setCouponError(L("Error al aplicar el cupón", "Error applying the coupon"));
     } finally {
       setIsApplyingCoupon(false);
     }
@@ -170,26 +172,22 @@ export default function PremiumCheckout({
     >
       <div className="max-w-xl mx-auto text-center space-y-6">
         {/* Top Badge */}
-        <div className="page-eyebrow">
+        <div className="page-eyebrow">{L(<>
           <span className="text-sm text-accent font-bold label-caps">
             Acceso Permanente de por Vida
           </span>
-        </div>
+        </>, <><span className="text-sm text-accent font-bold label-caps">Permanent Lifetime Access</span></>)}</div>
 
         {/* Price Tag */}
         <div>
-          <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
-            Desbloqueá tu Síntesis Completa
-          </h3>
-          <div className="mt-3 flex items-baseline justify-center gap-2">
+          <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">{L("Desbloqueá tu Síntesis Completa", "Unlock your Complete Synthesis")}</h3>
+          <div className="mt-3 flex items-baseline justify-center gap-2">{L(<>
             <span className="font-display text-5xl sm:text-6xl text-foreground font-bold tracking-tight">
               $8
             </span>
             <span className="font-mono text-sm text-muted">USD · Pago Único</span>
-          </div>
-          <p className="text-xs text-muted mt-2">
-            Sin suscripciones mensuales ni débitos automáticos. Pagás una vez y queda habilitado para siempre.
-          </p>
+          </>, <><span className="font-display text-5xl sm:text-6xl text-foreground font-bold tracking-tight">$8</span><span className="font-mono text-sm text-muted">USD · One-Time Payment</span></>)}</div>
+          <p className="text-xs text-muted mt-2">{L("Sin suscripciones mensuales ni débitos automáticos. Pagás una vez y queda habilitado para siempre.", "No monthly subscriptions or automatic debits. You pay once and it stays unlocked forever.")}</p>
         </div>
 
         {/* Checkout Buttons */}
@@ -197,9 +195,7 @@ export default function PremiumCheckout({
           {checkoutLoading ? (
             <div className="p-6 rounded-lg bg-ink/5 border border-ink/10 flex flex-col items-center justify-center gap-3">
               <Logo className="w-8 h-8 text-accent animate-spin" />
-              <p className="text-xs font-mono text-muted">
-                Conectando con Mercado Pago de forma segura...
-              </p>
+              <p className="text-xs font-mono text-muted">{L("Conectando con Mercado Pago de forma segura...", "Connecting securely to Mercado Pago...")}</p>
             </div>
           ) : (
             <Button
@@ -208,9 +204,7 @@ export default function PremiumCheckout({
               fullWidth
               onClick={handleCheckout}
               className="py-4 text-base font-bold shadow-lg"
-            >
-              Pagar con Mercado Pago / Tarjeta ($8 USD)
-            </Button>
+            >{L("Pagar con Mercado Pago / Tarjeta ($8 USD)", "Pay with Mercado Pago / Card ($8 USD)")}</Button>
           )}
 
           {/* La opción de BTC entera en un componente: se autoconsulta si
@@ -244,9 +238,7 @@ export default function PremiumCheckout({
                 setShowCoupon(false);
               }}
               className="hover:text-accent transition-colors underline py-2"
-            >
-              ¿Ya compraste? Recuperar acceso
-            </button>
+            >{L("¿Ya compraste? Recuperar acceso", "Already bought? Recover access")}</button>
           )}
 
           {!showCoupon && (
@@ -257,9 +249,7 @@ export default function PremiumCheckout({
                 setShowRecover(false);
               }}
               className="hover:text-accent transition-colors underline py-2"
-            >
-              ¿Tenés un cupón?
-            </button>
+            >{L("¿Tenés un cupón?", "Have a coupon?")}</button>
           )}
 
         </div>
@@ -275,24 +265,18 @@ export default function PremiumCheckout({
               className="p-4 rounded-lg bg-background border border-ink/10 space-y-3 text-left"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-foreground">
-                  Recuperar compra previa
-                </span>
+                <span className="font-mono text-xs font-bold text-foreground">{L("Recuperar compra previa", "Recover a previous purchase")}</span>
                 <button
                   type="button"
                   onClick={() => setShowRecover(false)}
                   className="text-xs text-muted hover:text-foreground"
-                >
-                  Cerrar
-                </button>
+                >{L("Cerrar", "Close")}</button>
               </div>
-              <p className="text-[11px] text-muted">
-                Ingresá el ID de pago de Mercado Pago (figura en el email de tu recibo) y tu fecha de nacimiento:
-              </p>
+              <p className="text-[11px] text-muted">{L("Ingresá el ID de pago de Mercado Pago (figura en el email de tu recibo) y tu fecha de nacimiento:", "Enter the Mercado Pago payment ID (it's in your receipt email) and your date of birth:")}</p>
               <div className="space-y-2">
                 <input
                   type="text"
-                  placeholder="ID de pago, ej: 123456789"
+                  placeholder={L("ID de pago, ej: 123456789", "Payment ID, e.g. 123456789")}
                   value={recoverPaymentId}
                   onChange={(e) => setRecoverPaymentId(e.target.value)}
                   className="w-full rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
@@ -305,7 +289,7 @@ export default function PremiumCheckout({
                     className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
                   />
                   <Button type="submit" variant="primary" size="sm" disabled={isRecovering}>
-                    {isRecovering ? "..." : "Verificar"}
+                    {isRecovering ? "..." : L("Verificar", "Verify")}
                   </Button>
                 </div>
               </div>
@@ -323,25 +307,23 @@ export default function PremiumCheckout({
               className="p-4 rounded-lg bg-background border border-ink/10 space-y-3 text-left"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-foreground">Canjear cupón</span>
+                <span className="font-mono text-xs font-bold text-foreground">{L("Canjear cupón", "Redeem coupon")}</span>
                 <button
                   type="button"
                   onClick={() => setShowCoupon(false)}
                   className="text-xs text-muted hover:text-foreground"
-                >
-                  Cerrar
-                </button>
+                >{L("Cerrar", "Close")}</button>
               </div>
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Ingresá tu código"
+                  placeholder={L("Ingresá tu código", "Enter your code")}
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent label-caps"
                 />
                 <Button type="submit" variant="primary" size="sm" disabled={isApplyingCoupon}>
-                  {isApplyingCoupon ? "..." : "Aplicar"}
+                  {isApplyingCoupon ? "..." : L("Aplicar", "Apply")}
                 </Button>
               </div>
               {couponError && <p className="text-xs text-red-400">{couponError}</p>}

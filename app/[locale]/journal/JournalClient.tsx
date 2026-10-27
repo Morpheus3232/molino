@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useMemo } from "react";
 import type { UserProfile } from "@/types/user";
@@ -41,6 +42,7 @@ function loadUser(): UserProfile | null {
 }
 
 export default function JournalClient() {
+  const L = useL();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [contextualPrompt, setContextualPrompt] = useState<string | undefined>(undefined);
@@ -91,26 +93,21 @@ export default function JournalClient() {
       {/* Portada: el cuaderno y lo que lleva escrito */}
       <header className="border-b border-ink/10">
         <div className={`${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
-          <Breadcrumb items={[{ href: "/", label: "Inicio" }, { label: "Diario" }]} />
+          <Breadcrumb items={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Diario", "Journal") }]} />
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-center">
             <div className="lg:col-span-7">
-              <p className="text-sm text-accent mb-4 label-caps">Diario · se guarda solo en este navegador</p>
-              <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">
-                Diario
-              </h1>
-              <p className="mt-6 text-xl sm:text-2xl text-foreground/85 leading-snug max-w-xl">
-                Una página por día. Cada una anota sola tu día personal, el tema y la luna, para que con el tiempo veas
-                qué se repite. Nadie más la lee.
-              </p>
+              <p className="text-sm text-accent mb-4 label-caps">{L("Diario · se guarda solo en este navegador", "Journal · saved only in this browser")}</p>
+              <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">{L("Diario", "Journal")}</h1>
+              <p className="mt-6 text-xl sm:text-2xl text-foreground/85 leading-snug max-w-xl">{L("Una página por día. Cada una anota sola tu día personal, el tema y la luna, para que con el tiempo veas qué se repite. Nadie más la lee.", "One page per day. Each one automatically notes your personal day, the theme and the moon, so over time you can see what repeats. Nobody else reads it.")}</p>
 
               {stats ? (
                 <dl className="mt-10 grid grid-cols-3 gap-px bg-ink/15 border border-ink/15 max-w-xl">
                   {[
-                    { k: stats.total === 1 ? "Página" : "Páginas", v: String(stats.total) },
-                    { k: stats.uniqueDates === 1 ? "Día escrito" : "Días escritos", v: String(stats.uniqueDates) },
+                    { k: stats.total === 1 ? L("Página", "Page") : L("Páginas", "Pages"), v: String(stats.total) },
+                    { k: stats.uniqueDates === 1 ? L("Día escrito", "Day written") : L("Días escritos", "Days written"), v: String(stats.uniqueDates) },
                     journalStreak >= 2
-                      ? { k: "Días seguidos", v: String(journalStreak) }
-                      : { k: "Ánimo medio", v: `${stats.avgMood.toFixed(1)}/5` },
+                      ? { k: L("Días seguidos", "Day streak"), v: String(journalStreak) }
+                      : { k: L("Ánimo medio", "Average mood"), v: `${stats.avgMood.toFixed(1)}/5` },
                   ].map((c) => (
                     <div key={c.k} className="bg-background p-5">
                       <dd className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{c.v}</dd>
@@ -119,20 +116,20 @@ export default function JournalClient() {
                   ))}
                 </dl>
               ) : (
-                <p className="mt-8 text-base text-muted max-w-xl">Todavía no hay páginas. La primera es la de hoy, acá abajo.</p>
+                <p className="mt-8 text-base text-muted max-w-xl">{L("Todavía no hay páginas. La primera es la de hoy, acá abajo.", "No pages yet. The first one is today's, right below.")}</p>
               )}
               {stats?.topTheme && (
-                <p className="mt-4 text-base text-muted">
+                <p className="mt-4 text-base text-muted">{L(<>
                   Lo que más aparece en tus días: <span className="text-foreground">{stats.topTheme}</span>.
-                </p>
+                </>, <>What shows up most in your days: <span className="text-foreground">{stats.topTheme}</span>.</>)}</p>
               )}
               {!profile && (
-                <p className="mt-6 text-base text-muted max-w-xl">
+                <p className="mt-6 text-base text-muted max-w-xl">{L(<>
                   Con tu mapa creado, cada página anota sola tu día y tu año personal.{" "}
                   <Link href="/onboarding" className="text-foreground underline underline-offset-4 hover:no-underline">
                     Crear mi mapa
                   </Link>
-                </p>
+                </>, <>Once you've created your map, each page automatically notes your personal day and year.{" "}<Link href="/onboarding" className="text-foreground underline underline-offset-4 hover:no-underline">Create my map</Link></>)}</p>
               )}
             </div>
             {cover && (
@@ -168,9 +165,9 @@ export default function JournalClient() {
               <div className="lg:sticky lg:top-28 border-t-2 border-ink">
                 <dl className="divide-y divide-ink/15">
                   {[
-                    { k: "Una frase alcanza", v: "No hace falta escribir mucho: lo que importa es volver mañana." },
-                    { k: "Se anota solo", v: "La fecha, tu día personal, el tema del día y la fase de la luna quedan guardados con la página." },
-                    { k: "Solo en este navegador", v: "No sube a ningún servidor. Si borrás los datos del navegador, se borra el diario." },
+                    { k: L("Una frase alcanza", "One sentence is enough"), v: L("No hace falta escribir mucho: lo que importa es volver mañana.", "You don't need to write much: what matters is coming back tomorrow.") },
+                    { k: L("Se anota solo", "It fills itself in"), v: L("La fecha, tu día personal, el tema del día y la fase de la luna quedan guardados con la página.", "The date, your personal day, the theme of the day and the moon phase are saved with the page.") },
+                    { k: L("Solo en este navegador", "Only in this browser"), v: L("No sube a ningún servidor. Si borrás los datos del navegador, se borra el diario.", "It isn't uploaded to any server. If you clear your browser data, the journal is deleted.") },
                   ].map((r) => (
                     <div key={r.k} className="py-5">
                       <dt className="font-display text-xl text-foreground">{r.k}</dt>
@@ -178,9 +175,7 @@ export default function JournalClient() {
                     </div>
                   ))}
                 </dl>
-                <Link href="/hoy" className="mt-2 inline-block text-base text-foreground underline underline-offset-4 hover:no-underline">
-                  Ver mi energía de hoy
-                </Link>
+                <Link href="/hoy" className="mt-2 inline-block text-base text-foreground underline underline-offset-4 hover:no-underline">{L("Ver mi energía de hoy", "See my energy today")}</Link>
               </div>
             </aside>
           </div>
@@ -191,8 +186,8 @@ export default function JournalClient() {
       {(loading || entries.length > 0) && (
         <section className="bg-paper-alt/70 border-b border-ink/10">
           <div className={`${CONTAINER} py-16 sm:py-24`}>
-            <p className="text-sm text-muted mb-3 label-caps">El cuaderno</p>
-            <h2 className="section-title text-foreground">Las páginas anteriores</h2>
+            <p className="text-sm text-muted mb-3 label-caps">{L("El cuaderno", "The notebook")}</p>
+            <h2 className="section-title text-foreground">{L("Las páginas anteriores", "Previous pages")}</h2>
             <div className="mt-10">
               <JournalTimeline
                 entries={entries}

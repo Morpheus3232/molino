@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
@@ -64,6 +65,7 @@ function Coordinates({
   match: FamousMatchResult;
   elementColor: string;
 }) {
+  const L = useL();
   const { person, matchLifePath, matchSunSign, matchChineseZodiac } = match;
   const zodiacDisplay = getZodiacDisplay(person.chineseZodiac);
   const sunSymbol = ZODIAC_SYMBOLS[person.sunSign] || "☀";
@@ -79,7 +81,7 @@ function Coordinates({
       <span
         className={`inline-flex items-center gap-1 whitespace-nowrap ${matchChineseZodiac ? "" : "text-muted/70"}`}
         style={on(matchChineseZodiac)}
-        title={`Zodíaco chino: ${zodiacDisplay.name}`}
+        title={L(`Zodíaco chino: ${zodiacDisplay.name}`, `Chinese zodiac: ${zodiacDisplay.name}`)}
       >
         <ZodiacAnimalIcon animal={person.chineseZodiac} size={13} className="shrink-0" />
         {zodiacDisplay.name}
@@ -88,13 +90,13 @@ function Coordinates({
         className={`whitespace-nowrap ${matchLifePath ? "" : "text-muted/70"}`}
         style={on(matchLifePath)}
         title={`Camino de vida: ${person.lifePath}`}
-      >
+      >{L(<>
         Camino {person.lifePath}
-      </span>
+      </>, <>Path {person.lifePath}</>)}</span>
       <span
         className={`whitespace-nowrap ${matchSunSign ? "" : "text-muted/70"}`}
         style={on(matchSunSign)}
-        title={`Signo solar: ${person.sunSign}`}
+        title={L(`Signo solar: ${person.sunSign}`, `Sun sign: ${person.sunSign}`)}
       >
         {sunSymbol} {person.sunSign}
       </span>
@@ -113,6 +115,7 @@ function MatchCard({
   elementColor: string;
   featured?: boolean;
 }) {
+  const L = useL();
   const { person, matchCount, headline } = match;
   const birthYear = person.birthDate ? person.birthDate.split("-")[0] : "";
 
@@ -121,7 +124,7 @@ function MatchCard({
   // tarjeta se dibujaban pegados y contra el nombre. "Principal" ya implica
   // ser la coincidencia más fuerte, así que gana y el otro no se muestra.
   const badge = featured
-    ? { label: "Principal", Icon: Star }
+    ? { label: L("Principal", "Main"), Icon: Star }
     : matchCount >= 2
       ? { label: matchCount === 3 ? "Triple" : "Doble", Icon: Asterisk }
       : null;
@@ -228,6 +231,7 @@ function MatchCard({
 }
 
 export default function FamousMatch({ profile, className = "" }: FamousMatchProps) {
+  const L = useL();
   const { country } = useUserContext();
   const matches = useMemo(() => findFamousMatches(profile, 8, country), [profile, country]);
 
@@ -248,26 +252,22 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2">{L(<>
               <span className="w-2 h-2 rounded-full bg-accent" />
               <span className="text-sm text-accent font-semibold label-caps">
                 Sincronicidad Histórica
               </span>
-            </div>
+            </>, <><span className="w-2 h-2 rounded-full bg-accent" /><span className="text-sm text-accent font-semibold label-caps">Historical Synchronicity</span></>)}</div>
             <h2
               id="famous-match-title"
               className="section-title text-foreground"
-            >
-              ¿Con quién compartís tu mapa?
-            </h2>
-            <p className="text-sm sm:text-base text-muted mt-2 max-w-xl leading-relaxed">
-              Figuras de la historia, la ciencia, el arte y el deporte que vibran en las mismas coordenadas simbólicas que tu mapa personal.
-            </p>
+            >{L("¿Con quién compartís tu mapa?", "Who do you share your map with?")}</h2>
+            <p className="text-sm sm:text-base text-muted mt-2 max-w-xl leading-relaxed">{L("Figuras de la historia, la ciencia, el arte y el deporte que vibran en las mismas coordenadas simbólicas que tu mapa personal.", "Figures from history, science, the arts and sports who vibrate at the same symbolic coordinates as your personal map.")}</p>
           </div>
 
           <div className="flex items-center gap-2 text-xs font-mono text-muted bg-ink/5 border border-ink/10 px-3.5 py-1.5 rounded-full self-start sm:self-auto">
             <Users className="w-3.5 h-3.5 text-accent" />
-            <span>{totalMatchesAvailable} resonancias destacadas</span>
+            <span>{L(<>{totalMatchesAvailable} resonancias destacadas</>, <>{totalMatchesAvailable} notable resonances</>)}</span>
           </div>
         </div>
 
@@ -289,10 +289,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         {/* Pie: solo la procedencia del dato. Antes repetía "Coincidencia
             principal: <nombre>", que es exactamente lo que ya dice el badge
             Principal en la tarjeta de esa persona. */}
-        <div className="mt-6 text-xs text-muted font-mono border-t border-ink/5 pt-4">
-          Fechas de nacimiento documentadas en registros biográficos · retratos
-          de Wikipedia
-        </div>
+        <div className="mt-6 text-xs text-muted font-mono border-t border-ink/5 pt-4">{L("Fechas de nacimiento documentadas en registros biográficos · retratos de Wikipedia", "Dates of birth documented in biographical records · portraits from Wikipedia")}</div>
       </div>
     </section>
   );

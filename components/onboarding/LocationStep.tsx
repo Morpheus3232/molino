@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,7 +17,7 @@ interface LocationStepProps {
 // Países con más probabilidad de ser el primer clic — mercado hispanohablante,
 // Argentina primero (donde vive la mayor parte de la base actual). El resto
 // del mundo sigue disponible completo por el buscador, no se pierde nada.
-const SUGGESTED_COUNTRIES = ["Argentina", "México", "España", "Chile", "Colombia", "Uruguay", "Perú"];
+const SUGGESTED_COUNTRIES = (L: Pick2) => (["Argentina", L("México", "Mexico"), L("España", "Spain"), "Chile", "Colombia", "Uruguay", L("Perú", "Peru")]);
 
 function normalize(text: string): string {
   return text
@@ -38,6 +39,7 @@ function normalize(text: string): string {
  * países más probables + buscador que filtra en vivo.
  */
 export default function LocationStep({ onDone, isSubmitting }: LocationStepProps) {
+  const L = useL();
   const [selected, setSelected] = useState("");
   const [declined, setDeclined] = useState(false);
   const [search, setSearch] = useState("");
@@ -48,7 +50,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
   );
 
   const suggested = useMemo(
-    () => SUGGESTED_COUNTRIES.map((name) => COUNTRIES.find((c) => c.name === name)).filter((c): c is (typeof COUNTRIES)[number] => !!c),
+    () => SUGGESTED_COUNTRIES(L).map((name) => COUNTRIES.find((c) => c.name === name)).filter((c): c is (typeof COUNTRIES)[number] => !!c),
     []
   );
 
@@ -79,17 +81,13 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         transition={{ duration: 0.4 }}
         className="text-center mb-8"
       >
-        <p className="text-sm font-medium text-muted mb-3 label-caps">Paso 2 de 2</p>
-        <h1 className="page-title text-foreground mb-3">
-          ¿Dónde estás ahora?
-        </h1>
+        <p className="text-sm font-medium text-muted mb-3 label-caps">{L("Paso 2 de 2", "Step 2 of 2")}</p>
+        <h1 className="page-title text-foreground mb-3">{L("¿Dónde estás ahora?", "Where are you now?")}</h1>
         {/* Antes esto eran dos bloques (subtítulo + card "¿Para qué sirve
             esto?") que decían lo mismo con distintas palabras y empujaban el
             selector de país abajo del fold. Una sola línea: para qué sirve,
             que no rastreamos, y que se puede cambiar. */}
-        <p className="text-base text-muted-foreground max-w-sm mx-auto text-balance">
-          Con tu país vemos qué ciudades, países y marcas comparten tu patrón. No lo rastreamos: elegís vos y lo cambiás cuando quieras.
-        </p>
+        <p className="text-base text-muted-foreground max-w-sm mx-auto text-balance">{L("Con tu país vemos qué ciudades, países y marcas comparten tu patrón. No lo rastreamos: elegís vos y lo cambiás cuando quieras.", "With your country we can see which cities, countries and brands share your pattern. We don't track it: you choose it and change it whenever you like.")}</p>
       </motion.div>
 
       <motion.div
@@ -110,14 +108,14 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
             >
               <span className="flex items-center gap-2 text-sm text-foreground">
                 <Check className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
-                Sin país — tu mapa prioriza el resto del mundo.
+                {L("Sin país — tu mapa prioriza el resto del mundo.", "No country — your map prioritizes the rest of the world.")}
               </span>
               <button
                 type="button"
                 onClick={() => setDeclined(false)}
                 className="inline-flex items-center justify-center w-8 h-8 rounded-sm text-muted hover:text-foreground hover:bg-ink/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-                aria-label="Elegir país"
-                title="Elegir país"
+                aria-label={L("Elegir país", "Choose country")}
+                title={L("Elegir país", "Choose country")}
               >
                 <X className="w-4 h-4" aria-hidden="true" />
               </button>
@@ -140,7 +138,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
                 type="button"
                 onClick={() => setSelected("")}
                 className="inline-flex items-center justify-center w-8 h-8 rounded-sm text-muted hover:text-foreground hover:bg-ink/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-                aria-label="Cambiar país"
+                aria-label={L("Cambiar país", "Change country")}
               >
                 <X className="w-4 h-4" aria-hidden="true" />
               </button>
@@ -170,8 +168,8 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
               <SearchInput
                 value={search}
                 onValueChange={setSearch}
-                label="Buscar país"
-                placeholder="Buscar otro país..."
+                label={L("Buscar país", "Search country")}
+                placeholder={L("Buscar otro país...", "Search for another country...")}
               />
 
               {search.trim() && (
@@ -189,7 +187,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
                       </button>
                     ))
                   ) : (
-                      <p className="px-4 py-3 text-sm text-muted">No encontramos ese país.</p>
+                      <p className="px-4 py-3 text-sm text-muted">{L("No encontramos ese país.", "We couldn't find that country.")}</p>
                     )}
                 </div>
               )}
@@ -202,9 +200,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
             type="button"
             onClick={() => setDeclined(true)}
             className="block mx-auto mt-4 text-sm text-muted underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded-sm"
-          >
-            Preferí no decirlo
-          </button>
+          >{L("Preferí no decirlo", "I'd rather not say")}</button>
         )}
       </motion.div>
 
@@ -216,10 +212,10 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
       >
         <Button variant="accent" size="lg" onClick={handleContinue} loading={isSubmitting}>
           {isSubmitting ? (
-            "Generando tu mapa..."
+            L("Generando tu mapa...", "Generating your map...")
           ) : (
             <>
-              Ver mi mapa
+              {L("Ver mi mapa", "See my map")}
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </>
           )}

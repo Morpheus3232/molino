@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -38,12 +39,12 @@ interface BuildingMolinoProps {
  * prefers-reduced-motion (checked via useReducedMotion); the pacing logic
  * itself is unaffected.
  */
-const STEPS = [
-  "Leyendo tu mapa",
-  "Cruzando tus sistemas",
-  "Detectando tus tensiones",
-  "Preparando tu síntesis",
-];
+const STEPS = (L: Pick2) => ([
+  L("Leyendo tu mapa", "Reading your map"),
+  L("Cruzando tus sistemas", "Crossing your systems"),
+  L("Detectando tus tensiones", "Detecting your tensions"),
+  L("Preparando tu síntesis", "Preparing your synthesis"),
+]);
 
 const STEP_INTERVAL_MS = 550;
 const CATCH_UP_INTERVAL_MS = 140;
@@ -65,6 +66,7 @@ const CHECK_MARK = (
 );
 
 export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps) {
+  const L = useL();
   const reduceMotion = useSafeReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const doneRef = useRef(done);
@@ -104,7 +106,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         clearInterval(interval);
         return;
       }
-      setActiveIndex((i) => Math.min(i + 1, STEPS.length - 2));
+      setActiveIndex((i) => Math.min(i + 1, STEPS(L).length - 2));
     }, STEP_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
@@ -121,7 +123,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     let holdTimeout: ReturnType<typeof setTimeout> | null = null;
     const interval = setInterval(() => {
       setActiveIndex((i) => {
-        if (i >= STEPS.length - 1) {
+        if (i >= STEPS(L).length - 1) {
           clearInterval(interval);
           if (!holdTimeout) {
             holdTimeout = setTimeout(() => onCompleteRef.current(), 450);
@@ -137,14 +139,14 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     };
   }, [done]);
 
-  const isReady = done && activeIndex >= STEPS.length - 1;
-  const completedCount = STEPS.reduce(
+  const isReady = done && activeIndex >= STEPS(L).length - 1;
+  const completedCount = STEPS(L).reduce(
     (count, _, i) => count + (i < activeIndex || (done && i <= activeIndex) ? 1 : 0),
     0
   );
-  const progress = completedCount / STEPS.length;
-  const counter = Math.min(activeIndex + 1, STEPS.length);
-  const hero = isReady ? "Tu síntesis está lista" : STEPS[activeIndex];
+  const progress = completedCount / STEPS(L).length;
+  const counter = Math.min(activeIndex + 1, STEPS(L).length);
+  const hero = isReady ? L("Tu síntesis está lista", "Your synthesis is ready") : STEPS(L)[activeIndex];
 
   const fadeIn = (duration: number, delay = 0) => ({
     hidden: { opacity: 0 },
@@ -157,7 +159,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
   return (
     <div role="status" aria-live="polite" className="py-6">
       <span className="sr-only">
-        {done ? "Tu síntesis está lista." : `${STEPS[activeIndex]}…`}
+        {done ? L("Tu síntesis está lista.", "Your synthesis is ready.") : `${STEPS(L)[activeIndex]}…`}
       </span>
 
       <motion.div
@@ -186,9 +188,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         <motion.p
           variants={fadeIn(0.4)}
           className="text-sm font-medium text-muted label-caps"
-        >
-          Construyendo tu lectura
-        </motion.p>
+        >{L("Construyendo tu lectura", "Building your reading")}</motion.p>
 
         {/* Hero — the step being composed, typeset as the headline */}
         <motion.h3
@@ -233,10 +233,10 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
               isReady ? "text-accent" : "text-muted/70"
             }`}
           >
-            {isReady ? "Lista" : "En proceso"}
+            {isReady ? L("Lista", "Ready") : L("En proceso", "In progress")}
           </p>
           <p className="font-mono text-xs tracking-[0.2em] text-muted/70">
-            {String(counter).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
+            {String(counter).padStart(2, "0")} / {String(STEPS(L).length).padStart(2, "0")}
           </p>
         </motion.div>
 
@@ -245,7 +245,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           variants={{ hidden: {}, show: { transition: { staggerChildren: reduceMotion ? 0 : 0.05 } } }}
           className="mt-6 border-t border-ink/10"
         >
-          {STEPS.map((step, i) => {
+          {STEPS(L).map((step, i) => {
             const isComplete = i < activeIndex || (done && i <= activeIndex);
             const isActive = i === activeIndex && !isComplete;
             return (
@@ -307,9 +307,9 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
             transition={{ duration: reduceMotion ? 0 : 0.4 }}
             className="mt-4 text-center font-heading text-sm italic text-muted leading-relaxed max-w-md whitespace-pre-line mx-auto"
           >
-            {`La primera vez tu lectura se escribe desde cero
+            {L(`La primera vez tu lectura se escribe desde cero
 y puede tardar hasta un minuto.
-No cierres esta página.`}
+No cierres esta página.`, "The first time, your reading is written from scratch\nand it can take up to a minute.\nDon't close this page.")}
           </motion.p>
         )}
       </motion.div>

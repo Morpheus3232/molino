@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,6 +43,7 @@ export default function PremiumChatSection({
   className = "",
   initialQuestion,
 }: PremiumChatSectionProps) {
+  const L = useL();
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
   const credits = useChatCredits(profile.birthDate, profile.name || "");
 
@@ -144,7 +146,7 @@ export default function PremiumChatSection({
                 ? {
                     ...t,
                     loading: false,
-                    error: "Esta pregunta forma parte de la lectura Premium. Tu acceso no pudo validarse.",
+                    error: L("Esta pregunta forma parte de la lectura Premium. Tu acceso no pudo validarse.", "This question is part of the Premium reading. Your access couldn't be validated."),
                   }
                 : t
             )
@@ -163,7 +165,7 @@ export default function PremiumChatSection({
                 ? {
                     ...t,
                     loading: false,
-                    error: body?.error?.message || "Alcanzaste el límite de preguntas por ahora.",
+                    error: body?.error?.message || L("Alcanzaste el límite de preguntas por ahora.", "You've reached the question limit for now."),
                   }
                 : t
             )
@@ -191,7 +193,7 @@ export default function PremiumChatSection({
               ? {
                   ...t,
                   loading: false,
-                  error: "No pudimos generar una respuesta en este momento. Intentá de nuevo.",
+                  error: L("No pudimos generar una respuesta en este momento. Intentá de nuevo.", "We couldn't generate an answer right now. Try again."),
                 }
               : t
           )
@@ -207,12 +209,8 @@ export default function PremiumChatSection({
   if (isPremium === false) {
     return (
       <div className="border-y-2 border-ink py-10 text-center">
-        <h3 className="font-display text-3xl text-foreground mb-3">
-          Preguntale a tu mapa
-        </h3>
-        <p className="text-base text-muted max-w-md mx-auto leading-relaxed">
-          Esta conversación contextual con tu mapa forma parte de tu lectura Premium. Desbloqueala arriba para acceder.
-        </p>
+        <h3 className="font-display text-3xl text-foreground mb-3">{L("Preguntale a tu mapa", "Ask your map")}</h3>
+        <p className="text-base text-muted max-w-md mx-auto leading-relaxed">{L("Esta conversación contextual con tu mapa forma parte de tu lectura Premium. Desbloqueala arriba para acceder.", "This contextual conversation with your map is part of your Premium reading. Unlock it above to access it.")}</p>
       </div>
     );
   }
@@ -224,7 +222,7 @@ export default function PremiumChatSection({
   return (
     <section
       className={`relative border-y-2 border-ink py-8 sm:py-12 ${className}`}
-      aria-label="Preguntale a tu mapa"
+      aria-label={L("Preguntale a tu mapa", "Ask your map")}
     >
       {/* Barra superior de créditos y estado */}
       <div className="mb-10 pb-5 border-b border-ink/15">
@@ -250,9 +248,7 @@ export default function PremiumChatSection({
               <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{reloadNotice}</span>
             </div>
-            <span className="text-sm text-muted">
-              Listo para seguir
-            </span>
+            <span className="text-sm text-muted">{L("Listo para seguir", "Ready to continue")}</span>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -15,7 +16,7 @@ import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage
 
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-const MONTH_LABELS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const MONTH_LABELS = (L: Pick2) => ([L("Ene", "Jan"),"Feb",L("Mar", "Tue"),L("Abr", "Apr"),"May","Jun","Jul",L("Ago", "Aug"),"Sep","Oct","Nov",L("Dic", "Dec")]);
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -40,6 +41,7 @@ export default function AffinityQuickEntryForm({
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
 }) {
+  const L = useL();
   const router = useRouter();
   const currentYear = new Date().getFullYear();
   const [saved, setSaved] = useState(() => {
@@ -108,7 +110,7 @@ export default function AffinityQuickEntryForm({
     const parsedMonth = parseInt(month, 10);
     const parsedYear = parseInt(year, 10);
     if (!parsedDay || !parsedMonth || !parsedYear) {
-      setError("Seleccioná día, mes y año");
+      setError(L("Seleccioná día, mes y año", "Select day, month and year"));
       return;
     }
     const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
@@ -140,8 +142,8 @@ export default function AffinityQuickEntryForm({
     });
     analytics.trackAffinitySaveClicked(type, entity.id, result.score, result.tier);
     setSaved(true);
-    toast.success("Resonancia guardada", {
-      description: "Encontrala en tus conexiones personales",
+    toast.success(L("Resonancia guardada", "Resonance saved"), {
+      description: L("Encontrala en tus conexiones personales", "Find it in your personal connections"),
       duration: 4000,
     });
   }, [result, saved, entity, type]);
@@ -175,16 +177,14 @@ export default function AffinityQuickEntryForm({
           {/* Date input — shown when no date is saved */}
           <motion.section {...fadeUp} className="mb-12">
             <div className="max-w-xl border-2 border-ink p-6 sm:p-8">
-              <p className="font-display text-2xl text-foreground leading-snug mb-1">
+              <p className="font-display text-2xl text-foreground leading-snug mb-1">{L(<>
                 Escribí tu fecha de nacimiento para ver cómo resuena {entity.name} con vos
-              </p>
-              <p className="text-base text-muted mb-6">
-                Solo necesitamos tu fecha. No se guarda permanentemente.
-              </p>
+              </>, <>Type your date of birth to see how {entity.name} resonates with you</>)}</p>
+              <p className="text-base text-muted mb-6">{L("Solo necesitamos tu fecha. No se guarda permanentemente.", "We only need your date. It isn't stored permanently.")}</p>
 
               <div className="grid grid-cols-3 gap-3 mb-4">
                 <div>
-                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-day">Día</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-day">{L("Día", "Day")}</label>
                   <select
                     id="qa-day"
                     value={day}
@@ -198,7 +198,7 @@ export default function AffinityQuickEntryForm({
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-month">Mes</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-month">{L("Mes", "Month")}</label>
                   <select
                     id="qa-month"
                     value={month}
@@ -206,12 +206,12 @@ export default function AffinityQuickEntryForm({
                     className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
-                      <option key={m} value={m}>{MONTH_LABELS[i]}</option>
+                      <option key={m} value={m}>{MONTH_LABELS(L)[i]}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-year">Año</label>
+                  <label className="text-sm text-muted font-medium mb-1.5 block label-caps" htmlFor="qa-year">{L("Año", "Year")}</label>
                   <select
                     id="qa-year"
                     value={year}
@@ -233,9 +233,7 @@ export default function AffinityQuickEntryForm({
                 type="button"
                 onClick={handleSubmit}
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold bg-vermilion text-paper hover:bg-vermilion-hover transition-colors min-h-[48px] label-caps focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-              >
-                Ver mi resonancia
-              </button>
+              >{L("Ver mi resonancia", "See my resonance")}</button>
             </div>
           </motion.section>
           </motion.div>
@@ -258,11 +256,11 @@ export default function AffinityQuickEntryForm({
               <div className="mt-10 max-w-3xl border-t border-ink/15 pt-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-muted mb-1 label-caps">Guardá tu resultado</p>
+                    <p className="text-sm text-muted mb-1 label-caps">{L("Guardá tu resultado", "Save your result")}</p>
                     <p className="text-base text-muted leading-relaxed">
                       {saved
-                        ? "Tu resonancia con esta entidad está guardada."
-                        : "Guardá tu resonancia para accederla después sin reingresar tu fecha."
+                        ? L("Tu resonancia con esta entidad está guardada.", "Your resonance with this entity is saved.")
+                        : L("Guardá tu resonancia para accederla después sin reingresar tu fecha.", "Save your resonance to access it later without re-entering your date.")
                       }
                     </p>
                   </div>
@@ -271,16 +269,14 @@ export default function AffinityQuickEntryForm({
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
-                      Guardada
+                      {L("Guardada", "Saved")}
                     </span>
                   ) : (
                     <button
                       type="button"
                       onClick={handleSave}
                       className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold bg-ink text-paper hover:bg-ink/90 min-h-[44px] label-caps focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                    >
-                      Guardar mi resonancia
-                    </button>
+                    >{L("Guardar mi resonancia", "Save my resonance")}</button>
                   )}
                 </div>
                 {!saved && (
@@ -289,9 +285,7 @@ export default function AffinityQuickEntryForm({
                       type="button"
                       onClick={() => router.push("/onboarding")}
                       className="text-base underline underline-offset-4 hover:no-underline"
-                    >
-                      Crear mi mapa para ver todas mis afinidades
-                    </button>
+                    >{L("Crear mi mapa para ver todas mis afinidades", "Create my map to see all my affinities")}</button>
                   </div>
                 )}
               </div>

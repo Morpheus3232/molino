@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -21,6 +22,7 @@ interface Props {
 // directamente a /lectura (ej. redirect post-pago de Mercado Pago o navegación interna),
 // cargamos su perfil guardado en el navegador sin fricción.
 export default function LecturaClient({ catalog }: Props) {
+  const L = useL();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [checked, setChecked] = useState(false);
 
@@ -44,17 +46,13 @@ export default function LecturaClient({ catalog }: Props) {
     return (
       <main id="main-content" className="min-h-[70vh] flex items-center justify-center bg-background px-6">
         <div className="max-w-md text-center">
-          <p className="text-sm text-muted label-caps mb-4">Mi lectura</p>
-          <h1 className="font-display text-4xl text-foreground leading-tight">Primero, tu mapa</h1>
-          <p className="mt-4 text-lg text-muted leading-relaxed">
-            La lectura sale de tu fecha de nacimiento. Creá tu mapa en treinta segundos y volvé acá para leerlo.
-          </p>
+          <p className="text-sm text-muted label-caps mb-4">{L("Mi lectura", "My reading")}</p>
+          <h1 className="font-display text-4xl text-foreground leading-tight">{L("Primero, tu mapa", "First, your map")}</h1>
+          <p className="mt-4 text-lg text-muted leading-relaxed">{L("La lectura sale de tu fecha de nacimiento. Creá tu mapa en treinta segundos y volvé acá para leerlo.", "The reading comes from your date of birth. Create your map in thirty seconds and come back here to read it.")}</p>
           <Link
             href="/onboarding"
             className="mt-8 inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold label-caps hover:bg-vermilion-hover transition-colors"
-          >
-            Crear mi mapa
-          </Link>
+          >{L("Crear mi mapa", "Create my map")}</Link>
         </div>
       </main>
     );
@@ -67,7 +65,7 @@ export default function LecturaClient({ catalog }: Props) {
   const coords = [
     { label: "Numerología", value: `${lifePath} · ${archetypeDisplayName(archetype.name)}`, href: "/profile#pilar-numerologia" },
     { label: "Astrología", value: `Sol en ${profile.sunSign}`, href: "/profile#pilar-astrologia" },
-    { label: "Zodíaco chino", value: `${animalName}${chineseElement ? ` de ${chineseElement}` : ""}`, href: "/profile#pilar-zodiaco-chino" },
+    { label: L("Zodíaco chino", "Chinese zodiac"), value: `${animalName}${chineseElement ? ` de ${chineseElement}` : ""}`, href: "/profile#pilar-zodiaco-chino" },
   ];
 
   return (
@@ -78,21 +76,16 @@ export default function LecturaClient({ catalog }: Props) {
             <Link
               href="/profile"
               className="text-sm text-muted hover:text-foreground transition-colors underline-offset-4 hover:underline"
-            >
-              ← Volver a tu mapa
-            </Link>
+            >{L("← Volver a tu mapa", "← Back to your map")}</Link>
             <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-center">
               <div className="lg:col-span-6">
-                <p className="text-sm text-accent mb-4 label-caps">Mi lectura</p>
-                <h1 className="page-title text-foreground">
+                <p className="text-sm text-accent mb-4 label-caps">{L("Mi lectura", "My reading")}</p>
+                <h1 className="page-title text-foreground">{L(<>
                   ¿Qué significa
                   <br />
                   tu mapa?
-                </h1>
-                <p className="mt-6 max-w-xl text-lg text-muted leading-relaxed">
-                  Tu mapa muestra las piezas por separado. La lectura las pone a conversar: dónde
-                  coinciden tus tres sistemas, qué tensión aparece entre ellos y qué conviene mirar ahora.
-                </p>
+                </>, <>What does<br />your map mean?</>)}</h1>
+                <p className="mt-6 max-w-xl text-lg text-muted leading-relaxed">{L("Tu mapa muestra las piezas por separado. La lectura las pone a conversar: dónde coinciden tus tres sistemas, qué tensión aparece entre ellos y qué conviene mirar ahora.", "Your map shows the pieces separately. The reading puts them in conversation: where your three systems agree, what tension appears between them and what's worth looking at now.")}</p>
 
                 {/* Las tres coordenadas de las que sale todo lo que sigue */}
                 <dl className="mt-8 border-t border-ink/15 max-w-xl">

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { motion } from "framer-motion";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -14,10 +15,11 @@ interface ActionButtonsProps {
 }
 
 export default function ActionButtons({ profile }: ActionButtonsProps) {
+  const L = useL();
   const router = useRouter();
 
   const handleRedo = () => {
-    if (!window.confirm("¿Borrar este mapa y volver a empezar? Si pusiste mal la fecha de nacimiento, esto te deja crear uno nuevo.")) return;
+    if (!window.confirm(L("¿Borrar este mapa y volver a empezar? Si pusiste mal la fecha de nacimiento, esto te deja crear uno nuevo.", "Delete this map and start over? If you entered the wrong date of birth, this lets you create a new one."))) return;
     clearStoredProfile();
     clearSession();
     router.push("/");
@@ -28,17 +30,17 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
       {...editorialReveal}
       className="flex flex-wrap items-center justify-center gap-4 py-10 border-t border-border"
       role="group"
-      aria-label="Acciones para tu mapa"
+      aria-label={L("Acciones para tu mapa", "Actions for your map")}
     >
       <SavedProfilesDrawer currentProfile={profile} />
       <button
         type="button"
         onClick={handleRedo}
         className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-paper-alt border border-border text-sm text-foreground hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all label-caps"
-        title="Borrar este mapa y crear uno nuevo (por ejemplo, si pusiste mal la fecha de nacimiento)"
+        title={L("Borrar este mapa y crear uno nuevo (por ejemplo, si pusiste mal la fecha de nacimiento)", "Delete this map and create a new one (for example, if you entered the wrong date of birth)")}
       >
         <RotateCcw className="w-3.5 h-3.5 text-accent" />
-        <span>Rehacer mi mapa</span>
+        <span>{L("Rehacer mi mapa", "Redo my map")}</span>
       </button>
     </motion.div>
   );

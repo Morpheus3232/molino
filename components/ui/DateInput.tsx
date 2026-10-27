@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useRef, useState, useCallback, useId, useEffect, forwardRef, useImperativeHandle } from "react";
 
@@ -12,11 +13,11 @@ export interface DateInputHandle {
   reportIncomplete: () => void;
 }
 
-const MISSING_FIELD_MESSAGE = {
-  dd: "Completá el día de nacimiento.",
-  mm: "Completá el mes de nacimiento.",
-  yyyy: "Completá el año de nacimiento.",
-} as const;
+const MISSING_FIELD_MESSAGE = (L: Pick2) => ({
+  dd: L("Completá el día de nacimiento.", "Fill in the day of birth."),
+  mm: L("Completá el mes de nacimiento.", "Fill in the month of birth."),
+  yyyy: L("Completá el año de nacimiento.", "Fill in the year of birth."),
+} as const);
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -49,6 +50,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   { value, onChange },
   ref
 ) {
+  const L = useL();
   const id = useId();
   // Parse initial value
   const initial = /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -290,7 +292,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
       <div
         className="flex items-center gap-0 rounded-md border border-border px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-colors"
         role="group"
-        aria-label="Fecha de nacimiento"
+        aria-label={L("Fecha de nacimiento", "Date of birth")}
         aria-describedby={missingField ? errorId : undefined}
         onKeyDown={handleGroupKeyDown}
       >
@@ -365,16 +367,16 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           así el lector de pantalla anuncia "Día, edit text" al enfocar,
           en vez de depender de un atributo que un futuro edit podría borrar. */}
       <div className="flex items-center mt-2 px-2 text-xs text-muted-foreground label-caps">
-        <label htmlFor={`${id}-dd`} className="w-16 sm:w-20 text-center">Día</label>
+        <label htmlFor={`${id}-dd`} className="w-16 sm:w-20 text-center">{L("Día", "Day")}</label>
         <span className="w-4 shrink-0" aria-hidden="true" />
-        <label htmlFor={`${id}-mm`} className="w-16 sm:w-20 text-center">Mes</label>
+        <label htmlFor={`${id}-mm`} className="w-16 sm:w-20 text-center">{L("Mes", "Month")}</label>
         <span className="w-4 shrink-0" aria-hidden="true" />
-        <label htmlFor={`${id}-yyyy`} className="flex-1 text-center">Año</label>
+        <label htmlFor={`${id}-yyyy`} className="flex-1 text-center">{L("Año", "Year")}</label>
       </div>
 
       {missingField && (
         <p id={errorId} role="alert" aria-live="polite" className="mt-2 px-3 text-xs font-medium text-error text-center">
-          {MISSING_FIELD_MESSAGE[missingField]}
+          {MISSING_FIELD_MESSAGE(L)[missingField]}
         </p>
       )}
     </div>

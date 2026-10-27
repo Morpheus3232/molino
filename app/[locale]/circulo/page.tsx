@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -15,6 +16,7 @@ interface CirculoClientProps {
 }
 
 export default function CirculoClient({ refParam }: CirculoClientProps) {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
@@ -30,7 +32,7 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20">
-          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">{L(<>
             <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
               Inicio
             </Link>
@@ -40,31 +42,27 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
             </Link>
             <span>›</span>
             <span className="text-foreground font-medium">Compartido</span>
-          </nav>
+          </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Home</Link><span>›</span><Link href="/circulo" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Circle</Link><span>›</span><span className="text-foreground font-medium">Shared</span></>)}</nav>
         </div>
 
         {/* Public share banner */}
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 mb-6">
           <div className="p-4 bg-accent/5 border border-accent/20 rounded-lg">
-            <p className="text-sm text-foreground">
+            <p className="text-sm text-foreground">{L(<>
               <span className="font-medium">Círculo compartido</span> — datos públicos (sin nombre ni fecha de nacimiento).
-            </p>
+            </>, <><span className="font-medium">Shared circle</span> — public data (no name or date of birth).</>)}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {mounted && (
                 <>
                   {hasStoredProfile() ? (
-                    <Button variant="ghost" size="sm" onClick={() => router.push("/circulo")}>
-                      Ver mi círculo
-                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => router.push("/circulo")}>{L("Ver mi círculo", "See my circle")}</Button>
                   ) : (
-                    <Button variant="primary" size="sm" onClick={() => router.push("/onboarding")}>
-                      Generá el tuyo para comparar
-                    </Button>
+                    <Button variant="primary" size="sm" onClick={() => router.push("/onboarding")}>{L("Generá el tuyo para comparar", "Create yours to compare")}</Button>
                   )}
                   <SharePublicButton
                     profile={sharedProfile}
                     path="/circulo"
-                    label="Compartir este círculo"
+                    label={L("Compartir este círculo", "Share this circle")}
                   />
                 </>
               )}
@@ -84,7 +82,7 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
-          <p className="sr-only" role="status">Cargando tu círculo...</p>
+          <p className="sr-only" role="status">{L("Cargando tu círculo...", "Loading your circle...")}</p>
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
             <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -100,12 +98,12 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
     return (
       <main id="main-content" className="bg-background">
         <PageHero
-          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Círculo" }]}
-          eyebrow="Mi mapa"
-          title="Tu círculo de energías"
-          lead="Los animales del zodíaco chino que te acompañan y los que te desafían. Para verlo, primero creá tu mapa."
+          crumbs={[{ href: "/", label: L("Inicio", "Home") }, { href: "/profile", label: L("Mi mapa", "My map") }, { label: L("Círculo", "Circle") }]}
+          eyebrow={L("Mi mapa", "My map")}
+          title={L("Tu círculo de energías", "Your circle of energies")}
+          lead={L("Los animales del zodíaco chino que te acompañan y los que te desafían. Para verlo, primero creá tu mapa.", "The Chinese zodiac animals that walk with you and the ones that challenge you. To see it, create your map first.")}
         >
-          <PrimaryLink href="/onboarding">Crear mi mapa</PrimaryLink>
+          <PrimaryLink href="/onboarding">{L("Crear mi mapa", "Create my map")}</PrimaryLink>
         </PageHero>
       </main>
     );
@@ -116,12 +114,12 @@ export default function CirculoClient({ refParam }: CirculoClientProps) {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-12 sm:pt-16">
         <PageHero
           bare
-          crumbs={[{ href: "/", label: "Inicio" }, { href: "/profile", label: "Mi mapa" }, { label: "Círculo" }]}
-          eyebrow="Mi mapa"
-          title="Tu círculo"
-          lead="Los animales del ciclo chino que te acompañan y los que te desafían."
+          crumbs={[{ href: "/", label: L("Inicio", "Home") }, { href: "/profile", label: L("Mi mapa", "My map") }, { label: L("Círculo", "Circle") }]}
+          eyebrow={L("Mi mapa", "My map")}
+          title={L("Tu círculo", "Your circle")}
+          lead={L("Los animales del ciclo chino que te acompañan y los que te desafían.", "The animals of the Chinese cycle that walk with you and the ones that challenge you.")}
         >
-          <SharePublicButton profile={profile} path="/circulo" label="Compartir mi círculo" />
+          <SharePublicButton profile={profile} path="/circulo" label={L("Compartir mi círculo", "Share my circle")} />
         </PageHero>
       </div>
       <main id="main-content">

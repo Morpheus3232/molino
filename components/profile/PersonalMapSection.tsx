@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -139,6 +140,7 @@ function EntityRow({
   animal: string;
   local?: boolean;
 }) {
+  const L = useL();
   const fecha = fechaLarga(entity.originDate);
 
   return (
@@ -163,17 +165,17 @@ function EntityRow({
               <span className="block font-mono text-sm text-muted truncate mt-0.5">
                 {entity.country !== entity.name ? entity.country : ""}
                 {local && (
-                  <span className="text-accent font-semibold ml-1">
+                  <span className="text-accent font-semibold ml-1">{L(<>
                     {entity.country && entity.country !== entity.name ? "· " : ""}tu país
-                  </span>
+                  </>, <>{entity.country && entity.country !== entity.name ? "· " : ""}your country</>)}</span>
                 )}
               </span>
             ) : null}
           </span>
-          <span className="shrink-0 text-right font-mono text-sm tabular-nums">
+          <span className="shrink-0 text-right font-mono text-sm tabular-nums">{L(<>
             <span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span>
             <span className="block text-accent">año {animal}</span>
-          </span>
+          </>, <><span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span><span className="block text-accent">{animal} year</span></>)}</span>
         </span>
 
         {entity.originNote && (
@@ -202,6 +204,7 @@ function GroupBlock({
   userCountryISO: string | null;
   isSecondary?: boolean;
 }) {
+  const L = useL();
   const [expanded, setExpanded] = useState(false);
   const tone = KIND_TONE[group.kind];
 
@@ -221,9 +224,7 @@ function GroupBlock({
           <span className={`font-mono text-sm ${tone.accent}`}>{group.chinese}</span>
         )}
         {group.kind === "enemigo" && (
-          <span className="ml-2 text-sm bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold label-caps">
-            Evitar
-          </span>
+          <span className="ml-2 text-sm bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold label-caps">{L("Evitar", "Avoid")}</span>
         )}
         <span className="font-mono text-sm text-muted tabular-nums ml-auto">
           {group.total} {group.total === 1 ? "entrada" : "entradas"}
@@ -250,7 +251,7 @@ function GroupBlock({
             onClick={() => setExpanded(!expanded)}
             className="font-mono text-sm text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4 py-1"
           >
-            {expanded ? "− Ver menos" : `+ Ver más (${group.entities.length - initialLimit} restantes)`}
+            {expanded ? L("− Ver menos", "− See less") : L(`+ Ver más (${group.entities.length - initialLimit} restantes)`, `+ See more (${group.entities.length - initialLimit} left)`)}
           </button>
         )}
 
@@ -259,7 +260,7 @@ function GroupBlock({
             href={domainHref}
             className="font-mono text-sm text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1 inline-flex items-center gap-1"
           >
-            <span>+ {restantesAtlas} más en el Atlas</span>
+            <span>{L(<>+ {restantesAtlas} más en el Atlas</>, <>+ {restantesAtlas} more in the Atlas</>)}</span>
             <ArrowRight className="w-3 h-3" />
           </Link>
         )}
@@ -279,6 +280,7 @@ function DomainBlock({
   userAnimal: string;
   userCountryISO: string | null;
 }) {
+  const L = useL();
   if (domain.groups.length === 0) return null;
 
   const isSecondary = SECONDARY_DOMAINS.has(domain.id);
@@ -330,16 +332,16 @@ function DomainBlock({
       <p className="mt-2 max-w-3xl font-mono text-sm text-muted/80 leading-relaxed">
         {domain.scope}
         {domain.descartadas > 0 && (
-          <span className="text-muted/60">
+          <span className="text-muted/60">{L(<>
             {" "}{domain.descartadas} quedaron afuera por no tener fecha exacta documentada.
-          </span>
+          </>, <>{" "}{domain.descartadas} were left out because they have no documented exact date.</>)}</span>
         )}
       </p>
 
       {isSecondary && (
-        <p className="mt-3 font-mono text-sm text-muted bg-paper-alt border border-border/80 rounded-[--radius-sm] px-3.5 py-2 inline-block">
+        <p className="mt-3 font-mono text-sm text-muted bg-paper-alt border border-border/80 rounded-[--radius-sm] px-3.5 py-2 inline-block">{L(<>
           Este dominio cuenta con {domain.evaluated} entradas. Se muestran hasta 3 ejemplos por casilla para mantener la lectura ágil.
-        </p>
+        </>, <>This domain has {domain.evaluated} entries. Up to 3 examples per slot are shown to keep the reading light.</>)}</p>
       )}
 
       {/* Grilla de entidades afines */}
@@ -358,9 +360,7 @@ function DomainBlock({
       {/* Casilla opuesta (enemigo) */}
       {opuesta && (
         <div className="mt-12 sm:mt-16 border-t border-border pt-8 sm:pt-10">
-          <p className="text-sm text-accent font-semibold mb-6 label-caps">
-            Lo que conviene evitar (六冲)
-          </p>
+          <p className="text-sm text-accent font-semibold mb-6 label-caps">{L("Lo que conviene evitar (六冲)", "What's best avoided (六冲)")}</p>
           <div className="max-w-3xl">
             <GroupBlock
               group={opuesta}
@@ -378,7 +378,7 @@ function DomainBlock({
           href={`${domain.href}?animal=${encodeURIComponent(userAnimal)}`}
           className="inline-flex items-center gap-2 text-sm text-accent hover:text-foreground transition-colors label-caps"
         >
-          <span>Abrir sección completa de {domain.label} en Atlas</span>
+          <span>{L(<>Abrir sección completa de {domain.label} en Atlas</>, <>Open the full {domain.label} section in the Atlas</>)}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -388,17 +388,14 @@ function DomainBlock({
 
 /** El ciclo completo: los doce signos y qué es cada uno para vos. */
 function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelationEntry[] }) {
+  const L = useL();
   return (
     <motion.div {...editorialReveal} className="border-t border-border pt-8 pb-4">
       <div className="max-w-3xl mb-4">
-        <h3 className="text-sm text-accent font-semibold mb-2 label-caps">
+        <h3 className="text-sm text-accent font-semibold mb-2 label-caps">{L(<>
           El ciclo entero, leído desde {animal}
-        </h3>
-        <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">
-          Los doce signos del zodíaco chino. Cada entidad del atlas cae en una de estas casillas
-          según su fecha de origen documentada: tu propio signo, tus dos amigos (三合 San He) y tu
-          energía opuesta (六冲 Liu Chong).
-        </p>
+        </>, <>The whole cycle, read from {animal}</>)}</h3>
+        <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">{L("Los doce signos del zodíaco chino. Cada entidad del atlas cae en una de estas casillas según su fecha de origen documentada: tu propio signo, tus dos amigos (三合 San He) y tu energía opuesta (六冲 Liu Chong).", "The twelve signs of the Chinese zodiac. Each entity in the Atlas falls into one of these slots according to its documented date of origin: your own sign, your two friends (三合 San He) and your opposite energy (六冲 Liu Chong).")}</p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-0">
@@ -451,6 +448,7 @@ export default function PersonalMapSection({
   profile: UserProfile;
   catalog?: LightweightEntity[];
 }) {
+  const L = useL();
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
 
@@ -488,9 +486,7 @@ export default function PersonalMapSection({
         {/* ── Encabezado Resumido ───────────────────────────────────── */}
         <motion.div {...editorialRevealMount} className="pt-16 lg:pt-24 pb-10">
           <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
-            <p className="text-sm text-accent label-caps">
-              Capítulo II · El mundo
-            </p>
+            <p className="text-sm text-accent label-caps">{L("Capítulo II · El mundo", "Chapter II · The world")}</p>
 
             {/* Acceso rápido a Lectura */}
             <Link
@@ -498,31 +494,27 @@ export default function PersonalMapSection({
               className="inline-flex items-center gap-2 text-sm font-mono text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1.5 -my-1.5"
             >
               <BookOpen className="w-3.5 h-3.5 text-accent" />
-              <span>Ver tu Lectura interpretativa →</span>
+              <span>{L("Ver tu Lectura interpretativa →", "See your interpretive Reading →")}</span>
             </Link>
           </div>
 
           <h2
             id="mapa-aplicado-heading"
             className="section-title max-w-4xl text-foreground"
-          >
-            Dónde tu signo toca el mundo
-          </h2>
+          >{L("Dónde tu signo toca el mundo", "Where your sign touches the world")}</h2>
 
           <p className="font-serif text-base sm:text-lg mt-5 max-w-3xl leading-relaxed text-muted">
-            Sos <strong className="font-semibold text-foreground">{map.animal}</strong>
-            {map.element ? ` de ${map.element}` : ""}. Ahora mirá el mundo con esa clave: cada país,
-            ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún
-            año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —{" "}
-             <strong className="font-semibold text-foreground">
+            {L("Sos ", "Your sign is")} <strong className="font-semibold text-foreground">{map.animal}</strong>
+            {map.element ? L(` de ${map.element}`, `, element ${map.element}`) : ""}{L(". Ahora mirá el mundo con esa clave: cada país, ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —", ". Now look at the world through that key: every country, city, garment, car, university, club, person and movie in the Atlas was also born in some year, and that year gave it its own sign. Crossing your sign with each one's is the whole calculation —")}{" "}
+             <strong className="font-semibold text-foreground">{L(<>
                {evaluadas.toLocaleString("es-AR")} entradas con fecha exacta
-             </strong>{" "}
-             que se acomodan en tres casillas: tu propio signo, tus dos amigos y tu enemigo.
+             </>, <>{evaluadas.toLocaleString("en-US")} entries with an exact date</>)}</strong>{" "}
+             {L("que se acomodan en tres casillas: tu propio signo, tus dos amigos y tu enemigo.", "that fit into three slots: your own sign, your two friends and your enemy.")}
              {neutralTotal > 0 && (
-               <>
+               <>{L(<>
                  {" "}Las restantes {neutralTotal.toLocaleString("es-AR")} del resto del ciclo no
                  entran en ninguna casilla — el ciclo no dice nada sobre ellas.
-               </>
+               </>, <>{" "}The remaining {neutralTotal.toLocaleString("en-US")} from the rest of the cycle don't fit into any slot — the cycle says nothing about them.</>)}</>
              )}
           </p>
         </motion.div>
@@ -538,22 +530,16 @@ export default function PersonalMapSection({
 
         {/* ── Disclaimer final sutil ──────────────────────────────── */}
         <div className="mt-14 pt-8 border-t border-border space-y-4 max-w-3xl">
-          <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">
+          <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">{L(<>
             <strong className="font-semibold text-foreground">Por qué hay entidades que no aparecen.</strong>{" "}
             El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero: un origen fechado solo
             por año podría pertenecer al signo anterior, y una fecha anterior a 1886 cae fuera de la
             tabla de cortes documentados. En los dos casos el signo no se puede afirmar y la entidad
             queda afuera, aunque siga en el Atlas. Una lista más corta antes que una recomendación
             construida sobre una duda.
-          </p>
+          </>, <><strong className="font-semibold text-foreground">Why some entities don't appear.</strong>{" "}Chinese New Year falls between January 21 and February 21: an origin dated only by year could belong to the previous sign, and a date before 1886 falls outside the table of documented cutoffs. In both cases the sign can't be stated with certainty and the entity is left out, even though it stays in the Atlas. A shorter list rather than a recommendation built on a doubt.</>)}</p>
 
-          <p className="text-sm sm:text-base text-muted/80 font-serif italic leading-relaxed">
-            El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad,
-            cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan
-            en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o
-            qué usar es una lectura de una tradición, no una medición. El mapa propone; la decisión
-            es tuya.
-          </p>
+          <p className="text-sm sm:text-base text-muted/80 font-serif italic leading-relaxed">{L("El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad, cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o qué usar es una lectura de una tradición, no una medición. El mapa propone; la decisión es tuya.", "The crossing is a single operation on two dates: yours and each entity's date of origin, each taken to its sign with the real Chinese New Year cutoff. That two dates fall in the same slot of the cycle can be verified; that this means something about where to live or what to wear is a reading from a tradition, not a measurement. The map suggests; the decision is yours.")}</p>
         </div>
 
         <div className="h-16 lg:h-24" />

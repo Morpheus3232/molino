@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
@@ -12,8 +13,9 @@ interface WorkProfilePanelProps {
 }
 
 export default function WorkProfilePanel({ profile, className = "" }: WorkProfilePanelProps) {
+  const L = useL();
   const result = useMemo(() => getWorkProfile(profile), [profile]);
-  const name = profile.name?.trim() || "Esta persona";
+  const name = profile.name?.trim() || L("Esta persona", "This person");
 
   return (
     <motion.div
@@ -24,15 +26,13 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
     >
       <div className="flex items-center gap-2 justify-center">
         <Briefcase className="w-4 h-4 text-accent" />
-        <span className="text-sm text-accent font-bold label-caps">
-          Perfil de Trabajo
-        </span>
+        <span className="text-sm text-accent font-bold label-caps">{L("Perfil de Trabajo", "Work Profile")}</span>
       </div>
 
       <div className="text-center">
-        <p className="font-display text-2xl sm:text-3xl text-foreground tracking-tight">
+        <p className="font-display text-2xl sm:text-3xl text-foreground tracking-tight">{L(<>
           {name} · Camino de Vida {result.lifePath} — {result.lifePathTitle}
-        </p>
+        </>, <>{name} · Life Path {result.lifePath} — {result.lifePathTitle}</>)}</p>
         <p className="text-sm sm:text-base text-muted leading-relaxed max-w-xl mx-auto mt-4">
           {result.workStyle}
         </p>
@@ -40,9 +40,9 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
 
       {result.animal && (
         <div className="pt-6 border-t border-ink/10 text-center">
-          <p className="text-sm text-muted mb-2 label-caps">
+          <p className="text-sm text-muted mb-2 label-caps">{L(<>
             Signo del zodíaco chino: {result.animal}
-          </p>
+          </>, <>Chinese zodiac sign: {result.animal}</>)}</p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             {result.animalTraits.map((trait) => (
               <span

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -12,17 +13,18 @@ import type { LightweightEntity } from "@/types/atlas";
 
 type SelectionStep = "pick-a" | "pick-b";
 
-const TYPE_LABEL: Record<string, string> = {
-  brand: "Marca",
+const TYPE_LABEL = (L: Pick2): Record<string, string> => ({
+  brand: L("Marca", "Brand"),
   city: "Ciudad",
   country: "País",
-  university: "Universidad",
-  team: "Equipo",
-  movie: "Película",
-  artist: "Famoso",
-};
+  university: L("Universidad", "University"),
+  team: L("Equipo", "Team"),
+  movie: L("Película", "Movie"),
+  artist: L("Famoso", "Famous person"),
+});
 
 export default function ComparePicker({ catalog }: { catalog: LightweightEntity[] }) {
+  const L = useL();
   const router = useRouter();
   const searchParams = useSearchParams();
   const fromId = searchParams.get("from");
@@ -50,7 +52,7 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
       return (
         e.name.toLowerCase().includes(q) ||
         e.country?.toLowerCase().includes(q) ||
-        (TYPE_LABEL[e.type] ?? e.type).toLowerCase().includes(q)
+        (TYPE_LABEL(L)[e.type] ?? e.type).toLowerCase().includes(q)
       );
     });
   }, [search, selectedA, catalog]);
@@ -71,18 +73,18 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
   return (
     <div className="min-h-screen bg-background">
       <main className={`${CONTAINER} pt-12 sm:pt-16 pb-24`} id="main-content">
-        <Breadcrumb items={[{ href: "/", label: "Inicio" }, { href: "/affinity", label: "Afinidades" }, { label: "Comparar" }]} />
+        <Breadcrumb items={[{ href: "/", label: L("Inicio", "Home") }, { href: "/affinity", label: L("Afinidades", "Affinities") }, { label: L("Comparar", "Compare") }]} />
 
         <header className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8 items-end pb-10 border-b-2 border-ink">
           <div className="lg:col-span-7">
-            <p className="text-sm text-accent mb-4 label-caps">Comparar dos entradas · paso {step === "pick-a" ? "1" : "2"} de 2</p>
+            <p className="text-sm text-accent mb-4 label-caps">{L(<>Comparar dos entradas · paso {step === "pick-a" ? "1" : "2"} de 2</>, <>Compare two entries · step {step === "pick-a" ? "1" : "2"} of 2</>)}</p>
             <h1 className="font-display font-normal text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-foreground">
-              {step === "pick-a" ? "Elegí la primera" : "Ahora, la segunda"}
+              {step === "pick-a" ? L("Elegí la primera", "Pick the first one") : L("Ahora, la segunda", "Now, the second one")}
             </h1>
             <p className="mt-5 text-xl text-foreground/85 leading-snug max-w-xl">
               {step === "pick-a"
-                ? "Una marca, un país, una ciudad o una persona del Atlas. Después elegís con quién compararla."
-                : `Con qué querés comparar ${selectedEntityA?.name ?? "la primera"}.`}
+                ? L("Una marca, un país, una ciudad o una persona del Atlas. Después elegís con quién compararla.", "A brand, a country, a city or a person from the Atlas. Then you choose what to compare it with.")
+                : L(`Con qué querés comparar ${selectedEntityA?.name ?? "la primera"}.`, `What do you want to compare ${selectedEntityA?.name ?? "the first one"} with?`)}
             </p>
           </div>
           <div className="lg:col-span-5">
@@ -99,7 +101,7 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                   size={44}
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-muted">Primera entrada</p>
+                  <p className="text-sm text-muted">{L("Primera entrada", "First entry")}</p>
                   <p className="font-display text-2xl text-foreground truncate">{selectedEntityA.name}</p>
                 </div>
                 <button
@@ -110,16 +112,14 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                     setSearch("");
                   }}
                   className="text-base underline underline-offset-4 hover:no-underline shrink-0 min-h-[44px]"
-                >
-                  Cambiar
-                </button>
+                >{L("Cambiar", "Change")}</button>
               </div>
             ) : (
               <SearchInput
                 value={search}
                 onValueChange={setSearch}
-                placeholder="Buscar por nombre, país o tipo"
-                label="Buscar entrada"
+                placeholder={L("Buscar por nombre, país o tipo", "Search by name, country or type")}
+                label={L("Buscar entrada", "Search entry")}
                 autoFocus
               />
             )}
@@ -128,7 +128,7 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
 
         {step === "pick-b" && (
           <div className="mt-8 max-w-xl">
-            <SearchInput value={search} onValueChange={setSearch} placeholder="Buscar por nombre, país o tipo" label="Buscar entrada" autoFocus />
+            <SearchInput value={search} onValueChange={setSearch} placeholder={L("Buscar por nombre, país o tipo", "Search by name, country or type")} label={L("Buscar entrada", "Search entry")} autoFocus />
           </div>
         )}
 
@@ -157,7 +157,7 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                     {entity.name}
                   </p>
                   <p className="text-sm text-muted truncate">
-                    {TYPE_LABEL[entity.type] ?? entity.type} · {entity.country}
+                    {TYPE_LABEL(L)[entity.type] ?? entity.type} · {entity.country}
                   </p>
                 </div>
               </button>
@@ -171,12 +171,10 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
               type="button"
               onClick={() => setVisible((v) => v + PAGE * 2)}
               className="inline-flex items-center justify-center min-h-[48px] px-8 border-2 border-ink text-sm text-foreground hover:bg-ink hover:text-paper transition-colors label-caps"
-            >
-              Ver más
-            </button>
-            <p className="text-base text-muted">
+            >{L("Ver más", "See more")}</button>
+            <p className="text-base text-muted">{L(<>
               {visible} de {filtered.length} · o buscá por nombre, país o tipo
-            </p>
+            </>, <>{visible} of {filtered.length} · or search by name, country or type</>)}</p>
           </div>
         )}
 
@@ -188,25 +186,20 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
             transition={{ duration: 0.3 }}
             className="text-center py-16"
           >
-            <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
-            <p className="text-lg text-muted mb-6 max-w-md mx-auto">
+            <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] tracking-tight text-foreground mb-4">{L("Sin resultados", "No results")}</h2>
+            <p className="text-lg text-muted mb-6 max-w-md mx-auto">{L(<>
               No se encontraron resultados para &ldquo;{search}&rdquo;.
-            </p>
+            </>, <>No results found for &ldquo;{search}&rdquo;.</>)}</p>
             <button
               type="button"
               onClick={() => router.push("/affinity")}
               className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
-            >
-              Volver a Afinidad Personal
-            </button>
+            >{L("Volver a Afinidad Personal", "Back to Personal Affinity")}</button>
           </motion.div>
         )}
 
         <Note>
-          <p>
-            La comparación es una lectura simbólica de la tradición del zodíaco chino, no una medición: cruza los signos de
-            los años de origen de las dos entradas.
-          </p>
+          <p>{L("La comparación es una lectura simbólica de la tradición del zodíaco chino, no una medición: cruza los signos de los años de origen de las dos entradas.", "The comparison is a symbolic reading from the Chinese zodiac tradition, not a measurement: it crosses the signs of the years of origin of the two entries.")}</p>
         </Note>
       </main>
     </div>

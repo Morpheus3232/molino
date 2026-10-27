@@ -1,8 +1,8 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
+export const generateMetadata = metadataFor({
   title: "Onboarding",
-  description: "Completá tu perfil en Molino.",
+  description: ["Completá tu perfil en Molino.", "Complete your profile on Molino."],
   noIndex: true,
   noFollow: true,
 });

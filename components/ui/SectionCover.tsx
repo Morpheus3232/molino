@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import Image from "next/image";
 import { getSectionImage, type SectionImage } from "@/lib/data/section-images";
 
@@ -50,6 +51,7 @@ export function SectionCredit({
   img: SectionImage;
   className?: string;
 }) {
+  const L = useL();
   if (img.source) {
     const same = img.credit.name === img.source.name;
     return (
@@ -81,7 +83,7 @@ export function SectionCredit({
     );
   }
   return (
-    <figcaption className={`${className} text-xs text-muted/70`}>
+    <figcaption className={`${className} text-xs text-muted/70`}>{L(<>
       {img.kind}:{" "}
       <a
         href={`${img.credit.url}${UTM}`}
@@ -100,7 +102,7 @@ export function SectionCredit({
       >
         Unsplash
       </a>
-    </figcaption>
+    </>, <>{img.kind}:{" "}<a href={`${img.credit.url}${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{img.credit.name}</a>{" "}on{" "}<a href={`https://unsplash.com/${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
   );
 }
 

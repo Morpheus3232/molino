@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import type { LightweightEntity } from "@/types/atlas";
@@ -15,6 +16,7 @@ interface AtlasSharePanelProps {
  * from the Server Component. On-demand rendering (no image cost at load).
  */
 export default function AtlasSharePanel({ entities, category }: AtlasSharePanelProps) {
+  const L = useL();
   const [selectedId, setSelectedId] = useState(entities[0]?.id ?? "");
   const selected = entities.find((e) => e.id === selectedId) ?? entities[0];
 
@@ -24,7 +26,7 @@ export default function AtlasSharePanel({ entities, category }: AtlasSharePanelP
     <section className="mt-14 pt-10 border-t border-ink/10" aria-label="Compartir">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-8 h-px bg-border" aria-hidden="true" />
-        <h2 className="text-sm text-muted font-medium label-caps">Compartir</h2>
+        <h2 className="text-sm text-muted font-medium label-caps">{L("Compartir", "Share")}</h2>
       </div>
 
       {entities.length > 1 && (
@@ -50,7 +52,7 @@ export default function AtlasSharePanel({ entities, category }: AtlasSharePanelP
       <AtlasShareCard
         entity={selected}
         headline={`${selected.animal}`}
-        subline="Afinidad simbólica según el zodíaco chino"
+        subline={L("Afinidad simbólica según el zodíaco chino", "Symbolic affinity according to the Chinese zodiac")}
         url={`${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${selected.type || category}/${selected.id}`}
       />
     </section>

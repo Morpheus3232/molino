@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,6 +49,7 @@ const socioLabel = (i: number) => `Socio ${String.fromCharCode(65 + i)}`;
 export type UrlParams = Record<string, string | undefined>;
 
 export default function SociosClient({ params }: { params: UrlParams }) {
+  const L = useL();
   // Antes useSearchParams: obligaba a renderizar la página solo en el navegador
   // y Google recibía "Cargando comparativa..." en vez del formulario.
   const searchParams = { get: (k: string): string | null => params[k] ?? null };
@@ -153,17 +155,17 @@ export default function SociosClient({ params }: { params: UrlParams }) {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <PageHero
           bare
-          crumbs={[{ href: "/", label: "Inicio" }, { label: "Modo Socios" }]}
-          eyebrow="Modo Socios · afinidad de trabajo"
-          title="Comparativa de sociedad"
-          lead="Para socios, jefe y empleado o un equipo: de dos a cinco fechas de nacimiento, cruzadas de a pares. O una sola, para ver el perfil de trabajo de esa persona."
+          crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Modo Socios", "Partners Mode") }]}
+          eyebrow={L("Modo Socios · afinidad de trabajo", "Partners Mode · working affinity")}
+          title={L("Comparativa de sociedad", "Partnership comparison")}
+          lead={L("Para socios, jefe y empleado o un equipo: de dos a cinco fechas de nacimiento, cruzadas de a pares. O una sola, para ver el perfil de trabajo de esa persona.", "For business partners, boss and employee, or a team: two to five dates of birth, crossed in pairs. Or just one, to see that person's work profile.")}
           imageKey="paginas/socios"
         >
-          <div className="inline-flex border-2 border-ink" role="group" aria-label="Modo">
+          <div className="inline-flex border-2 border-ink" role="group" aria-label={L("Modo", "Mode")}>
             {(
               [
-                ["compare", "Comparar equipo", Users],
-                ["solo", "Analizar una fecha", User],
+                ["compare", L("Comparar equipo", "Compare team"), Users],
+                ["solo", L("Analizar una fecha", "Analyze one date"), User],
               ] as const
             ).map(([m, label, Icon]) => (
               <button
@@ -199,9 +201,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                     type="button"
                     onClick={handleResetSolo}
                     className="font-mono text-xs text-muted hover:text-accent transition-colors"
-                  >
-                    Analizar otra fecha
-                  </button>
+                  >{L("Analizar otra fecha", "Analyze another date")}</button>
                 </div>
               </motion.div>
             ) : (
@@ -219,22 +219,18 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                       <label
                         htmlFor="name-solo"
                         className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-                      >
-                        Nombre o apodo (opcional)
-                      </label>
+                      >{L("Nombre o apodo (opcional)", "Name or nickname (optional)")}</label>
                       <input
                         id="name-solo"
                         type="text"
-                        placeholder="Ej. Alex"
+                        placeholder={L("Ej. Alex", "E.g. Alex")}
                         value={nameSolo}
                         onChange={(e) => setNameSolo(e.target.value)}
                         className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
-                        Fecha de Nacimiento
-                      </label>
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">{L("Fecha de Nacimiento", "Date of Birth")}</label>
                       <DateInput value={dateSolo} onChange={setDateSolo} />
                     </div>
                   </div>
@@ -246,14 +242,12 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                       size="lg"
                       disabled={!isValidDate(dateSolo)}
                       className="w-full sm:w-auto min-w-[240px] text-base py-4"
-                    >
-                      Ver perfil de trabajo
-                    </Button>
+                    >{L("Ver perfil de trabajo", "See work profile")}</Button>
                   </div>
 
                   <div className="flex items-center justify-center gap-2 text-xs text-muted font-mono">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Sin registro · 100% calculado en tu navegador</span>
+                    <span>{L("Sin registro · 100% calculado en tu navegador", "No sign-up · 100% calculated in your browser")}</span>
                   </div>
                 </form>
               </motion.div>
@@ -275,9 +269,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                 <TeamComparison profiles={profiles as UserProfile[]} labels={socios.map((s, i) => s.name.trim() || socioLabel(i))} />
               )}
               <div className="text-center mt-8">
-                <button type="button" onClick={handleReset} className="text-sm text-muted hover:text-accent transition-colors">
-                  Comparar otras fechas
-                </button>
+                <button type="button" onClick={handleReset} className="text-sm text-muted hover:text-accent transition-colors">{L("Comparar otras fechas", "Compare other dates")}</button>
               </div>
             </motion.div>
           ) : (
@@ -303,9 +295,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                             onClick={() => setSocios((prev) => prev.filter((_, j) => j !== i))}
                             className="text-sm text-muted hover:text-foreground transition-colors"
                             aria-label={`Quitar ${socioLabel(i)}`}
-                          >
-                            Quitar
-                          </button>
+                          >{L("Quitar", "Remove")}</button>
                         )}
                       </div>
 
@@ -313,13 +303,11 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                         <label
                           htmlFor={`name-${SLOTS[i]}`}
                           className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-                        >
-                          Nombre o apodo (opcional)
-                        </label>
+                        >{L("Nombre o apodo (opcional)", "Name or nickname (optional)")}</label>
                         <input
                           id={`name-${SLOTS[i]}`}
                           type="text"
-                          placeholder={["Ej. Alex", "Ej. Sam", "Ej. Lu", "Ej. Fran", "Ej. Juli"][i]}
+                          placeholder={[L("Ej. Alex", "E.g. Alex"), L("Ej. Sam", "E.g. Sam"), L("Ej. Lu", "E.g. Lu"), L("Ej. Fran", "E.g. Fran"), L("Ej. Juli", "E.g. Juli")][i]}
                           value={socio.name}
                           onChange={(e) => updateSocio(i, { name: e.target.value })}
                           className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
@@ -327,9 +315,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                       </div>
 
                       <div>
-                        <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
-                          Fecha de Nacimiento
-                        </label>
+                        <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">{L("Fecha de Nacimiento", "Date of Birth")}</label>
                         <DateInput value={socio.date} onChange={(date) => updateSocio(i, { date })} />
                       </div>
                     </div>
@@ -344,7 +330,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                       className="inline-flex items-center gap-2 px-5 py-2.5 border border-ink/20 text-sm text-foreground hover:border-ink transition-colors"
                     >
                       <UserPlus className="w-4 h-4" aria-hidden="true" />
-                      Agregar socio ({socios.length} de {MAX_SOCIOS})
+                      {L("Agregar socio (", "Add partner (")}{socios.length} {L(" de ", " of")} {MAX_SOCIOS})
                     </button>
                   </div>
                 )}
@@ -356,43 +342,31 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                     size="lg"
                     disabled={!allValid}
                     className="w-full sm:w-auto min-w-[240px] text-base py-4"
-                  >
-                    Comparar mapas
-                  </Button>
+                  >{L("Comparar mapas", "Compare maps")}</Button>
                 </div>
 
                 <div className="flex items-center justify-center gap-2 text-xs text-muted font-mono pt-4">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Sin registro · 100% calculado en tu navegador</span>
+                  <span>{L("Sin registro · 100% calculado en tu navegador", "No sign-up · 100% calculated in your browser")}</span>
                 </div>
               </form>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="text-sm text-accent font-bold block mb-1 label-caps">
-                    01 · Numerología
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Compara los Números de Camino de Vida y la compatibilidad de propósitos centrales.
-                  </p>
+                  <span className="text-sm text-accent font-bold block mb-1 label-caps">{L("01 · Numerología", "01 · Numerology")}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Compara los Números de Camino de Vida y la compatibilidad de propósitos centrales.", "Compares the Life Path Numbers and how well their core purposes fit.")}</p>
                 </div>
 
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="text-sm text-amber-700 font-bold block mb-1 label-caps">
+                  <span className="text-sm text-amber-700 font-bold block mb-1 label-caps">{L(<>
                     02 · Astrología & Elementos
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Analiza la química entre signos solares y la armonía entre fuego, tierra, aire y agua.
-                  </p>
+                  </>, <>02 · Astrology & Elements</>)}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Analiza la química entre signos solares y la armonía entre fuego, tierra, aire y agua.", "Analyzes the chemistry between sun signs and the harmony between fire, earth, air and water.")}</p>
                 </div>
 
                 <div className="p-4 rounded-lg bg-card border border-ink/5">
-                  <span className="text-sm text-emerald-400 font-bold block mb-1 label-caps">
-                    03 · Zodíaco Chino
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Descubrí tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.
-                  </p>
+                  <span className="text-sm text-emerald-400 font-bold block mb-1 label-caps">{L("03 · Zodíaco Chino", "03 · Chinese Zodiac")}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Descubrí tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.", "Discover affinity triads, secret friends and the traditional points of contrast.")}</p>
                 </div>
               </div>
             </motion.div>

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useEditor, useEditorState, EditorContent, Extension, type Editor } from "@tiptap/react";
@@ -34,12 +35,12 @@ interface Props {
 
 type Marks = { bold: boolean; italic: boolean; highlight: boolean; quote: boolean };
 
-const ACTIONS: { key: keyof Marks; label: string; Icon: typeof Bold; run: (e: Editor) => void }[] = [
-  { key: "bold", label: "Negrita", Icon: Bold, run: (e) => e.chain().focus().toggleBold().run() },
-  { key: "italic", label: "Cursiva", Icon: Italic, run: (e) => e.chain().focus().toggleItalic().run() },
-  { key: "highlight", label: "Resaltar", Icon: Highlighter, run: (e) => e.chain().focus().toggleHighlight().run() },
-  { key: "quote", label: "Cita", Icon: Quote, run: (e) => e.chain().focus().toggleBlockquote().run() },
-];
+const ACTIONS = (L: Pick2): { key: keyof Marks; label: string; Icon: typeof Bold; run: (e: Editor) => void }[] => ([
+  { key: "bold", label: L("Negrita", "Bold"), Icon: Bold, run: (e) => e.chain().focus().toggleBold().run() },
+  { key: "italic", label: L("Cursiva", "Italic"), Icon: Italic, run: (e) => e.chain().focus().toggleItalic().run() },
+  { key: "highlight", label: L("Resaltar", "Highlight"), Icon: Highlighter, run: (e) => e.chain().focus().toggleHighlight().run() },
+  { key: "quote", label: L("Cita", "Quote"), Icon: Quote, run: (e) => e.chain().focus().toggleBlockquote().run() },
+]);
 
 const NONE: Marks = { bold: false, italic: false, highlight: false, quote: false };
 
@@ -56,6 +57,7 @@ const DiaryEditor = forwardRef<DiaryEditorHandle, Props>(function DiaryEditor(
   { id, ariaLabel, initialMarkdown = "", placeholder = "", onChange, onSubmit },
   ref,
 ) {
+  const L = useL();
   // Los callbacks cambian en cada render; las extensiones los leen por ref.
   const onSubmitRef = useRef(onSubmit);
   const onChangeRef = useRef(onChange);
@@ -154,8 +156,8 @@ const DiaryEditor = forwardRef<DiaryEditorHandle, Props>(function DiaryEditor(
           className="z-30"
         >
           {/* role y nombre en un div propio: el menú no siempre reenvía atributos */}
-          <div role="toolbar" aria-label="Formato de la selección" className="flex items-stretch bg-ink shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-            {ACTIONS.map(({ key, label, Icon, run }) => (
+          <div role="toolbar" aria-label={L("Formato de la selección", "Selection formatting")} className="flex items-stretch bg-ink shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+            {ACTIONS(L).map(({ key, label, Icon, run }) => (
               <button
                 key={key}
                 type="button"

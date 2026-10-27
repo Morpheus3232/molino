@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 /* eslint-disable react-hooks/preserve-manual-memoization */
 
 import { useEffect, useMemo, useState } from "react";
@@ -7,17 +8,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCalendarDayContent } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 
-const DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-const MONTH_NAMES = [
-  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
-];
+const DAY_NAMES = (L: Pick2) => ([L("Dom", "Sun"), L("Lun", "Mon"), L("Mar", "Tue"), L("Mié", "Wed"), L("Jue", "Thu"), L("Vie", "Fri"), L("Sáb", "Sat")]);
+const MONTH_NAMES = (L: Pick2) => ([
+  L("Enero", "January"), L("Febrero", "February"), L("Marzo", "March"), L("Abril", "April"), L("Mayo", "May"), L("Junio", "June"),
+  L("Julio", "July"), L("Agosto", "August"), L("Septiembre", "September"), L("Octubre", "October"), L("Noviembre", "November"), L("Diciembre", "December"),
+]);
 
 function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
 export default function CalendarioClient() {
+  const L = useL();
   // La fecha de hoy recién en el navegador: la página se genera estática y,
   // con new Date() en el render, el HTML quedaba con el día del build (y la
   // hidratación fallaba al día siguiente).
@@ -90,18 +92,18 @@ export default function CalendarioClient() {
         <div className="flex items-end justify-between gap-4 pb-6 border-b-2 border-ink">
           <div>
             <h2 className="font-display font-normal text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight text-foreground">
-              {MONTH_NAMES[month]} {year}
+              {MONTH_NAMES(L)[month]} {year}
             </h2>
-            <p className="mt-2 text-base text-muted">
+            <p className="mt-2 text-base text-muted">{L(<>
               {daysInMonth} días · {monthStats.masters.length}{" "}
               {monthStats.masters.length === 1 ? "día especial" : "días especiales"} (maestros y 28)
-            </p>
+            </>, <>{daysInMonth} days · {monthStats.masters.length}{" "}{monthStats.masters.length === 1 ? "special day" : "special days"} (masters and 28)</>)}</p>
           </div>
           <div className="flex items-center gap-px bg-ink/15 border border-ink/15 shrink-0">
             <button
               type="button"
               onClick={() => goToMonth(-1)}
-              aria-label="Mes anterior"
+              aria-label={L("Mes anterior", "Previous month")}
               className="w-12 h-12 flex items-center justify-center bg-background text-foreground hover:bg-ink hover:text-paper transition-colors"
             >
               <ChevronLeft className="w-5 h-5" aria-hidden="true" />
@@ -109,7 +111,7 @@ export default function CalendarioClient() {
             <button
               type="button"
               onClick={() => goToMonth(1)}
-              aria-label="Mes siguiente"
+              aria-label={L("Mes siguiente", "Next month")}
               className="w-12 h-12 flex items-center justify-center bg-background text-foreground hover:bg-ink hover:text-paper transition-colors"
             >
               <ChevronRight className="w-5 h-5" aria-hidden="true" />
@@ -119,7 +121,7 @@ export default function CalendarioClient() {
 
         {/* La grilla del mes */}
         <div className="mt-6 grid grid-cols-7">
-          {DAY_NAMES.map((d) => (
+          {DAY_NAMES(L).map((d) => (
             <div key={d} className="pb-3 text-center text-sm text-muted">
               {d}
             </div>
@@ -140,7 +142,7 @@ export default function CalendarioClient() {
                 type="button"
                 onClick={() => setSelected(date)}
                 aria-pressed={isSelected}
-                aria-label={`${day} de ${MONTH_NAMES[month]}: número ${content.number}${isToday ? ", hoy" : ""}`}
+                aria-label={`${day} de ${MONTH_NAMES(L)[month]}: número ${content.number}${isToday ? ", hoy" : ""}`}
                 className={`relative aspect-square sm:aspect-auto sm:h-24 flex flex-col items-center justify-center transition-colors ${
                   isSelected ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt text-foreground"
                 }`}
@@ -159,15 +161,11 @@ export default function CalendarioClient() {
             );
           })}
         </div>
-        <p className="mt-3 text-sm text-muted">
-          El punto rojo marca hoy. Los maestros (11, 22, 33) y el 28 no se reducen.
-        </p>
+        <p className="mt-3 text-sm text-muted">{L("El punto rojo marca hoy. Los maestros (11, 22, 33) y el 28 no se reducen.", "The red dot marks today. The master numbers (11, 22, 33) and 28 are not reduced.")}</p>
 
         {/* Para qué sirve cada día del mes: el número, qué propone y en qué fechas cae */}
-        <h3 className="mt-14 section-title text-foreground">Qué día conviene para qué</h3>
-        <p className="mt-2 text-lg text-muted max-w-2xl">
-          Los días del mes agrupados por su número. Tocá una fecha para ver el detalle.
-        </p>
+        <h3 className="mt-14 section-title text-foreground">{L("Qué día conviene para qué", "Which day suits what")}</h3>
+        <p className="mt-2 text-lg text-muted max-w-2xl">{L("Los días del mes agrupados por su número. Tocá una fecha para ver el detalle.", "The days of the month grouped by their number. Tap a date to see the detail.")}</p>
         <ul className="mt-6 border-t-2 border-ink">
           {monthStats.groups.map((g) => {
             const hasToday = today.getFullYear() === year && today.getMonth() === month && g.days.includes(today.getDate());
@@ -178,7 +176,7 @@ export default function CalendarioClient() {
                   <p className="font-display text-xl sm:text-2xl leading-tight text-foreground">
                     {g.title}
                     {g.special && <span className="ml-2 text-base text-muted">{g.number === 28 ? "abundancia" : "maestro"}</span>}
-                    {hasToday && <span className="ml-2 text-base text-vermilion">· hoy</span>}
+                    {hasToday && <span className="ml-2 text-base text-vermilion">{L("· hoy", "· today")}</span>}
                   </p>
                   <p className="mt-0.5 text-base text-muted leading-snug">{g.purpose}</p>
                 </div>
@@ -199,7 +197,7 @@ export default function CalendarioClient() {
                           }
                         }}
                         aria-pressed={isSel}
-                        aria-label={`${day} de ${MONTH_NAMES[month]}`}
+                        aria-label={`${day} de ${MONTH_NAMES(L)[month]}`}
                         className={`relative w-11 h-11 text-base tabular-nums border transition-colors ${
                           isSel ? "bg-ink text-paper border-ink" : "bg-background text-foreground border-ink/25 hover:border-ink"
                         }`}
@@ -230,19 +228,19 @@ export default function CalendarioClient() {
               aria-live="polite"
             >
               <p className="text-sm text-muted label-caps">
-                {selected.getDate()} de {MONTH_NAMES[selected.getMonth()].toLowerCase()} de {selected.getFullYear()}
+                {selected.getDate()} de {MONTH_NAMES(L)[selected.getMonth()].toLowerCase()} de {selected.getFullYear()}
               </p>
               <p className="mt-4 font-display text-[7rem] leading-[0.8] text-foreground tabular-nums">{selectedContent.number}</p>
               <h3 className="mt-4 font-display text-4xl leading-tight text-foreground">{selectedContent.title}</h3>
               {(selectedContent.master || selectedContent.abundance) && (
                 <p className="mt-1 text-base text-muted">
-                  {selectedContent.master ? "Número maestro" : "Número de la abundancia"}
+                  {selectedContent.master ? L("Número maestro", "Master number") : L("Número de la abundancia", "Number of abundance")}
                 </p>
               )}
 
               <dl className="mt-6 border-t border-ink/15 divide-y divide-ink/15">
                 <div className="py-4">
-                  <dt className="text-sm text-muted">Propósito del día</dt>
+                  <dt className="text-sm text-muted">{L("Propósito del día", "Purpose of the day")}</dt>
                   <dd className="mt-1 text-lg text-foreground">{selectedContent.purpose}</dd>
                 </div>
                 <div className="py-4">
@@ -250,7 +248,7 @@ export default function CalendarioClient() {
                 </div>
                 {selectedContent.recommendations && selectedContent.recommendations.length > 0 && (
                   <div className="py-4">
-                    <dt className="text-sm text-muted">Recomendado para ese día</dt>
+                    <dt className="text-sm text-muted">{L("Recomendado para ese día", "Recommended for that day")}</dt>
                     <dd>
                       <ul className="mt-2 space-y-2">
                         {selectedContent.recommendations.map((rec) => (

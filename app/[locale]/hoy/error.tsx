@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -11,6 +12,7 @@ export default function HoyError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const L = useL();
   useEffect(() => {
     console.error("[Molino Hoy] Error:", error);
   }, [error]);
@@ -22,13 +24,9 @@ export default function HoyError({
           <Sun className="w-7 h-7" />
         </div>
 
-        <h1 className="font-display text-2xl font-bold text-foreground mb-2">
-          No pudimos calcular la energía de hoy
-        </h1>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-2">{L("No pudimos calcular la energía de hoy", "We couldn't calculate today's energy")}</h1>
 
-        <p className="text-sm text-muted leading-relaxed mb-6">
-          Intentá recargar para sintonizar con los ciclos de la fecha actual.
-        </p>
+        <p className="text-sm text-muted leading-relaxed mb-6">{L("Intentá recargar para sintonizar con los ciclos de la fecha actual.", "Try reloading to tune in to the cycles of today's date.")}</p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
@@ -37,14 +35,12 @@ export default function HoyError({
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-gold-foreground text-sm font-bold hover:bg-gold-hover transition-colors label-caps"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            Reintentar
+            {L("Reintentar", "Try again")}
           </button>
           <Link
             href="/"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-ink/5 border border-ink/10 text-foreground text-sm font-semibold hover:bg-ink/10 transition-colors label-caps"
-          >
-            Inicio
-          </Link>
+          >{L("Inicio", "Home")}</Link>
         </div>
       </div>
     </div>

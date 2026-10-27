@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { Link, usePathname, useRouter } from "@/lib/i18n/navigation";
 import { createPortal } from "react-dom";
@@ -50,28 +51,28 @@ interface NavGroup {
 // que es un muro duro ("Creá tu mapa primero", cero contenido), y /evolution
 // por lo mismo — mandar a alguien ahí antes de tener mapa es el dead-end que
 // este header trata de eliminar.
-const NO_PROFILE_LINKS = {
+const NO_PROFILE_LINKS = (L: Pick2) => ({
   atlas: { href: "/atlas", label: "Atlas" },
-  journal: { href: "/journal", label: "Diario" },
-} satisfies Record<string, NavLink>;
+  journal: { href: "/journal", label: L("Diario", "Journal") },
+} satisfies Record<string, NavLink>);
 
 // Mismo nombre de grupo que con perfil, menos ítems: sin mapa, Semana y Año
 // no tienen nada que mostrar.
-const TIME_GROUPS_NO_PROFILE: NavGroup[] = [
+const TIME_GROUPS_NO_PROFILE = (L: Pick2): NavGroup[] => ([
   {
     links: [
-      { href: "/hoy", label: "Hoy" },
-      { href: "/calendario", label: "Mes" },
+      { href: "/hoy", label: L("Hoy", "Today") },
+      { href: "/calendario", label: L("Mes", "Month") },
     ],
   },
-];
+]);
 
 // Con mapa: se saca el prefijo "Mi/Mis" de todo menos del ancla. Con cinco
 // labels arrancando igual, la palabra que diferencia caía siempre segunda y
 // el ojo tenía que leer cada label entero en vez de escanear.
-const PROFILE_LINKS = {
-  journal: { href: "/journal", label: "Diario" },
-} satisfies Record<string, NavLink>;
+const PROFILE_LINKS = (L: Pick2) => ({
+  journal: { href: "/journal", label: L("Diario", "Journal") },
+} satisfies Record<string, NavLink>);
 
 const MODES_LINKS: NavLink[] = [
   { href: "/socios", label: "Modo Socios" },
@@ -120,40 +121,41 @@ const MODES_GROUPS: NavGroup[] = [{ links: MODES_LINKS }];
 
 // Categorías reales de /affinity/[type] — las mismas que generateStaticParams
 // en app/affinity/[type]/page.tsx. No se agrega ninguna que no tenga ruta.
-const AFFINITY_GROUPS: NavGroup[] = [
+const AFFINITY_GROUPS = (L: Pick2): NavGroup[] => ([
   {
-    heading: "Afinidades",
+    heading: L("Afinidades", "Affinities"),
     links: [
-      { href: "/affinity/country", label: "Países" },
-      { href: "/affinity/city", label: "Ciudades" },
-      { href: "/affinity/autos", label: "Marcas de autos" },
-      { href: "/affinity/ropa", label: "Marcas de ropa" },
-      { href: "/affinity/brand", label: "Otras marcas" },
-      { href: "/affinity/university", label: "Universidades" },
-      { href: "/affinity/artist", label: "Famosos" },
-      { href: "/affinity/movie", label: "Películas" },
-      { href: "/affinity/football_player", label: "Futbolistas" },
+      { href: "/affinity/country", label: L("Países", "Countries") },
+      { href: "/affinity/city", label: L("Ciudades", "Cities") },
+      { href: "/affinity/autos", label: L("Marcas de autos", "Car brands") },
+      { href: "/affinity/ropa", label: L("Marcas de ropa", "Clothing brands") },
+      { href: "/affinity/brand", label: L("Otras marcas", "Other brands") },
+      { href: "/affinity/university", label: L("Universidades", "Universities") },
+      { href: "/affinity/artist", label: L("Famosos", "Famous people") },
+      { href: "/affinity/movie", label: L("Películas", "Movies") },
+      { href: "/affinity/football_player", label: L("Futbolistas", "Footballers") },
     ],
   },
-];
+]);
 
 // Mes → /calendario (vista mensual real) y Año → /evolution ("de dónde
 // venís, dónde estás y qué ciclo se abre" — la única ruta real centrada en
 // el arco temporal largo). No existe una ruta /mes ni /año dedicada.
-const TIME_GROUPS: NavGroup[] = [
+const TIME_GROUPS = (L: Pick2): NavGroup[] => ([
   {
     links: [
-      { href: "/hoy", label: "Hoy" },
-      { href: "/semana", label: "Semana" },
-      { href: "/calendario", label: "Mes" },
-      { href: "/evolution", label: "Año" },
+      { href: "/hoy", label: L("Hoy", "Today") },
+      { href: "/semana", label: L("Semana", "Week") },
+      { href: "/calendario", label: L("Mes", "Month") },
+      { href: "/evolution", label: L("Año", "Year") },
     ],
   },
-];
+]);
 
 type MenuId = "explore" | "affinities" | "time" | "knowledge" | "modes" | "project";
 
 export default function UniversityHeader() {
+  const L = useL();
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
@@ -285,7 +287,7 @@ export default function UniversityHeader() {
   // El label anterior de la bóveda era el plural literal del ancla del
   // centro: dos etiquetas casi idénticas a tres ítems de distancia, una para
   // el mapa activo y otra para la bóveda. "Guardados" no compite con ella.
-  const vaultLabel = vaultCount > 0 ? "Guardados" : "Guardar";
+  const vaultLabel = vaultCount > 0 ? L("Guardados", "Saved") : L("Guardar", "Save");
 
   const navButtonClass = (active: boolean) =>
     `px-3 py-1.5 text-sm font-semibold transition-colors rounded-xl whitespace-nowrap label-caps ${
@@ -309,19 +311,19 @@ export default function UniversityHeader() {
         }`}
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 min-h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio — Molino">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label={L("Ir al inicio — Molino", "Go to home — Molino")}>
             <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl group-hover:text-accent transition-colors">
               <Logo className="w-7 h-7" />
             </span>
           </Link>
 
           {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
-          <nav className="hidden lg:flex items-center gap-1.5 min-w-0 overflow-hidden" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center gap-1.5 min-w-0 overflow-hidden" aria-label={L("Navegación principal", "Main navigation")}>
             {!hasProfile ? (
               <>
                 <NavDropdown
                   id="knowledge"
-                  label="Conocimiento"
+                  label={L("Conocimiento", "Knowledge")}
                   groups={KNOWLEDGE_GROUPS_NO_PROFILE}
                   isOpen={openMenu === "knowledge"}
                   isActive={isGroupActive(KNOWLEDGE_GROUPS_NO_PROFILE)}
@@ -329,24 +331,24 @@ export default function UniversityHeader() {
                   isActiveLink={isActive}
                 />
                 <Link
-                  href={NO_PROFILE_LINKS.atlas.href}
-                  className={navButtonClass(isActive(NO_PROFILE_LINKS.atlas.href))}
-                  aria-current={pathname === NO_PROFILE_LINKS.atlas.href ? "page" : undefined}
+                  href={NO_PROFILE_LINKS(L).atlas.href}
+                  className={navButtonClass(isActive(NO_PROFILE_LINKS(L).atlas.href))}
+                  aria-current={pathname === NO_PROFILE_LINKS(L).atlas.href ? "page" : undefined}
                 >
-                  {NO_PROFILE_LINKS.atlas.label}
+                  {NO_PROFILE_LINKS(L).atlas.label}
                 </Link>
                 <NavDropdown
                   id="time"
-                  label="Tiempo"
-                  groups={TIME_GROUPS_NO_PROFILE}
+                  label={L("Tiempo", "Time")}
+                  groups={TIME_GROUPS_NO_PROFILE(L)}
                   isOpen={openMenu === "time"}
-                  isActive={isGroupActive(TIME_GROUPS_NO_PROFILE)}
+                  isActive={isGroupActive(TIME_GROUPS_NO_PROFILE(L))}
                   onToggle={() => toggleMenu("time")}
                   isActiveLink={isActive}
                 />
                 <NavDropdown
                   id="modes"
-                  label="Modos"
+                  label={L("Modos", "Modes")}
                   groups={MODES_GROUPS}
                   isOpen={openMenu === "modes"}
                   isActive={isGroupActive(MODES_GROUPS)}
@@ -355,7 +357,7 @@ export default function UniversityHeader() {
                 />
                 <NavDropdown
                   id="project"
-                  label="Proyecto"
+                  label={L("Proyecto", "Project")}
                   groups={PROJECT_GROUPS}
                   isOpen={openMenu === "project"}
                   isActive={isGroupActive(PROJECT_GROUPS)}
@@ -367,7 +369,7 @@ export default function UniversityHeader() {
               <>
                 <NavDropdown
                   id="knowledge"
-                  label="Conocimiento"
+                  label={L("Conocimiento", "Knowledge")}
                   groups={KNOWLEDGE_GROUPS_WITH_PROFILE}
                   isOpen={openMenu === "knowledge"}
                   isActive={isGroupActive(KNOWLEDGE_GROUPS_WITH_PROFILE)}
@@ -376,25 +378,25 @@ export default function UniversityHeader() {
                 />
                 <NavDropdown
                   id="affinities"
-                  label="Afinidades"
-                  groups={AFFINITY_GROUPS}
+                  label={L("Afinidades", "Affinities")}
+                  groups={AFFINITY_GROUPS(L)}
                   isOpen={openMenu === "affinities"}
-                  isActive={isGroupActive(AFFINITY_GROUPS)}
+                  isActive={isGroupActive(AFFINITY_GROUPS(L))}
                   onToggle={() => toggleMenu("affinities")}
                   isActiveLink={isActive}
                 />
                 <NavDropdown
                   id="time"
-                  label="Tiempo"
-                  groups={TIME_GROUPS}
+                  label={L("Tiempo", "Time")}
+                  groups={TIME_GROUPS(L)}
                   isOpen={openMenu === "time"}
-                  isActive={isGroupActive(TIME_GROUPS)}
+                  isActive={isGroupActive(TIME_GROUPS(L))}
                   onToggle={() => toggleMenu("time")}
                   isActiveLink={isActive}
                 />
                 <NavDropdown
                   id="modes"
-                  label="Modos"
+                  label={L("Modos", "Modes")}
                   groups={MODES_GROUPS}
                   isOpen={openMenu === "modes"}
                   isActive={isGroupActive(MODES_GROUPS)}
@@ -402,11 +404,11 @@ export default function UniversityHeader() {
                   isActiveLink={isActive}
                 />
                 <Link
-                  href={PROFILE_LINKS.journal.href}
-                  className={navButtonClass(isActive(PROFILE_LINKS.journal.href))}
-                  aria-current={pathname === PROFILE_LINKS.journal.href ? "page" : undefined}
+                  href={PROFILE_LINKS(L).journal.href}
+                  className={navButtonClass(isActive(PROFILE_LINKS(L).journal.href))}
+                  aria-current={pathname === PROFILE_LINKS(L).journal.href ? "page" : undefined}
                 >
-                  {PROFILE_LINKS.journal.label}
+                  {PROFILE_LINKS(L).journal.label}
                 </Link>
               </>
             )}
@@ -421,13 +423,11 @@ export default function UniversityHeader() {
               <Link
                 href="/onboarding"
                 className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-semibold whitespace-nowrap rounded-xl bg-vermilion text-paper hover:bg-vermilion-hover transition-opacity label-caps"
-              >
-                Crear mi mapa
-              </Link>
+              >{L("Crear mi mapa", "Create my map")}</Link>
             ) : (
               <div className="hidden lg:flex items-center gap-2">
                 {lecturaHref && (
-                  <>
+                  <>{L(<>
                     <Link
                       href="/profile"
                       className="inline-flex items-center px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
@@ -440,19 +440,19 @@ export default function UniversityHeader() {
                     >
                       Mi Lectura
                     </Link>
-                  </>
+                  </>, <><Link href="/profile" className="inline-flex items-center px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps">My Map</Link><Link href={lecturaHref} className="inline-flex items-center px-3 py-1.5 text-sm font-semibold whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors label-caps">My Reading</Link></>)}</>
                 )}
                 <button
                   type="button"
                   onClick={() => {
                     handleNewProfile();
                   }}
-                  aria-label="Crear nuevo mapa"
-                  title="Crear nuevo mapa"
+                  aria-label={L("Crear nuevo mapa", "Create new map")}
+                  title={L("Crear nuevo mapa", "Create new map")}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-sm font-semibold whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors label-caps"
                 >
                   <Plus className="w-3.5 h-3.5" aria-hidden="true" focusable="false" />
-                  <span className="hidden 2xl:inline">Crear nuevo mapa</span>
+                  <span className="hidden 2xl:inline">{L("Crear nuevo mapa", "Create new map")}</span>
                 </button>
                 {/* compact: solo ícono por debajo de 1536px — con el header a escala
                     de escritorio, los textos completos tapaban los menús. */}
@@ -465,7 +465,7 @@ export default function UniversityHeader() {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-label={menuOpen ? L("Cerrar menú", "Close menu") : L("Abrir menú", "Open menu")}
             >
               {menuOpen ? <X aria-hidden="true" focusable="false" className="w-5 h-5" /> : <Menu aria-hidden="true" focusable="false" className="w-5 h-5" />}
             </button>
@@ -485,7 +485,7 @@ export default function UniversityHeader() {
               transition={{ duration: 0.2 }}
               className="lg:hidden overflow-hidden border-t border-ink/10 bg-background"
             >
-              <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
+              <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label={L("Menú móvil", "Mobile menu")}>
                 {!hasProfile ? (
                   <>
                     {/* La acción va primera, no enterrada al fondo del sheet:
@@ -494,24 +494,22 @@ export default function UniversityHeader() {
                       href="/onboarding"
                       className="flex items-center justify-center min-h-[44px] mb-3 px-4 py-2.5 text-sm font-semibold bg-vermilion text-paper hover:bg-vermilion-hover transition-opacity text-center rounded-xl label-caps"
                       onClick={() => setMenuOpen(false)}
-                    >
-                      CREAR MI MAPA
-                    </Link>
-                    <MobileGroups groups={KNOWLEDGE_GROUPS_NO_PROFILE} heading="Conocimiento" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileLink link={NO_PROFILE_LINKS.atlas} isActive={isActive} onClick={() => setMenuOpen(false)} />
-                    <MobileGroups groups={TIME_GROUPS_NO_PROFILE} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={PROJECT_GROUPS} heading="Proyecto" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileLink link={NO_PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    >{L("CREAR MI MAPA", "CREATE MY MAP")}</Link>
+                    <MobileGroups groups={KNOWLEDGE_GROUPS_NO_PROFILE} heading={L("Conocimiento", "Knowledge")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={NO_PROFILE_LINKS(L).atlas} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileGroups groups={TIME_GROUPS_NO_PROFILE(L)} heading={L("Tiempo", "Time")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={MODES_GROUPS} heading={L("Modos", "Modes")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={PROJECT_GROUPS} heading={L("Proyecto", "Project")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={NO_PROFILE_LINKS(L).journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
                   </>
                 ) : (
                   <>
-                    <MobileGroups groups={KNOWLEDGE_GROUPS_WITH_PROFILE} heading="Conocimiento" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={AFFINITY_GROUPS} heading="Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={TIME_GROUPS} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={PROJECT_GROUPS} heading="Proyecto" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileLink link={PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileGroups groups={KNOWLEDGE_GROUPS_WITH_PROFILE} heading={L("Conocimiento", "Knowledge")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={AFFINITY_GROUPS(L)} heading={L("Afinidades", "Affinities")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={TIME_GROUPS(L)} heading={L("Tiempo", "Time")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={MODES_GROUPS} heading={L("Modos", "Modes")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={PROJECT_GROUPS} heading={L("Proyecto", "Project")} isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={PROFILE_LINKS(L).journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
 
                     <div className="border-t border-ink/10 my-2" />
 
@@ -520,18 +518,14 @@ export default function UniversityHeader() {
                         href="/profile"
                         className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-foreground hover:text-accent"
                         onClick={() => setMenuOpen(false)}
-                      >
-                        Mi Mapa
-                      </Link>
+                      >{L("Mi Mapa", "My Map")}</Link>
                     )}
                     {lecturaHref && (
                       <Link
                         href={lecturaHref}
                         className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-accent/80 hover:text-accent"
                         onClick={() => setMenuOpen(false)}
-                      >
-                        Mi Lectura
-                      </Link>
+                      >{L("Mi Lectura", "My Reading")}</Link>
                     )}
                     <div className="px-3 py-1.5">
                       <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
@@ -551,7 +545,7 @@ export default function UniversityHeader() {
                       className="flex items-center gap-2 min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
                     >
                       <Plus className="w-4 h-4" aria-hidden="true" focusable="false" />
-                      Crear nuevo mapa
+                      {L("Crear nuevo mapa", "Create new map")}
                     </button>
                   </>
                 )}
@@ -572,19 +566,13 @@ export default function UniversityHeader() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <h3 id="confirm-title" className="font-heading text-lg font-bold text-foreground mb-2">
-                ¿Crear nuevo mapa?
-              </h3>
-              <p className="text-xs text-muted mb-6 leading-relaxed">
+              <h3 id="confirm-title" className="font-heading text-lg font-bold text-foreground mb-2">{L("¿Crear nuevo mapa?", "Create a new map?")}</h3>
+              <p className="text-xs text-muted mb-6 leading-relaxed">{L(<>
                 Se limpiará la fecha activa. Si querés conservarla, guardala primero desde &laquo;Guardar&raquo;.
-              </p>
+              </>, <>The active date will be cleared. If you want to keep it, save it first from &laquo;Save&raquo;.</>)}</p>
               <div className="flex gap-3">
-                <Button variant="ghost" size="sm" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
-                  Cancelar
-                </Button>
-                <Button variant="primary" size="sm" onClick={confirmNewProfile} className="flex-1">
-                  Confirmar
-                </Button>
+                <Button variant="ghost" size="sm" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">{L("Cancelar", "Cancel")}</Button>
+                <Button variant="primary" size="sm" onClick={confirmNewProfile} className="flex-1">{L("Confirmar", "Confirm")}</Button>
               </div>
             </motion.div>
           </div>

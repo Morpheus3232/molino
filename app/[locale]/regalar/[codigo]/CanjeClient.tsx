@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -15,6 +16,7 @@ const RETRY_ATTEMPTS = 5;
 const RETRY_DELAY_MS = 3000;
 
 export default function CanjeClient({ codigo }: { codigo: string }) {
+  const L = useL();
   const router = useRouter();
   const [checkState, setCheckState] = useState<CheckState>("checking");
   const [name, setName] = useState("");
@@ -71,7 +73,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
       savePremiumTokenClient(data.premiumToken);
       const profile = calculateUserProfile(name || "", birthDate);
       saveProfileToStorage(profile);
-      toast.success("¡Regalo canjeado! Redirigiendo a tu mapa...");
+      toast.success(L("¡Regalo canjeado! Redirigiendo a tu mapa...", "Gift redeemed! Taking you to your map..."));
       router.push("/profile");
     } catch {
       toast.error("No pudimos canjear tu regalo. Intentá de nuevo.");
@@ -83,7 +85,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
     return (
       <main id="main-content" className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
         <Loader2 className="w-6 h-6 text-accent animate-spin" />
-        <p className="text-xs font-mono text-muted">Verificando tu regalo…</p>
+        <p className="text-xs font-mono text-muted">{L("Verificando tu regalo…", "Checking your gift…")}</p>
       </main>
     );
   }
@@ -92,11 +94,9 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
     return (
       <main id="main-content" className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
         <p className="text-sm text-foreground">
-          {checkState === "already_redeemed" ? "Este código ya fue usado." : "Este código no existe o ya expiró."}
+          {checkState === "already_redeemed" ? L("Este código ya fue usado.", "This code has already been used.") : L("Este código no existe o ya expiró.", "This code doesn't exist or has expired.")}
         </p>
-        <Link href="/premium" className="text-xs font-mono text-accent hover:underline">
-          Ver planes en /premium →
-        </Link>
+        <Link href="/premium" className="text-xs font-mono text-accent hover:underline">{L("Ver planes en /premium →", "See plans at /premium →")}</Link>
       </main>
     );
   }
@@ -106,21 +106,15 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="page-eyebrow mb-4">
           <Gift className="w-3.5 h-3.5 text-accent" />
-          <span className="text-sm text-accent font-bold label-caps">Regalo de Molino</span>
+          <span className="text-sm text-accent font-bold label-caps">{L("Regalo de Molino", "A gift from Molino")}</span>
         </span>
 
-        <h1 className="page-title text-foreground">
-          ¡Te regalaron un mapa!
-        </h1>
-        <p className="text-sm text-muted mt-3 leading-relaxed">
-          Un mapa personal completo — numerología, astrología y zodíaco chino, en una sola lectura.
-        </p>
+        <h1 className="page-title text-foreground">{L("¡Te regalaron un mapa!", "Someone gave you a map!")}</h1>
+        <p className="text-sm text-muted mt-3 leading-relaxed">{L("Un mapa personal completo — numerología, astrología y zodíaco chino, en una sola lectura.", "A complete personal map — numerology, astrology and the Chinese zodiac, in a single reading.")}</p>
 
         <form onSubmit={handleRedeem} className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left space-y-4">
           <div>
-            <label htmlFor="gift-birthdate" className="block text-sm text-muted mb-1.5 font-semibold label-caps">
-              Tu fecha de nacimiento
-            </label>
+            <label htmlFor="gift-birthdate" className="block text-sm text-muted mb-1.5 font-semibold label-caps">{L("Tu fecha de nacimiento", "Your date of birth")}</label>
             <input
               id="gift-birthdate"
               type="date"
@@ -131,9 +125,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
             />
           </div>
           <div>
-            <label htmlFor="gift-name" className="block text-sm text-muted mb-1.5 font-semibold label-caps">
-              Tu nombre (opcional)
-            </label>
+            <label htmlFor="gift-name" className="block text-sm text-muted mb-1.5 font-semibold label-caps">{L("Tu nombre (opcional)", "Your name (optional)")}</label>
             <input
               id="gift-name"
               type="text"
@@ -144,13 +136,13 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
           </div>
           <Button type="submit" variant="accent" size="lg" fullWidth loading={redeeming}>
             <Gift className="w-4 h-4" />
-            Canjear mi regalo
+            {L("Canjear mi regalo", "Redeem my gift")}
           </Button>
         </form>
 
         <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-muted font-mono">
           <ShieldCheck className="w-3.5 h-3.5" />
-          Tu fecha se usa solo para calcular tu mapa — nunca se guarda ni se comparte.
+          {L("Tu fecha se usa solo para calcular tu mapa — nunca se guarda ni se comparte.", "Your date is used only to calculate your map — it's never stored or shared.")}
         </p>
       </div>
     </main>

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -9,17 +10,17 @@ import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
 
-const EXPLORE_COPY: Record<string, string> = {
-  autos: "Explorar marcas de autos que comparten tu signo.",
-  ropa: "Explorar marcas de ropa que comparten tu signo.",
-  brand: "Explorar otras marcas que comparten tu signo.",
+const EXPLORE_COPY = (L: Pick2): Record<string, string> => ({
+  autos: L("Explorar marcas de autos que comparten tu signo.", "Explore car brands that share your sign."),
+  ropa: L("Explorar marcas de ropa que comparten tu signo.", "Explore clothing brands that share your sign."),
+  brand: L("Explorar otras marcas que comparten tu signo.", "Explore other brands that share your sign."),
   country: "Explorar países que comparten tu signo.",
   city: "Explorar ciudades que comparten tu signo.",
-  university: "Explorar universidades que comparten tu signo.",
-  movie: "Explorar películas que comparten tu signo.",
-  artist: "Explorar famosos que comparten tu signo.",
-  football_player: "Explorar futbolistas que comparten tu signo.",
-};
+  university: L("Explorar universidades que comparten tu signo.", "Explore universities that share your sign."),
+  movie: L("Explorar películas que comparten tu signo.", "Explore movies that share your sign."),
+  artist: L("Explorar famosos que comparten tu signo.", "Explore famous people who share your sign."),
+  football_player: L("Explorar futbolistas que comparten tu signo.", "Explore footballers who share your sign."),
+});
 
 const TYPE_ICONS: Record<string, LucideIcon> = {
   autos: Car,
@@ -45,12 +46,13 @@ interface AffinityClientProps {
 }
 
 export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
   useEffect(() => {
     if (mounted && !loading && !profile) {
-      toast("Creá tu perfil primero para ver tus afinidades");
+      toast(L("Creá tu perfil primero para ver tus afinidades", "Create your profile first to see your affinities"));
       router.push("/onboarding");
     }
   }, [mounted, loading, profile, router]);
@@ -69,9 +71,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
             exit="exit"
           >
             <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Preparando tu afinidad...">
-                Preparando tu afinidad...
-              </p>
+              <p className="sr-only" role="status" aria-label="Preparando tu afinidad...">{L("Preparando tu afinidad...", "Preparing your affinity...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
                 <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -96,34 +96,26 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-                <h1 className="page-title text-foreground max-w-3xl">
-                  Lo que resuena con tu mapa
-                </h1>
-                <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
-                  Cómo aparecen tus patrones en países, ciudades y marcas de tu mundo.
-                </p>
+                <h1 className="page-title text-foreground max-w-3xl">{L("Lo que resuena con tu mapa", "What resonates with your map")}</h1>
+                <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">{L("Cómo aparecen tus patrones en países, ciudades y marcas de tu mundo.", "How your patterns show up in the countries, cities and brands of your world.")}</p>
                 {profile && (
-                  <p className="text-sm text-muted mt-3">
+                  <p className="text-sm text-muted mt-3">{L(<>
                     Tu signo: {profile.chineseZodiac}
-                  </p>
+                  </>, <>Your sign: {profile.chineseZodiac}</>)}</p>
                 )}
               </motion.section>
 
               {/* Contexto editorial — qué es y qué no es la resonancia */}
               <motion.section {...fadeUp} className="mb-12 border border-ink/10 p-6">
-                <p className="text-sm text-foreground leading-relaxed max-w-2xl">
-                  Cada entidad tiene un signo según su fecha de origen, y se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos (三合 San He), tu enemigo (六冲 Liu Chong) o el resto del ciclo.
-                </p>
-                <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">
-                  No es una predicción ni un puntaje: es una casilla del ciclo de doce. El enemigo se lee como lo que conviene evitar, no como una condena.
-                </p>
+                <p className="text-sm text-foreground leading-relaxed max-w-2xl">{L("Cada entidad tiene un signo según su fecha de origen, y se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos (三合 San He), tu enemigo (六冲 Liu Chong) o el resto del ciclo.", "Each entity has a sign based on its date of origin, and it's compared sign to sign with yours: your own sign, your two friends (三合 San He), your enemy (六冲 Liu Chong) or the rest of the cycle.")}</p>
+                <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">{L("No es una predicción ni un puntaje: es una casilla del ciclo de doce. El enemigo se lee como lo que conviene evitar, no como una condena.", "It isn't a prediction or a score: it's a slot in the cycle of twelve. The enemy is read as what's best avoided, not as a sentence.")}</p>
               </motion.section>
 
               {/* Category grid */}
               <section>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
-                  <h2 className="text-sm text-muted font-medium label-caps">Explorar por categoría</h2>
+                  <h2 className="text-sm text-muted font-medium label-caps">{L("Explorar por categoría", "Explore by category")}</h2>
                 </div>
                 <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableTypes.map((type, i) => {
@@ -140,7 +132,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                         <Icon className="w-7 h-7 mb-3 text-accent" strokeWidth={1.5} aria-hidden="true" />
                         <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                         <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
-                        <p className="text-xs text-accent font-medium mt-4 pt-3">{EXPLORE_COPY[type]}</p>
+                        <p className="text-xs text-accent font-medium mt-4 pt-3">{EXPLORE_COPY(L)[type]}</p>
                       </motion.button>
                     );
                   })}

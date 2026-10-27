@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -14,16 +15,16 @@ import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import EntityVisual from "@/components/ui/EntityVisual";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
-const CATEGORY_LABELS: Record<string, string> = {
+const CATEGORY_LABELS = (L: Pick2): Record<string, string> => ({
   country: "Países",
   city: "Ciudades",
-  autos: "Marcas de autos",
-  ropa: "Marcas de ropa",
-  brand: "Otras marcas",
-  university: "Universidades",
-  artist: "Famosos",
-  movie: "Películas",
-};
+  autos: L("Marcas de autos", "Car brands"),
+  ropa: L("Marcas de ropa", "Clothing brands"),
+  brand: L("Otras marcas", "Other brands"),
+  university: L("Universidades", "Universities"),
+  artist: L("Famosos", "Famous people"),
+  movie: L("Películas", "Movies"),
+});
 
 interface AnimalCategoryListingProps {
   animal: string;
@@ -32,9 +33,10 @@ interface AnimalCategoryListingProps {
 }
 
 export default function AnimalCategoryListing({ animal, category, entities }: AnimalCategoryListingProps) {
+  const L = useL();
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
-  const catLabel = CATEGORY_LABELS[category] ?? category;
+  const catLabel = CATEGORY_LABELS(L)[category] ?? category;
 
   const profile = useMemo(() => {
     try { return getAnimalProfile(animal as Animal); } catch { return null; }
@@ -76,12 +78,12 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
             <ZodiacAnimalIcon animal={animal} size={28} className="text-accent/40 shrink-0" />
           </div>
 
-          <p className="text-sm text-muted mt-3">
+          <p className="text-sm text-muted mt-3">{L(<>
             {entities.length} {entities.length === 1 ? "entidad" : "entidades"} con animal {animal} — priorizando tu país.
-          </p>
+          </>, <>{entities.length} {entities.length === 1 ? "entity" : "entities"} with the {animal} animal — your country first.</>)}</p>
         </motion.header>
 
-        <section aria-label={`${catLabel} de ${animal}`} className="relative">
+        <section aria-label={L(`${catLabel} de ${animal}`, `${catLabel} of ${animal}`)} className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/15 hidden sm:block" aria-hidden="true" />
 
           <div className="sm:pl-10 space-y-2">
@@ -122,13 +124,13 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
 
         {sorted.length === 0 && (
           <motion.div {...fadeUpDelayed(0.1)} className="text-center py-16">
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted">{L(<>
               No hay {catLabel.toLowerCase()} registradas para {animal} en este momento.
-            </p>
+            </>, <>There are no {catLabel.toLowerCase()} recorded for {animal} right now.</>)}</p>
           </motion.div>
         )}
 
-        <div className="mt-16 pt-12 border-t border-ink/10">
+        <div className="mt-16 pt-12 border-t border-ink/10">{L(<>
           <Link
             href={`/atlas/explorar/${animal}`}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"
@@ -136,7 +138,7 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
             <span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span>
             <span>Volver a {animal}</span>
           </Link>
-        </div>
+        </>, <><Link href={`/atlas/explorar/${animal}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"><span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span><span>Back to {animal}</span></Link></>)}</div>
       </div>
     </main>
   );

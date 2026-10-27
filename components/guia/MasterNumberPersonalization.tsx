@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
@@ -16,6 +17,7 @@ import {
  * cliente.
  */
 export default function MasterNumberPersonalization() {
+  const L = useL();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
   if (!mounted || loading || !profile) return null;
@@ -25,9 +27,7 @@ export default function MasterNumberPersonalization() {
 
   return (
     <div className="mb-14 p-6 sm:p-8 border border-ink/10 bg-card">
-      <p className="text-sm text-accent font-medium mb-4 label-caps">
-        Tu mapa
-      </p>
+      <p className="text-sm text-accent font-medium mb-4 label-caps">{L("Tu mapa", "Your map")}</p>
       <div className="space-y-5">
         {hits.map((hit) => (
           <div key={hit.position}>
@@ -43,9 +43,7 @@ export default function MasterNumberPersonalization() {
       <Link
         href="/profile"
         className="mt-6 inline-flex items-center gap-2 text-sm text-accent font-medium hover:text-accent/80 transition-colors label-caps"
-      >
-        Ver mi interpretación completa →
-      </Link>
+      >{L("Ver mi interpretación completa →", "See my full interpretation →")}</Link>
     </div>
   );
 }

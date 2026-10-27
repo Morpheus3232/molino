@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 import { Search, X } from "lucide-react";
@@ -22,6 +23,7 @@ export default function SearchInput({
   className = "",
   ...props
 }: SearchInputProps) {
+  const L = useL();
   return (
     <div className={`relative ${className}`}>
       <Search
@@ -41,7 +43,7 @@ export default function SearchInput({
         <button
           type="button"
           onClick={() => onValueChange("")}
-          aria-label={`Limpiar ${label.toLowerCase()}`}
+          aria-label={L(`Limpiar ${label.toLowerCase()}`, `Clear ${label.toLowerCase()}`)}
           className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-7 h-7 rounded-sm text-muted transition-colors hover:text-foreground hover:bg-ink/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <X className="w-4 h-4" aria-hidden="true" />

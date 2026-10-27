@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 /**
  * El cuadrado mágico Lo Shu con el lugar del número marcado. Cada fila,
  * columna y diagonal suma 15; los números maestros (11, 22, 33) ocupan el
@@ -23,6 +24,7 @@ export function loShuPlace(digit: number) {
 }
 
 export default function LoShuFigure({ number, className = "" }: { number: number; className?: string }) {
+  const L = useL();
   const digit = number > 9 ? Number(String(number)[0]) : number;
   const master = number > 9;
   return (
@@ -30,7 +32,7 @@ export default function LoShuFigure({ number, className = "" }: { number: number
       <div
         className="grid grid-cols-3 border-l border-t border-ink/30 w-full max-w-[26rem] mx-auto"
         role="img"
-        aria-label={`Cuadrado Lo Shu con el ${digit} marcado${master ? `, que en el ${number} aparece dos veces` : ""}.`}
+        aria-label={L(`Cuadrado Lo Shu con el ${digit} marcado${master ? `, que en el ${number} aparece dos veces` : ""}.`, `Lo Shu square with ${digit} marked${master ? `, which appears twice in ${number}` : ""}.`)}
       >
         {GRID.flat().map((d) => {
           const on = d === digit;
@@ -45,7 +47,7 @@ export default function LoShuFigure({ number, className = "" }: { number: number
           );
         })}
       </div>
-      <figcaption className="mt-3 text-sm text-muted text-center">El cuadrado Lo Shu: cada fila, columna y diagonal suma 15.</figcaption>
+      <figcaption className="mt-3 text-sm text-muted text-center">{L("El cuadrado Lo Shu: cada fila, columna y diagonal suma 15.", "The Lo Shu square: every row, column and diagonal adds up to 15.")}</figcaption>
     </figure>
   );
 }

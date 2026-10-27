@@ -1,12 +1,12 @@
 import PrivacidadContent from "./PrivacidadContent";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Política de Privacidad",
-  description: "Política de privacidad de Molino. Cómo recopilamos, usamos y protegemos tu información.",
+export const generateMetadata = metadataFor({
+  title: ["Política de Privacidad", "Privacy Policy"],
+  description: ["Política de privacidad de Molino. Cómo recopilamos, usamos y protegemos tu información.", "Molino's privacy policy. How we collect, use and protect your information."],
   path: "/privacidad",
-  ogTitle: "Política de Privacidad",
-  ogDescription: "Política de privacidad de Molino.",
+  ogTitle: ["Política de Privacidad", "Privacy Policy"],
+  ogDescription: ["Política de privacidad de Molino.", "Molino's privacy policy."],
   image: "/opengraph-image",
 });
 

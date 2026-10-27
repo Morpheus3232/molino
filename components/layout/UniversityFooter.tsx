@@ -1,3 +1,5 @@
+import { type Pick2 } from "@/lib/i18n/useL";
+import { getL } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
@@ -7,57 +9,58 @@ import { getMemberCount } from "@/lib/metrics";
 // acá. Cuando "Explorar" salió del header, esta columna pasó a ser su único
 // hogar en desktop — cualquier ruta que se saque del header tiene que
 // aparecer en alguna de estas cuatro columnas o queda sin puerta de entrada.
-const FOOTER_COLUMNS = [
+const FOOTER_COLUMNS = (L: Pick2) => ([
   {
-    title: "Mi Molino",
+    title: L("Mi Molino", "My Molino"),
     links: [
-      { href: "/profile", label: "Mi Mapa" },
-      { href: "/lectura", label: "Mi Lectura" },
-      { href: "/pareja", label: "Modo Pareja" },
+      { href: "/profile", label: L("Mi Mapa", "My Map") },
+      { href: "/lectura", label: L("Mi Lectura", "My Reading") },
+      { href: "/pareja", label: L("Modo Pareja", "Couple Mode") },
       { href: "/premium", label: "Premium" },
-      { href: "/onboarding", label: "Crear mi mapa" },
+      { href: "/onboarding", label: L("Crear mi mapa", "Create my map") },
     ],
   },
   {
-    title: "Conocer y explorar",
+    title: L("Conocer y explorar", "Learn and explore"),
     links: [
       { href: "/conocimiento/numerologia", label: "Numerología" },
       { href: "/conocimiento/astrologia", label: "Astrología" },
-      { href: "/conocimiento/zodiaco-chino", label: "Zodíaco chino" },
+      { href: "/conocimiento/zodiaco-chino", label: L("Zodíaco chino", "Chinese zodiac") },
       { href: "/blog", label: "Blog" },
-      { href: "/biblioteca", label: "Biblioteca" },
-      { href: "/academy", label: "Academia" },
-      { href: "/affinity", label: "Afinidades" },
+      { href: "/biblioteca", label: L("Biblioteca", "Library") },
+      { href: "/academy", label: L("Academia", "Academy") },
+      { href: "/affinity", label: L("Afinidades", "Affinities") },
       { href: "/atlas", label: "Atlas" },
-      { href: "/calendario", label: "Calendario" },
-      { href: "/journal", label: "Diario" },
+      { href: "/calendario", label: L("Calendario", "Calendar") },
+      { href: "/journal", label: L("Diario", "Journal") },
     ],
   },
   {
-    title: "Proyecto",
+    title: L("Proyecto", "Project"),
     links: [
-      { href: "/filosofia", label: "Filosofía" },
-      { href: "/metodos-y-fuentes", label: "Métodos y fuentes" },
+      { href: "/filosofia", label: L("Filosofía", "Philosophy") },
+      { href: "/metodos-y-fuentes", label: L("Métodos y fuentes", "Methods and sources") },
       { href: "/changelog", label: "Changelog" },
       { href: "/docs", label: "API / Docs" },
-      { href: "/nosotros", label: "Nosotros" },
+      { href: "/nosotros", label: L("Nosotros", "About us") },
     ],
   },
   {
-    title: "Más",
+    title: L("Más", "More"),
     links: [
-      { href: "/regalar", label: "Regalar un mapa" },
-      { href: "/socios", label: "Modo Socios" },
-      { href: "/profesionales", label: "Para profesionales" },
-      { href: "/privacidad", label: "Privacidad" },
-      { href: "/terminos", label: "Términos" },
+      { href: "/regalar", label: L("Regalar un mapa", "Gift a map") },
+      { href: "/socios", label: L("Modo Socios", "Partners Mode") },
+      { href: "/profesionales", label: L("Para profesionales", "For professionals") },
+      { href: "/privacidad", label: L("Privacidad", "Privacy") },
+      { href: "/terminos", label: L("Términos", "Terms") },
     ],
   },
-];
+]);
 
 const CONTACT_EMAIL = "versionlimitada@proton.me";
 
 export default async function UniversityFooter() {
+  const L = await getL();
   const memberCount = await getMemberCount();
 
   // Una grilla de 12: marca (4) + cuatro columnas de links (2 c/u), todas
@@ -68,7 +71,7 @@ export default async function UniversityFooter() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-12 lg:gap-x-8">
           <div className="col-span-2 lg:col-span-4 lg:pr-8">
-            <Link href="/" className="inline-flex items-center gap-2.5 min-h-[44px] group" aria-label="Ir al inicio">
+            <Link href="/" className="inline-flex items-center gap-2.5 min-h-[44px] group" aria-label={L("Ir al inicio", "Go to home")}>
               <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-md">
                 <Logo className="w-6 h-6" />
               </span>
@@ -76,21 +79,19 @@ export default async function UniversityFooter() {
                 Molino
               </span>
             </Link>
-            <p className="mt-3 text-sm text-paper/70 leading-relaxed max-w-xs">
-              Autoconocimiento sin ruido. Numerología, astrología y zodíaco chino calculados en tu navegador.
-            </p>
+            <p className="mt-3 text-sm text-paper/70 leading-relaxed max-w-xs">{L("Autoconocimiento sin ruido. Numerología, astrología y zodíaco chino calculados en tu navegador.", "Self-knowledge without the noise. Numerology, astrology and the Chinese zodiac calculated in your browser.")}</p>
             <p className="mt-4 inline-flex items-center gap-1.5 text-sm text-paper/70">
               <ShieldCheck className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              No vendemos tus datos.
+              {L("No vendemos tus datos.", "We don't sell your data.")}
             </p>
             {memberCount > 500 && (
-              <p className="mt-2 text-sm text-paper/70">
+              <p className="mt-2 text-sm text-paper/70">{L(<>
                 {memberCount.toLocaleString("es-AR")} miembros · pagos validados
-              </p>
+              </>, <>{memberCount.toLocaleString("en-US")} members · verified payments</>)}</p>
             )}
           </div>
 
-          {FOOTER_COLUMNS.map((col) => (
+          {FOOTER_COLUMNS(L).map((col) => (
             <nav key={col.title} aria-label={col.title} className="lg:col-span-2">
               <h2 className="text-sm text-paper/60 mb-2 label-caps">{col.title}</h2>
               <ul className="list-none">
@@ -127,7 +128,7 @@ export default async function UniversityFooter() {
               className="inline-flex items-center gap-1.5 min-h-[40px] text-paper/70 hover:text-accent-light transition-colors"
             >
               <Github className="w-3.5 h-3.5" aria-hidden="true" />
-              Código abierto en GitHub
+              {L("Código abierto en GitHub", "Open source on GitHub")}
             </a>
           </div>
         </div>

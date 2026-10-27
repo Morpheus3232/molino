@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -43,11 +44,10 @@ function useToday() {
 }
 
 function DateField({ value, onChange, id, resetLabel = "Volver a hoy" }: { value: string; onChange: (v: string) => void; id: string; resetLabel?: string }) {
+  const L = useL();
   return (
     <div className="max-w-xl">
-      <label htmlFor={id} className="block text-sm text-muted label-caps mb-2">
-        Probá con tu fecha de nacimiento
-      </label>
+      <label htmlFor={id} className="block text-sm text-muted label-caps mb-2">{L("Probá con tu fecha de nacimiento", "Try it with your date of birth")}</label>
       <div className="flex items-stretch border-2 border-ink">
         <input
           id={id}
@@ -83,6 +83,7 @@ function Result({ children }: { children: ReactNode }) {
 /* ─────────────────────────── Zodíaco chino ─────────────────────────── */
 
 export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?: string; label: string }[]; title: string; lead: string }) {
+  const L = useL();
   const today = useToday();
   const [date, setDate] = useState("");
   const ref = isValidDate(date) ? date : today ?? "2026-10-25";
@@ -97,7 +98,7 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
   return (
     <KnowledgeHero
       crumbs={crumbs}
-      eyebrow="Zodíaco chino · el calendario de doce animales"
+      eyebrow={L("Zodíaco chino · el calendario de doce animales", "Chinese zodiac · the calendar of twelve animals")}
       title={title}
       lead={lead}
       meta={
@@ -105,29 +106,29 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
           <DateField id="zc-fecha" value={date} onChange={setDate} />
           <Result>
             {usingDate ? (
-              <>
+              <>{L(<>
                 El {fechaLarga(date)} corría el año lunar {lunar}:{" "}
                 <Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">
                   {animal} de {element}
                 </Link>
                 .{lunar !== Number(date.slice(0, 4)) && " Ojo: es anterior al Año Nuevo chino, así que cuenta el año anterior."}
-              </>
+              </>, <>On {fechaLarga(date)} it was lunar year {lunar}:{" "}<Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">{element} {animal}</Link>.{lunar !== Number(date.slice(0, 4)) && " Note: it's before Chinese New Year, so the previous year counts."}</>)}</>
             ) : (
               <>
-                Hoy corre el año del{" "}
-                <Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">
+                {L("Hoy corre el año del", "This is the year of the")}{" "}
+                <Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">{L(<>
                   {animal} de {element}
-                </Link>
-                {start && <>, que empezó el {fechaLarga(start)}</>}.
+                </>, <>{element} {animal}</>)}</Link>
+                {start && <>{L(<>, que empezó el {fechaLarga(start)}</>, <>, which began on {fechaLarga(start)}</>)}</>}.
               </>
             )}
           </Result>
         </>
       }
       legend={[
-        { mark: MARKS.ink, text: <>En negro, el animal de esa fecha: <span className="text-foreground">{animal}</span>.</> },
-        { mark: MARKS.trine, text: <>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{kinds.amigo.join(" y ")}</span>.</> },
-        { mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{kinds.enemigo[0]}</span>.</> },
+        { mark: MARKS.ink, text: <>{L(<>En negro, el animal de esa fecha: <span className="text-foreground">{animal}</span>.</>, <>In black, the animal of that date: <span className="text-foreground">{animal}</span>.</>)}</> },
+        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{kinds.amigo.join(" y ")}</span>.</>, <>The red triangle links it with its two friends: <span className="text-foreground">{kinds.amigo.join(" and ")}</span>.</>)}</> },
+        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>)}</> },
       ]}
       aside={
         <RelationWheel
@@ -135,7 +136,7 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
           items={CHINESE_ANIMALS.map((a) => ({ key: a.name, label: a.name, icon: <ZodiacAnimalIcon animal={a.name} size={40} /> }))}
           active={index}
           center={<ZodiacAnimalIcon animal={animal} size={64} />}
-          ariaLabel={`Rueda del zodíaco chino con ${animal} marcado.`}
+          ariaLabel={L(`Rueda del zodíaco chino con ${animal} marcado.`, `Chinese zodiac wheel with ${animal} marked.`)}
           className="mx-auto max-w-[34rem]"
         />
       }
@@ -146,6 +147,7 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
 /* ─────────────────────────── Astrología ─────────────────────────── */
 
 export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: string; label: string }[]; title: string; lead: string }) {
+  const L = useL();
   const today = useToday();
   const [date, setDate] = useState("");
   const ref = isValidDate(date) ? date : today ?? "2026-10-25";
@@ -164,21 +166,21 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
   return (
     <KnowledgeHero
       crumbs={crumbs}
-      eyebrow="Astrología · el recorrido del Sol en doce tramos"
+      eyebrow={L("Astrología · el recorrido del Sol en doce tramos", "Astrology · the path of the Sun in twelve stretches")}
       title={title}
       lead={lead}
       meta={
         <>
           <DateField id="as-fecha" value={date} onChange={setDate} />
           <Result>
-            {usingDate ? <>El {fechaLarga(date)} el Sol estaba en {link} ({info.dates}).</> : <>Hoy el Sol está en {link}: {info.dates}.</>}
+            {usingDate ? <>{L(<>El {fechaLarga(date)} el Sol estaba en {link} ({info.dates}).</>, <>On {fechaLarga(date)} the Sun was in {link} ({info.dates}).</>)}</> : <>{L(<>Hoy el Sol está en {link}: {info.dates}.</>, <>Today the Sun is in {link}: {info.dates}.</>)}</>}
           </Result>
         </>
       }
       legend={[
-        { mark: MARKS.ink, text: <>En negro, el signo de esa fecha: <span className="text-foreground">{info.name}</span>.</> },
-        { mark: MARKS.trine, text: <>El triángulo rojo une los tres signos de {info.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>.</> },
-        { mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>.</> },
+        { mark: MARKS.ink, text: <>{L(<>En negro, el signo de esa fecha: <span className="text-foreground">{info.name}</span>.</>, <>In black, the sign of that date: <span className="text-foreground">{info.name}</span>.</>)}</> },
+        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo une los tres signos de {info.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>.</>, <>The red triangle links the three {info.element} signs: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " and $1")}</span>.</>)}</> },
+        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{opposite}</span>.</>)}</> },
       ]}
       aside={
         <RelationWheel
@@ -186,7 +188,7 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
           items={ZODIAC_SIGNS.map((s) => ({ key: s.name, label: s.name, icon: <AstrologySignIcon sign={s.name} size={40} /> }))}
           active={index}
           center={<AstrologySignIcon sign={info.name} size={64} />}
-          ariaLabel={`Rueda del zodíaco con ${info.name} marcado.`}
+          ariaLabel={L(`Rueda del zodíaco con ${info.name} marcado.`, `Zodiac wheel with ${info.name} marked.`)}
           className="mx-auto max-w-[34rem]"
         />
       }
@@ -197,6 +199,7 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
 /* ─────────────────────────── Numerología ─────────────────────────── */
 
 export function LifePathInstrument({ crumbs, title, lead }: { crumbs: { href?: string; label: string }[]; title: string; lead: string }) {
+  const L = useL();
   const [date, setDate] = useState("");
   const example = "1990-03-15";
   const ref = isValidDate(date) ? date : example;
@@ -207,23 +210,23 @@ export function LifePathInstrument({ crumbs, title, lead }: { crumbs: { href?: s
   return (
     <KnowledgeHero
       crumbs={crumbs}
-      eyebrow="Numerología · la cuenta con tu fecha"
+      eyebrow={L("Numerología · la cuenta con tu fecha", "Numerology · the math with your date")}
       title={title}
       lead={lead}
       meta={
         <>
-          <DateField id="nu-fecha" value={date} onChange={setDate} resetLabel="Ver el ejemplo" />
+          <DateField id="nu-fecha" value={date} onChange={setDate} resetLabel={L("Ver el ejemplo", "See the example")} />
           <div className="mt-6 max-w-xl border-l-2 border-ink pl-5" aria-live="polite">
             <p className="text-sm text-muted">
-              {usingDate ? `Los dígitos de ${fechaLarga(date)}` : `Un ejemplo: los dígitos de ${fechaLarga(example)}`}
+              {usingDate ? L(`Los dígitos de ${fechaLarga(date)}`, `The digits of ${fechaLarga(date)}`) : L(`Un ejemplo: los dígitos de ${fechaLarga(example)}`, `An example: the digits of ${fechaLarga(example)}`)}
             </p>
             <p className="mt-1 font-mono tabular-nums text-lg sm:text-xl text-foreground break-words">{steps.text}</p>
             <p className="mt-2 text-lg text-foreground">
-              Camino de Vida{" "}
+              {L("Camino de Vida", "Life Path")}{" "}
               <Link href={`/conocimiento/numerologia/${steps.result}`} className="underline underline-offset-4 hover:no-underline">
                 {steps.result}{num ? ` · ${num.title}` : ""}
               </Link>
-              {steps.master && <span className="text-muted">: número maestro, no se reduce.</span>}
+              {steps.master && <span className="text-muted">{L(": número maestro, no se reduce.", ": master number, not reduced.")}</span>}
             </p>
           </div>
         </>

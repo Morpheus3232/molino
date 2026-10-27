@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import type { UserProfile } from "@/types/user";
 
 const FORMULA_URL =
@@ -58,6 +59,7 @@ function sunSignSummary(sign: string): string {
 }
 
 export default function CalculationDetails({ profile }: { profile: UserProfile }) {
+  const L = useL();
   const birthDate = profile.birthDate || "";
   const lifePath = Number(profile.lifePath) || 0;
   const steps = buildLifePathSteps(birthDate);
@@ -68,20 +70,16 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
   return (
     <section className="border border-ink/10 rounded-md bg-background/50 px-4 py-5 sm:px-5 sm:py-6">
-      <h2 className="text-sm text-muted mb-5 label-caps">
-        ¿Cómo se calculó esto?
-      </h2>
+      <h2 className="text-sm text-muted mb-5 label-caps">{L("¿Cómo se calculó esto?", "How was this calculated?")}</h2>
 
       <div className="space-y-5 text-sm text-muted">
         {/* Camino de Vida */}
         <section>
-          <h3 className="text-sm text-foreground label-caps">
-            Camino de Vida
-          </h3>
-          <p className="mt-2">
+          <h3 className="text-sm text-foreground label-caps">{L("Camino de Vida", "Life Path")}</h3>
+          <p className="mt-2">{L(<>
             Fecha ingresada:{" "}
             <span className="font-mono text-foreground">{birthDate}</span>
-          </p>
+          </>, <>Date entered:{" "}<span className="font-mono text-foreground">{birthDate}</span></>)}</p>
           <ol className="mt-1 space-y-1">
             {steps.map((step, i) => (
               <li key={i} className="font-mono">
@@ -92,51 +90,45 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
                   step.result
                 )}
                 {step.master && (
-                  <span className="ml-2 font-sans text-xs text-muted">
-                    (número maestro, no se reduce)
-                  </span>
+                  <span className="ml-2 font-sans text-xs text-muted">{L("(número maestro, no se reduce)", "(master number, not reduced)")}</span>
                 )}
               </li>
             ))}
           </ol>
-          <p className="mt-2">
+          <p className="mt-2">{L(<>
             Camino de Vida:{" "}
             <span className="font-mono text-accent">{lifePath}</span>
-          </p>
+          </>, <>Life Path:{" "}<span className="font-mono text-accent">{lifePath}</span></>)}</p>
         </section>
 
         {/* Signo Solar */}
         <section>
-          <h3 className="text-sm text-foreground label-caps">
-            Signo solar
-          </h3>
-          <p className="mt-2">
+          <h3 className="text-sm text-foreground label-caps">{L("Signo solar", "Sun sign")}</h3>
+          <p className="mt-2">{L(<>
             Rango del signo:{" "}
             <span className="font-mono text-foreground">
               {sunSignSummary(sunSign)}
             </span>
-          </p>
-          <p>
+          </>, <>Range of the sign:{" "}<span className="font-mono text-foreground">{sunSignSummary(sunSign)}</span></>)}</p>
+          <p>{L(<>
             Tu fecha cae dentro de este intervalo →{" "}
             <span className="font-mono text-accent">{sunSign}</span>
-          </p>
+          </>, <>Your date falls within this range →{" "}<span className="font-mono text-accent">{sunSign}</span></>)}</p>
         </section>
 
         {/* Zodíaco Chino */}
         <section>
-          <h3 className="text-sm text-foreground label-caps">
-            Zodíaco chino
-          </h3>
-          <p className="mt-2">
+          <h3 className="text-sm text-foreground label-caps">{L("Zodíaco chino", "Chinese zodiac")}</h3>
+          <p className="mt-2">{L(<>
             Año {birthYear}: ciclo de 12 animales según el Año Nuevo Chino →{" "}
             <span className="font-mono text-accent">{animal}</span>
-          </p>
-          <p>
+          </>, <>Year {birthYear}: cycle of 12 animals according to Chinese New Year →{" "}<span className="font-mono text-accent">{animal}</span></>)}</p>
+          <p>{L(<>
             Elemento:{" "}
             <span className="font-mono text-foreground">
               {element} — 5 elementos × 2 años cada uno, se repite cada 10
             </span>
-          </p>
+          </>, <>Element:{" "}<span className="font-mono text-foreground">{element} — 5 elements × 2 years each, repeating every 10</span></>)}</p>
         </section>
 
         <a
@@ -144,9 +136,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover label-caps"
-        >
-          Ver fórmula en GitHub →
-        </a>
+        >{L("Ver fórmula en GitHub →", "See the formula on GitHub →")}</a>
       </div>
     </section>
   );

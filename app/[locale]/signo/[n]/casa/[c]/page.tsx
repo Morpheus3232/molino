@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n/navigation";
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SignoCasaPage({ params }: Props) {
+  const L = await getL();
   const { n, c } = await params;
   const num = Number(n);
   const house = HOUSE_BY_NUMBER[Number(c)];
@@ -64,8 +66,8 @@ export default async function SignoCasaPage({ params }: Props) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `Número ${num} en la Casa ${house.number}`,
-    description: `Interpretación del número ${num} (${fact.title}) expresado en la casa astrológica ${house.number} (${house.name}).`,
+    headline: L(`Número ${num} en la Casa ${house.number}`, `Number ${num} in House ${house.number}`),
+    description: L(`Interpretación del número ${num} (${fact.title}) expresado en la casa astrológica ${house.number} (${house.name}).`, `Interpretation of the number ${num} (${fact.title}) expressed in astrological house ${house.number} (${house.name}).`),
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino", url: SITE_URL },
     mainEntityOfPage: `${SITE_URL}/signo/${num}/casa/${house.number}`,
@@ -76,12 +78,10 @@ export default async function SignoCasaPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-3xl px-4 sm:px-8">
         <header className="mb-10">
-          <p className="text-sm text-accent font-bold mb-3 label-caps">
-            Numerología × Astrología
-          </p>
-          <h1 className="page-title text-foreground">
+          <p className="text-sm text-accent font-bold mb-3 label-caps">{L("Numerología × Astrología", "Numerology × Astrology")}</p>
+          <h1 className="page-title text-foreground">{L(<>
             Número {num} en la Casa {house.number}
-          </h1>
+          </>, <>Number {num} in House {house.number}</>)}</h1>
           <p className="text-sm text-muted mt-3">
             {fact.title} · {house.name} — {house.area}
           </p>
@@ -91,29 +91,29 @@ export default async function SignoCasaPage({ params }: Props) {
 
         <div className="grid grid-cols-2 gap-4 mb-8 text-center">
           <div className="p-5 rounded-lg bg-card border border-ink/10">
-            <h2 className="text-sm text-accent font-bold mb-2 label-caps">Número</h2>
+            <h2 className="text-sm text-accent font-bold mb-2 label-caps">{L("Número", "Number")}</h2>
             <div className="font-display text-5xl font-bold">{num}</div>
             <p className="text-xs text-muted font-mono mt-2">{fact.keywords.join(" · ")}</p>
           </div>
           <div className="p-5 rounded-lg bg-card border border-ink/10">
-            <h2 className="text-sm text-accent font-bold mb-2 label-caps">Casa</h2>
+            <h2 className="text-sm text-accent font-bold mb-2 label-caps">{L("Casa", "House")}</h2>
             <div className="font-display text-5xl font-bold">{house.number}</div>
             <p className="text-xs text-muted font-mono mt-2">{house.name}</p>
           </div>
         </div>
 
         <section className="rounded-lg bg-card border border-ink/10 p-6 mb-8">
-          <h2 className="font-heading text-base font-bold mb-2">{fact.title} en {house.name}</h2>
+          <h2 className="font-heading text-base font-bold mb-2">{L(<>{fact.title} en {house.name}</>, <>{fact.title} in {house.name}</>)}</h2>
           <p className="text-sm text-muted leading-relaxed">{fact.interpretation}</p>
         </section>
 
         <nav className="border-t border-ink/10 pt-6">
-          <h3 className="font-heading text-sm font-bold mb-3">Otras casas para el número {num}</h3>
+          <h3 className="font-heading text-sm font-bold mb-3">{L(<>Otras casas para el número {num}</>, <>Other houses for the number {num}</>)}</h3>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-xs font-mono">
             {HOUSE_NUMBERS.filter((h) => h !== house.number).map((h) => (
-              <Link key={h} href={`/signo/${num}/casa/${h}`} className="p-2 rounded-xl bg-card border border-ink/5 hover:border-accent/40 text-muted hover:text-foreground text-center">
+              <Link key={h} href={`/signo/${num}/casa/${h}`} className="p-2 rounded-xl bg-card border border-ink/5 hover:border-accent/40 text-muted hover:text-foreground text-center">{L(<>
                 Casa {h}
-              </Link>
+              </>, <>House {h}</>)}</Link>
             ))}
           </div>
         </nav>

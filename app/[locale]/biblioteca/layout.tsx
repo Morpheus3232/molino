@@ -1,12 +1,12 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Biblioteca — Fuentes y Referencias",
+export const generateMetadata = metadataFor({
+  title: ["Biblioteca — Fuentes y Referencias", "Library — Sources and References"],
   description:
-    "Fuentes bibliográficas, artículos académicos y referencias que sustentan los sistemas de conocimiento de Molino: numerología, astrología y zodiaco chino.",
+    ["Fuentes bibliográficas, artículos académicos y referencias que sustentan los sistemas de conocimiento de Molino: numerología, astrología y zodiaco chino.", "Bibliographic sources, academic articles and references behind Molino's knowledge systems: numerology, astrology and the Chinese zodiac."],
   path: "/biblioteca",
-  ogTitle: "Biblioteca",
-  ogDescription: "Fuentes y referencias bibliográficas de los sistemas simbólicos de Molino.",
+  ogTitle: ["Biblioteca", "Library"],
+  ogDescription: ["Fuentes y referencias bibliográficas de los sistemas simbólicos de Molino.", "Sources and bibliographic references for Molino's symbolic systems."],
 });
 
 export default function BibliotecaLayout({ children }: { children: React.ReactNode }) {

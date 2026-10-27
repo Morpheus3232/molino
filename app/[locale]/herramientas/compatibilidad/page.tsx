@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState, useMemo } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -11,14 +12,14 @@ import { getCompatibilityDescription } from "@/lib/data";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
 import SectionCover from "@/components/ui/SectionCover";
 
-const MONTHS = [
-  { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
-  { value: "03", label: "Marzo" }, { value: "04", label: "Abril" },
-  { value: "05", label: "Mayo" }, { value: "06", label: "Junio" },
-  { value: "07", label: "Julio" }, { value: "08", label: "Agosto" },
-  { value: "09", label: "Septiembre" }, { value: "10", label: "Octubre" },
-  { value: "11", label: "Noviembre" }, { value: "12", label: "Diciembre" },
-];
+const MONTHS = (L: Pick2) => ([
+  { value: "01", label: L("Enero", "January") }, { value: "02", label: L("Febrero", "February") },
+  { value: "03", label: L("Marzo", "March") }, { value: "04", label: L("Abril", "April") },
+  { value: "05", label: L("Mayo", "May") }, { value: "06", label: L("Junio", "June") },
+  { value: "07", label: L("Julio", "July") }, { value: "08", label: L("Agosto", "August") },
+  { value: "09", label: L("Septiembre", "September") }, { value: "10", label: L("Octubre", "October") },
+  { value: "11", label: L("Noviembre", "November") }, { value: "12", label: L("Diciembre", "December") },
+]);
 
 function getDaysInMonth(month: string, year: string): number {
   return new Date(parseInt(year), parseInt(month), 0).getDate();
@@ -53,6 +54,7 @@ function getZodiacLabel(animal1: string, animal2: string): string {
 }
 
 export default function CompatibilidadCalcPage() {
+  const L = useL();
   const [p1, setP1] = useState({ day: "", month: "", year: "" });
   const [p2, setP2] = useState({ day: "", month: "", year: "" });
 
@@ -87,21 +89,17 @@ export default function CompatibilidadCalcPage() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">{L(<>
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Compatibilidad</span>
-        </nav>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Tools</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">Compatibility</span></>)}</nav>
 
         <motion.section {...fadeUp}>
-          <h1 className="page-title text-foreground">
-            Compatibilidad simbólica
-          </h1>
-          <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Ingresá las fechas de nacimiento de dos personas para ver cómo se conectan según el zodiaco chino. No se guardan datos.
-          </p>
+          <h1 className="page-title text-foreground">{L("Compatibilidad simbólica", "Symbolic compatibility")}</h1>
+          <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">{L("Ingresá las fechas de nacimiento de dos personas para ver cómo se conectan según el zodiaco chino. No se guardan datos.", "Enter the dates of birth of two people to see how they connect according to the Chinese zodiac. No data is saved.")}</p>
           <SectionCover imageKey="herramientas/compatibilidad" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
@@ -110,57 +108,57 @@ export default function CompatibilidadCalcPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Persona 1 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 1</h3>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">{L("Persona 1", "Person 1")}</h3>
               <div className="space-y-3">
-                <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
-                  <option value="">Día</option>
+                <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label={L("Día persona 1", "Person 1 day")}>
+                  <option value="">{L("Día", "Day")}</option>
                   {Array.from({ length: days1Valid }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
                 </select>
-                <select value={p1.month} onChange={(e) => setP1({ ...p1, month: e.target.value })} className="input" aria-label="Mes persona 1">
-                  <option value="">Mes</option>
-                  {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                <select value={p1.month} onChange={(e) => setP1({ ...p1, month: e.target.value })} className="input" aria-label={L("Mes persona 1", "Person 1 month")}>
+                  <option value="">{L("Mes", "Month")}</option>
+                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
                 </select>
-                <select value={p1.year} onChange={(e) => setP1({ ...p1, year: e.target.value })} className="input" aria-label="Año persona 1">
-                  <option value="">Año</option>
+                <select value={p1.year} onChange={(e) => setP1({ ...p1, year: e.target.value })} className="input" aria-label={L("Año persona 1", "Person 1 year")}>
+                  <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
                 </select>
               </div>
               {person1 && (
-                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">{L(<>
                   {person1.animal} · {person1.sunSign} · Camino de Vida {person1.lifePath}
-                </div>
+                </>, <>{person1.animal} · {person1.sunSign} · Life Path {person1.lifePath}</>)}</div>
               )}
             </div>
 
             {/* Persona 2 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 2</h3>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">{L("Persona 2", "Person 2")}</h3>
               <div className="space-y-3">
-                <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
-                  <option value="">Día</option>
+                <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label={L("Día persona 2", "Person 2 day")}>
+                  <option value="">{L("Día", "Day")}</option>
                   {Array.from({ length: days2Valid }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
                 </select>
-                <select value={p2.month} onChange={(e) => setP2({ ...p2, month: e.target.value })} className="input" aria-label="Mes persona 2">
-                  <option value="">Mes</option>
-                  {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                <select value={p2.month} onChange={(e) => setP2({ ...p2, month: e.target.value })} className="input" aria-label={L("Mes persona 2", "Person 2 month")}>
+                  <option value="">{L("Mes", "Month")}</option>
+                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
                 </select>
-                <select value={p2.year} onChange={(e) => setP2({ ...p2, year: e.target.value })} className="input" aria-label="Año persona 2">
-                  <option value="">Año</option>
+                <select value={p2.year} onChange={(e) => setP2({ ...p2, year: e.target.value })} className="input" aria-label={L("Año persona 2", "Person 2 year")}>
+                  <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
                 </select>
               </div>
               {person2 && (
-                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">{L(<>
                   {person2.animal} · {person2.sunSign} · Camino de Vida {person2.lifePath}
-                </div>
+                </>, <>{person2.animal} · {person2.sunSign} · Life Path {person2.lifePath}</>)}</div>
               )}
             </div>
           </div>
@@ -188,9 +186,7 @@ export default function CompatibilidadCalcPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
                     className="text-sm text-accent font-medium mb-3 label-caps"
-                  >
-                    Compatibilidad
-                  </motion.p>
+                  >{L("Compatibilidad", "Compatibility")}</motion.p>
                   <motion.p
                     initial={{ opacity: 0, scale: 0.6 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -222,9 +218,9 @@ export default function CompatibilidadCalcPage() {
                 transition={{ delay: 0.65, duration: 0.35 }}
                 className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
-                <p className="text-xs text-muted leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed">{L(<>
                   <strong>Fórmula:</strong> relación zodiacal entre el animal del usuario y el de la otra persona. Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
-                </p>
+                </>, <><strong>Formula:</strong> the zodiac relationship between the user's animal and the other person's. This is a symbolic interpretation. It doesn't constitute scientific evidence or predict how a relationship will turn out.</>)}</p>
               </motion.div>
 
               {/* CTA */}
@@ -237,9 +233,9 @@ export default function CompatibilidadCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`;
+                    const text = L(`Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`, `Zodiac compatibility: ${compatibility.label}. Calculate yours on Molino.`);
                     if (navigator.share) {
-                      navigator.share({ title: "Compatibilidad", text }).catch(() => {});
+                      navigator.share({ title: L("Compatibilidad", "Compatibility"), text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
@@ -249,16 +245,14 @@ export default function CompatibilidadCalcPage() {
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  Compartir resultado
+                  {L("Compartir resultado", "Share result")}
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">¿Querés una experiencia más completa con tu perfil personal?</p>
+                  <p className="text-sm text-muted mb-3">{L("¿Querés una experiencia más completa con tu perfil personal?", "Want a fuller experience with your personal profile?")}</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
-                  >
-                    Crear tu mapa completo
-                  </Link>
+                  >{L("Crear tu mapa completo", "Create your complete map")}</Link>
                 </div>
               </motion.div>
             </motion.section>

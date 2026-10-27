@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { calculateLifePath, getPersonalYear } from "@/lib/calculations";
@@ -93,6 +94,7 @@ export default function MethodReductionLoader({
   targetYear = new Date().getFullYear(),
   className = "",
 }: MethodReductionLoaderProps) {
+  const L = useL();
   const [stage, setStage] = useState<0 | 1 | 2 | 3>(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -181,21 +183,21 @@ export default function MethodReductionLoader({
       `}</style>
 
       {/* Screen Reader solo: descripción completa accesible */}
-      <div className="sr-only">
+      <div className="sr-only">{L(<>
         Calculando mapa con reducción teosófica para {birthDate}. Camino de Vida {steps.lifePath.result} ({steps.lifePath.name}), Vibración Base {steps.vibracionBase.result}, Año Personal {steps.anoPersonal.result}.
-      </div>
+      </>, <>Calculating map with theosophical reduction for {birthDate}. Life Path {steps.lifePath.result} ({steps.lifePath.name}), Base Vibration {steps.vibracionBase.result}, Personal Year {steps.anoPersonal.result}.</>)}</div>
 
       {/* Header técnico de transparencia local */}
       <div className="flex items-center justify-between pb-4 mb-6 border-b border-border">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">{L(<>
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
           <span className="text-sm text-muted label-caps">
             REDUCCIÓN TEOSÓFICA LOCAL
           </span>
-        </div>
-        <span className="font-mono text-xs font-bold text-accent">
+        </>, <><span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" /><span className="text-sm text-muted label-caps">LOCAL THEOSOPHICAL REDUCTION</span></>)}</div>
+        <span className="font-mono text-xs font-bold text-accent">{L(<>
           Paso {Math.min(stage + 1, 3)} / 3
-        </span>
+        </>, <>Step {Math.min(stage + 1, 3)} / 3</>)}</span>
       </div>
 
       {/* Visor central del cálculo en vivo */}
@@ -236,7 +238,7 @@ export default function MethodReductionLoader({
       {/* Barra de progreso inferior */}
       <div className="mt-6 pt-4 border-t border-border">
         <div className="flex justify-between items-center text-[11px] font-mono text-muted mb-2">
-          <span>{stage >= 2 ? "Consolidando mapa…" : "Calculando matrices…"}</span>
+          <span>{stage >= 2 ? L("Consolidando mapa…", "Consolidating map…") : L("Calculando matrices…", "Calculating matrices…")}</span>
           <span>{stage === 0 ? "33%" : stage === 1 ? "66%" : "100%"}</span>
         </div>
         <div className="w-full h-1.5 bg-paper-alt rounded-full overflow-hidden">

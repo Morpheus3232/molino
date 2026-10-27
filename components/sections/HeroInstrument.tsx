@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -25,17 +26,19 @@ function isValidBirthDate(value: string): boolean {
  * uno lo está buscando, y un link chico alcanza.
  */
 function CouponLink() {
+  const L = useL();
   return (
-    <p className="pt-4 text-xs text-muted">
+    <p className="pt-4 text-xs text-muted">{L(<>
       ¿Tenés un código?{" "}
       <Link href="/canjear" className="font-semibold text-accent underline-offset-4 hover:underline">
         Canjealo acá
       </Link>
-    </p>
+    </>, <>Have a code?{" "}<Link href="/canjear" className="font-semibold text-accent underline-offset-4 hover:underline">Redeem it here</Link></>)}</p>
   );
 }
 
 export default function HeroInstrument() {
+  const L = useL();
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
   const dateValueRef = useRef("");
@@ -79,7 +82,7 @@ export default function HeroInstrument() {
   const isReturningUser = mounted && Boolean(profile?.birthDate);
 
   if (isReturningUser) {
-    const eyebrowText = profile?.name ? `Hola, ${profile.name}` : "Tu mapa personal";
+    const eyebrowText = profile?.name ? L(`Hola, ${profile.name}`, `Hi, ${profile.name}`) : L("Tu mapa personal", "Your personal map");
     return (
       <section
         id="mapa-form"
@@ -91,10 +94,10 @@ export default function HeroInstrument() {
               <p className="text-sm text-muted mb-6 label-caps">
                 {eyebrowText}
               </p>
-              <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(3rem,8vw,5.5rem)]">
+              <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(3rem,8vw,5.5rem)]">{L(<>
                 Tu mapa te está{" "}
                 <em className="text-gradient-warm">esperando</em>.
-              </h1>
+              </>, <>Your map is{" "}<em className="text-gradient-warm">waiting</em> for you.</>)}</h1>
             </div>
 
             <motion.div {...fadeUpMountDelayed(0.15)} className="flex justify-center pt-2">
@@ -102,7 +105,7 @@ export default function HeroInstrument() {
                 href="/profile"
                 className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-vermilion text-paper rounded-lg font-heading font-bold transition-colors duration-200 hover:bg-vermilion-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vermilion label-caps"
               >
-                Ver mi mapa
+                {L("Ver mi mapa", "See my map")}
                 <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </motion.div>
@@ -121,32 +124,25 @@ export default function HeroInstrument() {
     >
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 pt-12 pb-8 sm:pt-16 sm:pb-10 text-center w-full">
           <div aria-live="polite" aria-atomic="true" className="sr-only">
-            {isSubmitting && "Generando tu mapa..."}
+            {isSubmitting && L("Generando tu mapa...", "Generating your map...")}
           </div>
 
         <motion.div {...fadeUpMount} className="space-y-10">
           {/* Eyebrow */}
-          <Eyebrow>Tres sistemas, una fecha</Eyebrow>
+          <Eyebrow>{L("Tres sistemas, una fecha", "Three systems, one date")}</Eyebrow>
 
           {/* Molino context — qué es esta calculadora */}
-          <p className="text-sm sm:text-base text-muted max-w-md mx-auto leading-relaxed">
-            Molino cruza tu fecha de nacimiento con numerología pitagórica,
-            astrología occidental y zodíaco chino para devolver un mapa
-            simbólico de tu patrón personal.
-          </p>
+          <p className="text-sm sm:text-base text-muted max-w-md mx-auto leading-relaxed">{L("Molino cruza tu fecha de nacimiento con numerología pitagórica, astrología occidental y zodíaco chino para devolver un mapa simbólico de tu patrón personal.", "Molino crosses your date of birth with Pythagorean numerology, Western astrology and the Chinese zodiac to give you back a symbolic map of your personal pattern.")}</p>
 
           {/* Headline dramático — serif editorial, remate en itálica con
               gradiente cálido animado */}
-          <h1 className="text-balance font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,7vw,5rem)]">
+          <h1 className="text-balance font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,7vw,5rem)]">{L(<>
             Tu fecha no es un dato.
             <span className="block mt-2 italic text-gradient-warm">Es un patrón.</span>
-          </h1>
+          </>, <>Your date isn't a piece of data.<span className="block mt-2 italic text-gradient-warm">It's a pattern.</span></>)}</h1>
 
           {/* Subheadline */}
-          <motion.p {...fadeUpMountDelayed(0.12)} className="text-lg sm:text-xl text-muted leading-relaxed max-w-xl mx-auto">
-            Cada mapa es casi único: se construye desde tu fecha de nacimiento
-            leída como un código de ocho dígitos.
-          </motion.p>
+          <motion.p {...fadeUpMountDelayed(0.12)} className="text-lg sm:text-xl text-muted leading-relaxed max-w-xl mx-auto">{L("Cada mapa es casi único: se construye desde tu fecha de nacimiento leída como un código de ocho dígitos.", "Every map is almost unique: it's built from your date of birth read as an eight-digit code.")}</motion.p>
 
           {/* Form */}
           <motion.div {...fadeUpMountDelayed(0.2)}>
@@ -182,20 +178,18 @@ export default function HeroInstrument() {
                         <path d="M12 2a10 10 0 0 1 10 10" strokeOpacity="1" />
                       </svg>
                     </motion.span>
-                    Generando…
+                    {L("Generando…", "Generating…")}
                   </>
                 ) : (
                   <>
-                    Ver tu mapa
+                    {L("Ver tu mapa", "See your map")}
                     <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
                   </>
                 )}
               </button>
 
               {!isDateValid && !isSubmitting && (
-                <p className="text-xs text-muted" role="status">
-                  Completá tu fecha de nacimiento para continuar.
-                </p>
+                <p className="text-xs text-muted" role="status">{L("Completá tu fecha de nacimiento para continuar.", "Fill in your date of birth to continue.")}</p>
               )}
             </form>
 
@@ -208,7 +202,7 @@ export default function HeroInstrument() {
                 href="/ejemplo"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border border-border text-sm font-heading font-semibold text-foreground hover:border-accent hover:text-accent transition-colors"
               >
-                Ver ejemplo interactivo
+                {L("Ver ejemplo interactivo", "See an interactive example")}
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
@@ -216,7 +210,7 @@ export default function HeroInstrument() {
             {/* Privacidad — una sola línea de confianza */}
             <p className="pt-6 flex items-center justify-center gap-2 text-xs font-mono text-accent">
               <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-              Cálculo 100% local · toma 30 segundos
+              {L("Cálculo 100% local · toma 30 segundos", "100% local calculation · takes 30 seconds")}
             </p>
 
             <CouponLink />

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useMemo } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -28,6 +29,7 @@ export default function CountryHubClient({
   cities,
   countryEntity,
 }: CountryHubClientProps) {
+  const L = useL();
   const [cityQuery, setCityQuery] = useState("");
 
   const filteredCities = useMemo(() => {
@@ -54,7 +56,7 @@ export default function CountryHubClient({
                 {countryName}
               </h1>
               <p className="text-sm text-muted mt-1.5 label-caps">
-                {totalEntities} {totalEntities === 1 ? "entidad registrada" : "entidades registradas"}
+                {totalEntities} {totalEntities === 1 ? L("entidad registrada", "registered entity") : L("entidades registradas", "registered entities")}
               </p>
             </div>
           </div>
@@ -65,16 +67,16 @@ export default function CountryHubClient({
               rel={entityLinkRel(countryEntity)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-accent/30 bg-accent/5 hover:bg-accent/10 text-accent text-sm font-semibold transition-colors self-start sm:self-auto min-h-[44px] label-caps"
             >
-              <span>Ficha simbólica de {countryName}</span>
+              <span>{L(<>Ficha simbólica de {countryName}</>, <>Symbolic profile of {countryName}</>)}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           )}
         </div>
 
-        <p className="text-sm sm:text-base text-muted max-w-2xl leading-relaxed pt-2">
+        <p className="text-sm sm:text-base text-muted max-w-2xl leading-relaxed pt-2">{L(<>
           Explorá las ciudades, instituciones y entidades registradas de {countryName}.
           Podés recorrerlas por categoría o descubrir su afinidad con tu mapa.
-        </p>
+        </>, <>Explore the cities, institutions and registered entities of {countryName}. You can browse them by category or discover their affinity with your map.</>)}</p>
       </header>
 
       {/* Explorador de Ciudades del País */}
@@ -83,9 +85,9 @@ export default function CountryHubClient({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-accent shrink-0" />
-              <h2 id="cities-heading" className="font-heading text-lg sm:text-xl font-bold text-foreground">
+              <h2 id="cities-heading" className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
                 Ciudades de {countryName}
-              </h2>
+              </>, <>Cities of {countryName}</>)}</h2>
               <span className="font-mono text-xs text-muted">({cities.length})</span>
             </div>
 
@@ -97,7 +99,7 @@ export default function CountryHubClient({
                   type="text"
                   value={cityQuery}
                   onChange={(e) => setCityQuery(e.target.value)}
-                  placeholder={`Buscar ciudad en ${countryName}...`}
+                  placeholder={L(`Buscar ciudad en ${countryName}...`, `Search for a city in ${countryName}...`)}
                   className="w-full bg-background border border-ink/10 rounded-xl pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all min-h-[40px]"
                 />
               </div>
@@ -133,9 +135,9 @@ export default function CountryHubClient({
           </div>
 
           {filteredCities.length === 0 && (
-            <p className="text-xs text-muted py-4">
+            <p className="text-xs text-muted py-4">{L(<>
               No se encontraron ciudades que coincidan con &quot;{cityQuery}&quot;.
-            </p>
+            </>, <>No cities found matching &quot;{cityQuery}&quot;.</>)}</p>
           )}
         </section>
       )}
@@ -145,23 +147,23 @@ export default function CountryHubClient({
         <section aria-labelledby="categories-heading" className="space-y-4 pt-4 border-t border-ink/10">
           <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-accent shrink-0" />
-            <h2 id="categories-heading" className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            <h2 id="categories-heading" className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
               Categorías en {countryName}
-            </h2>
+            </>, <>Categories in {countryName}</>)}</h2>
           </div>
           <CategoryGrid countryISO={countryISO} categories={categories} />
         </section>
       )}
 
       {/* Footer Navigation */}
-      <div className="pt-8 border-t border-ink/10">
+      <div className="pt-8 border-t border-ink/10">{L(<>
         <Link
           href="/atlas"
           className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors min-h-[44px] label-caps"
         >
           <span>← Volver al Atlas</span>
         </Link>
-      </div>
+      </>, <><Link href="/atlas" className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors min-h-[44px] label-caps"><span>← Back to the Atlas</span></Link></>)}</div>
     </div>
   );
 }

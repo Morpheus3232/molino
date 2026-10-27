@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -16,6 +17,7 @@ export default function PremiumClaimPage() {
 }
 
 function PremiumClaimContent() {
+  const L = useL();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ function PremiumClaimContent() {
   useEffect(() => {
     const token = searchParams.get("token");
     if (!token) {
-      setError("Falta el token del link.");
+      setError(L("Falta el token del link.", "The link's token is missing."));
       return;
     }
 
@@ -31,14 +33,14 @@ function PremiumClaimContent() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.premiumToken) {
-          setError(data.error || "Este link ya expiró o ya fue usado.");
+          setError(data.error || L("Este link ya expiró o ya fue usado.", "This link has expired or has already been used."));
           return;
         }
         savePremiumTokenClient(data.premiumToken);
         invalidatePremiumAccessCache(undefined, "");
         router.replace("/profile?claimed=1");
       })
-      .catch(() => setError("No se pudo validar el link."));
+      .catch(() => setError(L("No se pudo validar el link.", "The link couldn't be validated.")));
   }, [searchParams, router]);
 
   return (
@@ -46,14 +48,12 @@ function PremiumClaimContent() {
       {error ? (
         <>
           <p className="text-sm text-red-400">{error}</p>
-          <p className="text-xs text-muted">
-            Podés recuperar tu acceso desde la página Premium con tu ID de pago.
-          </p>
+          <p className="text-xs text-muted">{L("Podés recuperar tu acceso desde la página Premium con tu ID de pago.", "You can recover your access from the Premium page with your payment ID.")}</p>
         </>
       ) : (
         <>
           <Logo className="w-8 h-8 text-accent animate-spin" />
-          <p className="text-xs font-mono text-muted">Activando tu acceso…</p>
+          <p className="text-xs font-mono text-muted">{L("Activando tu acceso…", "Activating your access…")}</p>
         </>
       )}
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import type { HistoricalEvent } from "@/lib/data/symbolic-entities";
@@ -29,6 +30,7 @@ export function formatDisplayDate(dateStr: string): string {
 }
 
 export function OtherEventCard({ event }: { event: HistoricalEvent }) {
+  const L = useL();
   const { animal, isApproximate } = useMemo(() => {
     if (event.calculatedAnimal) {
       return { animal: event.calculatedAnimal, isApproximate: event.isApproximate ?? false };
@@ -49,9 +51,9 @@ export function OtherEventCard({ event }: { event: HistoricalEvent }) {
       </div>
       <p className="text-xs text-muted leading-relaxed">{event.description}</p>
       <div className="flex items-center gap-3 mt-2">
-        <p className="text-xs text-muted">Fuente: {event.source}</p>
+        <p className="text-xs text-muted">{L(<>Fuente: {event.source}</>, <>Source: {event.source}</>)}</p>
         {isApproximate && (
-          <p className="text-xs text-muted">· Año documentado</p>
+          <p className="text-xs text-muted">{L("· Año documentado", "· Year documented")}</p>
         )}
       </div>
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -19,14 +20,15 @@ interface EntityCardProps {
 
 // Sober, analytical tone — no cheap esotericism. Success for harmony,
 // warning for tension, muted for neutral.
-const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
-  affine: { label: "Afinidad", className: "text-success bg-success/10 border-success/30" },
-  tension: { label: "Tensión", className: "text-warning bg-warning/10 border-warning/30" },
-  neutral: { label: "Neutro", className: "text-muted bg-ink/[0.04] border-ink/10" },
-};
+const RESONANCE_STYLE = (L: Pick2): Record<string, { label: string; className: string }> => ({
+  affine: { label: L("Afinidad", "Affinity"), className: "text-success bg-success/10 border-success/30" },
+  tension: { label: L("Tensión", "Tension"), className: "text-warning bg-warning/10 border-warning/30" },
+  neutral: { label: L("Neutro", "Neutral"), className: "text-muted bg-ink/[0.04] border-ink/10" },
+});
 
 export default function EntityCard({ entity, countryISO, category, resonance, reasoning }: EntityCardProps) {
-  const resonanceStyle = resonance ? RESONANCE_STYLE[resonance.bucket] : null;
+  const L = useL();
+  const resonanceStyle = resonance ? RESONANCE_STYLE(L)[resonance.bucket] : null;
 
   const content = (
     <>

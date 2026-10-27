@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 import PersonalSigil from "@/components/ui/PersonalSigil";
@@ -92,6 +93,7 @@ export default function AtlasShareCardSVG({
   solarElement = "Fuego Cardinal",
   className,
 }: AtlasShareCardSVGProps) {
+  const L = useL();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -152,20 +154,18 @@ export default function AtlasShareCardSVG({
       <g>
         {/* HEADER con más aire vertical y línea divisoria */}
         <g transform="translate(100, 90)">
-          <text className="mono" fontSize="13" fill="#5C5C5C" letterSpacing="4">
+          <text className="mono" fontSize="13" fill="#5C5C5C" letterSpacing="4">{L(<>
             MAPA PERSONAL · {currentYear}
-          </text>
+          </>, <>PERSONAL MAP · {currentYear}</>)}</text>
 
           {/* Línea divisoria sutil */}
           <line x1="0" y1="28" x2="880" y2="28" stroke="#E2E2E2" strokeWidth="1" />
 
-          <text x="0" y="80" className="heading" fontSize="34" fill="#0A0A0A" letterSpacing="2">
-            Tu patrón es único
-          </text>
+          <text x="0" y="80" className="heading" fontSize="34" fill="#0A0A0A" letterSpacing="2">{L("Tu patrón es único", "Your pattern is unique")}</text>
 
-          <text x="0" y="118" className="serif" fontSize="22" fill="#5C5C5C">
+          <text x="0" y="118" className="serif" fontSize="22" fill="#5C5C5C">{L(<>
             Numerología + Astrología + Zodíaco Chino · {birthDateFormatted}
-          </text>
+          </>, <>Numerology + Astrology + Chinese Zodiac · {birthDateFormatted}</>)}</text>
         </g>
 
         {/* 5. RESUMEN DE CIFRAS CLAVE (Círculos destacados con radio 40px) */}
@@ -176,9 +176,7 @@ export default function AtlasShareCardSVG({
             <text x="40" y="52" textAnchor="middle" className="heading" fontSize="36" fill="#0A0A0A">
               {lifePathNumber}
             </text>
-            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">
-              CAMINO DE VIDA
-            </text>
+            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">{L("CAMINO DE VIDA", "LIFE PATH")}</text>
             <text x="100" y="58" className="heading" fontSize="18" fill="#0A0A0A">
               {lifePathName}
             </text>
@@ -190,12 +188,10 @@ export default function AtlasShareCardSVG({
             <text x="40" y="52" textAnchor="middle" className="heading" fontSize="36" fill="#0A0A0A">
               {vibracionBase}
             </text>
-            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">
-              VIBRACIÓN BASE
-            </text>
-            <text x="100" y="58" className="heading" fontSize="18" fill="#0A0A0A">
+            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">{L("VIBRACIÓN BASE", "BASE VIBRATION")}</text>
+            <text x="100" y="58" className="heading" fontSize="18" fill="#0A0A0A">{L(<>
               Día {birthDay}
-            </text>
+            </>, <>Day {birthDay}</>)}</text>
           </g>
 
           {/* Cifra 3: Año Personal */}
@@ -204,12 +200,10 @@ export default function AtlasShareCardSVG({
             <text x="40" y="52" textAnchor="middle" className="heading" fontSize="36" fill="#0A0A0A">
               {anoPersonal}
             </text>
-            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">
-              AÑO PERSONAL
-            </text>
-            <text x="100" y="58" className="heading" fontSize="18" fill="#0A0A0A">
+            <text x="100" y="36" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="1.5">{L("AÑO PERSONAL", "PERSONAL YEAR")}</text>
+            <text x="100" y="58" className="heading" fontSize="18" fill="#0A0A0A">{L(<>
               Ciclo {currentYear}
-            </text>
+            </>, <>Cycle {currentYear}</>)}</text>
           </g>
         </g>
 
@@ -218,19 +212,15 @@ export default function AtlasShareCardSVG({
           <rect width="880" height="230" fill="#F4F4F4" stroke="#E2E2E2" strokeWidth="1.5" rx="14" />
           <rect x="0" y="0" width="8" height="230" fill="#0A0A0A" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">
-            PILAR I · NUMEROLOGÍA PITAGÓRICA
-          </text>
-          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">{L("PILAR I · NUMEROLOGÍA PITAGÓRICA", "PILLAR I · PYTHAGOREAN NUMEROLOGY")}</text>
+          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">{L(<>
             Camino de Vida {lifePathNumber} — {lifePathName}
-          </text>
-          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">
-            Estructura base del desarrollo personal y misión de ciclo
-          </text>
+          </>, <>Life Path {lifePathNumber} — {lifePathName}</>)}</text>
+          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">{L("Estructura base del desarrollo personal y misión de ciclo", "The base structure of personal development and the mission of the cycle")}</text>
 
-          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">
+          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">{L(<>
             Reducción determinista: {lifePathFormula}
-          </text>
+          </>, <>Deterministic reduction: {lifePathFormula}</>)}</text>
 
           <PillarMedallion color="#0A0A0A">
             <LifePathGlyph value={lifePathNumber} size={104} />
@@ -242,19 +232,13 @@ export default function AtlasShareCardSVG({
           <rect width="880" height="230" fill="#F4F4F4" stroke="#E2E2E2" strokeWidth="1.5" rx="14" />
           <rect x="0" y="0" width="8" height="230" fill="#0A0A0A" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">
-            PILAR II · ZODÍACO CHINO
-          </text>
-          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">{L("PILAR II · ZODÍACO CHINO", "PILLAR II · CHINESE ZODIAC")}</text>
+          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">{L(<>
             Signo de Origen: {chineseSign}
-          </text>
-          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">
-            Rama terrestre exacta calculada por Año Nuevo Lunar
-          </text>
+          </>, <>Sign of Origin: {chineseSign}</>)}</text>
+          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">{L("Rama terrestre exacta calculada por Año Nuevo Lunar", "Exact earthly branch calculated by Lunar New Year")}</text>
 
-          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">
-            Ciclo sexagesimal de resonancia temporal
-          </text>
+          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">{L("Ciclo sexagesimal de resonancia temporal", "Sexagesimal cycle of temporal resonance")}</text>
 
           {/* La silueta del signo, no el ideograma: se lee de un vistazo. */}
           <PillarMedallion color="#0A0A0A">
@@ -270,19 +254,15 @@ export default function AtlasShareCardSVG({
           <rect width="880" height="230" fill="#F4F4F4" stroke="#E2E2E2" strokeWidth="1.5" rx="14" />
           <rect x="0" y="0" width="8" height="230" fill="#0A0A0A" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#5C5C5C" letterSpacing="3">
-            PILAR III · ASTROLOGÍA SIMBÓLICA
-          </text>
-          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#5C5C5C" letterSpacing="3">{L("PILAR III · ASTROLOGÍA SIMBÓLICA", "PILLAR III · SYMBOLIC ASTROLOGY")}</text>
+          <text x="40" y="88" className="heading" fontSize="28" fill="#0A0A0A">{L(<>
             Sol en {solarSign}
-          </text>
-          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">
+          </>, <>Sun in {solarSign}</>)}</text>
+          <text x="40" y="126" className="serif" fontSize="22" fill="#5C5C5C">{L(<>
             Modalidad y cualidad elemental: {solarElement}
-          </text>
+          </>, <>Modality and elemental quality: {solarElement}</>)}</text>
 
-          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">
-            Coordenada solar geocéntrica de nacimiento
-          </text>
+          <text x="40" y="185" className="mono" fontSize="15" fill="#5C5C5C">{L("Coordenada solar geocéntrica de nacimiento", "Geocentric solar coordinate of birth")}</text>
 
           <PillarMedallion color="#0A0A0A" box={116}>
             <AstrologySignIcon sign={solarSign} size={116} />
@@ -293,22 +273,16 @@ export default function AtlasShareCardSVG({
         <g transform="translate(100, 1270)">
           <rect width="880" height="340" fill="#F4F4F4" stroke="#E2E2E2" strokeWidth="1.5" rx="14" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">
-            VECTORES DE AFINIDAD DEL ZODÍACO (三合 / 六冲)
-          </text>
+          <text x="40" y="44" className="mono" fontSize="14" fill="#0A0A0A" letterSpacing="3">{L("VECTORES DE AFINIDAD DEL ZODÍACO (三合 / 六冲)", "ZODIAC AFFINITY VECTORS (三合 / 六冲)")}</text>
 
           {/* Dos Amigos (San He) */}
           <g transform="translate(40, 80)">
-            <text y="0" className="heading" fontSize="19" fill="#0A0A0A">
-              Tus Dos Amigos (San He · 三合)
-            </text>
+            <text y="0" className="heading" fontSize="19" fill="#0A0A0A">{L("Tus Dos Amigos (San He · 三合)", "Your Two Friends (San He · 三合)")}</text>
             <text y="36" className="serif" fontSize="26" fill="#0A0A0A">
               {chineseAffinityFriends}
             </text>
 
-            <text y="68" className="mono" fontSize="13" fill="#5C5C5C">
-              Resonancia natural y fluidez en vínculos
-            </text>
+            <text y="68" className="mono" fontSize="13" fill="#5C5C5C">{L("Resonancia natural y fluidez en vínculos", "Natural resonance and ease in relationships")}</text>
             {/* Mismo tamaño de caja para los tres animales del bloque y mismo
                 borde derecho, para que la fila se lea como una serie. */}
             <g transform="translate(496, -34)" style={{ color: "#0A0A0A" }}>
@@ -326,38 +300,28 @@ export default function AtlasShareCardSVG({
 
           {/* Un Opuesto (Liu Chong) */}
           <g transform="translate(40, 235)">
-            <text y="0" className="heading" fontSize="19" fill="#0A0A0A">
-              Tu Energía Opuesta (Liu Chong · 六冲)
-            </text>
+            <text y="0" className="heading" fontSize="19" fill="#0A0A0A">{L("Tu Energía Opuesta (Liu Chong · 六冲)", "Your Opposite Energy (Liu Chong · 六冲)")}</text>
             <text y="36" className="serif" fontSize="24" fill="#0A0A0A">
               {chineseAffinityClash}
             </text>
             <g transform="translate(608, -36)" style={{ color: "#0A0A0A" }}>
               <ZodiacAnimalIcon animal={chineseAffinityClash} size={96} />
             </g>
-            <text y="66" className="mono" fontSize="13" fill="#5C5C5C">
-              Tensión estructural que requiere atención consciente
-            </text>
+            <text y="66" className="mono" fontSize="13" fill="#5C5C5C">{L("Tensión estructural que requiere atención consciente", "Structural tension that calls for conscious attention")}</text>
           </g>
         </g>
 
         {/* 10. FOOTER Y FIRMA EDITORIAL */}
         <g transform="translate(100, 1700)">
           <line x1="0" y1="0" x2="880" y2="0" stroke="#E2E2E2" strokeWidth="1" />
-          <text y="40" className="mono" fontSize="13" fill="#5C5C5C" letterSpacing="2">
-            CÁLCULO 100% LOCAL · DETERMINISTA · PRIVACIDAD ABSOLUTA
-          </text>
+          <text y="40" className="mono" fontSize="13" fill="#5C5C5C" letterSpacing="2">{L("CÁLCULO 100% LOCAL · DETERMINISTA · PRIVACIDAD ABSOLUTA", "100% LOCAL CALCULATION · DETERMINISTIC · ABSOLUTE PRIVACY")}</text>
 
         </g>
 
         {/* 11. MARCA DE AGUA EN ESQUINA INFERIOR DERECHA (opacity="0.3") */}
         <g transform="translate(940, 1800)" opacity="0.3" textAnchor="end">
-          <text className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="2">
-            GENERADO LOCALMENTE
-          </text>
-          <text y="18" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="2">
-            SIN BASE DE DATOS
-          </text>
+          <text className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="2">{L("GENERADO LOCALMENTE", "GENERATED LOCALLY")}</text>
+          <text y="18" className="mono" fontSize="11" fill="#5C5C5C" letterSpacing="2">{L("SIN BASE DE DATOS", "NO DATABASE")}</text>
         </g>
       </g>
     </svg>

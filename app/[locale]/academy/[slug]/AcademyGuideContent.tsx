@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -8,22 +9,23 @@ import ProfileBridge from "@/components/academy/ProfileBridge";
 import SectionCover from "@/components/ui/SectionCover";
 
 export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) {
+  const L = useL();
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">{L(<>
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">La Academia</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">{guide.title}</span>
-        </nav>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{guide.title}</span></>)}</nav>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-10 sm:mb-12">
-          <p className="text-sm text-accent font-medium mb-4 label-caps">Guía · Aprender</p>
+          <p className="text-sm text-accent font-medium mb-4 label-caps">{L("Guía · Aprender", "Guide · Learn")}</p>
           <h1 className="page-title text-foreground mb-6">
             {guide.title}
           </h1>
@@ -33,7 +35,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
 
         {/* Qué vas a aprender */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16 p-6 rounded-md border border-border bg-card">
-          <p className="text-sm text-muted font-medium mb-3 label-caps">Qué vas a aprender</p>
+          <p className="text-sm text-muted font-medium mb-3 label-caps">{L("Qué vas a aprender", "What you'll learn")}</p>
           <ul className="space-y-2">
             {guide.whatYouLearn.map((item) => (
               <li key={item} className="text-sm text-foreground leading-relaxed flex gap-2">
@@ -48,7 +50,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Qué es</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Qué es", "What it is")}</h2>
           </div>
           <div className="space-y-4">
             {guide.whatIs.map((p) => (
@@ -61,7 +63,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Cómo funciona</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Cómo funciona", "How it works")}</h2>
           </div>
           <div className="space-y-4">
             {guide.howItWorks.map((p) => (
@@ -74,7 +76,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Cómo lo usa Molino</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Cómo lo usa Molino", "How Molino uses it")}</h2>
           </div>
           <div className="space-y-4">
             {guide.howMolinoUsesIt.map((p) => (
@@ -92,19 +94,19 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Dato, tradición y lectura de Molino</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Dato, tradición y lectura de Molino", "Fact, tradition and Molino's reading")}</h2>
           </div>
           <div className="space-y-4">
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-sm text-accent font-semibold mb-2 label-caps">Dato</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Dato", "Fact")}</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.dato}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-sm text-accent font-semibold mb-2 label-caps">Tradición</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Tradición", "Tradition")}</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.tradicion}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
-              <p className="text-sm text-accent font-semibold mb-2 label-caps">Lectura de Molino</p>
+              <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Lectura de Molino", "Molino's reading")}</p>
               <p className="text-sm text-foreground leading-relaxed">{guide.molino}</p>
             </div>
           </div>
@@ -115,7 +117,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           <motion.section {...fadeUp} className="mb-12 sm:mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
-              <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Ejemplos</h2>
+              <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Ejemplos", "Examples")}</h2>
             </div>
             <div className="space-y-4">
               {guide.examples.map((ex) => (
@@ -131,7 +133,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         {/* Qué NO significa */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-sm text-muted font-medium mb-3 label-caps">Qué NO significa</p>
+            <p className="text-sm text-muted font-medium mb-3 label-caps">{L("Qué NO significa", "What it does NOT mean")}</p>
             <ul className="space-y-2">
               {guide.whatItDoesNotMean.map((item) => (
                 <li key={item.slice(0, 40)} className="text-sm text-muted leading-relaxed flex gap-2">
@@ -147,7 +149,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Dónde seguir explorando</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Dónde seguir explorando", "Where to keep exploring")}</h2>
           </div>
           <div className="flex flex-wrap gap-3">
             {guide.exploreLinks.map((link) => (
@@ -165,24 +167,20 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
         {/* CTA contextual */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16 text-center">
           <div className="p-8 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-sm text-muted mb-4">
-              ¿Querés ver esto aplicado a tu propio mapa?
-            </p>
+            <p className="text-sm text-muted mb-4">{L("¿Querés ver esto aplicado a tu propio mapa?", "Want to see this applied to your own map?")}</p>
             <Link
               href="/profile"
               className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
-            >
-              Ver mi mapa
-            </Link>
+            >{L("Ver mi mapa", "See my map")}</Link>
           </div>
         </motion.section>
 
         {/* Volver a la Academia */}
-        <motion.section {...fadeUp} className="flex justify-center pt-8 border-t border-border">
+        <motion.section {...fadeUp} className="flex justify-center pt-8 border-t border-border">{L(<>
           <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">
             La Academia
           </Link>
-        </motion.section>
+        </>, <><Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">The Academy</Link></>)}</motion.section>
 
       </main>
     </div>

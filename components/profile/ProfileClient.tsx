@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -59,6 +60,7 @@ function resolveProfileSync(serverProfile: UserProfile | null): UserProfile | nu
 const MATRIX_SEEN_KEY = "molino.matrix-seen";
 
 export default function ProfileClient({ serverProfile, futureDateError, catalog }: ProfileClientProps) {
+  const L = useL();
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
@@ -172,9 +174,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
-          <p className="sr-only" role="status" aria-label="Cargando tu mapa...">
-            Cargando tu mapa...
-          </p>
+          <p className="sr-only" role="status" aria-label="Cargando tu mapa...">{L("Cargando tu mapa...", "Loading your map...")}</p>
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-[25rem] mb-6" />
             <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -193,32 +193,19 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
           <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           {futureDateError ? (
             <div role="alert">
-              <h1 className="page-title text-foreground mb-4">
-                Fecha inválida
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
-                La fecha de nacimiento no puede ser futura. Ingresá una fecha válida para generar tu mapa.
-              </p>
-              <Button variant="accent" size="lg" onClick={() => router.push("/")}>
-                Ir a la portada
-              </Button>
+              <h1 className="page-title text-foreground mb-4">{L("Fecha inválida", "Invalid date")}</h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">{L("La fecha de nacimiento no puede ser futura. Ingresá una fecha válida para generar tu mapa.", "The date of birth can't be in the future. Enter a valid date to generate your map.")}</p>
+              <Button variant="accent" size="lg" onClick={() => router.push("/")}>{L("Ir a la portada", "Go to the home page")}</Button>
             </div>
           ) : (
             <>
-              <h1 className="page-title text-foreground mb-4">
-                Tu mapa se genera en la portada
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
-                Elegís tu fecha de nacimiento en la portada y volvés directo acá, a tu numerología, astrología y
-                zodíaco chino ya cruzados en un solo mapa.
-              </p>
+              <h1 className="page-title text-foreground mb-4">{L("Tu mapa se genera en la portada", "Your map is generated on the home page")}</h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">{L("Elegís tu fecha de nacimiento en la portada y volvés directo acá, a tu numerología, astrología y zodíaco chino ya cruzados en un solo mapa.", "You pick your date of birth on the home page and come straight back here, to your numerology, astrology and Chinese zodiac already crossed in a single map.")}</p>
               <div className="flex justify-center mb-6">
-                <Badge variant="muted">Gratis · Sin registro</Badge>
+                <Badge variant="muted">{L("Gratis · Sin registro", "Free · No sign-up")}</Badge>
               </div>
               <div>
-                <Button variant="accent" size="lg" onClick={() => router.push("/")}>
-                  Ir a la portada
-                </Button>
+                <Button variant="accent" size="lg" onClick={() => router.push("/")}>{L("Ir a la portada", "Go to the home page")}</Button>
               </div>
             </>
           )}

@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getPrimaryEvent, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import type { Animal } from "@/lib/data/animalRelations";
@@ -47,6 +48,7 @@ export default function AffinityEditorialContent({
   type: EntityType;
   children?: React.ReactNode;
 }) {
+  const L = useL();
   const primaryEvent = getPrimaryEvent(entity);
   const light = toLightweightEntity(entity);
   const signo = primaryEvent?.date && light.animal && !light.isApproximate ? (light.animal as Animal) : null;
@@ -63,8 +65,8 @@ export default function AffinityEditorialContent({
     <>
       <KnowledgeHero
         crumbs={[
-          { href: "/", label: "Inicio" },
-          { href: "/affinity", label: "Afinidades" },
+          { href: "/", label: L("Inicio", "Home") },
+          { href: "/affinity", label: L("Afinidades", "Affinities") },
           { href: `/affinity/${affinityListingOf(entity)}`, label: meta.plural },
           { label: entity.name },
         ]}
@@ -76,26 +78,26 @@ export default function AffinityEditorialContent({
           <div className="space-y-2">
             {primaryEvent && (
               <p className="text-lg text-foreground">
-                {primaryEvent.label}, {primaryEvent.date ? formatDisplayDate(primaryEvent.date) : `año ${primaryEvent.year}`}
-                {signo && <span className="text-muted">: año {signo}.</span>}
+                {primaryEvent.label}, {primaryEvent.date ? formatDisplayDate(primaryEvent.date) : L(`año ${primaryEvent.year}`, `year ${primaryEvent.year}`)}
+                {signo && <span className="text-muted">{L(<>: año {signo}.</>, <>: {signo} year.</>)}</span>}
               </p>
             )}
-            {entity.keyThemes.length > 0 && <p>Temas: {entity.keyThemes.join(", ").toLowerCase()}.</p>}
+            {entity.keyThemes.length > 0 && <p>{L(<>Temas: {entity.keyThemes.join(", ").toLowerCase()}.</>, <>Themes: {entity.keyThemes.join(", ").toLowerCase()}.</>)}</p>}
             {entity.countryISO && ATLAS_ISOS.has(entity.countryISO) && entity.country && (
-              <p>
+              <p>{L(<>
                 <Link href={`/atlas/${entity.countryISO}`} className="underline underline-offset-4 hover:no-underline">
                   Todo {entity.country} en el Atlas
                 </Link>
-              </p>
+              </>, <><Link href={`/atlas/${entity.countryISO}`} className="underline underline-offset-4 hover:no-underline">All of {entity.country} in the Atlas</Link></>)}</p>
             )}
           </div>
         }
         legend={
           signo && kinds
             ? [
-                { mark: MARKS.ink, text: <>En negro, el signo de {entity.name}: <span className="text-foreground">{signo}</span>.</> },
-                { mark: MARKS.trine, text: <>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{kinds.amigo.join(" y ")}</span>.</> },
-                ...(kinds.enemigo[0] ? [{ mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{kinds.enemigo[0]}</span>.</> }] : []),
+                { mark: MARKS.ink, text: <>{L(<>En negro, el signo de {entity.name}: <span className="text-foreground">{signo}</span>.</>, <>In black, the sign of {entity.name}: <span className="text-foreground">{signo}</span>.</>)}</> },
+                { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{kinds.amigo.join(" y ")}</span>.</>, <>The red triangle links it with its two friends: <span className="text-foreground">{kinds.amigo.join(" and ")}</span>.</>)}</> },
+                ...(kinds.enemigo[0] ? [{ mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>)}</> }] : []),
               ]
             : undefined
         }
@@ -105,7 +107,7 @@ export default function AffinityEditorialContent({
               items={CHINESE_ANIMALS.map((a) => ({ key: a.name, label: a.name, icon: <ZodiacAnimalIcon animal={a.name} size={40} /> }))}
               active={ANIMAL_ORDER.indexOf(signo)}
               center={<ZodiacAnimalIcon animal={signo} size={64} />}
-              ariaLabel={`Rueda del zodíaco chino: ${entity.name} es ${signo}.`}
+              ariaLabel={L(`Rueda del zodíaco chino: ${entity.name} es ${signo}.`, `Chinese zodiac wheel: ${entity.name} is ${signo}.`)}
               className="mx-auto max-w-[34rem]"
             />
           ) : (
@@ -126,20 +128,20 @@ export default function AffinityEditorialContent({
 
       {/* Lo personal: tu afinidad (con mapa) o la fecha rápida (sin mapa) */}
       {children && (
-        <KnowledgeSection label="Tu afinidad">
+        <KnowledgeSection label={L("Tu afinidad", "Your affinity")}>
           {children}
         </KnowledgeSection>
       )}
 
       {primaryEvent && (
-        <KnowledgeSection label="El origen" title="Lo que dice la fecha" tone="alt">
+        <KnowledgeSection label={L("El origen", "The origin")} title={L("Lo que dice la fecha", "What the date says")} tone="alt">
           <dl className="border-t-2 border-ink max-w-4xl divide-y divide-ink/15">
             {[
-              ["Hito", primaryEvent.label],
-              ...(primaryEvent.description && primaryEvent.description !== entity.sourceNote ? [["Qué pasó", primaryEvent.description]] : []),
-              primaryEvent.date ? ["Fecha", formatDisplayDate(primaryEvent.date)] : ["Año", String(primaryEvent.year)],
-              ["Fuente", primaryEvent.source],
-              ...(entity.sourceNote ? [["Nota", entity.sourceNote]] : []),
+              [L("Hito", "Milestone"), primaryEvent.label],
+              ...(primaryEvent.description && primaryEvent.description !== entity.sourceNote ? [[L("Qué pasó", "What happened"), primaryEvent.description]] : []),
+              primaryEvent.date ? [L("Fecha", "Date"), formatDisplayDate(primaryEvent.date)] : [L("Año", "Year"), String(primaryEvent.year)],
+              [L("Fuente", "Source"), primaryEvent.source],
+              ...(entity.sourceNote ? [[L("Nota", "Note"), entity.sourceNote]] : []),
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-1 sm:grid-cols-[12rem_1fr] gap-x-8 gap-y-1 py-4">
                 <dt className="font-display text-xl text-foreground">{k}</dt>
@@ -149,14 +151,14 @@ export default function AffinityEditorialContent({
           </dl>
           <p className="mt-4 text-base text-muted">
             {primaryEvent.date
-              ? "Registro con fecha exacta: el signo se puede afirmar."
-              : "Solo está documentado el año: si cae entre el 21 de enero y el 21 de febrero, el signo podría ser el anterior."}
+              ? L("Registro con fecha exacta: el signo se puede afirmar.", "Record with an exact date: the sign can be stated with certainty.")
+              : L("Solo está documentado el año: si cae entre el 21 de enero y el 21 de febrero, el signo podría ser el anterior.", "Only the year is documented: if it falls between January 21 and February 21, the sign could be the previous one.")}
           </p>
         </KnowledgeSection>
       )}
 
       {signo && primaryEvent?.date && (
-        <KnowledgeSection label="El signo">
+        <KnowledgeSection label={L("El signo", "The sign")}>
           <EntitySignSection name={entity.name} animal={signo} eventLabel={primaryEvent.label} eventDate={primaryEvent.date} />
         </KnowledgeSection>
       )}
@@ -166,10 +168,7 @@ export default function AffinityEditorialContent({
       <section className="bg-background">
         <div className={`${CONTAINER} py-12`}>
           <Note>
-            <p>
-              La afinidad es una lectura simbólica de la tradición del zodíaco chino, no una medición: compara el signo
-              del año en que naciste con el del año de origen de cada entrada.
-            </p>
+            <p>{L("La afinidad es una lectura simbólica de la tradición del zodíaco chino, no una medición: compara el signo del año en que naciste con el del año de origen de cada entrada.", "Affinity is a symbolic reading from the Chinese zodiac tradition, not a measurement: it compares the sign of the year you were born with that of each entry's year of origin.")}</p>
           </Note>
         </div>
       </section>
@@ -183,19 +182,20 @@ export default function AffinityEditorialContent({
  * las fechas cargadas; no hay ranking.
  */
 function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: Animal }) {
+  const L = useL();
   const n = getAtlasNeighbors(entity.id);
   const lists = [
     entity.country && n.sameCountrySign.length > 0 && {
       id: "section-mismo-signo-pais",
-      title: `También ${animal} en ${entity.country}`,
-      intro: `${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`,
+      title: L(`También ${animal} en ${entity.country}`, `Also ${animal} in ${entity.country}`),
+      intro: L(`${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`, `${n.sameCountrySignTotal === 1 ? "The other entry" : `The ${n.sameCountrySignTotal} entries`} in the Atlas of ${entity.country} whose origin falls in a ${animal} year, like ${entity.name}.`),
       items: n.sameCountrySign,
       total: n.sameCountrySignTotal,
     },
     n.lunarYear !== null && n.sameLunarYear.length > 0 && {
       id: "section-mismo-ano-chino",
-      title: `Del mismo año chino: ${animal} de ${n.lunarYear}`,
-      intro: `Entradas del Atlas fechadas dentro del mismo año del calendario chino que ${entity.name}${entity.country ? `, primero las de ${entity.country}` : ""}.`,
+      title: L(`Del mismo año chino: ${animal} de ${n.lunarYear}`, `From the same Chinese year: ${animal} of ${n.lunarYear}`),
+      intro: L(`Entradas del Atlas fechadas dentro del mismo año del calendario chino que ${entity.name}${entity.country ? `, primero las de ${entity.country}` : ""}.`, `Atlas entries dated within the same Chinese calendar year as ${entity.name}${entity.country ? `, those from ${entity.country} first` : ""}.`),
       items: n.sameLunarYear,
       total: n.sameLunarYearTotal,
     },
@@ -208,7 +208,7 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
       {lists.map((list) => (
         <section key={list.id} className="bg-background border-b border-ink/10" aria-labelledby={list.id}>
           <div className={`${CONTAINER} py-16 sm:py-20`}>
-          <p className="text-sm text-muted mb-3 label-caps">En el Atlas</p>
+          <p className="text-sm text-muted mb-3 label-caps">{L("En el Atlas", "In the Atlas")}</p>
           <h2 id={list.id} className="section-title text-foreground mb-3">
             {list.title}
           </h2>
@@ -233,13 +233,13 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
             ))}
           </ul>
           {list.total > list.items.length && (
-            <p className="text-base text-muted mt-4">
+            <p className="text-base text-muted mt-4">{L(<>
               Y {list.total - list.items.length} más en{" "}
               <Link href={`/atlas/explorar/${animal}`} className="underline underline-offset-4 decoration-dotted hover:text-accent">
                 el Atlas, signo {animal}
               </Link>
               .
-            </p>
+            </>, <>And {list.total - list.items.length} more in{" "}<Link href={`/atlas/explorar/${animal}`} className="underline underline-offset-4 decoration-dotted hover:text-accent">the Atlas, {animal} sign</Link>.</>)}</p>
           )}
           </div>
         </section>

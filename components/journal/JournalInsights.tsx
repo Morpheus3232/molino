@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { MOOD_CONFIG, type JournalEntry, type JournalMood } from "@/types/journal";
 import { computeMoodInsights, type MoodInsightGroup } from "@/lib/utils/journalInsights";
@@ -36,6 +37,7 @@ function InsightGroup({ title, groups }: { title: string; groups: MoodInsightGro
  * ya se autocompleta desde Fase 6.
  */
 export default function JournalInsights({ entries }: { entries: JournalEntry[] }) {
+  const L = useL();
   const insights = computeMoodInsights(entries);
   const hasAnyInsight = insights.byTheme.length > 0 || insights.byMoonPhase.length > 0 || insights.byPersonalYear.length > 0;
 
@@ -44,15 +46,13 @@ export default function JournalInsights({ entries }: { entries: JournalEntry[] }
 
   return (
     <div className="border-t-2 border-ink pt-6 pb-10">
-      <h3 className="font-display font-normal text-3xl text-foreground mb-6">Lo que se repite</h3>
+      <h3 className="font-display font-normal text-3xl text-foreground mb-6">{L("Lo que se repite", "What repeats")}</h3>
       <div className={`grid grid-cols-1 ${cols === 3 ? "md:grid-cols-3" : cols === 2 ? "md:grid-cols-2" : ""} gap-px bg-ink/15 border border-ink/15`}>
-        <InsightGroup title="Por tema del día" groups={insights.byTheme} />
-        <InsightGroup title="Por fase lunar" groups={insights.byMoonPhase} />
-        <InsightGroup title="Por Año Personal" groups={insights.byPersonalYear} />
+        <InsightGroup title={L("Por tema del día", "By theme of the day")} groups={insights.byTheme} />
+        <InsightGroup title={L("Por fase lunar", "By moon phase")} groups={insights.byMoonPhase} />
+        <InsightGroup title={L("Por Año Personal", "By Personal Year")} groups={insights.byPersonalYear} />
       </div>
-      <p className="text-base text-muted mt-4">
-        Promedios simples sobre tus propias páginas: cuantas más escribas, más se afina.
-      </p>
+      <p className="text-base text-muted mt-4">{L("Promedios simples sobre tus propias páginas: cuantas más escribas, más se afina.", "Simple averages over your own pages: the more you write, the sharper it gets.")}</p>
     </div>
   );
 }

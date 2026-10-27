@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -16,6 +17,7 @@ const SESSION_KEY = "molino-intro-seen";
  * Solo aparece una vez por sesión y respeta prefers-reduced-motion.
  */
 export default function SiteIntro() {
+  const L = useL();
   const reducedMotion = useReducedMotion();
   const [phase, setPhase] = useState<"wind" | "fade" | "gone">("wind");
 
@@ -115,9 +117,7 @@ export default function SiteIntro() {
 
           <div className="text-center">
             <p className="section-title text-ink">Molino</p>
-            <p className="text-sm text-muted mt-2 label-caps">
-              Mapa personal de autoconocimiento
-            </p>
+            <p className="text-sm text-muted mt-2 label-caps">{L("Mapa personal de autoconocimiento", "Personal self-knowledge map")}</p>
           </div>
         </motion.div>
 

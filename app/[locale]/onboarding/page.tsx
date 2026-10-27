@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -13,12 +14,13 @@ import { markOnboardingCompleted } from "@/lib/session/discovery";
 import { hasStoredProfile } from "@/lib/session/localStorage";
 import LocationStep from "@/components/onboarding/LocationStep";
 
-const STEPS = [
-  { id: "date", label: "Fecha", description: "Tu fecha de nacimiento — la base de todo" },
-  { id: "location", label: "Ubicación", description: "País actual (opcional) para afinidades culturales" },
-];
+const STEPS = (L: Pick2) => ([
+  { id: "date", label: L("Fecha", "Date"), description: L("Tu fecha de nacimiento — la base de todo", "Your date of birth — the basis of everything") },
+  { id: "location", label: L("Ubicación", "Location"), description: L("País actual (opcional) para afinidades culturales", "Current country (optional) for cultural affinities") },
+]);
 
 export default function OnboardingPage() {
+  const L = useL();
   const router = useRouter();
   const [step, setStep] = useState<"date" | "location">("date");
   const [dateValue, setDateValue] = useState("");
@@ -98,7 +100,7 @@ export default function OnboardingPage() {
     [isDateValid, dateValue]
   );
 
-  const currentStepIndex = STEPS.findIndex(s => s.id === step);
+  const currentStepIndex = STEPS(L).findIndex(s => s.id === step);
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,10 +113,10 @@ export default function OnboardingPage() {
           transition={{ duration: 0.4 }}
           className="mb-10"
           role="navigation"
-          aria-label="Progreso del onboarding"
+          aria-label={L("Progreso del onboarding", "Onboarding progress")}
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            {STEPS.map((s, i) => (
+            {STEPS(L).map((s, i) => (
               <span
                 key={s.id}
                 className={`text-sm font-semibold transition-colors label-caps ${
@@ -128,7 +130,7 @@ export default function OnboardingPage() {
           <div className="w-full max-w-md mx-auto h-1 bg-ink/10 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${((currentStepIndex + 1) / STEPS.length) * 100}%` }}
+              animate={{ width: `${((currentStepIndex + 1) / STEPS(L).length) * 100}%` }}
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="h-full bg-accent rounded-full"
             />
@@ -144,12 +146,8 @@ export default function OnboardingPage() {
               transition={{ duration: 0.4 }}
               className="text-center mb-10"
             >
-              <h1 className="page-title text-foreground mb-4">
-                ¿Cuándo naciste?
-              </h1>
-              <p className="text-base text-muted-foreground max-w-sm mx-auto">
-                Solo tu fecha. Sin registro, sin cookies, sin datos personales extra.
-              </p>
+              <h1 className="page-title text-foreground mb-4">{L("¿Cuándo naciste?", "When were you born?")}</h1>
+              <p className="text-base text-muted-foreground max-w-sm mx-auto">{L("Solo tu fecha. Sin registro, sin cookies, sin datos personales extra.", "Just your date. No sign-up, no cookies, no extra personal data.")}</p>
             </motion.div>
 
             {/* Date Input */}
@@ -177,7 +175,7 @@ export default function OnboardingPage() {
                 aria-disabled={!isDateValid}
                 className={!isDateValid ? "!bg-ink/10 !text-ink/45 hover:!bg-ink/10" : ""}
               >
-                Continuar
+                {L("Continuar", "Continue")}
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Button>
             </motion.div>

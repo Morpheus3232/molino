@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { ENTITIES } from "@/lib/data/entities";
 
@@ -6,6 +7,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ entity: string }> }) {
+  const L = await getL();
   const { entity: entityId } = await params;
   const entity = ENTITIES.find(e => e.id === entityId);
 
@@ -42,12 +44,12 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           <g transform="translate(50 38) rotate(315)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
           <circle cx="50" cy="38" r="3.2" fill="#0A0A0A" />
         </svg>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>{L(<>
           <span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, fontFamily: "sans-serif" }}>Molino</span>
           <span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>
             Compatibilidad
           </span>
-        </div>
+        </>, <><span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, fontFamily: "sans-serif" }}>Molino</span><span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>Compatibility</span></>)}</div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flex: 1 }}>
@@ -58,12 +60,12 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           </span>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>{L(<>
           <span style={{ color: "#0A0A0A", fontSize: 40 }}>→</span>
           <span style={{ color: "#5C5C5C", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>
             ¿Qué tan compatible sos?
           </span>
-        </div>
+        </>, <><span style={{ color: "#0A0A0A", fontSize: 40 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>How compatible are you?</span></>)}</div>
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <div style={{
@@ -73,21 +75,17 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           }}>
             <span style={{ fontSize: 32, color: "#FFFFFF" }}>?</span>
           </div>
-          <span style={{ color: "#5C5C5C", fontSize: 20, fontWeight: 500 }}>Vos</span>
+          <span style={{ color: "#5C5C5C", fontSize: 20, fontWeight: 500 }}>{L("Vos", "You")}</span>
         </div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 40 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 28, height: 2, background: "#0A0A0A", borderRadius: 1 }} />
-          <span style={{ color: "#5C5C5C", fontSize: 14 }}>
-            Análisis multi-factor en
-          </span>
+          <span style={{ color: "#5C5C5C", fontSize: 14 }}>{L("Análisis multi-factor en", "Multi-factor analysis on")}</span>
           <span style={{ color: "#0A0A0A", fontSize: 14, fontWeight: 600 }}>Molino</span>
         </div>
-        <span style={{ color: "#5C5C5C", fontSize: 12 }}>
-          Numerología · Astrología · Zodiaco Chino
-        </span>
+        <span style={{ color: "#5C5C5C", fontSize: 12 }}>{L("Numerología · Astrología · Zodiaco Chino", "Numerology · Astrology · Chinese Zodiac")}</span>
       </div>
     </div>,
     { ...size }

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,15 +36,15 @@ interface JournalEditorProps {
 }
 
 /** Micro-reflexiones para arrancar cuando no hay prompt contextual ni texto. */
-const DAILY_PROMPTS = [
-  "¿Qué decisión tomaste hoy, por más chica que sea?",
-  "¿Qué emoción dominó tu día y de dónde creés que vino?",
-  "¿Hubo una sincronicidad o casualidad que te llamó la atención?",
-  "¿Qué te dio energía hoy? ¿Y qué te la sacó?",
-  "¿Qué te gustaría anotar para que tu yo del futuro entienda este momento?",
-  "¿Te cruzaste con alguien que cambió tu ánimo? ¿Cómo?",
-  "¿A qué le dijiste que sí hoy? ¿Y a qué le dijiste que no?",
-];
+const DAILY_PROMPTS = (L: Pick2) => ([
+  L("¿Qué decisión tomaste hoy, por más chica que sea?", "What decision did you make today, however small?"),
+  L("¿Qué emoción dominó tu día y de dónde creés que vino?", "What emotion dominated your day, and where do you think it came from?"),
+  L("¿Hubo una sincronicidad o casualidad que te llamó la atención?", "Was there a synchronicity or coincidence that caught your attention?"),
+  L("¿Qué te dio energía hoy? ¿Y qué te la sacó?", "What gave you energy today? And what drained it?"),
+  L("¿Qué te gustaría anotar para que tu yo del futuro entienda este momento?", "What would you like to note down so your future self understands this moment?"),
+  L("¿Te cruzaste con alguien que cambió tu ánimo? ¿Cómo?", "Did you run into someone who changed your mood? How?"),
+  L("¿A qué le dijiste que sí hoy? ¿Y a qué le dijiste que no?", "What did you say yes to today? And what did you say no to?"),
+]);
 
 export default function JournalEditor({
   profile,
@@ -53,6 +54,7 @@ export default function JournalEditor({
   contextualPrompt,
   className = "",
 }: JournalEditorProps) {
+  const L = useL();
   const [content, setContent] = useState(editingEntry?.content || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
   const [tags, setTags] = useState<string[]>(editingEntry?.tags || []);
@@ -87,7 +89,7 @@ export default function JournalEditor({
           setTags(d.tags);
           setShowTags(true);
         }
-        setDraftNote("Borrador recuperado");
+        setDraftNote(L("Borrador recuperado", "Draft recovered"));
       }
     } catch {
       /* sin almacenamiento: se escribe igual */
@@ -113,13 +115,13 @@ export default function JournalEditor({
 
   // Semilla de prompt diario
   const initialSeed = useMemo(
-    () => Math.floor(new Date().getDate() % DAILY_PROMPTS.length),
+    () => Math.floor(new Date().getDate() % DAILY_PROMPTS(L).length),
     []
   );
   const promptSeed = initialSeed;
 
   const currentPrompt = useMemo(
-    () => contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length],
+    () => contextualPrompt || DAILY_PROMPTS(L)[promptSeed % DAILY_PROMPTS(L).length],
     [contextualPrompt, promptSeed]
   );
 
@@ -136,7 +138,7 @@ export default function JournalEditor({
 
     if (!profile) {
       return {
-        yearCycle: { year, label: "Ciclo del año" },
+        yearCycle: { year, label: L("Ciclo del año", "Cycle of the year") },
         monthCycle: { personalMonth: month },
         dayEnergy: { theme: "Reflexión" },
       };
@@ -243,7 +245,7 @@ export default function JournalEditor({
             role="status"
           >
             <Check className="w-4 h-4" />
-            <span>Guardado en tu navegador</span>
+            <span>{L("Guardado en tu navegador", "Saved in your browser")}</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -251,7 +253,7 @@ export default function JournalEditor({
       {/* La fecha es el título de la hoja; el contexto del día, su bajada. */}
       <header>
         <p className="text-sm text-muted label-caps">
-          {editingEntry ? "Corrigiendo una página" : "Página de hoy"}
+          {editingEntry ? L("Corrigiendo una página", "Correcting a page") : L("Página de hoy", "Today's page")}
         </p>
         <h2 className="mt-2 font-display font-normal text-[clamp(2.25rem,5vw,3.75rem)] leading-[1] tracking-tight text-foreground first-letter:uppercase">
           {formattedDisplayDate}
@@ -259,7 +261,7 @@ export default function JournalEditor({
         {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.dayEnergy?.moonPhase) && (
           <p className="mt-3 text-lg text-muted">
             {[
-              cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
+              cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${cycle.dayEnergy.personalDay}`),
               cycle.dayEnergy?.theme,
               cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
             ]
@@ -274,7 +276,7 @@ export default function JournalEditor({
             pantallas angostas se ven los iconos y el nombre se confirma abajo;
             el nombre completo siempre está en el aria-label. */}
         <fieldset>
-          <legend className="text-lg text-foreground mb-3">Hoy me siento…</legend>
+          <legend className="text-lg text-foreground mb-3">{L("Hoy me siento…", "Today I feel…")}</legend>
           <div className="grid grid-cols-5 gap-px bg-ink/15 border border-ink/15">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
@@ -309,7 +311,7 @@ export default function JournalEditor({
             <DiaryEditor
               ref={sheet}
               id="journal-content"
-              ariaLabel="Lo que querés escribir hoy"
+              ariaLabel={L("Lo que querés escribir hoy", "What you want to write today")}
               initialMarkdown={editingEntry?.content ?? ""}
               placeholder={editingEntry ? "" : currentPrompt}
               onChange={(md) => {
@@ -336,17 +338,15 @@ export default function JournalEditor({
               className="inline-flex items-center gap-2 text-base text-muted hover:text-foreground transition-colors min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
-              <span>Agregar tema {tags.length > 0 && `(${tags.length})`}</span>
+              <span>{L(<>Agregar tema {tags.length > 0 && `(${tags.length})`}</>, <>Add a topic {tags.length > 0 && `(${tags.length})`}</>)}</span>
             </button>
           ) : (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-base text-foreground">
+                <span className="text-base text-foreground">{L(<>
                   Temas <span className="text-muted">(opcional)</span>
-                </span>
-                <button type="button" onClick={() => setShowTags(false)} className="text-sm text-muted hover:text-foreground underline underline-offset-4">
-                  Ocultar
-                </button>
+                </>, <>Topics <span className="text-muted">(optional)</span></>)}</span>
+                <button type="button" onClick={() => setShowTags(false)} className="text-sm text-muted hover:text-foreground underline underline-offset-4">{L("Ocultar", "Hide")}</button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {QUICK_TAGS.map((tag) => {
@@ -373,9 +373,7 @@ export default function JournalEditor({
         {/* 4. Guardar */}
         <div className="flex items-center justify-end gap-6 pt-6 border-t border-ink/15">
           {editingEntry && onCancelEdit && (
-            <button type="button" onClick={onCancelEdit} className="text-base text-muted hover:text-foreground underline underline-offset-4 min-h-[44px]">
-              Cancelar
-            </button>
+            <button type="button" onClick={onCancelEdit} className="text-base text-muted hover:text-foreground underline underline-offset-4 min-h-[44px]">{L("Cancelar", "Cancel")}</button>
           )}
           <button
             type="submit"
@@ -383,14 +381,14 @@ export default function JournalEditor({
             className="inline-flex items-center gap-2 px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps disabled:bg-ink/10 disabled:text-muted disabled:cursor-not-allowed"
           >
             {isSaving ? (
-              <>Guardando…</>
+              <>{L("Guardando…", "Saving…")}</>
             ) : savedSuccess ? (
               <>
                 <Check className="w-4 h-4" />
-                Guardado
+                {L("Guardado", "Saved")}
               </>
             ) : (
-              <>{editingEntry ? "Guardar la corrección" : "Guardar en el diario"}</>
+              <>{editingEntry ? L("Guardar la corrección", "Save the correction") : L("Guardar en el diario", "Save to the journal")}</>
             )}
           </button>
         </div>

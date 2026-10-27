@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { getAtlasCountries, isoToFlagEmoji } from "@/lib/data/atlas-queries";
 
@@ -6,6 +7,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ countryISO: string }> }) {
+  const L = await getL();
   const { countryISO } = await params;
   const iso = countryISO.toUpperCase();
   const country = getAtlasCountries().find((c) => c.iso === iso);
@@ -45,18 +47,16 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>{L(<>
           <span style={{ fontSize: 34 }}>M</span>
           <span style={{ color: "#0A0A0A", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
-        </div>
+        </>, <><span style={{ fontSize: 34 }}>M</span><span style={{ color: "#0A0A0A", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span></>)}</div>
 
         <span style={{ fontSize: 140, lineHeight: 1 }}>{flag}</span>
         <span style={{ color: "#0A0A0A", fontSize: 56, fontWeight: 700, marginTop: 24 }}>{name}</span>
-        <span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, marginTop: 12, textTransform: "uppercase", letterSpacing: "0.2em" }}>
-          Afinidades simbólicas
-        </span>
+        <span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, marginTop: 12, textTransform: "uppercase", letterSpacing: "0.2em" }}>{L("Afinidades simbólicas", "Symbolic affinities")}</span>
 
-        <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 40 }}>Explorá el Atlas de {name} en Molino</span>
+        <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 40 }}>{L(<>Explorá el Atlas de {name} en Molino</>, <>Explore the Atlas of {name} on Molino</>)}</span>
       </div>
     ),
     { ...size }

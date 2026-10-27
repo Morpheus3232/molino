@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -57,6 +58,7 @@ function isValidDate(dateStr: string): boolean {
 export type UrlParams = Record<string, string | undefined>;
 
 export default function ParejaClient({ params }: { params: UrlParams }) {
+  const L = useL();
   const router = useRouter();
   // Antes useSearchParams: obligaba a renderizar la página solo en el navegador
   // y Google recibía "Cargando comparativa..." en vez del formulario.
@@ -135,10 +137,10 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
         {/* Header */}
         <PageHero
           bare
-          crumbs={[{ href: "/", label: "Inicio" }, { label: "Modo Pareja" }]}
-          eyebrow="Modo Pareja · dos mapas cruzados"
-          title="Comparativa de mapas"
-          lead="Dos fechas de nacimiento y los tres sistemas cara a cara: Camino de Vida, signo solar, zodíaco chino y elementos."
+          crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Modo Pareja", "Couple Mode") }]}
+          eyebrow={L("Modo Pareja · dos mapas cruzados", "Couple Mode · two maps crossed")}
+          title={L("Comparativa de mapas", "Map comparison")}
+          lead={L("Dos fechas de nacimiento y los tres sistemas cara a cara: Camino de Vida, signo solar, zodíaco chino y elementos.", "Two dates of birth and the three systems face to face: Life Path, sun sign, Chinese zodiac and elements.")}
           imageKey="paginas/pareja"
         />
 
@@ -170,9 +172,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
               {/* Quick Sample Demo Banner */}
               <div className="mb-6 p-4 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-2">
-                  <p className="text-xs text-muted">
-                    ¿Querés ver cómo funciona sin ingresar fechas?
-                  </p>
+                  <p className="text-xs text-muted">{L("¿Querés ver cómo funciona sin ingresar fechas?", "Want to see how it works without entering dates?")}</p>
                 </div>
                 <button
                   type="button"
@@ -187,9 +187,9 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                     }
                   }}
                   className="px-3 py-1.5 rounded-lg bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"
-                >
+                >{L(<>
                   Cargar ejemplo (Ana & Lucas)
-                </button>
+                </>, <>Load example (Ana & Lucas)</>)}</button>
               </div>
 
               <form onSubmit={handleCompare} className="space-y-8">
@@ -197,24 +197,22 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Card 1: Persona A */}
                   <div className="rounded-xl border border-gold/30 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">{L(<>
                       <span className="text-sm px-2.5 py-1 rounded-full bg-gold/10 text-foreground font-bold label-caps">
                         Persona A
                       </span>
                       <span className="font-mono text-xs text-muted">Primer mapa</span>
-                    </div>
+                    </>, <><span className="text-sm px-2.5 py-1 rounded-full bg-gold/10 text-foreground font-bold label-caps">Person A</span><span className="font-mono text-xs text-muted">First map</span></>)}</div>
 
                     <div>
                       <label
                         htmlFor="name-a"
                         className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-                      >
-                        Nombre o apodo (opcional)
-                      </label>
+                      >{L("Nombre o apodo (opcional)", "Name or nickname (optional)")}</label>
                       <input
                         id="name-a"
                         type="text"
-                        placeholder="Ej. Alex"
+                        placeholder={L("Ej. Alex", "E.g. Alex")}
                         value={nameA}
                         onChange={(e) => setNameA(e.target.value)}
                         className="w-full rounded-md bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
@@ -222,33 +220,29 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                     </div>
 
                     <div>
-                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
-                        Fecha de Nacimiento
-                      </label>
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">{L("Fecha de Nacimiento", "Date of Birth")}</label>
                       <DateInput value={dateA} onChange={setDateA} />
                     </div>
                   </div>
 
                   {/* Card 2: Persona B */}
                   <div className="rounded-xl border border-ink/20 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">{L(<>
                       <span className="text-sm px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold label-caps">
                         Persona B
                       </span>
                       <span className="font-mono text-xs text-muted">Segundo mapa</span>
-                    </div>
+                    </>, <><span className="text-sm px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold label-caps">Person B</span><span className="font-mono text-xs text-muted">Second map</span></>)}</div>
 
                     <div>
                       <label
                         htmlFor="name-b"
                         className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-                      >
-                        Nombre o apodo (opcional)
-                      </label>
+                      >{L("Nombre o apodo (opcional)", "Name or nickname (optional)")}</label>
                       <input
                         id="name-b"
                         type="text"
-                        placeholder="Ej. Sam"
+                        placeholder={L("Ej. Sam", "E.g. Sam")}
                         value={nameB}
                         onChange={(e) => setNameB(e.target.value)}
                         className="w-full rounded-md bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
@@ -256,9 +250,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                     </div>
 
                     <div>
-                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">
-                        Fecha de Nacimiento
-                      </label>
+                      <label className="block text-sm text-muted mb-3 font-semibold text-center label-caps">{L("Fecha de Nacimiento", "Date of Birth")}</label>
                       <DateInput value={dateB} onChange={setDateB} />
                     </div>
                   </div>
@@ -272,9 +264,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                     size="lg"
                     disabled={!isValidDate(dateA) || !isValidDate(dateB)}
                     className="w-full sm:w-auto min-w-[240px] text-base py-4"
-                  >
-                    Comparar mapas
-                  </Button>
+                  >{L("Comparar mapas", "Compare maps")}</Button>
 
                   {isValidDate(dateA) && !isValidDate(dateB) && (
                     <button
@@ -286,17 +276,17 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                         setTimeout(() => setCopiedInvite(false), 2500);
                       }}
                       className="w-full sm:w-auto px-5 py-3.5 rounded-md bg-accent/10 hover:bg-accent/20 border border-accent/25 text-accent font-mono text-xs font-semibold inline-flex items-center justify-center gap-2 transition-colors"
-                      title="Copiar invitación P2P para tu pareja"
+                      title={L("Copiar invitación P2P para tu pareja", "Copy a P2P invitation for your partner")}
                     >
                       {copiedInvite ? (
                         <>
                           <Check className="w-4 h-4 text-emerald-400" />
-                          <span className="text-emerald-400">¡Invitación copiada!</span>
+                          <span className="text-emerald-400">{L("¡Invitación copiada!", "Invitation copied!")}</span>
                         </>
                       ) : (
                         <>
                           <Share2 className="w-4 h-4" />
-                          <span>Invitar a tu pareja a completar</span>
+                          <span>{L("Invitar a tu pareja a completar", "Invite your partner to fill it in")}</span>
                         </>
                       )}
                     </button>
@@ -306,37 +296,27 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                 {/* Privacy & Methodology Footer note */}
                 <div className="flex items-center justify-center gap-2 text-xs text-muted font-mono pt-4">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Sin registro · 100% calculado en tu navegador</span>
+                  <span>{L("Sin registro · 100% calculado en tu navegador", "No sign-up · 100% calculated in your browser")}</span>
                 </div>
               </form>
 
               {/* Explanatory Pills Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="text-sm text-accent font-bold block mb-1 label-caps">
-                    01 · Numerología
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Compara los Números de Camino de Vida y la compatibilidad de propósitos centrales.
-                  </p>
+                  <span className="text-sm text-accent font-bold block mb-1 label-caps">{L("01 · Numerología", "01 · Numerology")}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Compara los Números de Camino de Vida y la compatibilidad de propósitos centrales.", "Compares the Life Path Numbers and how well their core purposes fit.")}</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">
+                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">{L(<>
                     02 · Astrología & Elementos
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Analiza la química entre signos solares y la armonía entre fuego, tierra, aire y agua.
-                  </p>
+                  </>, <>02 · Astrology & Elements</>)}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Analiza la química entre signos solares y la armonía entre fuego, tierra, aire y agua.", "Analyzes the chemistry between sun signs and the harmony between fire, earth, air and water.")}</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">
-                    03 · Zodíaco Chino
-                  </span>
-                  <p className="text-xs text-muted leading-relaxed">
-                    Descubrí tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.
-                  </p>
+                  <span className="text-sm text-foreground font-bold block mb-1 label-caps">{L("03 · Zodíaco Chino", "03 · Chinese Zodiac")}</span>
+                  <p className="text-xs text-muted leading-relaxed">{L("Descubrí tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.", "Discover affinity triads, secret friends and the traditional points of contrast.")}</p>
                 </div>
               </div>
             </motion.div>

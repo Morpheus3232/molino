@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
@@ -29,6 +30,7 @@ async function coverDataUri(imagePath: string): Promise<string | null> {
 }
 
 export default async function OgImage({ params }: Props) {
+  const L = await getL();
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   const cover = post ? await coverDataUri(post.image) : null;
@@ -90,11 +92,9 @@ export default async function OgImage({ params }: Props) {
               maxWidth: 1000,
             }}
           >
-            {post?.title ?? "Artículo de Molino"}
+            {post?.title ?? L("Artículo de Molino", "A Molino article")}
           </div>
-          <div style={{ fontSize: 22, color: "#CFCFCF", letterSpacing: "0.15em", marginTop: 32 }}>
-            MOLINO — AUTOCONOCIMIENTO
-          </div>
+          <div style={{ fontSize: 22, color: "#CFCFCF", letterSpacing: "0.15em", marginTop: 32 }}>{L("MOLINO — AUTOCONOCIMIENTO", "MOLINO — SELF-KNOWLEDGE")}</div>
         </div>
       </div>
     ),

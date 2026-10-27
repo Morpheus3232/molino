@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -18,16 +19,16 @@ import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import SectionCover from "@/components/ui/SectionCover";
 import { animalImageKey } from "@/lib/data/section-images";
 
-const CATEGORY_ORDER = [
-  { type: "country", label: "Países" },
-  { type: "city", label: "Ciudades" },
-  { type: "autos", label: "Marcas de autos" },
-  { type: "ropa", label: "Marcas de ropa" },
-  { type: "brand", label: "Otras marcas" },
-  { type: "university", label: "Universidades" },
-  { type: "artist", label: "Famosos" },
-  { type: "movie", label: "Películas" },
-];
+const CATEGORY_ORDER = (L: Pick2) => ([
+  { type: "country", label: L("Países", "Countries") },
+  { type: "city", label: L("Ciudades", "Cities") },
+  { type: "autos", label: L("Marcas de autos", "Car brands") },
+  { type: "ropa", label: L("Marcas de ropa", "Clothing brands") },
+  { type: "brand", label: L("Otras marcas", "Other brands") },
+  { type: "university", label: L("Universidades", "Universities") },
+  { type: "artist", label: L("Famosos", "Famous people") },
+  { type: "movie", label: L("Películas", "Movies") },
+]);
 
 interface AnimalExplorerProps {
   animal: string;
@@ -40,6 +41,7 @@ function entityHref(entity: LightweightEntity): string {
 }
 
 export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExplorerProps) {
+  const L = useL();
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
 
@@ -57,7 +59,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
       map.set(key, list);
     }
     const result: { type: string; label: string; entities: LightweightEntity[] }[] = [];
-    for (const { type, label } of CATEGORY_ORDER) {
+    for (const { type, label } of CATEGORY_ORDER(L)) {
       const pool = map.get(type);
       if (!pool || pool.length === 0) continue;
       const sorted = [...pool];
@@ -79,19 +81,15 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
         <AtlasBreadcrumbs
           crumbs={[
             { href: "/atlas", label: "Atlas" },
-            { label: isEnemy ? "Energía opuesta" : "Explorar" },
+            { label: isEnemy ? L("Energía opuesta", "Opposite energy") : L("Explorar", "Explore") },
           ]}
         />
 
         <motion.header className="mb-16" {...fadeUp}>
           {isEnemy ? (
-            <p className="text-sm text-muted font-medium mb-3 label-caps">
-              Energía opuesta
-            </p>
+            <p className="text-sm text-muted font-medium mb-3 label-caps">{L("Energía opuesta", "Opposite energy")}</p>
           ) : (
-            <p className="text-sm text-accent font-semibold mb-3 label-caps">
-              Explorar
-            </p>
+            <p className="text-sm text-accent font-semibold mb-3 label-caps">{L("Explorar", "Explore")}</p>
           )}
 
           <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10">
@@ -101,8 +99,8 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
               </h1>
               <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
                 {isEnemy
-                  ? "Explorá entidades asociadas al animal opuesto en el ciclo zodiacal."
-                  : "Explorá países, ciudades, marcas y entidades que comparten este animal del Zodiaco Chino."}
+                  ? L("Explorá entidades asociadas al animal opuesto en el ciclo zodiacal.", "Explore entities associated with the opposite animal in the zodiac cycle.")
+                  : L("Explorá países, ciudades, marcas y entidades que comparten este animal del Zodiaco Chino.", "Explore countries, cities, brands and entities that share this Chinese Zodiac animal.")}
               </p>
             </div>
             <div className="shrink-0 select-none">
@@ -113,7 +111,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
         </motion.header>
 
         {/* Categories */}
-        <section aria-label="Categorías" className="relative">
+        <section aria-label={L("Categorías", "Categories")} className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/15 hidden sm:block" aria-hidden="true" />
 
           <div className="sm:pl-10 space-y-14 sm:space-y-16">
@@ -178,13 +176,13 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
 
         {grouped.length === 0 && (
           <motion.div {...fadeUpDelayed(0.1)} className="text-center py-16">
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted">{L(<>
               No hay entidades registradas para {animal} en este momento.
-            </p>
+            </>, <>There are no entities recorded for {animal} right now.</>)}</p>
           </motion.div>
         )}
 
-        <div className="mt-16 pt-12 border-t border-ink/10">
+        <div className="mt-16 pt-12 border-t border-ink/10">{L(<>
           <Link
             href="/atlas"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"
@@ -192,7 +190,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
             <span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span>
             <span>Volver al Atlas</span>
           </Link>
-        </div>
+        </>, <><Link href="/atlas" className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"><span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span><span>Back to the Atlas</span></Link></>)}</div>
       </div>
     </main>
   );

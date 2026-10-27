@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
@@ -27,6 +28,7 @@ export default function PartnershipComparison({
   labelA = "Socio A",
   labelB = "Socio B",
 }: PartnershipComparisonProps) {
+  const L = useL();
   const result = useMemo<PartnershipCompatibilityResult>(
     () => calculatePartnershipCompatibility(profileA, profileB),
     [profileA, profileB]
@@ -43,9 +45,7 @@ export default function PartnershipComparison({
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Handshake className="w-4 h-4 text-accent" />
-          <span className="text-sm text-accent font-bold label-caps">
-            Afinidad de Sociedad
-          </span>
+          <span className="text-sm text-accent font-bold label-caps">{L("Afinidad de Sociedad", "Partnership Affinity")}</span>
         </div>
 
         <div className="my-4 flex flex-col items-center justify-center">
@@ -74,12 +74,10 @@ export default function PartnershipComparison({
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
           <div>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
               Puntos de Conexión & Sinergia
-            </h3>
-            <p className="text-xs text-muted">
-              Donde las energías de ambos fluyen de forma natural y se complementan trabajando juntos.
-            </p>
+            </>, <>Points of Connection & Synergy</>)}</h3>
+            <p className="text-xs text-muted">{L("Donde las energías de ambos fluyen de forma natural y se complementan trabajando juntos.", "Where both people's energies flow naturally and complement each other when working together.")}</p>
           </div>
         </div>
 
@@ -120,28 +118,26 @@ export default function PartnershipComparison({
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">{L(<>
               Puntos de Atención & Desafíos
-            </h3>
-            <p className="text-xs text-muted">
-              Diferencias de ritmo o criterio que conviene resolver con acuerdos claros, no por sentado.
-            </p>
+            </>, <>Points of Attention & Challenges</>)}</h3>
+            <p className="text-xs text-muted">{L("Diferencias de ritmo o criterio que conviene resolver con acuerdos claros, no por sentado.", "Differences in rhythm or judgment best resolved with clear agreements, not taken for granted.")}</p>
           </div>
         </div>
 
         <div className="space-y-4">
           {result.challenges.map((ch) => (
             <div key={ch.id} className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2">{L(<>
                 <span className="text-sm text-warning font-semibold label-caps">
                   Área: {ch.area}
                 </span>
-              </div>
+              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {ch.area}</span></>)}</div>
               <p className="text-xs sm:text-sm text-foreground leading-relaxed">{ch.description}</p>
-              <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">
+              <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">{L(<>
                 <span className="text-accent font-bold">💡 Consejo:</span>
                 <span>{ch.recommendation}</span>
-              </div>
+              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{ch.recommendation}</span></>)}</div>
             </div>
           ))}
         </div>
@@ -156,9 +152,7 @@ export default function PartnershipComparison({
       >
         <div className="flex items-center gap-2.5 mb-3">
           <Compass className="w-5 h-5 text-accent" />
-          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
-            Síntesis para Trabajar Juntos
-          </h3>
+          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L("Síntesis para Trabajar Juntos", "Synthesis for Working Together")}</h3>
         </div>
         <blockquote className="text-sm sm:text-base text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-4 py-1">
           &ldquo;{result.workingAdvice}&rdquo;

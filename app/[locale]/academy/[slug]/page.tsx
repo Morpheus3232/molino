@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -59,6 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AcademyArticlePage({ params }: Props) {
+  const L = await getL();
   const { slug } = await params;
   const piece = getAcademyPieceBySlug(slug);
   const guide = piece ? undefined : getAcademyGuideBySlug(slug);
@@ -85,8 +87,8 @@ export default async function AcademyArticlePage({ params }: Props) {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "La Academia", item: siteUrl("/academy") },
+        { "@type": "ListItem", position: 1, name: L("Inicio", "Home"), item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: L("La Academia", "The Academy"), item: siteUrl("/academy") },
         { "@type": "ListItem", position: 3, name: title },
       ],
     },

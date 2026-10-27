@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
@@ -82,6 +83,7 @@ export default function EntityVisual({
   size = 40,
   className = "",
 }: EntityVisualProps) {
+  const L = useL();
   // Si la imagen remota falla (URL 404, host caído), caemos al ícono genérico
   // en vez de dejar un tile vacío.
   const [imageErrored, setImageErrored] = useState(false);
@@ -129,7 +131,7 @@ export default function EntityVisual({
         style={baseStyle}
         className={`inline-flex items-center justify-center shrink-0 overflow-hidden bg-ink/[0.04] border border-ink/10 ${shapeClass} ${className}`}
         role="img"
-        aria-label={`Bandera de ${name}`}
+        aria-label={L(`Bandera de ${name}`, `Flag of ${name}`)}
       >
         <span style={{ fontSize: size * 0.62 }} className="flag-emoji leading-none select-none">
           {flag ?? "🌐"}
@@ -165,7 +167,7 @@ export default function EntityVisual({
         style={baseStyle}
         className={`inline-flex items-center justify-center shrink-0 overflow-hidden bg-paper-alt border border-ink/10 text-accent ${shapeClass} ${className}`}
         role="img"
-        aria-label={`Signo ${zodiacAnimal}`}
+        aria-label={L(`Signo ${zodiacAnimal}`, `${zodiacAnimal} sign`)}
       >
         <ZodiacAnimalIcon animal={zodiacAnimal} size={iconSize} />
       </span>

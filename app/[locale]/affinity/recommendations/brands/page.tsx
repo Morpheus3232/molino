@@ -1,15 +1,16 @@
+import { useL } from "@/lib/i18n/useL";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import type { LightweightEntity } from "@/types/atlas";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
 const catalog: LightweightEntity[] = SYMBOLIC_ENTITIES
   .filter(e => e.type === "brand")
   .map(toLightweightEntity);
 
-export const metadata = createRouteMetadata({
-  title: "Marcas para priorizar este ciclo",
-  description: "Prioridad del ciclo actual: qué marcas explorar ahora según tu perfil simbólico.",
+export const generateMetadata = metadataFor({
+  title: ["Marcas para priorizar este ciclo", "Brands to prioritize this cycle"],
+  description: ["Prioridad del ciclo actual: qué marcas explorar ahora según tu perfil simbólico.", "Priority for the current cycle: which brands to explore now according to your symbolic profile."],
   path: "/affinity/recommendations/brands",
   // Sin perfil no hay nada que mostrar (pide crear el mapa): fuera del índice,
   // pero los enlaces se siguen. Las listas por categoría sí se indexan.
@@ -17,12 +18,13 @@ export const metadata = createRouteMetadata({
 });
 
 export default function BrandsRecommendationPage() {
+  const L = useL();
   return (
     <RecommendationContent
       entityType="brand"
       catalog={catalog}
-      title="Marcas alineadas contigo"
-      subtitle="Qué marcas priorizar en el ciclo actual, según tu perfil simbólico."
+      title={L("Marcas alineadas contigo", "Brands aligned with you")}
+      subtitle={L("Qué marcas priorizar en el ciclo actual, según tu perfil simbólico.", "Which brands to prioritize in the current cycle, according to your symbolic profile.")}
     />
   );
 }

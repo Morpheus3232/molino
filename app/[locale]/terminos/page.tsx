@@ -1,9 +1,9 @@
 import TerminosContent from "./TerminosContent";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Términos y Condiciones",
-  description: "Términos y condiciones de uso de Molino.",
+export const generateMetadata = metadataFor({
+  title: ["Términos y Condiciones", "Terms and Conditions"],
+  description: ["Términos y condiciones de uso de Molino.", "Terms and conditions of use for Molino."],
   path: "/terminos",
   image: "/opengraph-image",
 });

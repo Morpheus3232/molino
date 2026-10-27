@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { getEntityById, getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
@@ -8,6 +9,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ type: string; slug: string }> }) {
+  const L = await getL();
   const { slug } = await params;
   const entity = getEntityById(slug);
 
@@ -28,7 +30,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
     : { animal: "ícono" };
 
   // Get relationship info for a generic "Descubrí" message
-  const relationLabel = "afinidad simbólica";
+  const relationLabel = L("afinidad simbólica", "symbolic affinity");
 
   return new ImageResponse(
     (
@@ -69,9 +71,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
           <span style={{
             color: "#0A0A0A", fontSize: 12, fontWeight: 600,
             textTransform: "uppercase", letterSpacing: "0.2em",
-          }}>
-            Afinidad simbólica
-          </span>
+          }}>{L("Afinidad simbólica", "Symbolic affinity")}</span>
         </div>
 
         {/* Main content — Entity info + CTA */}
@@ -89,15 +89,15 @@ export default async function Image({ params }: { params: Promise<{ type: string
           </div>
 
           {/* Center — Arrow + CTA */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>{L(<>
             <span style={{ color: "#0A0A0A", fontSize: 48 }}>→</span>
             <span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
               ¿Cuál es tu signo?
             </span>
-          </div>
+          </>, <><span style={{ color: "#0A0A0A", fontSize: 48 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>What's your sign?</span></>)}</div>
 
           {/* User side — question mark */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>{L(<>
             <span style={{ fontSize: 96 }}>🪞</span>
             <span style={{ color: "#0A0A0A", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>
               ?
@@ -105,21 +105,19 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <span style={{ color: "#5C5C5C", fontSize: 18 }}>
               Vos
             </span>
-          </div>
+          </>, <><span style={{ fontSize: 96 }}>🪞</span><span style={{ color: "#0A0A0A", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>?</span><span style={{ color: "#5C5C5C", fontSize: 18 }}>You</span></>)}</div>
         </div>
 
         {/* Bottom — CTA + disclaimer */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 32, height: 2, background: "#0A0A0A", borderRadius: 1 }} />
-            <span style={{ color: "#5C5C5C", fontSize: 14 }}>
+            <span style={{ color: "#5C5C5C", fontSize: 14 }}>{L(<>
               Descubrí tu afinidad con {entity.name} en
-            </span>
+            </>, <>Discover your affinity with {entity.name} on</>)}</span>
             <span style={{ color: "#0A0A0A", fontSize: 14, fontWeight: 600 }}>Molino</span>
           </div>
-          <span style={{ color: "#5C5C5C", fontSize: 12 }}>
-            Según el zodíaco chino
-          </span>
+          <span style={{ color: "#5C5C5C", fontSize: 12 }}>{L("Según el zodíaco chino", "According to the Chinese zodiac")}</span>
         </div>
       </div>
     ),

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { motion } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
@@ -13,6 +14,7 @@ interface CircleAlignmentProps {
 }
 
 export default function CircleAlignment({ profile }: CircleAlignmentProps) {
+  const L = useL();
   const reduceMotion = useSafeReducedMotion();
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const relationMap = getRelationshipMap(userAnimal);
@@ -39,12 +41,8 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
     <section className="py-16 sm:py-24" aria-labelledby="circle-heading">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div ref={ref} {...reveal}>
-          <p className="text-sm text-muted mb-4 label-caps">
-            03 · Tu círculo
-          </p>
-          <h2 id="circle-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">
-            Tu energía no llega sola
-          </h2>
+          <p className="text-sm text-muted mb-4 label-caps">{L("03 · Tu círculo", "03 · Your circle")}</p>
+          <h2 id="circle-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">{L("Tu energía no llega sola", "Your energy doesn't come alone")}</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div
@@ -55,11 +53,11 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-accent)" }} />
-                <h3 className="font-medium text-foreground">BUENA COMPATIBILIDAD — Animales aliados</h3>
+                <h3 className="font-medium text-foreground">{L("BUENA COMPATIBILIDAD — Animales aliados", "GOOD COMPATIBILITY — Allied animals")}</h3>
               </div>
-              <p className="text-sm text-muted mb-4">
+              <p className="text-sm text-muted mb-4">{L(<>
                 Tu {display.name} de {profile.chineseZodiacInfo?.element} tiene buena compatibilidad con estos animales aliados. Juntos crean un ciclo de apoyo mutuo.
-              </p>
+              </>, <>Your {profile.chineseZodiacInfo?.element} {display.name} is highly compatible with these allied animals. Together they create a cycle of mutual support.</>)}</p>
               <div className="flex flex-wrap gap-3">
                 {allies.map((ally, i) => (
                   <AnimalCard key={i} animal={ally} />
@@ -75,11 +73,11 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-muted)" }} />
-                <h3 className="font-medium text-foreground">ENERGÍA OPUESTA — Posición de contraste</h3>
+                <h3 className="font-medium text-foreground">{L("ENERGÍA OPUESTA — Posición de contraste", "OPPOSITE ENERGY — Position of contrast")}</h3>
               </div>
-              <p className="text-sm text-muted mb-4">
+              <p className="text-sm text-muted mb-4">{L(<>
                 El animal que ocupa la posición opuesta a la tuya muestra dónde aparece fricción natural. No es &ldquo;malo&rdquo;: es donde más aprendés.
-              </p>
+              </>, <>The animal in the position opposite yours shows where natural friction appears. It isn't &ldquo;bad&rdquo;: it's where you learn the most.</>)}</p>
               {challenges.length > 0 ? (
                 <div className="flex flex-wrap gap-3">
                   {challenges.map((ch, i) => (
@@ -87,7 +85,7 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted">Sin contraste directo en este ciclo.</p>
+                <p className="text-sm text-muted">{L("Sin contraste directo en este ciclo.", "No direct contrast in this cycle.")}</p>
               )}
             </motion.div>
           </div>
@@ -98,6 +96,7 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
 }
 
 function AnimalCard({ animal }: { animal: Animal }) {
+  const L = useL();
   const display = getZodiacDisplay(animal);
   const years = getAnimalBirthYears(animal);
   return (
@@ -106,9 +105,7 @@ function AnimalCard({ animal }: { animal: Animal }) {
         <ZodiacAnimalIcon animal={animal} size={20} className="text-accent" />
         <span className="font-medium">{display.name}</span>
       </div>
-      <p className="text-sm text-muted mb-1.5 label-caps">
-        Años de nacimiento
-      </p>
+      <p className="text-sm text-muted mb-1.5 label-caps">{L("Años de nacimiento", "Birth years")}</p>
       <p className="font-mono text-xs text-muted leading-relaxed">{years.join(" · ")}</p>
     </div>
   );

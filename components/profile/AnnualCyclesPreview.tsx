@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { CalendarRange } from "lucide-react";
@@ -15,6 +16,7 @@ const START_YEAR = 2026;
 const END_YEAR = 2030;
 
 export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProps) {
+  const L = useL();
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
 
   const cycles = useMemo(
@@ -29,9 +31,9 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
   if (isPremium === false) {
     return (
       <div className="max-w-2xl">
-        <p className="text-sm text-muted leading-relaxed max-w-xl">
+        <p className="text-sm text-muted leading-relaxed max-w-xl">{L(<>
           Los ciclos anuales {START_YEAR}–{END_YEAR} forman parte de tu síntesis completa — desbloqueala arriba para acceder.
-        </p>
+        </>, <>The annual cycles {START_YEAR}–{END_YEAR} are part of your complete synthesis — unlock it above to access them.</>)}</p>
       </div>
     );
   }
@@ -47,12 +49,10 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
           <CalendarRange className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
+          <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L(<>
             Ciclos Anuales {START_YEAR}–{END_YEAR}
-          </h3>
-          <p className="text-xs text-muted">
-            Tu año personal y el animal de cada año, cinco años hacia adelante.
-          </p>
+          </>, <>Annual Cycles {START_YEAR}–{END_YEAR}</>)}</h3>
+          <p className="text-xs text-muted">{L("Tu año personal y el animal de cada año, cinco años hacia adelante.", "Your personal year and the animal of each year, five years ahead.")}</p>
         </div>
       </div>
 
@@ -68,12 +68,12 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
                 <span aria-hidden="true">{ANIMAL_EMOJIS[c.yearAnimal as ChineseAnimal] || "*"}</span>
               </div>
 
-              <div className="flex items-baseline gap-1.5 my-1">
+              <div className="flex items-baseline gap-1.5 my-1">{L(<>
                 <span className="font-display text-xl text-foreground font-bold">
                   {c.personalYear}
                 </span>
                 <span className="font-mono text-xs text-muted">Año personal</span>
-              </div>
+              </>, <><span className="font-display text-xl text-foreground font-bold">{c.personalYear}</span><span className="font-mono text-xs text-muted">Personal year</span></>)}</div>
             </div>
 
             <p className="mt-3 pt-2.5 border-t border-ink/5 text-xs text-muted leading-snug">

@@ -1,13 +1,13 @@
 import SociosClient from "./SociosClient";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Modo Socios — Afinidad para Sociedades y Equipos",
+export const generateMetadata = metadataFor({
+  title: ["Modo Socios — Afinidad para Sociedades y Equipos", "Partners Mode — Affinity for Partnerships and Teams"],
   description:
-    "Compará dos mapas personales en Molino para ver la afinidad de trabajo entre socios, empleador y empleado, o cualquier par de personas armando un proyecto juntas.",
+    ["Compará dos mapas personales en Molino para ver la afinidad de trabajo entre socios, empleador y empleado, o cualquier par de personas armando un proyecto juntas.", "Compare two personal maps on Molino to see the working affinity between business partners, employer and employee, or any two people building a project together."],
   path: "/socios",
-  ogTitle: "Modo Socios — Afinidad de Trabajo en Molino",
-  ogDescription: "Descubrí qué tan compatibles son dos personas trabajando juntas: numerología, signos solares, química elemental y zodíaco chino.",
+  ogTitle: ["Modo Socios — Afinidad de Trabajo en Molino", "Partners Mode — Working Affinity on Molino"],
+  ogDescription: ["Descubrí qué tan compatibles son dos personas trabajando juntas: numerología, signos solares, química elemental y zodíaco chino.", "Find out how compatible two people are working together: numerology, sun signs, elemental chemistry and the Chinese zodiac."],
 });
 
 export default async function SociosPage({

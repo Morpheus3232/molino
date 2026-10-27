@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -20,15 +21,15 @@ interface RecommendationContentProps {
   subtitle: string;
 }
 
-const TYPE_LABEL: Record<string, string> = {
-  brand: "Marca",
+const TYPE_LABEL = (L: Pick2): Record<string, string> => ({
+  brand: L("Marca", "Brand"),
   city: "Ciudad",
   country: "País",
-  university: "Universidad",
-  team: "Equipo",
-  movie: "Película",
-  artist: "Famoso",
-};
+  university: L("Universidad", "University"),
+  team: L("Equipo", "Team"),
+  movie: L("Película", "Movie"),
+  artist: L("Famoso", "Famous person"),
+});
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -37,6 +38,7 @@ const transitionVariants = {
 };
 
 export default function RecommendationContent({ entityType, catalog, title, subtitle }: RecommendationContentProps) {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
 
@@ -60,9 +62,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
     return (
       <main id="main-content" className="min-h-screen bg-background">
         <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
-          <p className="sr-only" role="status" aria-label="Cargando recomendaciones...">
-            Cargando recomendaciones...
-          </p>
+          <p className="sr-only" role="status" aria-label="Cargando recomendaciones...">{L("Cargando recomendaciones...", "Loading recommendations...")}</p>
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
             <div className="h-9 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -86,16 +86,12 @@ export default function RecommendationContent({ entityType, catalog, title, subt
       <main id="main-content" className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-sm text-accent font-medium mb-4 label-caps">
-            Recomendaciones Simbólicas
-          </p>
+          <p className="text-sm text-accent font-medium mb-4 label-caps">{L("Recomendaciones Simbólicas", "Symbolic Recommendations")}</p>
           <h1 className="page-title text-foreground mb-4">
             {title}
           </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Creá tu perfil para descubrir recomendaciones personalizadas.
-          </p>
-          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
+          <p className="text-muted mb-8 max-w-md mx-auto">{L("Creá tu perfil para descubrir recomendaciones personalizadas.", "Create your profile to discover personalized recommendations.")}</p>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>{L("Crear mi perfil", "Create my profile")}</Button>
         </div>
       </main>
     );
@@ -119,15 +115,15 @@ export default function RecommendationContent({ entityType, catalog, title, subt
             type="button"
             onClick={() => router.push("/affinity")}
             className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
-          >
+          >{L(<>
             &larr; Afinidad simbólica
-          </button>
+          </>, <>&larr; Symbolic affinity</>)}</button>
         </motion.div>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
           <p className="text-sm text-accent font-medium mb-4 label-caps">
-            Recomendaciones Simbólicas · {TYPE_LABEL[entityType] ?? entityType}
+            Recomendaciones Simbólicas · {TYPE_LABEL(L)[entityType] ?? entityType}
           </p>
           <h1 className="page-title text-foreground mb-3">
             {title}
@@ -135,10 +131,10 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           <p className="text-sm text-muted">
             {subtitle}
           </p>
-          <div className="mt-4 flex items-center gap-2 text-xs text-muted">
+          <div className="mt-4 flex items-center gap-2 text-xs text-muted">{L(<>
             <span>Tu signo:</span>
             <span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span>
-          </div>
+          </>, <><span>Your sign:</span><span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span></>)}</div>
         </motion.section>
 
         {/* Recommendation groups with AnimatePresence on search/filter change */}
@@ -146,8 +142,8 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           {same.length > 0 && (
             <RecommendationGroup
               key="mismo"
-              title="Tu propio signo · 本命"
-              subtitle={`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`}
+              title={L("Tu propio signo · 本命", "Your own sign · 本命")}
+              subtitle={L(`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`, `Its date of origin falls in a ${userAnimal} year, like yours.`)}
               recommendations={same}
               accentColor="var(--color-accent)"
               router={router}
@@ -157,8 +153,8 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           {friends.length > 0 && (
             <RecommendationGroup
               key="amigo"
-              title="Tus dos amigos · 三合 San He"
-              subtitle="Del signo de uno de tus dos amigos: los separados por cuatro posiciones del ciclo."
+              title={L("Tus dos amigos · 三合 San He", "Your two friends · 三合 San He")}
+              subtitle={L("Del signo de uno de tus dos amigos: los separados por cuatro posiciones del ciclo.", "From the sign of one of your two friends: those four positions apart in the cycle.")}
               recommendations={friends}
               accentColor="var(--color-accent)"
               router={router}
@@ -168,8 +164,8 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           {enemy.length > 0 && (
             <RecommendationGroup
               key="enemigo"
-              title="Tu enemigo · 六冲 Liu Chong"
-              subtitle="Del signo opuesto al tuyo en el ciclo: lo que conviene evitar."
+              title={L("Tu enemigo · 六冲 Liu Chong", "Your enemy · 六冲 Liu Chong")}
+              subtitle={L("Del signo opuesto al tuyo en el ciclo: lo que conviene evitar.", "From the sign opposite yours in the cycle: what's best avoided.")}
               recommendations={enemy}
               accentColor="var(--color-muted)"
               router={router}
@@ -185,22 +181,16 @@ export default function RecommendationContent({ entityType, catalog, title, subt
               transition={{ duration: 0.3 }}
               className="text-center py-16"
             >
-              <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin recomendaciones</h2>
-              <p className="text-sm text-muted mb-6 max-w-md mx-auto">
-                No encontramos recomendaciones para esta entidad con tu perfil actual.
-              </p>
+              <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">{L("Sin recomendaciones", "No recommendations")}</h2>
+              <p className="text-sm text-muted mb-6 max-w-md mx-auto">{L("No encontramos recomendaciones para esta entidad con tu perfil actual.", "We couldn't find recommendations for this entity with your current profile.")}</p>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-12 border-t border-ink/10 pt-8">
-            <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
-            <p className="text-xs text-muted leading-relaxed">
-              Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
-              No constituyen predicción científica ni determinan resultados reales.
-              Cada persona puede interpretar estos sistemas de forma diferente.
-            </p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Aviso importante", "Important notice")}</p>
+            <p className="text-xs text-muted leading-relaxed">{L("Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino. No constituyen predicción científica ni determinan resultados reales. Cada persona puede interpretar estos sistemas de forma diferente.", "The recommendations are a symbolic reading based on Chinese zodiac traditions. They aren't a scientific prediction and don't determine real outcomes. Each person may interpret these systems differently.")}</p>
         </motion.section>
       </main>
     </div>

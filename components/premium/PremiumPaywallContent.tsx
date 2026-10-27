@@ -1,4 +1,5 @@
 'use client';
+import { useL } from "@/lib/i18n/useL";
 
 import { useState } from 'react';
 import { Link } from "@/lib/i18n/navigation";
@@ -81,16 +82,17 @@ export default function PremiumPaywallContent({
   isApplyingCoupon,
   handleApplyCoupon,
 }: PremiumPaywallContentProps) {
+  const L = useL();
   const [showComparison, setShowComparison] = useState(false);
 
   // Lo que abre la lectura completa, en el orden en que se lee. Es una
   // secuencia real (la lectura está escrita así), por eso va numerada.
   const chapters = [
-    { n: "I", title: "La frase que te resume", desc: "Tu patrón central en una oración, y por qué importa." },
-    { n: "II", title: "Lo que te sostiene y lo que pide atención", desc: "Tus fortalezas y tus tensiones, lado a lado." },
-    { n: "III", title: "Tu punto ciego", desc: "Lo que tu patrón produce en automático sin que te des cuenta." },
-    { n: "IV", title: "Dónde se nota", desc: "El mismo patrón en el trabajo, en los vínculos y en las decisiones." },
-    { n: "V", title: "Preguntale a Molino", desc: "50 preguntas con la IA que ya conoce tu mapa." },
+    { n: "I", title: L("La frase que te resume", "The sentence that sums you up"), desc: L("Tu patrón central en una oración, y por qué importa.", "Your central pattern in one sentence, and why it matters.") },
+    { n: "II", title: L("Lo que te sostiene y lo que pide atención", "What holds you up and what needs attention"), desc: L("Tus fortalezas y tus tensiones, lado a lado.", "Your strengths and your tensions, side by side.") },
+    { n: "III", title: L("Tu punto ciego", "Your blind spot"), desc: L("Lo que tu patrón produce en automático sin que te des cuenta.", "What your pattern produces on autopilot without you noticing.") },
+    { n: "IV", title: L("Dónde se nota", "Where it shows"), desc: L("El mismo patrón en el trabajo, en los vínculos y en las decisiones.", "The same pattern at work, in relationships and in decisions.") },
+    { n: "V", title: L("Preguntale a Molino", "Ask Molino"), desc: L("50 preguntas con la IA que ya conoce tu mapa.", "50 questions with the AI that already knows your map.") },
   ];
 
   const keyword = preview?.pattern?.keyword ?? "";
@@ -119,20 +121,20 @@ export default function PremiumPaywallContent({
 
       {/* ── Lo que ya se ve: la coincidencia, en grande ── */}
       {preview?.pattern && keyword && (
-        <section aria-label="Lo que ya se ve en tu mapa" className="mb-12 border-y-2 border-ink py-8 sm:py-10">
+        <section aria-label={L("Lo que ya se ve en tu mapa", "What can already be seen in your map")} className="mb-12 border-y-2 border-ink py-8 sm:py-10">
           <p className="text-base text-muted">{t.premium.hookTitle.replace(" {keyword}.", ":")}</p>
           <p className="mt-2 font-display text-[clamp(2.75rem,8vw,4.75rem)] leading-none tracking-tight text-foreground">
             {keyword}
           </p>
           <p className="mt-5 text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl">
             {sources.length > 1
-              ? `Tu ${sources.join(" y tu ").toLowerCase()} se calculan por caminos separados y aterrizan en la misma palabra. Es el rasgo que más cuesta apagar cuando querés pasar desapercibido.`
+              ? L(`Tu ${sources.join(" y tu ").toLowerCase()} se calculan por caminos separados y aterrizan en la misma palabra. Es el rasgo que más cuesta apagar cuando querés pasar desapercibido.`, `Your ${sources.join(" and your ").toLowerCase()} are calculated along separate paths and land on the same word. It's the trait that's hardest to switch off when you want to go unnoticed.`)
               : t.premium.hookDescription.replace("{keyword}", keyword).replace("{zodiac}", preview.chineseZodiac).replace(" ({element})", "")}
           </p>
           {preview.tension && (
-            <p className="mt-4 text-base text-muted leading-relaxed max-w-xl">
+            <p className="mt-4 text-base text-muted leading-relaxed max-w-xl">{L(<>
               Y una tensión que la lectura desarma: <span className="text-foreground">{preview.tension.title}</span>.
-            </p>
+            </>, <>And a tension that the reading takes apart: <span className="text-foreground">{preview.tension.title}</span>.</>)}</p>
           )}
         </section>
       )}
@@ -154,13 +156,11 @@ export default function PremiumPaywallContent({
             </li>
           ))}
         </ol>
-        <p className="mt-4 text-base text-muted leading-relaxed">
-          Además, tu mapa de ciclos 2026–2030 y tu número de la suerte, con la cuenta a la vista.
-        </p>
+        <p className="mt-4 text-base text-muted leading-relaxed">{L("Además, tu mapa de ciclos 2026–2030 y tu número de la suerte, con la cuenta a la vista.", "Plus your 2026–2030 cycle map and your lucky number, with the math in plain sight.")}</p>
       </section>
 
       {/* ── Checkout ── */}
-      <section aria-label="Pago" className="border-2 border-ink p-6 sm:p-8 mb-8">
+      <section aria-label={L("Pago", "Payment")} className="border-2 border-ink p-6 sm:p-8 mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <p className="flex items-baseline gap-2">
             <span className="font-display text-5xl sm:text-6xl leading-none tracking-tight text-foreground">${chargePriceUsd}</span>
@@ -263,9 +263,7 @@ export default function PremiumPaywallContent({
           </button>
         ) : (
           <div className="space-y-3 w-full p-4 border border-ink/15">
-            <p className="text-xs text-muted/80 leading-relaxed">
-              Ingresá el ID de Mercado Pago que te llegó al email para restaurar tu acceso:
-            </p>
+            <p className="text-xs text-muted/80 leading-relaxed">{L("Ingresá el ID de Mercado Pago que te llegó al email para restaurar tu acceso:", "Enter the Mercado Pago ID you received by email to restore your access:")}</p>
             <form onSubmit={handleRecover} className="space-y-2">
               <label htmlFor="recover-mp-id" className="text-xs font-mono text-muted block">
                 Mercado Pago ID:
@@ -276,7 +274,7 @@ export default function PremiumPaywallContent({
                   type="text"
                   value={recoverPaymentId}
                   onChange={e => setRecoverPaymentId(e.target.value)}
-                  placeholder="Ej: 123456789"
+                  placeholder={L("Ej: 123456789", "E.g. 123456789")}
                   className="flex-1 px-3 py-2 text-sm border border-ink/20 bg-background text-foreground focus:outline-none focus:border-accent transition-colors font-mono"
                 />
                 <Button
@@ -296,9 +294,7 @@ export default function PremiumPaywallContent({
               type="button"
               onClick={cancelRecover}
               className="text-xs text-muted hover:text-foreground transition-colors"
-            >
-              Cancelar
-            </button>
+            >{L("Cancelar", "Cancel")}</button>
           </div>
         )}
 
@@ -314,9 +310,7 @@ export default function PremiumPaywallContent({
         ) : (
           <div className="space-y-3 w-full p-4 border border-ink/15">
             <form onSubmit={handleApplyCoupon} className="space-y-2">
-              <label htmlFor="coupon-code" className="text-xs font-mono text-muted block">
-                Código de cupón:
-              </label>
+              <label htmlFor="coupon-code" className="text-xs font-mono text-muted block">{L("Código de cupón:", "Coupon code:")}</label>
               <div className="flex gap-2">
                 <input
                   id="coupon-code"
@@ -343,9 +337,7 @@ export default function PremiumPaywallContent({
               type="button"
               onClick={() => setShowCoupon(false)}
               className="text-xs text-muted hover:text-foreground transition-colors"
-            >
-              Cerrar
-            </button>
+            >{L("Cerrar", "Close")}</button>
           </div>
         )}
       </div>

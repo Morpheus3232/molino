@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 /* eslint-disable @next/next/no-img-element -- capas de una escena animada:
    ya están optimizadas (WebP) y se repiten en fila; next/image no aporta. */
@@ -32,7 +33,7 @@ const MILLS = [
 
 /** Don Quijote, primera parte, cap. V: la respuesta de don Quijote cuando
  *  el vecino lo quiere convencer de que no es quien dice ser. */
-const LINE = "Yo sé quién soy.";
+const LINE = (L: Pick2) => (L("Yo sé quién soy.", "I know who I am."));
 
 /** Cuatro aspas en cruz con su enrejado, como las del original. */
 function Sails() {
@@ -111,6 +112,7 @@ function Rider({ name, w, h }: { name: "quijote" | "sancho"; w: number; h: numbe
 }
 
 export default function HomeOpening() {
+  const L = useL();
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [paused, setPaused] = useState(false);
@@ -132,7 +134,7 @@ export default function HomeOpening() {
   const copyY = useTransform(scrollYProgress, [0, 0.7], ["0%", "-55%"]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
-  const words = LINE.split(" ");
+  const words = LINE(L).split(" ");
 
   return (
     <section
@@ -169,7 +171,7 @@ export default function HomeOpening() {
           id="apertura-home"
           className="text-balance font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(3.2rem,7.5vw,6.5rem)]"
         >
-          <span className="sr-only">{LINE}</span>
+          <span className="sr-only">{LINE(L)}</span>
           <span aria-hidden="true">
             {/* Las comillas van pegadas a la primera y la última palabra para
                 que nunca queden solas en un renglón. */}
@@ -185,9 +187,9 @@ export default function HomeOpening() {
             ))}
           </span>
         </p>
-        <p className={`${s.late} mt-5 text-sm text-muted label-caps`} style={{ ["--d" as string]: "1.6s" }}>
+        <p className={`${s.late} mt-5 text-sm text-muted label-caps`} style={{ ["--d" as string]: "1.6s" }}>{L(<>
           Cervantes · <em className="not-italic">Don Quijote</em>, I, V
-        </p>
+        </>, <>Cervantes · <em className="not-italic">Don Quixote</em>, I, V</>)}</p>
       </motion.div>
 
     </section>

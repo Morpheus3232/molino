@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import RichText from "@/components/journal/RichText";
 import { plainText } from "@/lib/journal/markdown";
@@ -47,6 +48,7 @@ export default function JournalTimeline({
   onDeleteEntry,
   className = "",
 }: JournalTimelineProps) {
+  const L = useL();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMood, setSelectedMood] = useState<JournalMood | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -111,8 +113,8 @@ export default function JournalTimeline({
       {chartData.length >= 2 && (
         <div className="border-t-2 border-ink pt-6 pb-10">
           <div className="flex items-baseline justify-between gap-3 mb-6">
-            <h3 className="font-display font-normal text-3xl text-foreground">Cómo vino el ánimo</h3>
-            <span className="text-base text-muted tabular-nums">{chartData.length} páginas</span>
+            <h3 className="font-display font-normal text-3xl text-foreground">{L("Cómo vino el ánimo", "How your mood went")}</h3>
+            <span className="text-base text-muted tabular-nums">{L(<>{chartData.length} páginas</>, <>{chartData.length} pages</>)}</span>
           </div>
           <div className="bg-background border border-ink/15 p-4 sm:p-6">
             <MoodChart chartData={chartData} />
@@ -130,18 +132,18 @@ export default function JournalTimeline({
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
             <input
               type="text"
-              placeholder="Buscar en el diario"
+              placeholder={L("Buscar en el diario", "Search the journal")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-10 py-3 bg-background border-2 border-ink text-lg text-foreground placeholder:text-muted/70 focus:outline-none"
-              aria-label="Buscar en las entradas del diario"
+              aria-label={L("Buscar en las entradas del diario", "Search journal entries")}
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground text-sm p-1"
-                aria-label="Borrar búsqueda"
+                aria-label={L("Borrar búsqueda", "Clear search")}
               >
                 ✕
               </button>
@@ -149,7 +151,7 @@ export default function JournalTimeline({
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-base text-muted">Ánimo</span>
+            <span className="text-base text-muted">{L("Ánimo", "Mood")}</span>
             <div className="grid grid-cols-5 gap-px bg-ink/15 border border-ink/15">
               {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
                 const cfg = MOOD_CONFIG[m];
@@ -163,7 +165,7 @@ export default function JournalTimeline({
                       active ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt"
                     }`}
                     title={cfg.label}
-                    aria-label={`Filtrar por estado de ánimo: ${cfg.label}`}
+                    aria-label={L(`Filtrar por estado de ánimo: ${cfg.label}`, `Filter by mood: ${cfg.label}`)}
                     aria-pressed={active}
                   >
                     <span aria-hidden="true" className={active ? "" : "opacity-60"}>{cfg.emoji}</span>
@@ -180,16 +182,14 @@ export default function JournalTimeline({
                   setSearchQuery("");
                 }}
                 className="text-base text-foreground underline underline-offset-4 hover:no-underline"
-              >
-                Limpiar
-              </button>
+              >{L("Limpiar", "Clear")}</button>
             )}
           </div>
         </div>
 
         {allTags.length > 0 && (
           <div className="mt-4 flex items-center gap-2 flex-wrap">
-            <span className="text-base text-muted mr-1">Temas</span>
+            <span className="text-base text-muted mr-1">{L("Temas", "Topics")}</span>
             {allTags.map((tag) => {
               const active = selectedTag === tag;
               return (
@@ -201,7 +201,7 @@ export default function JournalTimeline({
                     active ? "bg-ink text-paper border-ink" : "bg-background text-muted border-ink/25 hover:border-ink hover:text-foreground"
                   }`}
                   aria-pressed={active}
-                  aria-label={`Filtrar por etiqueta ${tag}`}
+                  aria-label={L(`Filtrar por etiqueta ${tag}`, `Filter by tag ${tag}`)}
                 >
                   #{tag}
                 </button>
@@ -214,7 +214,7 @@ export default function JournalTimeline({
       {/* Las páginas: la fecha al margen, el texto a la derecha */}
       <div className="mt-8 border-t border-ink/15">
         {filteredEntries.length === 0 ? (
-          <p className="py-12 text-lg text-muted">Ninguna página coincide con esos filtros.</p>
+          <p className="py-12 text-lg text-muted">{L("Ninguna página coincide con esos filtros.", "No pages match those filters.")}</p>
         ) : (
           filteredEntries.map((entry) => {
             const moodCfg = MOOD_CONFIG[entry.mood];
@@ -251,10 +251,10 @@ export default function JournalTimeline({
                     {cycle && (cycle.dayEnergy || cycle.yearCycle) ? (
                       <p className="text-sm text-muted">
                         {[
-                          cycle.dayEnergy?.personalDay && `Día personal ${cycle.dayEnergy.personalDay}`,
+                          cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${cycle.dayEnergy.personalDay}`),
                           cycle.dayEnergy?.theme,
                           cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
-                          cycle.yearCycle?.personalYear && `año ${cycle.yearCycle.personalYear}`,
+                          cycle.yearCycle?.personalYear && L(`año ${cycle.yearCycle.personalYear}`, `year ${cycle.yearCycle.personalYear}`),
                         ]
                           .filter(Boolean)
                           .join(" · ")}
@@ -268,23 +268,23 @@ export default function JournalTimeline({
                           type="button"
                           onClick={() => onEditEntry(entry)}
                           className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
-                          aria-label="Corregir esta página"
+                          aria-label={L("Corregir esta página", "Correct this page")}
                         >
-                          <Edit2 className="w-3.5 h-3.5" /> Corregir
+                          <Edit2 className="w-3.5 h-3.5" /> {L(" Corregir", " Correct")}
                         </button>
                       )}
                       {onDeleteEntry && (
                         <button
                           type="button"
                           onClick={() => {
-                            if (window.confirm("¿Seguro que querés eliminar esta entrada?")) {
+                            if (window.confirm(L("¿Seguro que querés eliminar esta entrada?", "Are you sure you want to delete this entry?"))) {
                               onDeleteEntry(entry.id);
                             }
                           }}
                           className="inline-flex items-center gap-1.5 text-muted hover:text-foreground underline-offset-4 hover:underline min-h-[36px]"
-                          aria-label="Borrar esta página"
+                          aria-label={L("Borrar esta página", "Delete this page")}
                         >
-                          <Trash2 className="w-3.5 h-3.5" /> Borrar
+                          <Trash2 className="w-3.5 h-3.5" /> {L(" Borrar", " Delete")}
                         </button>
                       )}
                     </div>

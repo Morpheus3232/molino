@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -14,6 +15,7 @@ const transitionVariants = {
 };
 
 export default function AnalyticsPage() {
+  const L = useL();
   const router = useRouter();
   const [stats, setStats] = useState<ReturnType<typeof analytics.getStats> | null>(null);
 
@@ -22,12 +24,12 @@ export default function AnalyticsPage() {
   }, []);
 
   const cards = [
-    { label: "Eventos totales", value: stats?.totalEvents, icon: "📊" },
-    { label: "Visitas de página", value: stats?.pageViews, icon: "👁" },
-    { label: "Visitas de retorno", value: stats?.returnVisits, icon: "🔄" },
-    { label: "Perfiles creados", value: stats?.profileCreated, icon: "👤" },
-    { label: "Consultas a IA", value: stats?.aiQueries, icon: "🤖" },
-    { label: "Decisiones tomadas", value: stats?.decisions, icon: "🎯" },
+    { label: L("Eventos totales", "Total events"), value: stats?.totalEvents, icon: "📊" },
+    { label: L("Visitas de página", "Page views"), value: stats?.pageViews, icon: "👁" },
+    { label: L("Visitas de retorno", "Return visits"), value: stats?.returnVisits, icon: "🔄" },
+    { label: L("Perfiles creados", "Profiles created"), value: stats?.profileCreated, icon: "👤" },
+    { label: L("Consultas a IA", "AI queries"), value: stats?.aiQueries, icon: "🤖" },
+    { label: L("Decisiones tomadas", "Decisions made"), value: stats?.decisions, icon: "🎯" },
   ];
 
   const featureEntries = Object.entries(stats?.features || {}) as [string, number][];
@@ -44,9 +46,7 @@ export default function AnalyticsPage() {
             exit="exit"
           >
             <div className="container-content py-12">
-              <p className="sr-only" role="status" aria-label="Cargando estadísticas...">
-                Cargando estadísticas...
-              </p>
+              <p className="sr-only" role="status" aria-label="Cargando estadísticas...">{L("Cargando estadísticas...", "Loading statistics...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
                 <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-2" />
@@ -71,12 +71,8 @@ export default function AnalyticsPage() {
           >
             <div className="container-content">
               <div className="py-12">
-                <h1 className="page-title text-foreground mb-2">
-                  Panel de análisis
-                </h1>
-                <p className="text-muted mb-8">
-                  Tu actividad en Molino hasta ahora
-                </p>
+                <h1 className="page-title text-foreground mb-2">{L("Panel de análisis", "Analytics panel")}</h1>
+                <p className="text-muted mb-8">{L("Tu actividad en Molino hasta ahora", "Your activity on Molino so far")}</p>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
                   {cards.map((card) => (
@@ -100,9 +96,7 @@ export default function AnalyticsPage() {
 
                 {featureEntries.length > 0 && (
                   <div className="bg-card rounded-md border border-card-border p-6">
-                    <h2 className="text-lg font-heading text-foreground mb-4">
-                      Características más usadas
-                    </h2>
+                    <h2 className="text-lg font-heading text-foreground mb-4">{L("Características más usadas", "Most-used features")}</h2>
                     <div className="space-y-2">
                       {featureEntries
                         .sort((a, b) => (b[1] as number) - (a[1] as number))
@@ -110,14 +104,14 @@ export default function AnalyticsPage() {
                           <div
                             key={feature}
                             className="flex items-center justify-between py-2 border-b border-border last:border-0"
-                          >
+                          >{L(<>
                             <span className="text-foreground capitalize">
                               {feature.replace(/-/g, " ")}
                             </span>
                             <span className="text-sm font-medium text-accent">
                               {count} veces
                             </span>
-                          </div>
+                          </>, <><span className="text-foreground capitalize">{feature.replace(/-/g, " ")}</span><span className="text-sm font-medium text-accent">{count} times</span></>)}</div>
                         ))}
                     </div>
                   </div>
@@ -127,9 +121,7 @@ export default function AnalyticsPage() {
                   <Button variant="secondary" onClick={() => router.push("/analytics/affinity")}>
                     Dashboard Affinity →
                   </Button>
-                  <Button variant="secondary" onClick={() => router.back()}>
-                    Volver
-                  </Button>
+                  <Button variant="secondary" onClick={() => router.back()}>{L("Volver", "Back")}</Button>
                   <Button
                     variant="ghost"
                     onClick={() => {
@@ -138,9 +130,7 @@ export default function AnalyticsPage() {
                         setStats(analytics.getStats());
                       }
                     }}
-                  >
-                    Borrar datos
-                  </Button>
+                  >{L("Borrar datos", "Delete data")}</Button>
                 </div>
               </div>
             </div>

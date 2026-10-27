@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -41,11 +42,12 @@ function useScrollSpy(ids: string[]) {
 }
 
 function Toc({ post }: { post: BlogPost }) {
+  const L = useL();
   const activeId = useScrollSpy(post.sections.map((s) => s.id));
 
   return (
-    <nav aria-label="Tabla de contenidos" className="mb-8">
-      <p className="text-sm text-muted mb-4 label-caps">En este artículo</p>
+    <nav aria-label={L("Tabla de contenidos", "Table of contents")} className="mb-8">
+      <p className="text-sm text-muted mb-4 label-caps">{L("En este artículo", "In this article")}</p>
       <ul className="space-y-1 border-l border-border pl-4">
         {post.sections.map((section) => {
           const active = activeId === section.id;
@@ -70,6 +72,7 @@ function Toc({ post }: { post: BlogPost }) {
 }
 
 function RelatedArticles({ post }: { post: BlogPost }) {
+  const L = useL();
   const related = post.related
     .map((slug) => getBlogPostBySlug(slug))
     .filter((p): p is BlogPost => Boolean(p));
@@ -78,7 +81,7 @@ function RelatedArticles({ post }: { post: BlogPost }) {
 
   return (
     <div className="mb-8">
-      <p className="text-sm text-muted mb-4 label-caps">Artículos relacionados</p>
+      <p className="text-sm text-muted mb-4 label-caps">{L("Artículos relacionados", "Related articles")}</p>
       <ul className="space-y-3">
         {related.map((rel) => (
           <li key={rel.slug}>
@@ -101,30 +104,28 @@ function RelatedArticles({ post }: { post: BlogPost }) {
 }
 
 function SidebarCta() {
+  const L = useL();
   return (
     <div className="p-6 rounded-md border border-border bg-card">
-      <p className="text-sm font-medium text-foreground mb-2">Tu mapa personal</p>
-      <p className="text-xs text-muted leading-relaxed mb-4">
-        Cruzá numerología, astrología y zodíaco chino en un solo mapa, gratis y sin registro.
-      </p>
+      <p className="text-sm font-medium text-foreground mb-2">{L("Tu mapa personal", "Your personal map")}</p>
+      <p className="text-xs text-muted leading-relaxed mb-4">{L("Cruzá numerología, astrología y zodíaco chino en un solo mapa, gratis y sin registro.", "Cross numerology, astrology and the Chinese zodiac in a single map, free and with no sign-up.")}</p>
       <Link
         href="/profile"
         className="inline-flex w-full items-center justify-center gap-2 rounded-md font-heading font-semibold px-4 py-3 text-sm bg-accent text-accent-foreground hover:opacity-90 min-h-[44px] transition-opacity label-caps"
-      >
-        Crear mi mapa
-      </Link>
+      >{L("Crear mi mapa", "Create my map")}</Link>
     </div>
   );
 }
 
 export default function BlogArticleContent({ post }: { post: BlogPost }) {
+  const L = useL();
   const readTime = getReadingTime(post);
 
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24" id="main-content">
         {/* Breadcrumb */}
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">{L(<>
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">
             Inicio
           </Link>
@@ -134,7 +135,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
           </Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">{post.title}</span>
-        </nav>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/blog" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Blog</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{post.title}</span></>)}</nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
           {/* Contenido principal (~70%) */}
@@ -148,13 +149,13 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                 {post.title}
               </h1>
               <p className="text-base text-muted leading-relaxed max-w-2xl mb-6">{post.excerpt}</p>
-              <div className="flex items-center gap-4 text-xs text-muted/70">
+              <div className="flex items-center gap-4 text-xs text-muted/70">{L(<>
                 <span>{post.author}</span>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
                 <time dateTime={post.date}>{formatDate(post.date)}</time>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
                 <span>{readTime} min de lectura</span>
-              </div>
+              </>, <><span>{post.author}</span><span className="w-px h-3 bg-border" aria-hidden="true" /><time dateTime={post.date}>{formatDate(post.date)}</time><span className="w-px h-3 bg-border" aria-hidden="true" /><span>{readTime} min read</span></>)}</div>
             </motion.header>
 
             {/* Portada — above the fold, dispara al montar */}
@@ -170,7 +171,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                 />
               </div>
               {post.imageCredit && (
-                <figcaption className="mt-2 text-xs text-muted/70">
+                <figcaption className="mt-2 text-xs text-muted/70">{L(<>
                   Foto:{" "}
                   <a
                     href={`${post.imageCredit.url}?utm_source=molino&utm_medium=referral`}
@@ -189,7 +190,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                   >
                     Unsplash
                   </a>
-                </figcaption>
+                </>, <>Photo:{" "}<a href={`${post.imageCredit.url}?utm_source=molino&utm_medium=referral`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{post.imageCredit.name}</a>{" "}on{" "}<a href="https://unsplash.com/?utm_source=molino&utm_medium=referral" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
               )}
             </motion.figure>
 
@@ -232,9 +233,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               {/* FAQ */}
               {post.faq && post.faq.length > 0 && (
                 <motion.section {...fadeUp} className="mb-12">
-                  <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
-                    Preguntas frecuentes
-                  </h2>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">{L("Preguntas frecuentes", "Frequently asked questions")}</h2>
                   <div className="space-y-3">
                     {post.faq.map((faq) => (
                       <details key={faq.q} className="group rounded-md border border-border p-5">
@@ -257,12 +256,8 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                   <div className="flex items-start gap-4">
                     <div className="text-2xl shrink-0">*</div>
                     <div className="flex-1">
-                      <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
-                        Verlo en tu mapa
-                      </h3>
-                      <p className="text-sm text-muted mb-3">
-                        Descubrí exactamente cómo se ve esto en tu caso personal.
-                      </p>
+                      <h3 className="font-heading text-lg font-semibold text-foreground mb-1">{L("Verlo en tu mapa", "See it in your map")}</h3>
+                      <p className="text-sm text-muted mb-3">{L("Descubrí exactamente cómo se ve esto en tu caso personal.", "Find out exactly what this looks like in your own case.")}</p>
                       <Link
                         href={post.featureLink.href}
                         className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
@@ -279,30 +274,24 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
             {/* CTA contextual al final */}
             <motion.section {...fadeUp} className="text-center">
               <div className="p-8 sm:p-10 rounded-md border border-border bg-card">
-                <p className="text-base text-foreground font-medium mb-2">
-                  ¿Querés saber qué dice TU fecha de nacimiento?
-                </p>
-                <p className="text-sm text-muted mb-5">
-                  Generá tu mapa gratuito con numerología, astrología y zodíaco chino.
-                </p>
+                <p className="text-base text-foreground font-medium mb-2">{L("¿Querés saber qué dice TU fecha de nacimiento?", "Want to know what YOUR date of birth says?")}</p>
+                <p className="text-sm text-muted mb-5">{L("Generá tu mapa gratuito con numerología, astrología y zodíaco chino.", "Create your free map with numerology, astrology and the Chinese zodiac.")}</p>
                 <Link
                   href="/profile"
                   className="inline-flex items-center justify-center gap-2 rounded-md font-heading font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors label-caps"
-                >
-                  Crear mi mapa →
-                </Link>
+                >{L("Crear mi mapa →", "Create my map →")}</Link>
               </div>
             </motion.section>
 
             {/* Volver al blog */}
-            <div className="mt-12 pt-6 border-t border-border">
+            <div className="mt-12 pt-6 border-t border-border">{L(<>
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent-hover transition-colors"
               >
                 <span aria-hidden="true">&larr;</span> Volver al blog
               </Link>
-            </div>
+            </>, <><Link href="/blog" className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent-hover transition-colors"><span aria-hidden="true">&larr;</span> Back to the blog</Link></>)}</div>
           </div>
 
           {/* Sidebar (~30%) — sticky en desktop */}

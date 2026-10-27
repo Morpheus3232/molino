@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -22,9 +23,10 @@ export default function AffinityHero({
   meta?: { label: string; plural: string; icon: string; description: string };
   type?: EntityType;
 }) {
+  const L = useL();
   // La historia solo necesita tu animal: sirve igual sin perfil guardado.
   const story = buildEntityConnectionStory({ chineseZodiac: result.userAnimal } as UserProfile, entity);
-  const headline = story?.headline ?? `${entity.name} y vos: ${result.relationship}.`;
+  const headline = story?.headline ?? L(`${entity.name} y vos: ${result.relationship}.`, `${entity.name} and you: ${result.relationship}.`);
 
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
@@ -36,7 +38,7 @@ export default function AffinityHero({
       {/* La cuenta: dos años, dos animales */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-3xl">
         {[
-          { label: "Tu año de nacimiento", year: result.userYear, animal: result.userAnimal },
+          { label: L("Tu año de nacimiento", "Your year of birth"), year: result.userYear, animal: result.userAnimal },
           { label: `${entity.name}: ${result.primaryEvent?.label ?? "origen"}`, year: result.entityYear, animal: result.entityAnimal },
         ].map((c) => (
           <div key={c.label} className="bg-background p-6 flex items-center gap-5">
@@ -54,14 +56,14 @@ export default function AffinityHero({
         <p className="mt-8 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-3xl">{story.explanation}</p>
       )}
 
-      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-base">
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-base">{L(<>
         <Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">
           Comparar {entity.name} con otra entrada
         </Link>
         <Link href="/lectura" className="underline underline-offset-4 hover:no-underline">
           Abrir mi lectura completa
         </Link>
-      </div>
+      </>, <><Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">Compare {entity.name} with another entry</Link><Link href="/lectura" className="underline underline-offset-4 hover:no-underline">Open my complete reading</Link></>)}</div>
     </motion.div>
   );
 }

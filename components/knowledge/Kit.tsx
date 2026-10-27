@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import type { ReactNode } from "react";
 import WheelMark from "@/components/knowledge/WheelMark";
@@ -301,25 +302,26 @@ export function PrevNext({
   next?: { href: string; name: ReactNode } | null;
   label?: string;
 }) {
+  const L = useL();
   return (
     <nav aria-label={label} className="mt-14 grid grid-cols-2 border-t-2 border-ink">
       {prev ? (
-        <Link href={prev.href} className="group py-6 pr-4">
+        <Link href={prev.href} className="group py-6 pr-4">{L(<>
           <span className="block text-sm text-muted label-caps">Anterior</span>
           <span className="mt-1 block font-display text-2xl sm:text-3xl text-foreground group-hover:underline underline-offset-4">
             {prev.name}
           </span>
-        </Link>
+        </>, <><span className="block text-sm text-muted label-caps">Previous</span><span className="mt-1 block font-display text-2xl sm:text-3xl text-foreground group-hover:underline underline-offset-4">{prev.name}</span></>)}</Link>
       ) : (
         <span />
       )}
       {next ? (
-        <Link href={next.href} className="group py-6 pl-4 text-right border-l border-ink/15">
+        <Link href={next.href} className="group py-6 pl-4 text-right border-l border-ink/15">{L(<>
           <span className="block text-sm text-muted label-caps">Siguiente</span>
           <span className="mt-1 block font-display text-2xl sm:text-3xl text-foreground group-hover:underline underline-offset-4">
             {next.name}
           </span>
-        </Link>
+        </>, <><span className="block text-sm text-muted label-caps">Next</span><span className="mt-1 block font-display text-2xl sm:text-3xl text-foreground group-hover:underline underline-offset-4">{next.name}</span></>)}</Link>
       ) : (
         <span />
       )}

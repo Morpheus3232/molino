@@ -1,4 +1,5 @@
 'use client';
+import { useL } from "@/lib/i18n/useL";
 
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
@@ -13,6 +14,7 @@ interface PremiumUnlockRevealProps {
  * is no "open your reading" button to press.
  */
 export default function PremiumUnlockReveal({ children }: PremiumUnlockRevealProps) {
+  const L = useL();
   return (
     <motion.div
       id="lectura-premium-reveal"
@@ -24,19 +26,11 @@ export default function PremiumUnlockReveal({ children }: PremiumUnlockRevealPro
       <div role="status" className="rounded-[--radius-lg] border border-accent/30 bg-accent/[0.04] p-6 sm:p-8">
         <p className="inline-flex items-center gap-1.5 text-sm text-accent mb-2 label-caps">
           <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-          Pago confirmado
+          {L("Pago confirmado", "Payment confirmed")}
         </p>
-        <h3 className="font-heading text-lg sm:text-xl text-foreground">
-          Tu Lectura Pro está activa.
-        </h3>
-        <p className="text-sm text-muted mt-2 max-w-xl leading-relaxed">
-          Pago único, sin vencimiento. Abajo se está escribiendo tu lectura y después
-          se abre la conversación con tu mapa.
-        </p>
-        <p className="text-xs text-muted mt-4 pt-4 border-t border-ink/10 leading-relaxed">
-          Si pagaste con Mercado Pago, te llega un email con el comprobante y un enlace
-          para abrir tu lectura desde otro dispositivo.
-        </p>
+        <h3 className="font-heading text-lg sm:text-xl text-foreground">{L("Tu Lectura Pro está activa.", "Your Pro Reading is active.")}</h3>
+        <p className="text-sm text-muted mt-2 max-w-xl leading-relaxed">{L("Pago único, sin vencimiento. Abajo se está escribiendo tu lectura y después se abre la conversación con tu mapa.", "One-time payment, no expiration. Below, your reading is being written, and then the conversation with your map opens.")}</p>
+        <p className="text-xs text-muted mt-4 pt-4 border-t border-ink/10 leading-relaxed">{L("Si pagaste con Mercado Pago, te llega un email con el comprobante y un enlace para abrir tu lectura desde otro dispositivo.", "If you paid with Mercado Pago, you'll get an email with the receipt and a link to open your reading from another device.")}</p>
       </div>
 
       {children}

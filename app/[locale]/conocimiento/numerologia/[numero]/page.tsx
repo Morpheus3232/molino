@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -38,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NumeroPage({ params }: Props) {
+  const L = await getL();
   const { numero: numId } = await params;
   const num = NUMBERS.find(n => n.number === parseInt(numId));
 
@@ -47,7 +49,7 @@ export default async function NumeroPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: `Número ${num.number} ${num.title}`,
+      headline: L(`Número ${num.number} ${num.title}`, `Number ${num.number} ${num.title}`),
       description: num.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },
@@ -58,10 +60,10 @@ export default async function NumeroPage({ params }: Props) {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Conocimiento", item: siteUrl("/explore") },
+        { "@type": "ListItem", position: 1, name: L("Inicio", "Home"), item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: L("Conocimiento", "Knowledge"), item: siteUrl("/explore") },
         { "@type": "ListItem", position: 3, name: "Numerología", item: siteUrl("/conocimiento/numerologia") },
-        { "@type": "ListItem", position: 4, name: `Número ${num.number}` },
+        { "@type": "ListItem", position: 4, name: L(`Número ${num.number}`, `Number ${num.number}`) },
       ],
     },
   ] : null;

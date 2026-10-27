@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -21,6 +22,7 @@ import { saveProfileToStorage } from "@/lib/session/localStorage";
  * es el link que le pasamos al influencer para compartir.
  */
 export default function CanjearClient({ initialCode }: { initialCode: string }) {
+  const L = useL();
   const router = useRouter();
   const [code, setCode] = useState(initialCode);
   const [name, setName] = useState("");
@@ -50,7 +52,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
       }
       if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
       saveProfileToStorage(calculateUserProfile(name || "", birthDate));
-      toast.success("¡Listo! Abriendo tu lectura…");
+      toast.success(L("¡Listo! Abriendo tu lectura…", "Done! Opening your reading…"));
       router.push("/lectura");
     } catch {
       toast.error("No pudimos canjear el código. Intentá de nuevo.");
@@ -63,18 +65,11 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
       <div className="mx-auto max-w-md px-4 sm:px-8 text-center">
         <span className="page-eyebrow mb-4">
           <Ticket className="w-3.5 h-3.5 text-accent" />
-          <span className="text-sm text-accent font-bold label-caps">
-            Código de acceso
-          </span>
+          <span className="text-sm text-accent font-bold label-caps">{L("Código de acceso", "Access code")}</span>
         </span>
 
-        <h1 className="page-title text-foreground">
-          Canjeá tu código
-        </h1>
-        <p className="text-sm text-muted mt-3 leading-relaxed">
-          Te desbloquea la Lectura Pro completa: numerología, astrología y zodíaco
-          chino cruzados en una sola lectura.
-        </p>
+        <h1 className="page-title text-foreground">{L("Canjeá tu código", "Redeem your code")}</h1>
+        <p className="text-sm text-muted mt-3 leading-relaxed">{L("Te desbloquea la Lectura Pro completa: numerología, astrología y zodíaco chino cruzados en una sola lectura.", "It unlocks the complete Pro Reading: numerology, astrology and the Chinese zodiac crossed in a single reading.")}</p>
 
         <form
           onSubmit={handleRedeem}
@@ -84,9 +79,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
             <label
               htmlFor="canjear-codigo"
               className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-            >
-              Tu código
-            </label>
+            >{L("Tu código", "Your code")}</label>
             <input
               id="canjear-codigo"
               type="text"
@@ -96,7 +89,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
               autoCapitalize="characters"
               autoComplete="off"
               spellCheck={false}
-              placeholder="EJEMPLO"
+              placeholder={L("EJEMPLO", "EXAMPLE")}
               className="w-full rounded-md bg-background border border-ink/10 p-3 text-sm text-foreground focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent label-caps"
             />
           </div>
@@ -104,9 +97,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
             <label
               htmlFor="canjear-fecha"
               className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-            >
-              Tu fecha de nacimiento
-            </label>
+            >{L("Tu fecha de nacimiento", "Your date of birth")}</label>
             <input
               id="canjear-fecha"
               type="date"
@@ -120,9 +111,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
             <label
               htmlFor="canjear-nombre"
               className="block text-sm text-muted mb-1.5 font-semibold label-caps"
-            >
-              Tu nombre (opcional)
-            </label>
+            >{L("Tu nombre (opcional)", "Your name (optional)")}</label>
             <input
               id="canjear-nombre"
               type="text"
@@ -133,22 +122,22 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
           </div>
           <Button type="submit" variant="accent" size="lg" fullWidth loading={redeeming}>
             <Ticket className="w-4 h-4" />
-            Canjear
+            {L("Canjear", "Redeem")}
           </Button>
         </form>
 
         <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-muted font-mono">
           <ShieldCheck className="w-3.5 h-3.5" />
-          Tu fecha se usa solo para calcular tu mapa.
+          {L("Tu fecha se usa solo para calcular tu mapa.", "Your date is only used to calculate your map.")}
         </p>
 
-        <p className="mt-4 text-xs text-muted">
+        <p className="mt-4 text-xs text-muted">{L(<>
           ¿No tenés código?{" "}
           <Link href="/" className="text-accent hover:underline">
             Tu mapa básico es gratis
           </Link>
           .
-        </p>
+        </>, <>Don't have a code?{" "}<Link href="/" className="text-accent hover:underline">Your basic map is free</Link>.</>)}</p>
       </div>
     </main>
   );

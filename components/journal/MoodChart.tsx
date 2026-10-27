@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import {
   ResponsiveContainer,
@@ -27,6 +28,7 @@ interface MoodChartDatum {
 }
 
 function CustomTooltip({ active, payload }: any) {
+  const L = useL();
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     const moodCfg = MOOD_CONFIG[data.mood as JournalMood];
@@ -39,9 +41,9 @@ function CustomTooltip({ active, payload }: any) {
           <span className="text-muted font-mono">({data.mood}/5)</span>
         </div>
         {data.theme && (
-          <div className="mt-1 font-mono text-[10px] text-accent">
+          <div className="mt-1 font-mono text-[10px] text-accent">{L(<>
             Día {data.personalDay}: {data.theme}
-          </div>
+          </>, <>Day {data.personalDay}: {data.theme}</>)}</div>
         )}
       </div>
     );
@@ -50,11 +52,12 @@ function CustomTooltip({ active, payload }: any) {
 }
 
 export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }) {
+  const L = useL();
   return (
     <div
       className="w-full h-44 sm:h-52"
       role="region"
-      aria-label="Gráfico de evolución de energía y estado de ánimo a lo largo del tiempo"
+      aria-label={L("Gráfico de evolución de energía y estado de ánimo a lo largo del tiempo", "Chart of the evolution of energy and mood over time")}
     >
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
@@ -95,20 +98,20 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
 
       {/* Accesibilidad (a11y): Tabla oculta visualmente para lectores de pantalla */}
       <table className="sr-only">
-        <caption>Historial cronológico de nivel de energía y estado de ánimo</caption>
+        <caption>{L("Historial cronológico de nivel de energía y estado de ánimo", "Chronological history of energy level and mood")}</caption>
         <thead>
           <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Nivel de Energía (1 a 5)</th>
-            <th scope="col">Tema Simbólico</th>
+            <th scope="col">{L("Fecha", "Date")}</th>
+            <th scope="col">{L("Nivel de Energía (1 a 5)", "Energy Level (1 to 5)")}</th>
+            <th scope="col">{L("Tema Simbólico", "Symbolic Theme")}</th>
           </tr>
         </thead>
         <tbody>
           {chartData.map((d, i) => (
             <tr key={i}>
               <td>{d.formattedDate}</td>
-              <td>{d.mood} de 5</td>
-              <td>{d.theme ? `Día ${d.personalDay}: ${d.theme}` : "Sin tema"}</td>
+              <td>{L(<>{d.mood} de 5</>, <>{d.mood} of 5</>)}</td>
+              <td>{d.theme ? L(`Día ${d.personalDay}: ${d.theme}`, `Day ${d.personalDay}: ${d.theme}`) : L("Sin tema", "No theme")}</td>
             </tr>
           ))}
         </tbody>

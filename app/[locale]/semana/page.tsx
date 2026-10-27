@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { Suspense } from "react";
@@ -18,6 +19,7 @@ export default function SemanaPage() {
 }
 
 function SemanaContent() {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
@@ -56,9 +58,9 @@ function SemanaContent() {
   const todayKey = toLocalDateKey(today);
 
   const crumbs = [
-    { href: "/", label: "Inicio" },
-    { href: "/calendario", label: "Calendario" },
-    { label: "Semana" },
+    { href: "/", label: L("Inicio", "Home") },
+    { href: "/calendario", label: L("Calendario", "Calendar") },
+    { label: L("Semana", "Week") },
   ];
 
   if (loading || !mounted) {
@@ -81,25 +83,16 @@ function SemanaContent() {
         <div className={`${CONTAINER} pt-12 sm:pt-16 pb-24`}>
           <Breadcrumb items={crumbs} />
           <div className="mt-10 max-w-2xl">
-            <p className="text-sm text-accent mb-4 label-caps">Semana · requiere tu mapa</p>
-            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">
-              Creá tu mapa primero
-            </h1>
-            <p className="mt-6 text-xl text-foreground/85 leading-snug">
-              La semana se arma con tu Día Personal, que sale de tu fecha de nacimiento. Sin ella, mirá el número del día,
-              que es igual para todos.
-            </p>
+            <p className="text-sm text-accent mb-4 label-caps">{L("Semana · requiere tu mapa", "Week · requires your map")}</p>
+            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">{L("Creá tu mapa primero", "Create your map first")}</h1>
+            <p className="mt-6 text-xl text-foreground/85 leading-snug">{L("La semana se arma con tu Día Personal, que sale de tu fecha de nacimiento. Sin ella, mirá el número del día, que es igual para todos.", "The week is built from your Personal Day, which comes from your date of birth. Without it, look at the number of the day, which is the same for everyone.")}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <button
                 type="button"
                 onClick={() => router.push("/onboarding")}
                 className="inline-flex items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
-              >
-                Crear mi mapa
-              </button>
-              <Link href="/calendario" className="text-base underline underline-offset-4 hover:no-underline">
-                Ver el calendario del mes
-              </Link>
+              >{L("Crear mi mapa", "Create my map")}</button>
+              <Link href="/calendario" className="text-base underline underline-offset-4 hover:no-underline">{L("Ver el calendario del mes", "See the month's calendar")}</Link>
             </div>
           </div>
         </div>
@@ -120,14 +113,9 @@ function SemanaContent() {
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6 items-end">
             <div className="lg:col-span-7">
               <p className="text-sm text-accent mb-4 label-caps">{weekRange}</p>
-              <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">
-                Tu semana
-              </h1>
+              <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">{L("Tu semana", "Your week")}</h1>
             </div>
-            <p className="lg:col-span-5 text-xl sm:text-2xl text-foreground/85 leading-snug">
-              Siete días con tu Día Personal: el número que sale de sumar tu fecha de nacimiento con cada fecha. Hoy va en
-              negro.
-            </p>
+            <p className="lg:col-span-5 text-xl sm:text-2xl text-foreground/85 leading-snug">{L("Siete días con tu Día Personal: el número que sale de sumar tu fecha de nacimiento con cada fecha. Hoy va en negro.", "Seven days with your Personal Day: the number you get by adding your date of birth to each date. Today is in black.")}</p>
           </div>
 
           {/* La semana como instrumento: siete columnas con filete */}
@@ -147,7 +135,7 @@ function SemanaContent() {
                   <div className="w-24 sm:w-auto shrink-0">
                     <p className={`text-sm capitalize ${isTodayCell ? "text-paper/75" : "text-muted"}`}>
                       {dayName}
-                      {isTodayCell && " · hoy"}
+                      {isTodayCell && L(" · hoy", " · today")}
                     </p>
                     <p className={`text-base tabular-nums ${isTodayCell ? "text-paper/75" : "text-muted"}`}>{date.getDate()}</p>
                   </div>
@@ -161,15 +149,15 @@ function SemanaContent() {
       </header>
 
       {todayResult && (
-        <KnowledgeSection label="Tu día de hoy" title={<>Día {todayResult.personalDay}: {todayResult.theme}</>}>
+        <KnowledgeSection label={L("Tu día de hoy", "Your day today")} title={<>{L(<>Día {todayResult.personalDay}: {todayResult.theme}</>, <>Day {todayResult.personalDay}: {todayResult.theme}</>)}</>}>
           <p className="text-xl text-foreground/85 leading-relaxed max-w-3xl">{todayResult.description}</p>
-          <p className="mt-6 text-base">
+          <p className="mt-6 text-base">{L(<>
             <Link href="/hoy" className="underline underline-offset-4 hover:no-underline">Ver todo el día de hoy</Link>
-          </p>
+          </>, <><Link href="/hoy" className="underline underline-offset-4 hover:no-underline">See all of today</Link></>)}</p>
         </KnowledgeSection>
       )}
 
-      <KnowledgeSection label="Día por día" title="La semana entera" tone="alt">
+      <KnowledgeSection label={L("Día por día", "Day by day")} title={L("La semana entera", "The whole week")} tone="alt">
         <div className="border-t-2 border-ink">
           {weekResults.map((day) => {
             const date = new Date(day.date + "T12:00:00");
@@ -180,7 +168,7 @@ function SemanaContent() {
                   <span className="font-display text-5xl leading-none text-foreground tabular-nums">{day.personalDay}</span>
                   <span className="text-base text-foreground capitalize">
                     {date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric" })}
-                    {isTodayCell && <span className="text-muted"> · hoy</span>}
+                    {isTodayCell && <span className="text-muted">{L(" · hoy", " · today")}</span>}
                   </span>
                 </div>
                 <div>
@@ -191,9 +179,9 @@ function SemanaContent() {
             );
           })}
         </div>
-        <p className="mt-8 text-base">
+        <p className="mt-8 text-base">{L(<>
           <Link href="/calendario" className="underline underline-offset-4 hover:no-underline">Ver el mes completo</Link>
-        </p>
+        </>, <><Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the full month</Link></>)}</p>
       </KnowledgeSection>
     </main>
   );

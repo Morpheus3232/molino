@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -10,14 +11,14 @@ import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import SectionCover from "@/components/ui/SectionCover";
 
-const MONTHS = [
-  { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
-  { value: "03", label: "Marzo" }, { value: "04", label: "Abril" },
-  { value: "05", label: "Mayo" }, { value: "06", label: "Junio" },
-  { value: "07", label: "Julio" }, { value: "08", label: "Agosto" },
-  { value: "09", label: "Septiembre" }, { value: "10", label: "Octubre" },
-  { value: "11", label: "Noviembre" }, { value: "12", label: "Diciembre" },
-];
+const MONTHS = (L: Pick2) => ([
+  { value: "01", label: L("Enero", "January") }, { value: "02", label: L("Febrero", "February") },
+  { value: "03", label: L("Marzo", "March") }, { value: "04", label: L("Abril", "April") },
+  { value: "05", label: L("Mayo", "May") }, { value: "06", label: L("Junio", "June") },
+  { value: "07", label: L("Julio", "July") }, { value: "08", label: L("Agosto", "August") },
+  { value: "09", label: L("Septiembre", "September") }, { value: "10", label: L("Octubre", "October") },
+  { value: "11", label: L("Noviembre", "November") }, { value: "12", label: L("Diciembre", "December") },
+]);
 
 function getDaysInMonth(month: string, year: string): number {
   return new Date(parseInt(year), parseInt(month), 0).getDate();
@@ -32,6 +33,7 @@ const ELEMENT_COLORS: Record<string, string> = {
 };
 
 export default function ZodiacoChinoCalcPage() {
+  const L = useL();
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -65,21 +67,17 @@ export default function ZodiacoChinoCalcPage() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">{L(<>
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Zodiaco Chino</span>
-        </nav>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Tools</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">Chinese Zodiac</span></>)}</nav>
 
         <motion.section {...fadeUp}>
-          <h1 className="page-title text-foreground">
-            Tu animal del zodiaco chino
-          </h1>
-          <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            El zodiaco chino es un sistema de más de 2000 años que asigna un animal y un elemento a cada año en un ciclo de 60 combinaciones. Ingresá tu fecha de nacimiento para descubrir tu lugar en este ciclo.
-          </p>
+          <h1 className="page-title text-foreground">{L("Tu animal del zodiaco chino", "Your Chinese zodiac animal")}</h1>
+          <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">{L("El zodiaco chino es un sistema de más de 2000 años que asigna un animal y un elemento a cada año en un ciclo de 60 combinaciones. Ingresá tu fecha de nacimiento para descubrir tu lugar en este ciclo.", "The Chinese zodiac is a system more than 2,000 years old that assigns an animal and an element to each year in a cycle of 60 combinations. Enter your date of birth to discover your place in this cycle.")}</p>
           <SectionCover imageKey="herramientas/zodiaco-chino" priority className="mt-8 max-w-3xl" />
         </motion.section>
 
@@ -87,29 +85,29 @@ export default function ZodiacoChinoCalcPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="max-w-md space-y-4">
             <div>
-              <label className="block text-sm text-muted font-medium mb-2 label-caps">Fecha de nacimiento</label>
+              <label className="block text-sm text-muted font-medium mb-2 label-caps">{L("Fecha de nacimiento", "Date of birth")}</label>
               <div className="flex gap-3">
-                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
-                  <option value="">Día</option>
+                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label={L("Día", "Day")}>
+                  <option value="">{L("Día", "Day")}</option>
                   {Array.from({ length: daysInMonth }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
                 </select>
-                <select value={month} onChange={(e) => setMonth(e.target.value)} className="input flex-1" aria-label="Mes">
-                  <option value="">Mes</option>
-                  {MONTHS.map((m) => (
+                <select value={month} onChange={(e) => setMonth(e.target.value)} className="input flex-1" aria-label={L("Mes", "Month")}>
+                  <option value="">{L("Mes", "Month")}</option>
+                  {MONTHS(L).map((m) => (
                     <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
                 </select>
-                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="Año">
-                  <option value="">Año</option>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label={L("Año", "Year")}>
+                  <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
                 </select>
               </div>
             </div>
-            <Button variant="primary" fullWidth onClick={handleCalculate} disabled={!isValid}>Calcular mi animal</Button>
+            <Button variant="primary" fullWidth onClick={handleCalculate} disabled={!isValid}>{L("Calcular mi animal", "Calculate my animal")}</Button>
           </div>
         </motion.section>
 
@@ -136,9 +134,7 @@ export default function ZodiacoChinoCalcPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
                     className="text-sm text-accent font-medium mb-4 label-caps"
-                  >
-                    Tu Animal del Zodiaco Chino
-                  </motion.p>
+                  >{L("Tu Animal del Zodiaco Chino", "Your Chinese Zodiac Animal")}</motion.p>
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -178,7 +174,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.55, duration: 0.4 }}
                       >
-                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Significado</h3>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Significado", "Meaning")}</h3>
                         <p className="text-sm text-foreground leading-relaxed">{animalData.meaning}</p>
                       </motion.div>
 
@@ -188,7 +184,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 0.4 }}
                       >
-                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Historia y simbolismo</h3>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Historia y simbolismo", "History and symbolism")}</h3>
                         <p className="text-sm text-muted leading-relaxed">{animalData.history}</p>
                       </motion.div>
 
@@ -200,15 +196,15 @@ export default function ZodiacoChinoCalcPage() {
                         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
                       >
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">Características</h3>
+                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">{L("Características", "Characteristics")}</h3>
                           <p className="text-sm text-foreground">{animalData.traits.join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">Fortalezas</h3>
+                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">{L("Fortalezas", "Strengths")}</h3>
                           <p className="text-sm text-foreground">{animalData.strengths.slice(0, 3).join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <h3 className="font-heading text-lg font-semibold text-muted mb-2">Desafíos</h3>
+                          <h3 className="font-heading text-lg font-semibold text-muted mb-2">{L("Desafíos", "Challenges")}</h3>
                           <p className="text-sm text-foreground">{animalData.challenges.slice(0, 3).join(", ")}</p>
                         </div>
                       </motion.div>
@@ -219,7 +215,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.4 }}
                       >
-                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Tus dos amigos (三合)</h3>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Tus dos amigos (三合)", "Your two friends (三合)")}</h3>
                         <div className="flex flex-wrap gap-2">
                           {animalData.compatibility.friendly.map(f => (
                             <span key={f} className="text-sm px-3 py-1 rounded-md border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>
@@ -234,7 +230,7 @@ export default function ZodiacoChinoCalcPage() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.75, duration: 0.4 }}
                         >
-                          <h3 className="font-heading text-lg font-semibold text-muted mb-3">Años correspondientes</h3>
+                          <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Años correspondientes", "Corresponding years")}</h3>
                           <p className="text-sm text-foreground">{getYearRange(animalIndex)}</p>
                         </motion.div>
                       )}
@@ -245,11 +241,11 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.4 }}
                       >
-                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Los 5 elementos</h3>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Los 5 elementos", "The 5 elements")}</h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {animalData.elements.map((el) => (
                             <div key={el.element} className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                              <p className="text-sm font-medium text-foreground">{result.animal} de {el.element}</p>
+                              <p className="text-sm font-medium text-foreground">{L(<>{result.animal} de {el.element}</>, <>{el.element} {result.animal}</>)}</p>
                               <p className="text-xs text-muted mt-1">{el.modifier}</p>
                             </div>
                           ))}
@@ -263,9 +259,9 @@ export default function ZodiacoChinoCalcPage() {
                         transition={{ delay: 0.85, duration: 0.4 }}
                         className="p-4 rounded-md border border-border bg-card shadow-sm"
                       >
-                        <p className="text-xs text-muted leading-relaxed">
+                        <p className="text-xs text-muted leading-relaxed">{L(<>
                           <strong>Nota:</strong> El zodiaco chino sigue el calendario lunar. Para fechas cercanas al Año Nuevo chino (enero-febrero), el animal puede diferir. Molino utiliza el año gregoriano como convención.
-                        </p>
+                        </>, <><strong>Note:</strong> The Chinese zodiac follows the lunar calendar. For dates close to Chinese New Year (January–February), the animal may differ. Molino uses the Gregorian year as a convention.</>)}</p>
                       </motion.div>
                     </div>
                   ) : null;
@@ -279,9 +275,9 @@ export default function ZodiacoChinoCalcPage() {
                 transition={{ delay: 0.9, duration: 0.35 }}
                 className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
-                <p className="text-xs text-muted leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed">{L(<>
                   <strong>Nota:</strong> El zodiaco chino es un sistema de creencias milenario. Molino lo utiliza como herramienta de reflexión y autoconocimiento. Las interpretaciones no constituyen evidencia científica.
-                </p>
+                </>, <><strong>Note:</strong> The Chinese zodiac is an age-old belief system. Molino uses it as a tool for reflection and self-knowledge. The interpretations do not constitute scientific evidence.</>)}</p>
               </motion.div>
 
               {/* CTA */}
@@ -294,9 +290,9 @@ export default function ZodiacoChinoCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`;
+                    const text = L(`Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`, `I'm a ${result.element} ${result.animal}. Read your Chinese zodiac animal on Molino.`);
                     if (navigator.share) {
-                      navigator.share({ title: `Mi Zodiaco Chino — ${result.animal}`, text }).catch(() => {});
+                      navigator.share({ title: L(`Mi Zodiaco Chino — ${result.animal}`, `My Chinese Zodiac — ${result.animal}`), text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
@@ -306,16 +302,14 @@ export default function ZodiacoChinoCalcPage() {
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
-                  Compartir resultado
+                  {L("Compartir resultado", "Share result")}
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">¿Querés ver cómo tu animal se conecta con numerología y astrología?</p>
+                  <p className="text-sm text-muted mb-3">{L("¿Querés ver cómo tu animal se conecta con numerología y astrología?", "Want to see how your animal connects with numerology and astrology?")}</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
-                  >
-                    Crear tu mapa completo
-                  </Link>
+                  >{L("Crear tu mapa completo", "Create your complete map")}</Link>
                 </div>
               </motion.div>
             </motion.section>

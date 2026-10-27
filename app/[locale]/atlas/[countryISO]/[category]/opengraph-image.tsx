@@ -1,3 +1,5 @@
+import { type Pick2 } from "@/lib/i18n/useL";
+import { getL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { getCountryName, isoToFlagEmoji } from "@/lib/data/atlas-queries";
 
@@ -5,21 +7,22 @@ export const alt = "Categoría del Atlas";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  autos: "Marcas de autos",
-  ropa: "Marcas de ropa",
-  brand: "Otras marcas",
+const CATEGORY_LABELS = (L: Pick2): Record<string, string> => ({
+  autos: L("Marcas de autos", "Car brands"),
+  ropa: L("Marcas de ropa", "Clothing brands"),
+  brand: L("Otras marcas", "Other brands"),
   city: "Ciudades",
-  university: "Universidades",
-  artist: "Famosos",
-  movie: "Películas",
-};
+  university: L("Universidades", "Universities"),
+  artist: L("Famosos", "Famous people"),
+  movie: L("Películas", "Movies"),
+});
 
 export default async function Image({ params }: { params: Promise<{ countryISO: string; category: string }> }) {
+  const L = await getL();
   const { countryISO, category } = await params;
   const iso = countryISO.toUpperCase();
   const name = getCountryName(iso) || iso;
-  const catLabel = CATEGORY_LABELS[category] ?? category;
+  const catLabel = CATEGORY_LABELS(L)[category] ?? category;
 
   return new ImageResponse(
     (
@@ -60,8 +63,8 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
 
         <span style={{ fontSize: 96, lineHeight: 1 }}>{isoToFlagEmoji(iso)}</span>
         <span style={{ color: "#0A0A0A", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
-        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
-        <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
+        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>{L(<>de {name}</>, <>of {name}</>)}</span>
+        <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 36 }}>{L("Explorá las afinidades simbólicas en Molino", "Explore symbolic affinities on Molino")}</span>
       </div>
     ),
     { ...size }

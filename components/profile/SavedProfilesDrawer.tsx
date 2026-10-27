@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, Link } from "@/lib/i18n/navigation";
@@ -53,6 +54,7 @@ export default function SavedProfilesDrawer({
   label,
   premiumShortcut = false,
 }: SavedProfilesDrawerProps) {
+  const L = useL();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [vault, setVault] = useState<VaultProfileItem[]>([]);
@@ -120,7 +122,7 @@ export default function SavedProfilesDrawer({
   const handleSaveCurrent = () => {
     if (!currentProfile || !currentProfile.birthDate) return;
 
-    const label = customLabel.trim() || currentProfile.name?.trim() || "Mi Mapa";
+    const label = customLabel.trim() || currentProfile.name?.trim() || L("Mi Mapa", "My Map");
     saveProfileToVault({
       label,
       name: currentProfile.name,
@@ -193,11 +195,11 @@ export default function SavedProfilesDrawer({
           // El inline style siempre gana sobre eso.
           style={{ color: "var(--color-gold-foreground)" }}
           className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gold/15 border border-gold/40 text-xs font-mono font-semibold hover:bg-gold/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-all shadow-sm ${className}`}
-          title={label ?? "Ver tus mapas guardados o crear uno nuevo"}
-          aria-label={label ?? "Mis Mapas"}
+          title={label ?? L("Ver tus mapas guardados o crear uno nuevo", "See your saved maps or create a new one")}
+          aria-label={label ?? L("Mis Mapas", "My Maps")}
         >
           <Bookmark className="w-3.5 h-3.5" />
-          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? "Mis Mapas"}</span>
+          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? L("Mis Mapas", "My Maps")}</span>
         </button>
       ) : (
         <button
@@ -207,15 +209,15 @@ export default function SavedProfilesDrawer({
             setIsOpen(true);
           }}
           className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-ink/10 text-xs font-mono text-foreground/90 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all shadow-sm ${className}`}
-          title={label ?? "Ver y cambiar entre mapas guardados en este navegador"}
-          aria-label={label ?? "Abrir bóveda de perfiles locales"}
+          title={label ?? L("Ver y cambiar entre mapas guardados en este navegador", "See and switch between maps saved in this browser")}
+          aria-label={label ?? L("Abrir bóveda de perfiles locales", "Open the local profile vault")}
         >
           {vault.length > 0 ? (
             <Bookmark className="w-3.5 h-3.5 text-accent" />
           ) : (
             <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
           )}
-          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
+          <span className={compact ? "hidden 2xl:inline" : ""}>{label ?? (vault.length > 0 ? L(`Bóveda Local (${vault.length})`, `Local Vault (${vault.length})`) : L("Guardar en Bóveda", "Save to Vault"))}</span>
         </button>
       )}
 
@@ -242,16 +244,14 @@ export default function SavedProfilesDrawer({
                   <div className="w-8 h-8 rounded-xl bg-accent/10 text-accent flex items-center justify-center">
                     <Bookmark className="w-4 h-4" />
                   </div>
-                  <h3 id="vault-title" className="font-heading text-lg font-bold text-foreground">
-                    Mapas guardados
-                  </h3>
+                  <h3 id="vault-title" className="font-heading text-lg font-bold text-foreground">{L("Mapas guardados", "Saved maps")}</h3>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
                   className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-                  aria-label="Cerrar bóveda"
+                  aria-label={L("Cerrar bóveda", "Close vault")}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -265,24 +265,18 @@ export default function SavedProfilesDrawer({
                   guardarlo). */}
               {confirmNewMap ? (
                 <div className="mt-5 p-4 rounded-md bg-ink/5 border border-ink/10 space-y-3">
-                  <p className="text-xs text-foreground leading-relaxed">
-                    Se va a limpiar el mapa activo para armar uno nuevo. Si no lo guardaste en la bóveda, se pierde.
-                  </p>
+                  <p className="text-xs text-foreground leading-relaxed">{L("Se va a limpiar el mapa activo para armar uno nuevo. Si no lo guardaste en la bóveda, se pierde.", "The active map will be cleared to build a new one. If you didn't save it to the vault, it's lost.")}</p>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setConfirmNewMap(false)}
                       className="flex-1 px-3.5 py-1.5 rounded-xl border border-ink/10 text-muted font-mono text-xs hover:text-foreground hover:border-ink/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-                    >
-                      Cancelar
-                    </button>
+                    >{L("Cancelar", "Cancel")}</button>
                     <button
                       type="button"
                       onClick={confirmCreateNewMap}
                       className="flex-1 px-3.5 py-1.5 rounded-xl bg-accent text-background font-mono text-xs font-bold hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-                    >
-                      Crear nuevo mapa
-                    </button>
+                    >{L("Crear nuevo mapa", "Create new map")}</button>
                   </div>
                 </div>
               ) : (
@@ -292,26 +286,26 @@ export default function SavedProfilesDrawer({
                   className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-dashed border-accent/40 text-accent font-mono text-xs font-bold hover:bg-accent/5 hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>Crear nuevo mapa</span>
+                  <span>{L("Crear nuevo mapa", "Create new map")}</span>
                 </button>
               )}
 
               {/* Save Current Profile Box */}
               {currentProfile && currentProfile.birthDate && !isCurrentAlreadySaved && (
                 <div className="mt-5 p-4 rounded-md bg-accent/5 border border-accent/20 space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between">{L(<>
                     <span className="font-mono text-xs font-bold text-accent">
                       Guardar mapa actual
                     </span>
                     <span className="text-xs font-mono text-muted">
                       {currentProfile.birthDate}
                     </span>
-                  </div>
+                  </>, <><span className="font-mono text-xs font-bold text-accent">Save current map</span><span className="text-xs font-mono text-muted">{currentProfile.birthDate}</span></>)}</div>
 
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      placeholder="Etiqueta (ej: Mi Mapa, Lucas, Mamá...)"
+                      placeholder={L("Etiqueta (ej: Mi Mapa, Lucas, Mamá...)", "Label (e.g. My Map, Lucas, Mom...)")}
                       value={customLabel}
                       onChange={(e) => setCustomLabel(e.target.value)}
                       className="flex-1 rounded-xl bg-background border border-ink/10 px-3 py-1.5 text-xs text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent focus-visible:ring-1 focus-visible:ring-accent"
@@ -322,7 +316,7 @@ export default function SavedProfilesDrawer({
                       className="px-3.5 py-1.5 rounded-xl bg-accent text-background font-mono text-xs font-bold hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors inline-flex items-center gap-1.5 flex-shrink-0"
                     >
                       <BookmarkPlus className="w-3.5 h-3.5" />
-                      <span>Guardar</span>
+                      <span>{L("Guardar", "Save")}</span>
                     </button>
                   </div>
                 </div>
@@ -331,7 +325,7 @@ export default function SavedProfilesDrawer({
               {savedFeedback && (
                 <div className="mt-3 p-2.5 rounded-xl bg-success/10 border border-success/20 text-success text-xs font-mono flex items-center gap-2">
                   <Check className="w-3.5 h-3.5" />
-                  <span>¡Mapa guardado en tu bóveda local!</span>
+                  <span>{L("¡Mapa guardado en tu bóveda local!", "Map saved to your local vault!")}</span>
                 </div>
               )}
 
@@ -339,7 +333,7 @@ export default function SavedProfilesDrawer({
               <div className="mt-6 space-y-2.5 max-h-72 overflow-y-auto pr-1">
                 {vault.length === 0 ? (
                   <div className="py-8 text-center text-muted text-xs font-mono">
-                    <p>Todavía no guardaste ningún mapa.</p>
+                    <p>{L("Todavía no guardaste ningún mapa.", "You haven't saved any maps yet.")}</p>
                   </div>
                 ) : (
                   vault.map((item) => {
@@ -366,14 +360,12 @@ export default function SavedProfilesDrawer({
                               {item.label}
                             </span>
                             {isCurrent && (
-                              <span className="text-sm bg-accent text-background px-1.5 py-0.5 rounded font-bold label-caps">
-                                Activo
-                              </span>
+                              <span className="text-sm bg-accent text-background px-1.5 py-0.5 rounded font-bold label-caps">{L("Activo", "Active")}</span>
                             )}
                           </div>
-                          <p className="text-xs font-mono text-muted mt-0.5">
+                          <p className="text-xs font-mono text-muted mt-0.5">{L(<>
                             Camino {item.lifePath} · {item.sunSign} · {item.chineseZodiac} ({item.birthDate})
-                          </p>
+                          </>, <>Path {item.lifePath} · {item.sunSign} · {item.chineseZodiac} ({item.birthDate})</>)}</p>
                           {/* Cada mapa se paga por separado (el acceso es por
                               fecha), así que la bóveda distingue cuál ya tiene
                               La Lectura y cuál no. Sin dato del servidor
@@ -389,13 +381,11 @@ export default function SavedProfilesDrawer({
                               style={hasLectura ? { color: "var(--color-gold-foreground)" } : undefined}
                             >
                               {hasLectura ? (
-                                <>
-                                  Lectura incluida
-                                </>
+                                <>{L("Lectura incluida", "Reading included")}</>
                               ) : (
                                 <>
                                   <Lock className="w-2.5 h-2.5" aria-hidden="true" />
-                                  Sin lectura
+                                  {L("Sin lectura", "No reading")}
                                 </>
                               )}
                             </span>
@@ -407,8 +397,8 @@ export default function SavedProfilesDrawer({
                             href={`/profile?dob=${item.birthDate}`}
                             onClick={() => setIsOpen(false)}
                             className="p-1.5 rounded-lg text-accent hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-                            title="Ver este mapa"
-                            aria-label={`Ver mapa de ${item.label}`}
+                            title={L("Ver este mapa", "See this map")}
+                            aria-label={L(`Ver mapa de ${item.label}`, `See ${item.label}'s map`)}
                           >
                             <ArrowRight className="w-4 h-4" />
                           </Link>
@@ -416,8 +406,8 @@ export default function SavedProfilesDrawer({
                             type="button"
                             onClick={(e) => handleDelete(item.id, e)}
                             className="p-1.5 rounded-lg text-muted hover:text-error hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error transition-colors"
-                            title="Eliminar de la bóveda"
-                            aria-label={`Eliminar mapa de ${item.label}`}
+                            title={L("Eliminar de la bóveda", "Remove from the vault")}
+                            aria-label={L(`Eliminar mapa de ${item.label}`, `Remove ${item.label}'s map`)}
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -440,16 +430,14 @@ export default function SavedProfilesDrawer({
                 className="mt-4 flex items-center gap-3 p-3.5 rounded-md border border-gold/30 bg-gold/[0.06] hover:bg-gold/[0.12] hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-colors"
               >
                 <Gift className="w-4 h-4 shrink-0" style={{ color: "var(--color-gold-foreground)" }} aria-hidden="true" />
-                <span className="flex-1 min-w-0 font-heading text-sm font-bold text-foreground">
-                  Regalar una lectura
-                </span>
+                <span className="flex-1 min-w-0 font-heading text-sm font-bold text-foreground">{L("Regalar una lectura", "Gift a reading")}</span>
                 <ArrowRight className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
               </Link>
 
               {/* Footer Notice */}
               <div className="mt-6 pt-4 border-t border-ink/10 inline-flex items-center gap-1 text-xs font-mono text-muted">
                 <ShieldCheck className="w-3.5 h-3.5 text-success" />
-                Solo en este dispositivo
+                {L("Solo en este dispositivo", "Only on this device")}
               </div>
             </motion.div>
           </div>

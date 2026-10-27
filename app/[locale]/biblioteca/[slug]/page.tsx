@@ -1,3 +1,4 @@
+import { getL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BibliotecaSourcePage({ params }: Props) {
+  const L = await getL();
   const { slug } = await params;
   const source = getSourceBySlug(slug);
 
@@ -59,8 +61,8 @@ export default async function BibliotecaSourcePage({ params }: Props) {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Biblioteca", item: siteUrl("/biblioteca") },
+        { "@type": "ListItem", position: 1, name: L("Inicio", "Home"), item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: L("Biblioteca", "Library"), item: siteUrl("/biblioteca") },
         { "@type": "ListItem", position: 3, name: source.title },
       ],
     },

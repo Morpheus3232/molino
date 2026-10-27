@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import EntityCard from "@/components/atlas/EntityCard";
@@ -6,22 +7,22 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { FallbackLevel, PersonalAtlasGroup } from "@/lib/data/atlas-queries";
 
-const CATEGORY_LABEL: Record<string, string> = {
-  university: "Universidades",
-  football_player: "Jugadores",
-  artist: "Famosos",
+const CATEGORY_LABEL = (L: Pick2): Record<string, string> => ({
+  university: L("Universidades", "Universities"),
+  football_player: L("Jugadores", "Players"),
+  artist: L("Famosos", "Famous people"),
   city: "Ciudades",
-};
+});
 
 /** Etiqueta honesta del nivel — nunca oculta que un resultado viene de región/mundo. */
-const LEVEL_LABEL: Record<FallbackLevel, string> = {
-  "country-animal": "En tu país",
-  "country-relation": "En tu país",
-  "region-animal": "En tu región",
-  "region-relation": "En tu región",
-  "world-animal": "En el mundo",
-  "world-relation": "En el mundo",
-};
+const LEVEL_LABEL = (L: Pick2): Record<FallbackLevel, string> => ({
+  "country-animal": L("En tu país", "In your country"),
+  "country-relation": L("En tu país", "In your country"),
+  "region-animal": L("En tu región", "In your region"),
+  "region-relation": L("En tu región", "In your region"),
+  "world-animal": L("En el mundo", "In the world"),
+  "world-relation": L("En el mundo", "In the world"),
+});
 
 interface PersonalAtlasPilotProps {
   /** Animal ya resuelto del perfil del usuario (o null si no hay perfil). */
@@ -44,6 +45,7 @@ function CategoryBlock({
   /** Override de las entidades mostradas — usado para subgrupos filtrados por category. */
   entities?: PersonalAtlasGroup["entities"];
 }) {
+  const L = useL();
   return (
     <div>
       <div className="flex items-center justify-between mb-4 gap-3">
@@ -54,10 +56,10 @@ function CategoryBlock({
               : "font-display text-base font-bold text-foreground/80 label-caps"
           }
         >
-          {label ?? CATEGORY_LABEL[group.category] ?? group.category}
+          {label ?? CATEGORY_LABEL(L)[group.category] ?? group.category}
         </Heading>
         <span className="shrink-0 text-sm text-muted border border-ink/10 rounded-full px-2.5 py-1 label-caps">
-          {LEVEL_LABEL[group.level]}
+          {LEVEL_LABEL(L)[group.level]}
         </span>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -71,9 +73,9 @@ function CategoryBlock({
         ))}
       </div>
       {entities === group.entities && group.totalAvailable > group.entities.length && (
-        <p className="text-xs text-muted mt-3">
+        <p className="text-xs text-muted mt-3">{L(<>
           Mostrando {group.entities.length} de {group.totalAvailable}.
-        </p>
+        </>, <>Showing {group.entities.length} of {group.totalAvailable}.</>)}</p>
       )}
     </div>
   );
@@ -81,18 +83,19 @@ function CategoryBlock({
 
 /** Jugadores separados por category ("actual"/"historico") — mismo group.level, misma data, solo agrupación visual. */
 function FootballPlayerBlock({ group }: { group: PersonalAtlasGroup }) {
+  const L = useL();
   const actual = group.entities.filter((e) => e.category === "actual");
   const historico = group.entities.filter((e) => e.category === "historico");
 
   return (
     <div>
       <h4 className="font-display text-base font-bold text-foreground/80 mb-6 label-caps">
-        {CATEGORY_LABEL.football_player}
+        {CATEGORY_LABEL(L).football_player}
       </h4>
       <div className="space-y-6 sm:pl-6 sm:border-l border-ink/10">
-        {actual.length > 0 && <CategoryBlock group={group} heading="h4" label="Actualidad" entities={actual} />}
+        {actual.length > 0 && <CategoryBlock group={group} heading="h4" label={L("Actualidad", "Today")} entities={actual} />}
         {historico.length > 0 && (
-          <CategoryBlock group={group} heading="h4" label="Referentes históricos" entities={historico} />
+          <CategoryBlock group={group} heading="h4" label={L("Referentes históricos", "Historical figures")} entities={historico} />
         )}
       </div>
     </div>
@@ -112,6 +115,7 @@ function FootballPlayerBlock({ group }: { group: PersonalAtlasGroup }) {
  * de forma independiente).
  */
 export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlasPilotProps) {
+  const L = useL();
   const [groups, setGroups] = useState<PersonalAtlasGroup[] | null>(null);
 
   useEffect(() => {
@@ -153,16 +157,14 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
   if (!hasUniversity && !hasFootball && !hasArtist && !hasCity) return null;
 
   return (
-    <motion.section aria-label="Tu Atlas" className="relative mb-24" {...fadeUp}>
+    <motion.section aria-label={L("Tu Atlas", "Your Atlas")} className="relative mb-24" {...fadeUp}>
       <div className="flex items-center gap-4 mb-10" aria-hidden="true">
         <div className="h-px flex-1 bg-ink/10" />
         <div className="w-1.5 h-1.5 rounded-full bg-accent/30" />
         <div className="h-px flex-1 bg-ink/10" />
       </div>
 
-      <p className="text-sm text-accent font-semibold mb-2 label-caps">
-        Tu Atlas
-      </p>
+      <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Tu Atlas", "Your Atlas")}</p>
       <h2 className="section-title text-foreground mb-10">
         {animal}
       </h2>
@@ -172,9 +174,7 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
 
         {hasFootball && (
           <div>
-            <h3 className="font-display text-xl font-bold text-foreground mb-6 label-caps">
-              Fútbol
-            </h3>
+            <h3 className="font-display text-xl font-bold text-foreground mb-6 label-caps">{L("Fútbol", "Football")}</h3>
             <div className="space-y-8 sm:pl-6 sm:border-l border-ink/10">
               <FootballPlayerBlock group={footballPlayer!} />
             </div>

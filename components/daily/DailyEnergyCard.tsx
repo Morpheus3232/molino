@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
@@ -18,22 +19,23 @@ interface DailyEnergyCardProps {
  * del día y su cuenta viven en la portada de /hoy.
  */
 export default function DailyEnergyCard({ profile, daily, streakDays = 1, className = "" }: DailyEnergyCardProps) {
+  const L = useL();
   const cells: { k: string; v: string; note?: string }[] = [
-    { k: "Fase lunar", v: daily.moonPhase?.phase ?? "—", note: daily.moonPhase?.description },
+    { k: L("Fase lunar", "Moon phase"), v: daily.moonPhase?.phase ?? "—", note: daily.moonPhase?.description },
     ...(daily.isPersonalized
-      ? [{ k: "Ciclo en curso", v: `Año Personal ${daily.personalYear}` }]
-      : [{ k: "Fortaleza del día", v: daily.strengths?.[0] || "Claridad" }]),
+      ? [{ k: L("Ciclo en curso", "Current cycle"), v: L(`Año Personal ${daily.personalYear}`, `Personal Year ${daily.personalYear}`) }]
+      : [{ k: L("Fortaleza del día", "Strength of the day"), v: daily.strengths?.[0] || L("Claridad", "Clarity") }]),
     ...(profile
       ? [
-          { k: "Tu elemento", v: `${profile.element || "Fuego"} en sintonía` },
-          { k: "Tu arquetipo", v: profile.archetype },
+          { k: L("Tu elemento", "Your element"), v: `${profile.element || "Fuego"} en sintonía` },
+          { k: L("Tu arquetipo", "Your archetype"), v: profile.archetype },
         ]
       : []),
   ];
 
   return (
     <div className={className}>
-      <h2 className="section-title text-foreground">Energía de {daily.theme}</h2>
+      <h2 className="section-title text-foreground">{L(<>Energía de {daily.theme}</>, <>Energy of {daily.theme}</>)}</h2>
       <p className="mt-4 text-xl text-foreground/85 leading-relaxed max-w-2xl">{daily.description}</p>
 
       <dl className={`mt-10 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15`}>
@@ -46,9 +48,9 @@ export default function DailyEnergyCard({ profile, daily, streakDays = 1, classN
         ))}
       </dl>
 
-      <p className="mt-6 text-base text-muted">
+      <p className="mt-6 text-base text-muted">{L(<>
         Día {streakDays} conociéndote.
-      </p>
+      </>, <>Day {streakDays} getting to know yourself.</>)}</p>
     </div>
   );
 }

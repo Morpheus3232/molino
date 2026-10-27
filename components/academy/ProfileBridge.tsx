@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
@@ -15,6 +16,7 @@ interface ProfileBridgeProps {
  * ni se fuerza a crear un perfil para leer la guía.
  */
 export default function ProfileBridge({ cta }: ProfileBridgeProps) {
+  const L = useL();
   const { profile, mounted } = useProfile();
 
   if (!mounted || !profile) return null;
@@ -24,7 +26,7 @@ export default function ProfileBridge({ cta }: ProfileBridgeProps) {
 
   const parts = [
     emoji && animal ? `${emoji} ${animal}` : animal,
-    profile.lifePath ? `Camino de Vida ${profile.lifePath}` : null,
+    profile.lifePath ? L(`Camino de Vida ${profile.lifePath}`, `Life Path ${profile.lifePath}`) : null,
     profile.sunSign || null,
   ].filter(Boolean);
 
@@ -33,7 +35,7 @@ export default function ProfileBridge({ cta }: ProfileBridgeProps) {
   return (
     <div className="rounded-md border border-border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <p className="text-sm text-muted font-semibold mb-1 label-caps">En tu mapa</p>
+        <p className="text-sm text-muted font-semibold mb-1 label-caps">{L("En tu mapa", "In your map")}</p>
         <p className="text-sm text-foreground font-medium">{parts.join(" · ")}</p>
       </div>
       {cta && (

@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { motion } from "framer-motion";
 import { Link } from "@/lib/i18n/navigation";
@@ -10,15 +11,15 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
 import { TIER_META, type AffinityTier } from "@/lib/engines/affinityEngine";
-const TYPE_LABEL: Record<string, string> = {
-  brand: "Marca",
+const TYPE_LABEL = (L: Pick2): Record<string, string> => ({
+  brand: L("Marca", "Brand"),
   city: "Ciudad",
   country: "País",
-  university: "Universidad",
-  team: "Equipo",
-  movie: "Película",
-  artist: "Famoso",
-};
+  university: L("Universidad", "University"),
+  team: L("Equipo", "Team"),
+  movie: L("Película", "Movie"),
+  artist: L("Famoso", "Famous person"),
+});
 
 interface WorldConnectionsProps {
   profile: UserProfile;
@@ -26,6 +27,7 @@ interface WorldConnectionsProps {
 }
 
 function EntityCard({ entity, tier }: { entity: LightAffinityResult; tier: AffinityTier }) {
+  const L = useL();
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -50,7 +52,7 @@ function EntityCard({ entity, tier }: { entity: LightAffinityResult; tier: Affin
             <span className="text-xs" style={{ color: TIER_META[tier].color }}>
               {TIER_META[tier].label}
             </span>
-            <span className="text-xs text-muted">{TYPE_LABEL[entity.type] || entity.type}</span>
+            <span className="text-xs text-muted">{TYPE_LABEL(L)[entity.type] || entity.type}</span>
           </div>
         </div>
       </div>
@@ -87,6 +89,7 @@ function EntityRank({
 }
 
 export default function WorldConnections({ profile, catalog }: WorldConnectionsProps) {
+  const L = useL();
   const { countryResonances, cityResonances, brandResonances } = useMemo(() => {
     const all = sortLightEntities(profile.chineseZodiac || "", catalog);
     const countries = all.filter((r) => r.type === "country").sort((a, b) => b.score - a.score);
@@ -112,33 +115,29 @@ export default function WorldConnections({ profile, catalog }: WorldConnectionsP
             : { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-100px" } as const })}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
         >
-          <p className="text-sm text-muted mb-4 label-caps">
-            02 · Tu mundo
-          </p>
+          <p className="text-sm text-muted mb-4 label-caps">{L("02 · Tu mundo", "02 · Your world")}</p>
           <div className="flex items-end justify-between gap-4 mb-8">
-            <h2 id="world-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05]">
-              Tu Mundo
-            </h2>
+            <h2 id="world-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05]">{L("Tu Mundo", "Your World")}</h2>
             <Link
               href="/affinity"
               className="text-sm font-mono text-accent hover:underline shrink-0"
-            >
+            >{L(<>
               Ver todas las {totalConnections} conexiones →
-            </Link>
+            </>, <>See all {totalConnections} connections →</>)}</Link>
           </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           <EntityRank
-            title="PAÍSES RESONANTES"
+            title={L("PAÍSES RESONANTES", "RESONANT COUNTRIES")}
             entities={countryResonances}
           />
           <EntityRank
-            title="CIUDADES CONECTADAS"
+            title={L("CIUDADES CONECTADAS", "CONNECTED CITIES")}
             entities={cityResonances}
           />
           <EntityRank
-            title="MARCAS AFINES"
+            title={L("MARCAS AFINES", "KINDRED BRANDS")}
             entities={brandResonances}
           />
         </div>

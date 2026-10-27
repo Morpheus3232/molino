@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -70,6 +71,7 @@ async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation 
 }
 
 export default function LaLecturaExperience({ profile, catalog }: Props) {
+  const L = useL();
   const reduceMotion = useSafeReducedMotion();
 
   const [interpretation, setInterpretation] = useState<MolinoInterpretation | null>(null);
@@ -307,17 +309,15 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           </div>
         ) : !interpretation ? (
           <div className="text-center py-16 px-4">
-            <p className="text-muted text-sm mb-4">
-              No pudimos generar tu lectura esta vez. Esperá un momento y volvé a intentarlo.
-            </p>
+            <p className="text-muted text-sm mb-4">{L("No pudimos generar tu lectura esta vez. Esperá un momento y volvé a intentarlo.", "We couldn't generate your reading this time. Wait a moment and try again.")}</p>
             <button
               type="button"
               onClick={retryLectura}
               className="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-background transition hover:bg-ink/90"
-            >
+            >{L(<>
               <span aria-hidden="true">↻</span>
               Reintentar
-            </button>
+            </>, <><span aria-hidden="true">↻</span> Try again</>)}</button>
           </div>
         ) : (
           <section id="lectura-contenido">
@@ -327,7 +327,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.1 }}
               className="mb-16 sm:mb-20"
             >
-              <p className="text-sm text-muted mb-6 label-caps">I · La frase que te resume</p>
+              <p className="text-sm text-muted mb-6 label-caps">{L("I · La frase que te resume", "I · The sentence that sums you up")}</p>
               {interpretation.opening && (
                 <p className="text-center font-display italic text-lg sm:text-xl leading-[1.4] text-muted mb-10 max-w-xl mx-auto">
                   {interpretation.opening}
@@ -344,7 +344,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             </motion.section>
 
             {/* Las dos alas — fortalezas y tensiones, abriéndose desde el centro */}
-            <p className="text-sm text-muted mb-4 label-caps">II · Lo que te sostiene y lo que pide atención</p>
+            <p className="text-sm text-muted mb-4 label-caps">{L("II · Lo que te sostiene y lo que pide atención", "II · What holds you up and what needs attention")}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 mb-16 sm:mb-24">
               <motion.div
                 initial={reduceMotion ? false : { opacity: 0, x: -24 }}
@@ -352,7 +352,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.25 }}
                 className="bg-paper p-8 sm:p-10"
               >
-                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">Lo que te sostiene</h2>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">{L("Lo que te sostiene", "What holds you up")}</h2>
                 {interpretation.strengths.length > 0 && (
                   <ul className="space-y-3 mb-6">
                     {interpretation.strengths.map((s, i) => (
@@ -376,7 +376,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.25 }}
                 className="bg-paper-alt p-8 sm:p-10"
               >
-                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">Lo que pide tu atención</h2>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-5">{L("Lo que pide tu atención", "What needs your attention")}</h2>
                 {interpretation.tensions.length > 0 && (
                   <ul className="space-y-3 mb-6">
                     {interpretation.tensions.map((t, i) => (
@@ -415,7 +415,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     abajo del 4.5:1 que pide un texto de 12px.
                     --color-accent-light (#D9805F) es el par del mismo acento
                     pensado para superficies oscuras. */}
-                <p className="text-sm text-paper/70 mb-6 label-caps">III · Tu punto ciego</p>
+                <p className="text-sm text-paper/70 mb-6 label-caps">{L("III · Tu punto ciego", "III · Your blind spot")}</p>
                 {/* text-paper explícito, no heredado: globals.css baja a
                     --color-muted los <p> dentro de .section-dark, lo que acá
                     dejaba el párrafo más importante de la lectura paga en
@@ -438,18 +438,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.35 }}
                 className="mb-16 sm:mb-20"
               >
-                <p className="text-sm text-muted mb-3 label-caps">IV · Dónde se nota</p>
-                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-2">
-                  El mismo patrón, en tres lugares
-                </h2>
-                <p className="text-base text-muted mb-6">
-                  Se manifiesta distinto en el trabajo, en los vínculos y en las decisiones.
-                </p>
+                <p className="text-sm text-muted mb-3 label-caps">{L("IV · Dónde se nota", "IV · Where it shows")}</p>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-2">{L("El mismo patrón, en tres lugares", "The same pattern, in three places")}</h2>
+                <p className="text-base text-muted mb-6">{L("Se manifiesta distinto en el trabajo, en los vínculos y en las decisiones.", "It shows up differently at work, in relationships and in decisions.")}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
                   {([
-                    ["trabajo", "Trabajo", interpretation.lifeAreas.work],
-                    ["vinculos", "Vínculos", interpretation.lifeAreas.relationships],
-                    ["decisiones", "Decisiones", interpretation.lifeAreas.decisions],
+                    ["trabajo", L("Trabajo", "Work"), interpretation.lifeAreas.work],
+                    ["vinculos", L("Vínculos", "Relationships"), interpretation.lifeAreas.relationships],
+                    ["decisiones", L("Decisiones", "Decisions"), interpretation.lifeAreas.decisions],
                   ] as const).map(([num, label, body]) => (
                     <div key={num} className="bg-paper p-6 sm:p-7">
                       <h3 className="font-display text-xl text-foreground mb-3">{label}</h3>
@@ -468,7 +464,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.4 }}
                 className="mb-8 sm:mb-10 py-8 border-y-2 border-ink"
               >
-                <p className="text-sm text-muted mb-3 label-caps">El paso siguiente</p>
+                <p className="text-sm text-muted mb-3 label-caps">{L("El paso siguiente", "The next step")}</p>
                 <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug max-w-2xl">
                   {interpretation.suggestedNextStep}
                 </p>
@@ -494,7 +490,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.55 }}
               className="mb-20 sm:mb-24"
             >
-              <p className="text-sm text-muted mb-4 label-caps">V · Preguntale a Molino</p>
+              <p className="text-sm text-muted mb-4 label-caps">{L("V · Preguntale a Molino", "V · Ask Molino")}</p>
               <PremiumChatSection
                 profile={profile}
                 readingContext={{
@@ -530,16 +526,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           <Link
             href="/profile"
             className="text-sm text-muted hover:text-accent transition-colors label-caps"
-          >
-            ← Volver a tu mapa
-          </Link>
-          <p className="text-sm text-muted leading-relaxed">
+          >{L("← Volver a tu mapa", "← Back to your map")}</Link>
+          <p className="text-sm text-muted leading-relaxed">{L(<>
             ¿Pensaste en alguien mientras leías?{" "}
             <Link href="/regalar" className="text-foreground underline underline-offset-4 hover:no-underline">
               Regalale una lectura
             </Link>{" "}
             — no hace falta que sepas su fecha.
-          </p>
+          </>, <>Did someone come to mind while you were reading?{" "}<Link href="/regalar" className="text-foreground underline underline-offset-4 hover:no-underline">Give them a reading</Link>{" "}— you don't need to know their date.</>)}</p>
         </div>
         </div>
         <PremiumActivationFeedback />

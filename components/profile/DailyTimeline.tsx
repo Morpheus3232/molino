@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
@@ -26,11 +27,11 @@ const ORIENTATION_COLORS: Record<Orientation, string> = {
   OBSERVAR: "var(--tier-neutral)",
 };
 
-const ORIENTATION_LABELS: Record<Orientation, string> = {
-  ACTUAR: "Actuar",
-  ESPERAR: "Esperar",
-  OBSERVAR: "Observar",
-};
+const ORIENTATION_LABELS = (L: Pick2): Record<Orientation, string> => ({
+  ACTUAR: L("Actuar", "Act"),
+  ESPERAR: L("Esperar", "Wait"),
+  OBSERVAR: L("Observar", "Observe"),
+});
 
 function formatDate(dateStr: string): string {
   const date = new Date(`${dateStr}T00:00:00`);
@@ -47,6 +48,7 @@ interface DailyTimelineProps {
 }
 
 export default function DailyTimeline({ profile }: DailyTimelineProps) {
+  const L = useL();
   const [history, setHistory] = useState<DailySnapshot[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -104,12 +106,8 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
   if (history.length === 0) {
     return (
       <div className="text-center py-12 border-t border-ink/10">
-        <h3 className="font-display text-2xl tracking-tight text-foreground mb-3">
-          Tu línea de energía
-        </h3>
-        <p className="text-muted mb-4 max-w-sm mx-auto">
-          A partir de hoy vas a poder ver cómo evoluciona tu orientación día a día.
-        </p>
+        <h3 className="font-display text-2xl tracking-tight text-foreground mb-3">{L("Tu línea de energía", "Your energy line")}</h3>
+        <p className="text-muted mb-4 max-w-sm mx-auto">{L("A partir de hoy vas a poder ver cómo evoluciona tu orientación día a día.", "From today on you'll be able to see how your orientation evolves day by day.")}</p>
       </div>
     );
   }
@@ -119,11 +117,9 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
       {/* Header + Streak */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <div>
-          <h3 className="font-display text-2xl tracking-tight text-foreground">
-            Tu línea de energía
-          </h3>
+          <h3 className="font-display text-2xl tracking-tight text-foreground">{L("Tu línea de energía", "Your energy line")}</h3>
           <p className="text-xs text-muted mt-1">
-            {history.length} {history.length === 1 ? "día registrado" : "días registrados"}
+            {history.length} {history.length === 1 ? L("día registrado", "day logged") : L("días registrados", "days logged")}
           </p>
         </div>
         {streak && (
@@ -133,11 +129,11 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
             className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 border border-accent/20 rounded-md"
           >
             <Flame className="w-4 h-4 text-accent" aria-hidden="true" />
-            <span className="text-sm font-medium text-accent">
+            <span className="text-sm font-medium text-accent">{L(<>
               {streak.days} {streak.days === 1 ? "día" : "días"} consecutivos
-            </span>
+            </>, <>{streak.days} {streak.days === 1 ? "day" : "days"} in a row</>)}</span>
             <span className="text-xs text-muted">
-              · {ORIENTATION_LABELS[streak.orientation]}
+              · {ORIENTATION_LABELS(L)[streak.orientation]}
             </span>
           </motion.div>
         )}
@@ -156,7 +152,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                 onClick={() => setSelectedDate(isSelected ? null : snapshot.date)}
                 className="group flex flex-col items-center relative"
                 style={{ minWidth: "3.5rem" }}
-                aria-label={`${formatDate(snapshot.date)}: ${ORIENTATION_LABELS[snapshot.orientation]}, ${snapshot.theme}`}
+                aria-label={`${formatDate(snapshot.date)}: ${ORIENTATION_LABELS(L)[snapshot.orientation]}, ${snapshot.theme}`}
               >
                 {/* Theme label */}
                 <span className="text-xs text-muted mb-1.5 truncate max-w-[4rem] opacity-0 group-hover:opacity-100 transition-opacity">
@@ -219,7 +215,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                     isToday ? "text-accent font-semibold" : "text-muted"
                   } ${isSelected ? "text-foreground font-medium" : ""}`}
                 >
-                  {isToday ? "Hoy" : formatDate(snapshot.date).split(" ")[0]}
+                  {isToday ? L("Hoy", "Today") : formatDate(snapshot.date).split(" ")[0]}
                 </span>
               </button>
             );
@@ -249,20 +245,20 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                 className="text-sm font-heading font-semibold"
                 style={{ color: ORIENTATION_COLORS[selectedSnapshot.orientation] }}
               >
-                {ORIENTATION_LABELS[selectedSnapshot.orientation]}
+                {ORIENTATION_LABELS(L)[selectedSnapshot.orientation]}
               </p>
-              <p className="text-xs text-muted mt-0.5">
+              <p className="text-xs text-muted mt-0.5">{L(<>
                 Día {selectedSnapshot.personalDay ?? "—"}
-              </p>
+              </>, <>Day {selectedSnapshot.personalDay ?? "—"}</>)}</p>
             </div>
           </div>
 
           {selectedDayCycle && (
-            <div className="flex items-center gap-2 pt-3 border-t border-ink/10">
+            <div className="flex items-center gap-2 pt-3 border-t border-ink/10">{L(<>
               <span className="text-xs text-muted">
                 Año personal {selectedDayCycle.cycle} · {selectedDayCycle.theme}
               </span>
-            </div>
+            </>, <><span className="text-xs text-muted">Personal year {selectedDayCycle.cycle} · {selectedDayCycle.theme}</span></>)}</div>
           )}
 
           {selectedSnapshot.overallScore != null && (
@@ -294,23 +290,21 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
           transition={{ delay: 0.3, duration: 0.4 }}
           className="mt-6 p-5 border border-accent/20 rounded-lg bg-accent/5"
         >
-          <p className="text-sm text-accent mb-2 label-caps">
-            Mañana
-          </p>
-          <p className="text-sm font-medium text-foreground">
+          <p className="text-sm text-accent mb-2 label-caps">{L("Mañana", "Tomorrow")}</p>
+          <p className="text-sm font-medium text-foreground">{L(<>
             Tu energía será de tema{" "}
             <span className="font-semibold">{tomorrowPreview.theme}</span>.
-          </p>
-          <p className="text-xs text-muted mt-1.5">
+          </>, <>Your energy will have the theme{" "}<span className="font-semibold">{tomorrowPreview.theme}</span>.</>)}</p>
+          <p className="text-xs text-muted mt-1.5">{L(<>
             Volvé a ver cómo se conecta con tu{" "}
             <span className="text-foreground">{tomorrowPreview.yearTheme}</span>.
-          </p>
+          </>, <>Come back to see how it connects with your{" "}<span className="text-foreground">{tomorrowPreview.yearTheme}</span>.</>)}</p>
           <div className="mt-3">
             <Link
               href="/profile"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
             >
-              Ver detalle en tu mapa
+              {L("Ver detalle en tu mapa", "See detail in your map")}
               <ChevronRight className="w-3 h-3" aria-hidden="true" />
             </Link>
           </div>

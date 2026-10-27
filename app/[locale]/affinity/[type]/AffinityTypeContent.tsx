@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -31,11 +32,11 @@ type RelationGroupKey = MapRelation;
 
 // Solo las tres casillas que dicen algo: tu propio signo → tus dos amigos →
 // tu enemigo (lo que conviene evitar). El resto del ciclo no se lista.
-const GROUPS: { key: RelationGroupKey; label: string; chinese: string; note?: string }[] = [
-  { key: "mismo", label: "Tu propio signo", chinese: "本命" },
-  { key: "amigo", label: "Tus dos amigos", chinese: "三合 San He" },
-  { key: "enemigo", label: "Tu enemigo", chinese: "六冲 Liu Chong", note: "Lo que conviene evitar." },
-];
+const GROUPS = (L: Pick2): { key: RelationGroupKey; label: string; chinese: string; note?: string }[] => ([
+  { key: "mismo", label: L("Tu propio signo", "Your own sign"), chinese: "本命" },
+  { key: "amigo", label: L("Tus dos amigos", "Your two friends"), chinese: "三合 San He" },
+  { key: "enemigo", label: L("Tu enemigo", "Your enemy"), chinese: "六冲 Liu Chong", note: L("Lo que conviene evitar.", "What's best avoided.") },
+]);
 
 const PAGE_SIZE = 8;
 
@@ -51,6 +52,7 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
 }
 
 export default function AffinityTypeContent({ meta, entities, initialAnimal }: AffinityTypeContentProps) {
+  const L = useL();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
 
@@ -100,25 +102,21 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
             Solo la lista, que depende del signo del perfil, espera al navegador. */}
         {/* HERO */}
         <div className="border-t border-ink/10 py-6 sm:py-8">
-          <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">{L(<>
             <Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</Link>
             <span>›</span>
             <span className="text-foreground font-medium">{meta.plural}</span>
-          </nav>
-          <h1 className="page-title text-foreground">
+          </>, <><Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Affinity</Link><span>›</span><span className="text-foreground font-medium">{meta.plural}</span></>)}</nav>
+          <h1 className="page-title text-foreground">{L(<>
             Cómo resuena cada {meta.label.toLowerCase()}
-          </h1>
-          <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
-            Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.
-          </p>
+          </>, <>How each {meta.label.toLowerCase()} resonates</>)}</h1>
+          <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">{L("Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.", "Each entity has a sign based on its date of origin. It's compared sign to sign with yours: your own sign, your two friends, your enemy or the rest of the cycle. A symbolic reading, not a prediction.")}</p>
         </div>
 
         <AnimatePresence mode="wait">
           {!mounted ? (
             <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
-              <p className="sr-only" role="status" aria-label="Cargando afinidades...">
-                Cargando afinidades...
-              </p>
+              <p className="sr-only" role="status" aria-label="Cargando afinidades...">{L("Cargando afinidades...", "Loading affinities...")}</p>
               <div className="animate-pulse border-t border-ink/10 py-8">
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10" />
               </div>
@@ -130,16 +128,16 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   elegido (amigo / enemigo), que es como se agrupa la lista. */}
               <div className="border-t border-ink/10 py-8">
                 <div className="flex items-baseline justify-between gap-4 mb-4">
-                  <p className="label-micro">Signo</p>
-                  <p className="text-xs text-muted" aria-hidden="true">
+                  <p className="label-micro">{L("Signo", "Sign")}</p>
+                  <p className="text-xs text-muted" aria-hidden="true">{L(<>
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-vermilion align-middle mr-1" /> amigo{" "}
                     <span className="mx-1">·</span>
                     <span>✕</span> enemigo
-                  </p>
+                  </>, <><span className="inline-block w-1.5 h-1.5 rounded-full bg-vermilion align-middle mr-1" /> friend{" "}<span className="mx-1">·</span><span>✕</span> enemy</>)}</p>
                 </div>
                 <div
                   role="group"
-                  aria-label="Elegí un signo del zodíaco chino"
+                  aria-label={L("Elegí un signo del zodíaco chino", "Pick a Chinese zodiac sign")}
                   className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 border-l border-t border-ink/15"
                 >
                   {ANIMALS.map((animal, i) => {
@@ -153,7 +151,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                         type="button"
                         onClick={() => setSelectedAnimal(animal)}
                         aria-pressed={isActive}
-                        aria-label={`${display.name}${isMine ? ", tu signo" : ""}${rel === "amigo" ? `, amigo de ${activeAnimal}` : rel === "enemigo" ? `, enemigo de ${activeAnimal}` : ""}`}
+                        aria-label={`${display.name}${isMine ? L(", tu signo", ", your sign") : ""}${rel === "amigo" ? L(`, amigo de ${activeAnimal}`, `, friend of ${activeAnimal}`) : rel === "enemigo" ? L(`, enemigo de ${activeAnimal}`, `, enemy of ${activeAnimal}`) : ""}`}
                         className={`group relative flex flex-col items-center justify-center gap-1.5 px-1 pt-4 pb-3 min-h-[96px] border-r border-b border-ink/15 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
                           isActive
                             ? "bg-ink text-paper"
@@ -196,11 +194,11 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                     return (
                       <>
                         <span className="text-foreground font-medium">
-                          {profile?.chineseZodiac === activeAnimal ? "Tu signo, " : ""}
+                          {profile?.chineseZodiac === activeAnimal ? L("Tu signo, ", "Your sign,") : ""}
                           {activeAnimal}
                         </span>
-                        {amigos.length > 0 && <> · amigos: {amigos.join(" y ")}</>}
-                        {enemigo && <> · enemigo: {enemigo}</>}.
+                        {amigos.length > 0 && <>{L(<> · amigos: {amigos.join(" y ")}</>, <>· friends: {amigos.join(" and ")}</>)}</>}
+                        {enemigo && <>{L(<> · enemigo: {enemigo}</>, <>· enemy: {enemigo}</>)}</>}.
                       </>
                     );
                   })()}
@@ -209,22 +207,22 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
 
               {/* SEARCH — Available for all types, shows before selecting entity */}
               <div className="border-t border-ink/10 py-8">
-                <p className="label-micro mb-4">Buscar</p>
+                <p className="label-micro mb-4">{L("Buscar", "Search")}</p>
                 <input
                   type="search"
-                  placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
+                  placeholder={L(`Buscar ${meta.plural.toLowerCase()}...`, `Search ${meta.plural.toLowerCase()}...`)}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent rounded-lg"
-                  aria-label={`Buscar ${meta.plural.toLowerCase()}`}
+                  aria-label={L(`Buscar ${meta.plural.toLowerCase()}`, `Search ${meta.plural.toLowerCase()}`)}
                 />
                 {searchQuery && (() => {
                   const shown = groups.mismo.length + groups.amigo.length + groups.enemigo.length;
                   return (
                     <p className="text-sm text-muted mt-2">
                       {shown > 0
-                        ? `${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`
-                        : `Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`}
+                        ? L(`${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`, `${shown} result${shown !== 1 ? "s" : ""} for "${searchQuery}" among your sign, your friends and your enemy`)
+                        : L(`Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`, `No results for "${searchQuery}" among your sign, your friends and your enemy.`)}
                     </p>
                   );
                 })()}
@@ -240,7 +238,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   transition={{ duration: 0.2 }}
                   className="border-t border-ink/10"
                 >
-                  {GROUPS.map((group) => {
+                  {GROUPS(L).map((group) => {
                     const all = groups[group.key];
                     if (all.length === 0) return null;
                     const visible = visibleCounts[group.key];
@@ -266,9 +264,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                             type="button"
                             onClick={() => setVisibleCounts((prev) => ({ ...prev, [group.key]: prev[group.key] + PAGE_SIZE }))}
                             className="mt-4 text-sm text-accent hover:underline min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
-                          >
-                            Ver más
-                          </button>
+                          >{L("Ver más", "See more")}</button>
                         )}
                       </div>
                     );

@@ -1,4 +1,5 @@
 'use client';
+import { useL } from "@/lib/i18n/useL";
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/ui/Button';
@@ -49,6 +50,7 @@ export default function PremiumPaymentStatus({
   setPayError,
   setCheckoutLoading,
 }: PremiumPaymentStatusProps) {
+  const L = useL();
   return (
     <motion.div
       key="payment-flow"
@@ -61,30 +63,25 @@ export default function PremiumPaymentStatus({
       <AnimatePresence mode="wait">
         {state === 'paying' && (
           <motion.div key="paying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-            <p className="label-micro mb-3">Pago seguro · Mercado Pago</p>
-            <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Tu síntesis completa</h3>
-            <p className="text-sm text-muted mb-6">Pago único · Acceso permanente</p>
+            <p className="label-micro mb-3">{L("Pago seguro · Mercado Pago", "Secure payment · Mercado Pago")}</p>
+            <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{L("Tu síntesis completa", "Your complete synthesis")}</h3>
+            <p className="text-sm text-muted mb-6">{L("Pago único · Acceso permanente", "One-time payment · Permanent access")}</p>
 
             {checkoutLoading ? (
               <div className="flex flex-col items-center py-12 gap-3">
                 <Logo className="w-8 h-8 text-accent" spinning />
-                <p className="text-sm text-muted">
-                  Redirigiendo a Mercado Pago...
-                </p>
+                <p className="text-sm text-muted">{L("Redirigiendo a Mercado Pago...", "Redirecting to Mercado Pago...")}</p>
               </div>
             ) : (
               <div>
-                <p className="text-sm text-muted leading-relaxed mb-6">
-                  Vas a ser redirigido para completar el pago de forma segura.
-                  Cuando termines, volvés automáticamente para ver tu síntesis.
-                </p>
+                <p className="text-sm text-muted leading-relaxed mb-6">{L("Vas a ser redirigido para completar el pago de forma segura. Cuando termines, volvés automáticamente para ver tu síntesis.", "You'll be redirected to complete the payment securely. When you're done, you'll come back automatically to see your synthesis.")}</p>
                 <Button
                   variant="accent"
                   size="lg"
                   onClick={() => startCheckout()}
-                >
+                >{L(<>
                   Ir a pagar ${chargePriceUsd} USD
-                </Button>
+                </>, <>Go to pay ${chargePriceUsd} USD</>)}</Button>
               </div>
             )}
 
@@ -92,22 +89,20 @@ export default function PremiumPaymentStatus({
               type="button"
               onClick={() => setState('locked')}
               className="mt-6 text-sm text-muted hover:text-foreground transition-colors"
-            >
-              ← Volver
-            </button>
+            >{L("← Volver", "← Back")}</button>
           </motion.div>
         )}
 
         {state === 'pay_error' && (
           <motion.div key="pay_error" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
             <p className="label-micro mb-3 text-red-600">
-              {verificationError ? 'No se pudo verificar tu pago' : 'No se pudo iniciar el pago'}
+              {verificationError ? L('No se pudo verificar tu pago', "Your payment couldn't be verified") : L('No se pudo iniciar el pago', "The payment couldn't be started")}
             </p>
             <p className="text-sm text-muted mb-1">{payError ?? verificationError}</p>
             <p className="text-xs text-muted mb-6">
               {verificationError
-                ? 'Si ya te cobraron, usá "Recuperar acceso" con el ID de tu pago.'
-                : 'Puede ser un problema temporal. Intentá de nuevo.'}
+                ? L('Si ya te cobraron, usá "Recuperar acceso" con el ID de tu pago.', "If you've already been charged, use \"Recover access\" with your payment ID.")
+                : L('Puede ser un problema temporal. Intentá de nuevo.', "It may be a temporary problem. Try again.")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
@@ -124,15 +119,13 @@ export default function PremiumPaymentStatus({
                   setState('paying');
                 }}
               >
-                {verificationError ? 'Recuperar acceso' : 'Reintentar'}
+                {verificationError ? L('Recuperar acceso', "Recover access") : L('Reintentar', "Try again")}
               </Button>
               <button
                 type="button"
                 onClick={() => { setPayError(null); setVerificationError(null); setState('locked'); }}
                 className="text-sm text-muted hover:text-foreground transition-colors"
-              >
-                Volver
-              </button>
+              >{L("Volver", "Back")}</button>
             </div>
           </motion.div>
         )}
@@ -142,18 +135,16 @@ export default function PremiumPaymentStatus({
             {!pollTimedOut ? (
               <>
                 <Logo className="w-8 h-8 text-accent mb-6" spinning />
-                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
-                <p className="text-sm text-muted">Puede tardar hasta 60 segundos.</p>
+                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{L("Verificando tu pago…", "Verifying your payment…")}</h3>
+                <p className="text-sm text-muted">{L("Puede tardar hasta 60 segundos.", "It can take up to 60 seconds.")}</p>
               </>
             ) : (
               <>
-                <p className="label-micro mb-3">Todavía no vemos el pago</p>
-                <p className="text-sm text-muted leading-relaxed mb-6">
+                <p className="label-micro mb-3">{L("Todavía no vemos el pago", "We don't see the payment yet")}</p>
+                <p className="text-sm text-muted leading-relaxed mb-6">{L(<>
                   Si ya completaste el pago, ingresá el ID en &ldquo;Recuperar acceso&rdquo; desde tu mapa.
-                </p>
-                <Button variant="accent" onClick={() => setState('locked')}>
-                  Recuperar acceso
-                </Button>
+                </>, <>If you've already completed the payment, enter the ID in &ldquo;Recover access&rdquo; from your map.</>)}</p>
+                <Button variant="accent" onClick={() => setState('locked')}>{L("Recuperar acceso", "Recover access")}</Button>
               </>
             )}
           </motion.div>
@@ -161,24 +152,15 @@ export default function PremiumPaymentStatus({
 
         {state === 'pending' && (
           <motion.div key="pending" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-            <p className="label-micro mb-3">Pago pendiente · Mercado Pago</p>
-            <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
-              Tu pago está registrado. Falta que se acredite.
-            </h3>
-            <p className="text-sm text-muted leading-relaxed mb-3">
-              Si pagaste en efectivo o por transferencia, Mercado Pago lo acredita cuando
-              lo recibe; según el medio puede tardar desde minutos hasta un par de días.
-              No hace falta pagar de nuevo.
-            </p>
-            <p className="text-sm text-muted leading-relaxed mb-6">
-              Cuando se acredite te llega un email con el enlace a tu lectura, y si volvés
-              a esta página desde este dispositivo la vas a encontrar abierta.
-            </p>
+            <p className="label-micro mb-3">{L("Pago pendiente · Mercado Pago", "Payment pending · Mercado Pago")}</p>
+            <h3 className="font-heading text-xl font-semibold text-foreground mb-3">{L("Tu pago está registrado. Falta que se acredite.", "Your payment is registered. It still needs to be credited.")}</h3>
+            <p className="text-sm text-muted leading-relaxed mb-3">{L("Si pagaste en efectivo o por transferencia, Mercado Pago lo acredita cuando lo recibe; según el medio puede tardar desde minutos hasta un par de días. No hace falta pagar de nuevo.", "If you paid in cash or by transfer, Mercado Pago credits it when it receives it; depending on the method it can take anywhere from minutes to a couple of days. You don't need to pay again.")}</p>
+            <p className="text-sm text-muted leading-relaxed mb-6">{L("Cuando se acredite te llega un email con el enlace a tu lectura, y si volvés a esta página desde este dispositivo la vas a encontrar abierta.", "Once it's credited you'll get an email with the link to your reading, and if you come back to this page from this device you'll find it open.")}</p>
             <Button variant="accent" onClick={onCheckAgain} disabled={pendingChecking}>
-              {pendingChecking ? 'Revisando…' : 'Revisar si ya se acreditó'}
+              {pendingChecking ? L('Revisando…', "Checking…") : L('Revisar si ya se acreditó', "Check whether it's been credited")}
             </Button>
             {pendingNotYet && !pendingChecking && (
-              <p role="status" className="mt-3 text-xs text-muted">Todavía no figura acreditado.</p>
+              <p role="status" className="mt-3 text-xs text-muted">{L("Todavía no figura acreditado.", "It doesn't show as credited yet.")}</p>
             )}
           </motion.div>
         )}
@@ -186,8 +168,8 @@ export default function PremiumPaymentStatus({
         {state === 'verifying_redirect' && (
           <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
             <Logo className="w-8 h-8 text-accent mb-6" spinning />
-            <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
-            <p className="text-sm text-muted">Volviste de Mercado Pago. Confirmando tu compra.</p>
+            <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{L("Verificando tu pago…", "Verifying your payment…")}</h3>
+            <p className="text-sm text-muted">{L("Volviste de Mercado Pago. Confirmando tu compra.", "You're back from Mercado Pago. Confirming your purchase.")}</p>
             {verificationError && (
               <p className="mt-4 text-sm text-red-600">{verificationError}</p>
             )}

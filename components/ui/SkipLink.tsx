@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 /**
  * El target (#main-content) no es focuseable por default — sin esto, activar
@@ -9,6 +10,7 @@
  * el foco para no ensuciar el DOM permanentemente.
  */
 export default function SkipLink() {
+  const L = useL();
   const handleClick = () => {
     const target = document.getElementById("main-content");
     if (!target) return;
@@ -18,8 +20,6 @@ export default function SkipLink() {
   };
 
   return (
-    <a href="#main-content" className="skip-link" onClick={handleClick}>
-      Saltar al contenido principal
-    </a>
+    <a href="#main-content" className="skip-link" onClick={handleClick}>{L("Saltar al contenido principal", "Skip to main content")}</a>
   );
 }

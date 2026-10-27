@@ -1,7 +1,7 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Mi Evolución",
+export const generateMetadata = metadataFor({
+  title: ["Mi Evolución", "My Evolution"],
   noIndex: true,
 });
 

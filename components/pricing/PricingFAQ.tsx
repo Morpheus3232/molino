@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useId, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -69,6 +70,7 @@ function FAQItem({
 }
 
 export default function PricingFAQ({ items = PRICING_FAQS, subtitle = "Sobre planes, pagos y cancelación." }: PricingFAQProps) {
+  const L = useL();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -77,9 +79,7 @@ export default function PricingFAQ({ items = PRICING_FAQS, subtitle = "Sobre pla
         <motion.h2
           {...fadeUp}
           className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-3 leading-[1.05]"
-        >
-          Preguntas frecuentes
-        </motion.h2>
+        >{L("Preguntas frecuentes", "Frequently asked questions")}</motion.h2>
         <motion.p {...fadeUp} className="text-center text-muted text-sm sm:text-base mb-12">
           {subtitle}
         </motion.p>

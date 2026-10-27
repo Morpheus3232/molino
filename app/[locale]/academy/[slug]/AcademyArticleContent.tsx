@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { ICON_MAP } from "../AcademyContent";
 import SectionCover from "@/components/ui/SectionCover";
 
 export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }) {
+  const L = useL();
   const currentIndex = ACADEMY_PIECES.findIndex((p) => p.slug === piece.slug);
   const prev = currentIndex > 0 ? ACADEMY_PIECES[currentIndex - 1] : null;
   const next = currentIndex < ACADEMY_PIECES.length - 1 ? ACADEMY_PIECES[currentIndex + 1] : null;
@@ -30,13 +32,13 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
-        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">{L(<>
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">La Academia</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">{piece.title}</span>
-        </nav>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{piece.title}</span></>)}</nav>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
@@ -57,7 +59,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">La historia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("La historia", "The story")}</h2>
           </div>
           <div className="space-y-4">
             {piece.story.map((paragraph) => (
@@ -70,7 +72,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Origen</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Origen", "Origin")}</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{piece.origin}</p>
         </motion.section>
@@ -79,7 +81,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Influencia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Influencia", "Influence")}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {piece.influence.map((inf) => (
@@ -93,7 +95,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {/* Cómo lo usa Molino */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-sm text-muted font-medium mb-2 label-caps">Cómo lo usa Molino</p>
+            <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Cómo lo usa Molino", "How Molino uses it")}</p>
             <p className="text-sm text-foreground leading-relaxed">{piece.molino}</p>
           </div>
         </motion.section>
@@ -102,7 +104,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {relatedGuide && (
           <motion.section {...fadeUp} className="mb-12 sm:mb-16">
             <div className="p-6 rounded-md border border-border bg-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <p className="text-sm text-muted">¿Querés saber {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</p>
+              <p className="text-sm text-muted">{L(<>¿Querés saber {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</>, <>Want to know {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</>)}</p>
               <Link
                 href={`/academy/${relatedGuide.slug}`}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent/80 transition-colors shrink-0"
@@ -116,29 +118,20 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {/* Transparencia */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-sm text-muted font-medium mb-3 label-caps">Transparencia</p>
-            <p className="text-sm text-foreground leading-relaxed mb-3">
-              Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.
-            </p>
-            <p className="text-xs text-muted leading-relaxed">
-              Las interpretaciones pertenecen al campo simbólico y cultural, no constituyen predicciones científicas.
-              Este mapa combina numerología, astrología y zodíaco chino de forma transparente y educativa.
-            </p>
+            <p className="text-sm text-muted font-medium mb-3 label-caps">{L("Transparencia", "Transparency")}</p>
+            <p className="text-sm text-foreground leading-relaxed mb-3">{L("Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.", "These historical traditions explore numbers and cultural symbols as a tool for personal reflection.")}</p>
+            <p className="text-xs text-muted leading-relaxed">{L("Las interpretaciones pertenecen al campo simbólico y cultural, no constituyen predicciones científicas. Este mapa combina numerología, astrología y zodíaco chino de forma transparente y educativa.", "The interpretations belong to the symbolic and cultural field; they aren't scientific predictions. This map combines numerology, astrology and the Chinese zodiac in a transparent, educational way.")}</p>
           </div>
         </motion.section>
 
         {/* CTA al mapa */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16 text-center">
           <div className="p-8 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-sm text-muted mb-4">
-              ¿Querés ver cómo se aplica esta tradición en tu perfil?
-            </p>
+            <p className="text-sm text-muted mb-4">{L("¿Querés ver cómo se aplica esta tradición en tu perfil?", "Want to see how this tradition applies to your profile?")}</p>
             <Link
               href="/profile"
               className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
-            >
-              Ver mi mapa
-            </Link>
+            >{L("Ver mi mapa", "See my map")}</Link>
           </div>
         </motion.section>
 
@@ -149,9 +142,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
               &larr; {prev.title}
             </Link>
           ) : <div />}
-          <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">
-            La Academia
-          </Link>
+          <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">{L("La Academia", "The Academy")}</Link>
           {next ? (
             <Link href={`/academy/${next.slug}`} className="text-sm text-accent hover:text-accent/80 transition-colors text-right">
               {next.title} &rarr;

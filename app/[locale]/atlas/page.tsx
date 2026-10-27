@@ -1,14 +1,14 @@
 import { getAtlasCountries, topCountriesByCount, getAllAtlasEntitiesWithCountries } from "@/lib/data/atlas-queries";
 import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Atlas — Tu mundo según el Zodiaco Chino",
+export const generateMetadata = metadataFor({
+  title: ["Atlas — Tu mundo según el Zodiaco Chino", "Atlas — Your World According to the Chinese Zodiac"],
   description:
-    "Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu signo del zodíaco chino, organizados por categoría y país.",
+    ["Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu signo del zodíaco chino, organizados por categoría y país.", "Explore Molino's Atlas: browse places, brands and entities that share your Chinese zodiac sign, organized by category and country."],
   path: "/atlas",
-  ogDescription: "El Atlas de Molino: exploración personal por signo del zodíaco chino.",
+  ogDescription: ["El Atlas de Molino: exploración personal por signo del zodíaco chino.", "Molino's Atlas: personal exploration by Chinese zodiac sign."],
 });
 
 /**

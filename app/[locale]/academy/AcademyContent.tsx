@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -147,36 +148,36 @@ export const ICON_MAP: Record<string, React.FC<IconProps>> = {
 // HOW MOLINO WORKS
 // ════════════════════════════════════════════════════
 
-const HOW_IT_WORKS = [
+const HOW_IT_WORKS = (L: Pick2) => ([
   {
     step: 1,
-    title: "Tu identidad",
+    title: L("Tu identidad", "Your identity"),
     icon: "target",
-    items: ["Fecha de nacimiento", "Nombre", "Número principal", "Animal zodiacal"],
-    description: "Molino calcula tus patrones base a partir de datos que ya tenés.",
+    items: [L("Fecha de nacimiento", "Date of birth"), L("Nombre", "Name"), L("Número principal", "Main number"), L("Animal zodiacal", "Zodiac animal")],
+    description: L("Molino calcula tus patrones base a partir de datos que ya tenés.", "Molino calculates your base patterns from data you already have."),
   },
   {
     step: 2,
-    title: "Tus ciclos",
+    title: L("Tus ciclos", "Your cycles"),
     icon: "repeat",
-    items: ["Años personales", "Ciclos zodiacales", "Momento actual"],
-    description: "Cada año tiene una energía diferente según tu perfil.",
+    items: [L("Años personales", "Personal years"), L("Ciclos zodiacales", "Zodiac cycles"), L("Momento actual", "Current moment")],
+    description: L("Cada año tiene una energía diferente según tu perfil.", "Each year has a different energy according to your profile."),
   },
   {
     step: 3,
-    title: "Tus afinidades",
+    title: L("Tus afinidades", "Your affinities"),
     icon: "sparkle",
-    items: ["Marcas", "Lugares", "Personas", "Actividades"],
-    description: "Entidades que resuenan con tu patrón simbólico.",
+    items: [L("Marcas", "Brands"), L("Lugares", "Places"), L("Personas", "People"), L("Actividades", "Activities")],
+    description: L("Entidades que resuenan con tu patrón simbólico.", "Entities that resonate with your symbolic pattern."),
   },
   {
     step: 4,
-    title: "Tu momento actual",
+    title: L("Tu momento actual", "Your current moment"),
     icon: "clock",
-    items: ["Contexto temporal", "Recomendaciones", "Descubrimientos"],
-    description: "Qué explorar ahora según tus ciclos.",
+    items: [L("Contexto temporal", "Time context"), L("Recomendaciones", "Recommendations"), L("Descubrimientos", "Discoveries")],
+    description: L("Qué explorar ahora según tus ciclos.", "What to explore now according to your cycles."),
   },
-];
+]);
 
 // ════════════════════════════════════════════════════
 // COURSES
@@ -199,41 +200,41 @@ interface Course {
   guideSlug?: string;
 }
 
-const COURSES: Course[] = [
+const COURSES = (L: Pick2): Course[] => ([
   {
     id: "intro",
-    title: "Introducción a tu mapa personal",
+    title: L("Introducción a tu mapa personal", "Introduction to your personal map"),
     icon: "target",
-    description: "Los conceptos fundamentales detrás de tu mapa personal.",
+    description: L("Los conceptos fundamentales detrás de tu mapa personal.", "The fundamental concepts behind your personal map."),
     color: "from-blue-500/10",
     pieces: piecesFor(["babilonia", "molino"]),
   },
   {
     id: "numerologia",
-    title: "Numerología: de Pitágoras al presente",
+    title: L("Numerología: de Pitágoras al presente", "Numerology: from Pythagoras to the present"),
     icon: "numbers",
-    description: "La historia completa de cómo los números se convirtieron en herramienta de autoconocimiento.",
+    description: L("La historia completa de cómo los números se convirtieron en herramienta de autoconocimiento.", "The full story of how numbers became a tool for self-knowledge."),
     color: "from-amber-500/10",
     pieces: piecesFor(["pitagoras", "guematia", "balliett", "cheiro", "jordan", "mccants"]),
   },
   {
     id: "astrologia",
-    title: "Astrología occidental",
+    title: L("Astrología occidental", "Western astrology"),
     icon: "stars",
-    description: "De la observación babilónica del cielo a Ptolomeo, que fijó las fechas de los signos.",
+    description: L("De la observación babilónica del cielo a Ptolomeo, que fijó las fechas de los signos.", "From the Babylonian observation of the sky to Ptolemy, who fixed the dates of the signs."),
     color: "from-purple-500/10",
     pieces: piecesFor(["babilonia", "helenistica", "ptolomeo"]),
   },
   {
     id: "zodiaco",
-    title: "Zodíaco oriental y ciclos",
+    title: L("Zodíaco oriental y ciclos", "The Eastern zodiac and its cycles"),
     icon: "cycle",
-    description: "Los 12 animales, los elementos y los ciclos de 60 años: de dónde vienen y cómo funcionan en tu mapa.",
+    description: L("Los 12 animales, los elementos y los ciclos de 60 años: de dónde vienen y cómo funcionan en tu mapa.", "The 12 animals, the elements and the 60-year cycles: where they come from and how they work in your map."),
     color: "from-emerald-500/10",
     pieces: piecesFor(["zou-yan", "calendario-taichu", "zodiaco-chino"]),
     guideSlug: "como-funciona-el-zodiaco-chino",
   },
-];
+]);
 
 // ════════════════════════════════════════════════════
 // COMPONENTS
@@ -248,6 +249,7 @@ function KnowledgeNode({
   isExpanded: boolean;
   onToggle: () => void;
 }) {
+  const L = useL();
   const panelId = `academia-${node.slug}`;
   return (
     <li className="border-b border-ink/15">
@@ -268,15 +270,15 @@ function KnowledgeNode({
           aria-controls={panelId}
           className="justify-self-start md:justify-self-end text-base underline underline-offset-4 hover:no-underline min-h-[44px]"
         >
-          {isExpanded ? "Cerrar" : "Qué tomó Molino"}
+          {isExpanded ? L("Cerrar", "Close") : L("Qué tomó Molino", "What Molino took")}
         </button>
       </div>
       {isExpanded && (
         <dl id={panelId} className="md:ml-[13.5rem] mb-8 border-t-2 border-ink divide-y divide-ink/15 max-w-3xl">
           {[
-            ["Origen", node.origin],
-            ["Influencia", node.influence.join(", ")],
-            ["Cómo se usa", node.molino],
+            [L("Origen", "Origin"), node.origin],
+            [L("Influencia", "Influence"), node.influence.join(", ")],
+            [L("Cómo se usa", "How it's used"), node.molino],
           ].map(([k, v]) => (
             <div key={k} className="grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-1 py-4">
               <dt className="font-display text-xl text-foreground">{k}</dt>
@@ -290,19 +292,20 @@ function KnowledgeNode({
 }
 
 export default function AcademyContent() {
+  const L = useL();
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
 
   return (
     <main id="main-content" className="bg-background">
       <PageHero
-        crumbs={[{ href: "/", label: "Inicio" }, { label: "Academia" }]}
-        eyebrow="Academia · historia y método"
-        title="De dónde viene este sistema"
-        lead="Molino no inventó nada: junta tradiciones de miles de años, de los ciclos babilónicos a la numerología pitagórica y el zodíaco chino. Este recorrido muestra cómo se arma tu mapa."
+        crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Academia", "Academy") }]}
+        eyebrow={L("Academia · historia y método", "Academy · history and method")}
+        title={L("De dónde viene este sistema", "Where this system comes from")}
+        lead={L("Molino no inventó nada: junta tradiciones de miles de años, de los ciclos babilónicos a la numerología pitagórica y el zodíaco chino. Este recorrido muestra cómo se arma tu mapa.", "Molino didn't invent anything: it brings together traditions thousands of years old, from Babylonian cycles to Pythagorean numerology and the Chinese zodiac. This journey shows how your map is put together.")}
         imageKey="academia/hub"
       />
 
-      <KnowledgeSection label="Empezá por acá" title="Entendé Molino en diez minutos" intro="Guías cortas y prácticas, en orden: cada una se apoya en la anterior.">
+      <KnowledgeSection label={L("Empezá por acá", "Start here")} title={L("Entendé Molino en diez minutos", "Understand Molino in ten minutes")} intro={L("Guías cortas y prácticas, en orden: cada una se apoya en la anterior.", "Short, practical guides, in order: each one builds on the previous one.")}>
         <ol className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
           {ACADEMY_GUIDES.map((guide, idx) => (
             <li key={guide.slug} className="bg-background">
@@ -319,9 +322,9 @@ export default function AcademyContent() {
       </KnowledgeSection>
 
       <KnowledgeSection
-        label="Las tradiciones"
-        title="Viajeros del tiempo"
-        intro="Las grandes tradiciones simbólicas y quienes las llevaron de la antigüedad hasta hoy, en orden."
+        label={L("Las tradiciones", "The traditions")}
+        title={L("Viajeros del tiempo", "Time travelers")}
+        intro={L("Las grandes tradiciones simbólicas y quienes las llevaron de la antigüedad hasta hoy, en orden.", "The great symbolic traditions and the people who carried them from antiquity to today, in order.")}
         tone="alt"
       >
         <ol className="border-t-2 border-ink">
@@ -336,15 +339,15 @@ export default function AcademyContent() {
         </ol>
       </KnowledgeSection>
 
-      <KnowledgeSection label="Cursos" title="Recorridos por tema" intro="Los mismos capítulos, agrupados por sistema.">
+      <KnowledgeSection label={L("Cursos", "Courses")} title={L("Recorridos por tema", "Paths by topic")} intro={L("Los mismos capítulos, agrupados por sistema.", "The same chapters, grouped by system.")}>
         <ul className="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
-          {COURSES.map((course) => {
+          {COURSES(L).map((course) => {
             const relatedGuide = course.guideSlug ? getAcademyGuideBySlug(course.guideSlug) : undefined;
             return (
               <li key={course.id} className="bg-background p-7 sm:p-9 flex flex-col">
-                <p className="text-base text-muted">
+                <p className="text-base text-muted">{L(<>
                   {course.pieces.length} capítulo{course.pieces.length !== 1 ? "s" : ""}
-                </p>
+                </>, <>{course.pieces.length} chapter{course.pieces.length !== 1 ? "s" : ""}</>)}</p>
                 <h3 className="mt-2 font-display text-3xl leading-tight text-foreground">{course.title}</h3>
                 <p className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{course.description}</p>
                 <ol className="mt-5 border-t border-ink/15 divide-y divide-ink/10 text-base">
@@ -357,9 +360,7 @@ export default function AcademyContent() {
                   ))}
                 </ol>
                 {relatedGuide && (
-                  <Link href={`/academy/${relatedGuide.slug}`} className="mt-5 text-base text-muted underline underline-offset-4 hover:text-foreground">
-                    ¿Ya sabés la historia? La guía práctica
-                  </Link>
+                  <Link href={`/academy/${relatedGuide.slug}`} className="mt-5 text-base text-muted underline underline-offset-4 hover:text-foreground">{L("¿Ya sabés la historia? La guía práctica", "Already know the history? The practical guide")}</Link>
                 )}
               </li>
             );
@@ -368,13 +369,13 @@ export default function AcademyContent() {
       </KnowledgeSection>
 
       <KnowledgeSection
-        label="El método"
-        title="Cómo Molino usa esto"
-        intro="Del conocimiento antiguo al mapa personal: los cuatro pasos de tu lectura."
+        label={L("El método", "The method")}
+        title={L("Cómo Molino usa esto", "How Molino uses this")}
+        intro={L("Del conocimiento antiguo al mapa personal: los cuatro pasos de tu lectura.", "From ancient knowledge to a personal map: the four steps of your reading.")}
         tone="alt"
       >
         <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/15 border border-ink/15">
-          {HOW_IT_WORKS.map((item) => (
+          {HOW_IT_WORKS(L).map((item) => (
             <li key={item.step} className="bg-background p-7 sm:p-8">
               <span className="font-display text-5xl leading-none text-foreground tabular-nums">{item.step}</span>
               <h3 className="mt-4 font-display text-2xl text-foreground">{item.title}</h3>
@@ -385,10 +386,10 @@ export default function AcademyContent() {
         </ol>
         <div className="mt-16">
           <Closing
-            title="Listo para tu mapa"
-            text="Ya conocés la historia y el método. Tu mapa aplica los tres sistemas a tu fecha de nacimiento, con la cuenta a la vista."
+            title={L("Listo para tu mapa", "Ready for your map")}
+            text={L("Ya conocés la historia y el método. Tu mapa aplica los tres sistemas a tu fecha de nacimiento, con la cuenta a la vista.", "You already know the history and the method. Your map applies the three systems to your date of birth, with the math in plain sight.")}
             href="/profile"
-            cta="Crear mi mapa"
+            cta={L("Crear mi mapa", "Create my map")}
           />
         </div>
       </KnowledgeSection>

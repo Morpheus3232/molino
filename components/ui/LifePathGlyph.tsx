@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 
@@ -39,9 +40,10 @@ export default function LifePathGlyph({
   className = "",
   title,
 }: LifePathGlyphProps) {
+  const L = useL();
   const digits = String(value).split("");
   const single = digits.length === 1;
-  const label = title || `Camino de Vida ${value}`;
+  const label = title || L(`Camino de Vida ${value}`, `Life Path ${value}`);
 
   return (
     <svg

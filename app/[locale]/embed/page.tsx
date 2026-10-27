@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useState, useRef, useCallback } from "react";
 import { Asterisk, ArrowRight, ShieldCheck, Copy, Check, Code2, Sliders, ExternalLink } from "lucide-react";
@@ -15,6 +16,7 @@ function isValidBirthDate(value: string): boolean {
 }
 
 export default function EmbedWidgetPage() {
+  const L = useL();
   const router = useRouter();
   const searchParams = useSearchParams();
   const isCompactParam = searchParams.get("compact") === "true";
@@ -90,30 +92,24 @@ export default function EmbedWidgetPage() {
             type="button"
             onClick={() => setShowConfig(!showConfig)}
             className="text-[11px] font-mono text-muted hover:text-foreground inline-flex items-center gap-1 transition-colors"
-            title="Personalizar e incrustar"
+            title={L("Personalizar e incrustar", "Customize and embed")}
           >
             {showConfig ? <Code2 className="w-3.5 h-3.5" /> : <Sliders className="w-3.5 h-3.5" />}
-            <span>{showConfig ? "Ver Calculadora" : "Incrustar"}</span>
+            <span>{showConfig ? L("Ver Calculadora", "View Calculator") : L("Incrustar", "Embed")}</span>
           </button>
         </div>
 
         {!isCompact && (
           <>
-            <h1 className="page-title mb-2">
-              Calculá tu Mapa Personal
-            </h1>
-            <p className="text-xs sm:text-sm text-muted mb-6 leading-relaxed">
-              Descubrí tu Camino de Vida, signo solar y animal del zodíaco chino en 30 segundos.
-            </p>
+            <h1 className="page-title mb-2">{L("Calculá tu Mapa Personal", "Calculate your Personal Map")}</h1>
+            <p className="text-xs sm:text-sm text-muted mb-6 leading-relaxed">{L("Descubrí tu Camino de Vida, signo solar y animal del zodíaco chino en 30 segundos.", "Discover your Life Path, sun sign and Chinese zodiac animal in 30 seconds.")}</p>
           </>
         )}
 
         {showConfig ? (
           <div className="text-left bg-background/50 p-4 rounded-lg border border-ink/10 space-y-4 mb-2">
             <div className="space-y-2">
-              <span className="text-sm text-muted font-bold block label-caps">
-                Opciones del Widget
-              </span>
+              <span className="text-sm text-muted font-bold block label-caps">{L("Opciones del Widget", "Widget Options")}</span>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -123,9 +119,7 @@ export default function EmbedWidgetPage() {
                       ? "bg-accent/20 border-accent text-accent font-bold"
                       : "border-ink/10 text-muted"
                   }`}
-                >
-                  Modo Oscuro
-                </button>
+                >{L("Modo Oscuro", "Dark Mode")}</button>
                 <button
                   type="button"
                   onClick={() => setSelectedTheme("light")}
@@ -134,9 +128,7 @@ export default function EmbedWidgetPage() {
                       ? "bg-accent/20 border-accent text-accent font-bold"
                       : "border-ink/10 text-muted"
                   }`}
-                >
-                  Modo Claro
-                </button>
+                >{L("Modo Claro", "Light Mode")}</button>
                 <button
                   type="button"
                   onClick={() => setIsCompact(!isCompact)}
@@ -146,23 +138,21 @@ export default function EmbedWidgetPage() {
                       : "border-ink/10 text-muted"
                   }`}
                 >
-                  {isCompact ? "Compacto ✓" : "Estándar"}
+                  {isCompact ? L("Compacto ✓", "Compact ✓") : L("Estándar", "Standard")}
                 </button>
               </div>
             </div>
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted font-bold label-caps">
-                  Código iframe HTML
-                </span>
+                <span className="text-sm text-muted font-bold label-caps">{L("Código iframe HTML", "HTML iframe code")}</span>
                 <button
                   type="button"
                   onClick={handleCopyCode}
                   className="text-xs font-mono text-accent inline-flex items-center gap-1 hover:underline font-bold"
                 >
                   {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? "¡Copiado!" : "Copiar código"}</span>
+                  <span>{copied ? L("¡Copiado!", "Copied!") : L("Copiar código", "Copy code")}</span>
                 </button>
               </div>
               <textarea
@@ -193,7 +183,7 @@ export default function EmbedWidgetPage() {
                 }
               `}
             >
-              <span>Ver mi mapa</span>
+              <span>{L("Ver mi mapa", "See my map")}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -202,7 +192,7 @@ export default function EmbedWidgetPage() {
         <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-[11px] font-mono text-muted">
           <span className="inline-flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            100% privado y local
+            {L("100% privado y local", "100% private and local")}
           </span>
           <a
             href="https://molino.app"

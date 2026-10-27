@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, type ReactNode } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -25,6 +26,7 @@ import SectionCover from "@/components/ui/SectionCover";
  * navegador.
  */
 export default function HoyClient({ heading }: { heading: ReactNode }) {
+  const L = useL();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const { streakDays, badge } = useStreak();
   const { entries: journalEntries } = useJournal();
@@ -42,47 +44,47 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
 
   const formattedToday = ready
     ? new Date().toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })
-    : "Hoy";
+    : L("Hoy", "Today");
 
   return (
     <main id="main-content" className="bg-background">
       <header className="border-b border-ink/10">
         <div className={`${CONTAINER} pt-12 sm:pt-16 pb-16 sm:pb-24`}>
-          <Breadcrumb items={[{ href: "/", label: "Inicio" }, { href: "/calendario", label: "Calendario" }, { label: "Hoy" }]} />
+          <Breadcrumb items={[{ href: "/", label: L("Inicio", "Home") }, { href: "/calendario", label: L("Calendario", "Calendar") }, { label: L("Hoy", "Today") }]} />
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-center">
             <div className="lg:col-span-6">
               <p className="text-sm text-accent mb-4 label-caps first-letter:uppercase">
                 {formattedToday}
-                {ready && (personal ? ` · mapa de ${profile?.name || profile?.archetype}` : " · energía universal del día")}
+                {ready && (personal ? L(` · mapa de ${profile?.name || profile?.archetype}`, ` · ${profile?.name || profile?.archetype}'s map`) : L(" · energía universal del día", " · universal energy of the day"))}
               </p>
               {heading}
 
               {ready && today && breakdown ? (
                 <>
-                  <p className="mt-8 font-display text-[clamp(1.75rem,3.4vw,2.75rem)] leading-[1.1] text-foreground">
+                  <p className="mt-8 font-display text-[clamp(1.75rem,3.4vw,2.75rem)] leading-[1.1] text-foreground">{L(<>
                     Día {today.number}: {today.title}.
-                  </p>
+                  </>, <>Day {today.number}: {today.title}.</>)}</p>
                   <p className="mt-4 text-xl text-foreground/85 leading-snug max-w-xl">{today.description}</p>
 
                   <div className="mt-8 max-w-xl border-l-2 border-ink pl-5">
-                    <p className="text-sm text-muted">La cuenta con la fecha de hoy</p>
+                    <p className="text-sm text-muted">{L("La cuenta con la fecha de hoy", "The math with today's date")}</p>
                     <p className="mt-1 font-mono tabular-nums text-lg text-foreground break-words">
                       {formatDateNumberBreakdown(breakdown)}
                     </p>
                     {(breakdown.isMaster || breakdown.isAbundance) && (
                       <p className="mt-1 text-base text-muted">
-                        {breakdown.isMaster ? "Número maestro: no se reduce." : "El 28, número de la abundancia: no se reduce."}
+                        {breakdown.isMaster ? L("Número maestro: no se reduce.", "Master number: not reduced.") : L("El 28, número de la abundancia: no se reduce.", "28, the number of abundance: not reduced.")}
                       </p>
                     )}
                   </div>
 
                   <dl className="mt-8 divide-y divide-ink/10 border-y border-ink/10 max-w-xl">
                     {[
-                      { mark: DIAL_MARKS.day, text: <>En negro, el número del día, igual para todos: <span className="text-foreground">{today.number}</span>.</> },
+                      { mark: DIAL_MARKS.day, text: <>{L(<>En negro, el número del día, igual para todos: <span className="text-foreground">{today.number}</span>.</>, <>In black, the number of the day, the same for everyone: <span className="text-foreground">{today.number}</span>.</>)}</> },
                       ...(personal && daily
                         ? [
-                            { mark: DIAL_MARKS.personalDay, text: <>El punto rojo, tu Día Personal, que suma tu fecha de nacimiento: <span className="text-foreground">{daily.personalDay}</span>.</> },
-                            { mark: DIAL_MARKS.personalYear, text: <>El anillo, tu Año Personal: <span className="text-foreground">{daily.personalYear}</span>.</> },
+                            { mark: DIAL_MARKS.personalDay, text: <>{L(<>El punto rojo, tu Día Personal, que suma tu fecha de nacimiento: <span className="text-foreground">{daily.personalDay}</span>.</>, <>The red dot, your Personal Day, which adds in your date of birth: <span className="text-foreground">{daily.personalDay}</span>.</>)}</> },
+                            { mark: DIAL_MARKS.personalYear, text: <>{L(<>El anillo, tu Año Personal: <span className="text-foreground">{daily.personalYear}</span>.</>, <>The ring, your Personal Year: <span className="text-foreground">{daily.personalYear}</span>.</>)}</> },
                           ]
                         : []),
                     ].map((row, i) => (
@@ -93,12 +95,12 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
                     ))}
                   </dl>
                   {!personal && (
-                    <p className="mt-6 text-base text-muted max-w-xl">
+                    <p className="mt-6 text-base text-muted max-w-xl">{L(<>
                       Con tu mapa, la rueda suma tu Día y tu Año Personal.{" "}
                       <Link href="/onboarding" className="text-foreground underline underline-offset-4 hover:no-underline">
                         Crear mi mapa
                       </Link>
-                    </p>
+                    </>, <>With your map, the wheel adds your Personal Day and Year.{" "}<Link href="/onboarding" className="text-foreground underline underline-offset-4 hover:no-underline">Create my map</Link></>)}</p>
                   )}
                 </>
               ) : (
@@ -108,7 +110,7 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
                   <div className="h-6 bg-ink/5 w-2/3" />
                 </div>
               )}
-              {!ready && <p className="sr-only" role="status">Cargando tu energía del día…</p>}
+              {!ready && <p className="sr-only" role="status">{L("Cargando tu energía del día…", "Loading your energy for the day…")}</p>}
             </div>
 
             <div className="lg:col-span-6">
@@ -118,7 +120,7 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
                   day={today.number}
                   personalDay={personal ? daily?.personalDay : null}
                   personalYear={personal ? daily?.personalYear : null}
-                  ariaLabel={`Cuadrante del ciclo de nueve con el ${today.number} marcado${personal && daily ? `, tu Día Personal ${daily.personalDay} y tu Año Personal ${daily.personalYear}` : ""}.`}
+                  ariaLabel={L(`Cuadrante del ciclo de nueve con el ${today.number} marcado${personal && daily ? `, tu Día Personal ${daily.personalDay} y tu Año Personal ${daily.personalYear}` : ""}.`, `Dial of the cycle of nine with ${today.number} marked${personal && daily ? `, your Personal Day ${daily.personalDay} and your Personal Year ${daily.personalYear}` : ""}.`)}
                   className="mx-auto max-w-[34rem]"
                 />
               ) : (
@@ -138,7 +140,7 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
             </div>
           </section>
 
-          <KnowledgeSection label="El día">
+          <KnowledgeSection label={L("El día", "The day")}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
               <div className="lg:col-span-7">
                 <DailyEnergyCard profile={profile} daily={daily} streakDays={streakDays} streakBadge={badge} />
@@ -149,24 +151,24 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
             </div>
           </KnowledgeSection>
 
-          <KnowledgeSection label="Qué hacer con el día" title="A favor y en contra" tone="alt">
+          <KnowledgeSection label={L("Qué hacer con el día", "What to do with the day")} title={L("A favor y en contra", "For and against")} tone="alt">
             <DailyFocus daily={daily} />
           </KnowledgeSection>
 
           {personal && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
 
           {daily.nextDaysForecast?.length > 0 && (
-            <KnowledgeSection label="Lo que viene" title="Los próximos días">
+            <KnowledgeSection label={L("Lo que viene", "What's coming")} title={L("Los próximos días", "The next few days")}>
               <WeekPreview forecast={daily.nextDaysForecast} />
             </KnowledgeSection>
           )}
 
           <section className="bg-background">
-            <div className={`${CONTAINER} py-12 flex flex-wrap gap-x-8 gap-y-3 text-base`}>
+            <div className={`${CONTAINER} py-12 flex flex-wrap gap-x-8 gap-y-3 text-base`}>{L(<>
               <Link href="/semana" className="underline underline-offset-4 hover:no-underline">Ver mi semana</Link>
               <Link href="/calendario" className="underline underline-offset-4 hover:no-underline">Ver el mes</Link>
               <Link href="/evolution" className="underline underline-offset-4 hover:no-underline">Ver tus patrones</Link>
-            </div>
+            </>, <><Link href="/semana" className="underline underline-offset-4 hover:no-underline">See my week</Link><Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the month</Link><Link href="/evolution" className="underline underline-offset-4 hover:no-underline">See your patterns</Link></>)}</div>
           </section>
         </>
       )}

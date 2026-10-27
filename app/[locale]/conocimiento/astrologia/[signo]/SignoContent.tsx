@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
@@ -22,13 +23,14 @@ function pairHref(a: string, b: string) {
 
 
 export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[number] | null | undefined }) {
+  const L = useL();
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-          <h1 className="page-title text-foreground">Signo no encontrado</h1>
-          <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
-          <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
+          <h1 className="page-title text-foreground">{L("Signo no encontrado", "Sign not found")}</h1>
+          <p className="text-muted mt-4">{L("El signo no existe en la base de astrología de Molino.", "That sign doesn't exist in Molino's astrology database.")}</p>
+          <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">{L(<>&larr; Volver a Astrología</>, <>&larr; Back to Astrology</>)}</Link>
         </main>
       </div>
     );
@@ -45,20 +47,20 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
       <main id="main-content">
         <KnowledgeHero
           crumbs={[
-            { href: "/", label: "Inicio" },
+            { href: "/", label: L("Inicio", "Home") },
             { href: "/conocimiento/astrologia", label: "Astrología" },
             { label: sign.name },
           ]}
-          eyebrow={`Astrología · signo ${currentIndex + 1} de 12`}
+          eyebrow={L(`Astrología · signo ${currentIndex + 1} de 12`, `Astrology · sign ${currentIndex + 1} of 12`)}
           title={sign.name}
           lead={sign.meaning}
           meta={
             <dl className="grid grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-xl">
               {[
-                ["Fechas", sign.dates],
-                ["Elemento", sign.element],
-                ["Modalidad", sign.modality],
-                ["Regente", sign.rulingPlanet],
+                [L("Fechas", "Dates"), sign.dates],
+                [L("Elemento", "Element"), sign.element],
+                [L("Modalidad", "Modality"), sign.modality],
+                [L("Regente", "Ruler"), sign.rulingPlanet],
               ].map(([k, v]) => (
                 <div key={k} className="bg-background p-3">
                   <dt className="text-sm text-muted label-caps">{k}</dt>
@@ -68,61 +70,61 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
             </dl>
           }
           legend={[
-            { mark: MARKS.ink, text: <>En la rueda del zodíaco, en negro: <span className="text-foreground">{sign.name}</span>.</> },
-            { mark: MARKS.trine, text: <>El triángulo rojo une los tres signos de {sign.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>. Comparten temperamento.</> },
-            { mark: MARKS.dashed, text: <>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>. Lo que al otro le sobra, a este le falta.</> },
+            { mark: MARKS.ink, text: <>{L(<>En la rueda del zodíaco, en negro: <span className="text-foreground">{sign.name}</span>.</>, <>On the zodiac wheel, in black: <span className="text-foreground">{sign.name}</span>.</>)}</> },
+            { mark: MARKS.trine, text: <>{L(<>El triángulo rojo une los tres signos de {sign.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>. Comparten temperamento.</>, <>The red triangle links the three {sign.element} signs: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " and $1")}</span>. They share a temperament.</>)}</> },
+            { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>. Lo que al otro le sobra, a este le falta.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{opposite}</span>. What one has in excess, the other lacks.</>)}</> },
           ]}
           aside={
             <RelationWheel
               items={ZODIAC_SIGNS.map((s) => ({ key: s.name, label: s.name, icon: <AstrologySignIcon sign={s.name} size={40} /> }))}
               active={currentIndex}
               center={<AstrologySignIcon sign={sign.name} size={64} />}
-              ariaLabel={`Rueda del zodíaco: ${sign.name}, con ${trine.join(", ")} en el mismo elemento y ${opposite} como opuesto.`}
+              ariaLabel={L(`Rueda del zodíaco: ${sign.name}, con ${trine.join(", ")} en el mismo elemento y ${opposite} como opuesto.`, `Zodiac wheel: ${sign.name}, with ${trine.join(", ")} in the same element and ${opposite} as its opposite.`)}
               className="mx-auto max-w-[34rem]"
             />
           }
         />
 
-        <KnowledgeSection label="Historia" title={<>{sign.name} en el cielo y en la tradición</>}>
+        <KnowledgeSection label={L("Historia", "History")} title={<>{L(<>{sign.name} en el cielo y en la tradición</>, <>{sign.name} in the sky and in tradition</>)}</>}>
           <TextWithFigure figure={<SectionCover imageKey={signImageKey(sign.name)} priority />}>
             <p>{sign.history}</p>
           </TextWithFigure>
         </KnowledgeSection>
 
-        <KnowledgeSection label="Rasgos" title="Cómo se manifiesta" tone="alt">
+        <KnowledgeSection label={L("Rasgos", "Traits")} title={L("Cómo se manifiesta", "How it shows up")} tone="alt">
           <Columns
             cols={[
-              { title: "Fortalezas", items: sign.strengths },
-              { title: "Desafíos", items: sign.challenges },
+              { title: L("Fortalezas", "Strengths"), items: sign.strengths },
+              { title: L("Desafíos", "Challenges"), items: sign.challenges },
             ]}
           />
         </KnowledgeSection>
 
         <KnowledgeSection
-          label="Compatibilidades"
-          title={<>{sign.name} con los demás signos</>}
-          intro="La astrología clásica mira el elemento, la modalidad y la distancia en la rueda. Tocá un par para leerlo completo."
+          label={L("Compatibilidades", "Compatibilities")}
+          title={<>{L(<>{sign.name} con los demás signos</>, <>{sign.name} with the other signs</>)}</>}
+          intro={L("La astrología clásica mira el elemento, la modalidad y la distancia en la rueda. Tocá un par para leerlo completo.", "Classical astrology looks at the element, the modality and the distance on the wheel. Tap a pair to read it in full.")}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15 mb-10">
             {[
-              { title: "Se entienden", list: sign.compatibility.friendly },
-              { title: "Les cuesta más", list: sign.compatibility.challenging },
+              { title: L("Se entienden", "They understand each other"), list: sign.compatibility.friendly },
+              { title: L("Les cuesta más", "It's harder for them"), list: sign.compatibility.challenging },
             ].map((col) => (
               <div key={col.title} className="bg-background p-6 sm:p-8">
                 <h3 className="font-display font-normal text-2xl text-foreground">{col.title}</h3>
                 <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                   {col.list.map((o) => (
-                    <li key={o}>
+                    <li key={o}>{L(<>
                       <Link href={pairHref(sign.name, o)} className="text-lg underline underline-offset-4 hover:no-underline">
                         {sign.name} y {o}
                       </Link>
-                    </li>
+                    </>, <><Link href={pairHref(sign.name, o)} className="text-lg underline underline-offset-4 hover:no-underline">{sign.name} and {o}</Link></>)}</li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted label-caps mb-3">{sign.name} con cada signo</p>
+          <p className="text-sm text-muted label-caps mb-3">{L(<>{sign.name} con cada signo</>, <>{sign.name} with each sign</>)}</p>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-ink/15">
             {ZODIAC_SIGNS.map((other) => (
               <li key={other.name} className="border-r border-b border-ink/15">
@@ -138,17 +140,17 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <section className="bg-background">
           <div className={`${CONTAINER} py-16 sm:py-24`}>
             <Closing
-              title="¿Cuál es tu signo?"
-              text="Calculalo con tu fecha de nacimiento y mirá cómo se cruza con tu número y tu animal del zodíaco chino."
+              title={L("¿Cuál es tu signo?", "What's your sign?")}
+              text={L("Calculalo con tu fecha de nacimiento y mirá cómo se cruza con tu número y tu animal del zodíaco chino.", "Calculate it from your date of birth and see how it crosses with your number and your Chinese zodiac animal.")}
               href="/herramientas/signo-solar"
-              cta="Calcular mi signo"
+              cta={L("Calcular mi signo", "Calculate my sign")}
             />
             <Note>
               <p>{sign.scientificNote}</p>
               <p>{ASTROLOGY_DISCLAIMER}</p>
             </Note>
             <PrevNext
-              label="Navegación entre signos"
+              label={L("Navegación entre signos", "Navigation between signs")}
               prev={prev ? { href: `/conocimiento/astrologia/${normalize(prev.name)}`, name: prev.name } : null}
               next={next ? { href: `/conocimiento/astrologia/${normalize(next.name)}`, name: next.name } : null}
             />

@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState, useEffect } from "react";
 import type { LightweightEntity } from "@/types/atlas";
@@ -42,6 +43,7 @@ function CategoryPreview({
   type: string;
   userAnimal: string;
 }) {
+  const L = useL();
   if (entities.length === 0) return null;
 
   return (
@@ -84,10 +86,10 @@ function CategoryPreview({
       <Link
         href={`/atlas/explorar/${userAnimal}/${type}`}
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
-      >
+      >{L(<>
         <span>Ver {label.toLowerCase()}</span>
         <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
-      </Link>
+      </>, <><span>See {label.toLowerCase()}</span><span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
     </motion.div>
   );
 }
@@ -99,10 +101,11 @@ function AnimalSelector({
   selected: string | null;
   onSelect: (animal: Animal) => void;
 }) {
+  const L = useL();
   return (
     <div>
       <p className="text-sm text-muted font-medium mb-3 label-caps">
-        {selected ? "Cambiar signo" : "Elegí tu signo para explorar"}
+        {selected ? L("Cambiar signo", "Change sign") : L("Elegí tu signo para explorar", "Pick your sign to explore")}
       </p>
       <div className="grid grid-cols-3 gap-2">
         {ANIMALS.map((animal) => {
@@ -137,14 +140,13 @@ function AnimalSelector({
 }
 
 function NoCoverageBanner({ country, topCountries }: { country: string; topCountries: AtlasCountry[] }) {
+  const L = useL();
   return (
     <div className="mb-8 p-4 rounded-xl border border-ink/10 bg-card">
-      <p className="text-sm text-foreground">
+      <p className="text-sm text-foreground">{L(<>
         Todavía no tenemos entidades para {country} en el Atlas.
-      </p>
-      <p className="text-xs text-muted mt-1">
-        Mientras tanto, estos son los países con más cobertura para explorar.
-      </p>
+      </>, <>We don't have entities for {country} in the Atlas yet.</>)}</p>
+      <p className="text-xs text-muted mt-1">{L("Mientras tanto, estos son los países con más cobertura para explorar.", "Meanwhile, these are the countries with the most coverage to explore.")}</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {topCountries.slice(0, 6).map((c) => (
           <a
@@ -161,6 +163,7 @@ function NoCoverageBanner({ country, topCountries }: { country: string; topCount
 }
 
 export default function AtlasHub({ countries, topCountries, allEntities, globalCurated }: AtlasHubProps) {
+  const L = useL();
   const { country } = useUserContext();
 
   const userCountryISO = useMemo(() => {
@@ -201,25 +204,17 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
   return (
     <div>
       {/* ═══════════ HERO ═══════════ */}
-      <section aria-label="Atlas — tu mapa de afinidades" className="relative mb-20 sm:mb-28">
-        <Breadcrumb items={[{ href: "/", label: "Inicio" }, { label: "Atlas" }]} />
+      <section aria-label={L("Atlas — tu mapa de afinidades", "Atlas — your map of affinities")} className="relative mb-20 sm:mb-28">
+        <Breadcrumb items={[{ href: "/", label: L("Inicio", "Home") }, { label: "Atlas" }]} />
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
           <div className="lg:col-span-7">
-            <p className="text-sm text-accent mb-4 label-caps">Atlas · países, ciudades, marcas y personas</p>
-            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">
-              Tu mapa de afinidades
-            </h1>
+            <p className="text-sm text-accent mb-4 label-caps">{L("Atlas · países, ciudades, marcas y personas", "Atlas · countries, cities, brands and people")}</p>
+            <h1 className="font-display font-normal text-[clamp(3rem,7.5vw,6rem)] leading-[0.95] tracking-tight text-foreground">{L("Tu mapa de afinidades", "Your map of affinities")}</h1>
             {/* Qué es esta sección, para quien llega sin contexto: la regla
                 completa en dos párrafos, sin vender nada. */}
             <div className="mt-6 max-w-xl space-y-4 text-xl text-foreground/85 leading-snug">
-              <p>
-                Cada entrada del Atlas tiene una fecha de origen —el día en que se fundó o nació— y esa fecha le da un
-                signo del zodíaco chino, igual que tu fecha de nacimiento te da el tuyo.
-              </p>
-              <p className="text-lg text-muted">
-                Primero ves lo que comparte tu signo y, aparte, lo del signo opuesto. Elegí tu signo para empezar, o más
-                abajo recorré todo el Atlas por país.
-              </p>
+              <p>{L("Cada entrada del Atlas tiene una fecha de origen —el día en que se fundó o nació— y esa fecha le da un signo del zodíaco chino, igual que tu fecha de nacimiento te da el tuyo.", "Every entry in the Atlas has a date of origin — the day it was founded or born — and that date gives it a Chinese zodiac sign, just as your date of birth gives you yours.")}</p>
+              <p className="text-lg text-muted">{L("Primero ves lo que comparte tu signo y, aparte, lo del signo opuesto. Elegí tu signo para empezar, o más abajo recorré todo el Atlas por país.", "First you see what shares your sign and, separately, what belongs to the opposite sign. Pick your sign to start, or browse the whole Atlas by country further down.")}</p>
             </div>
           </div>
           <div className="lg:col-span-5 w-full">
@@ -234,7 +229,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
       {/* ═══════════ CATEGORÍAS — TU ANIMAL ═══════════ */}
       {sections && sections.sameAnimal.length > 0 && (
-        <section aria-label="Tu mundo" className="relative mb-24">
+        <section aria-label={L("Tu mundo", "Your world")} className="relative mb-24">
           {/* Visual connector — thin accent line */}
           <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/15 hidden sm:block" aria-hidden="true" />
 
@@ -255,7 +250,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
       {/* ═══════════ ENERGÍA OPUESTA ═══════════ */}
       {sections && enemyName && sections.enemyAnimal.length > 0 && (
         <motion.section
-          aria-label="Energía opuesta"
+          aria-label={L("Energía opuesta", "Opposite energy")}
           className="relative mb-24"
           {...fadeUp}
         >
@@ -268,9 +263,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
-              <p className="text-sm text-muted font-medium mb-2 label-caps">
-                Energía opuesta
-              </p>
+              <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Energía opuesta", "Opposite energy")}</p>
               <h2 className="section-title text-foreground/60">
                 {enemyName}
               </h2>
@@ -278,36 +271,32 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
             <Link
               href={`/atlas/explorar/${enemyName}?enemy=1`}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-accent transition-colors group shrink-0"
-            >
+            >{L(<>
               <span>Explorar energía opuesta</span>
               <span className="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
-            </Link>
+            </>, <><span>Explore the opposite energy</span><span className="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
           </div>
 
-          <p className="text-sm text-muted max-w-lg leading-relaxed">
-            Explorá entidades asociadas al animal opuesto en el ciclo zodiacal. Otra forma de recorrer el Atlas.
-          </p>
+          <p className="text-sm text-muted max-w-lg leading-relaxed">{L("Explorá entidades asociadas al animal opuesto en el ciclo zodiacal. Otra forma de recorrer el Atlas.", "Explore entities associated with the opposite animal in the zodiac cycle. Another way to go through the Atlas.")}</p>
         </motion.section>
       )}
 
       {/* ═══════════ EXPLORAR TODO EL ATLAS ═══════════ */}
       <motion.section
-        aria-label="Explorar todo el Atlas"
+        aria-label={L("Explorar todo el Atlas", "Explore the whole Atlas")}
         className="border-t-2 border-ink pt-10"
         {...fadeUp}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="section-title text-foreground">
-            Todo el Atlas, por país
-          </h2>
+          <h2 className="section-title text-foreground">{L("Todo el Atlas, por país", "The whole Atlas, by country")}</h2>
           {!countriesExpanded && (
             <button
               type="button"
               onClick={() => setCountriesExpanded(true)}
               className="text-base underline underline-offset-4 hover:no-underline py-2 -my-2"
-            >
+            >{L(<>
               Ver los {countries.length} países
-            </button>
+            </>, <>See the {countries.length} countries</>)}</button>
           )}
         </div>
 
@@ -322,27 +311,25 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               type="button"
               onClick={() => setCountriesExpanded(false)}
               className="mt-4 text-xs text-muted hover:text-accent transition-colors"
-            >
-              Colapsar ↑
-            </button>
+            >{L("Colapsar ↑", "Collapse ↑")}</button>
           </div>
         ) : (
-          <p className="text-lg text-muted">
+          <p className="text-lg text-muted">{L(<>
             {countries.length} países con entradas. Desplegá la lista para navegar por país y categoría.
-          </p>
+          </>, <>{countries.length} countries with entries. Expand the list to browse by country and category.</>)}</p>
         )}
 
         {userCountryISO && (
           <div className="mt-8 flex flex-wrap gap-2">
             {(
               [
-                ["city", "Ciudades"],
-                ["autos", "Marcas de autos"],
-                ["ropa", "Marcas de ropa"],
-                ["brand", "Otras marcas"],
-                ["university", "Universidades"],
-                ["artist", "Famosos"],
-                ["movie", "Películas"],
+                ["city", L("Ciudades", "Cities")],
+                ["autos", L("Marcas de autos", "Car brands")],
+                ["ropa", L("Marcas de ropa", "Clothing brands")],
+                ["brand", L("Otras marcas", "Other brands")],
+                ["university", L("Universidades", "Universities")],
+                ["artist", L("Famosos", "Famous people")],
+                ["movie", L("Películas", "Movies")],
               ] as const
             )
               // Solo los listados que existen para ese país: los demás serían 404.

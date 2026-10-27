@@ -1,4 +1,5 @@
 'use client';
+import { useL } from "@/lib/i18n/useL";
 
 import { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,6 +8,7 @@ import { usePremiumActivation } from './PremiumActivationContext';
 import { useSafeReducedMotion } from '@/lib/hooks/useSafeReducedMotion';
 
 export default function PremiumActivationFeedback() {
+  const L = useL();
   const { step, setStep } = usePremiumActivation();
   const reduceMotion = useSafeReducedMotion();
 
@@ -40,7 +42,7 @@ export default function PremiumActivationFeedback() {
             {step === 'submitting' && (
               <div className="flex items-center gap-3">
                 <Loader2 className="w-5 h-5 text-accent shrink-0 animate-spin" aria-hidden="true" />
-                <p className="text-sm text-foreground font-heading">Activando acceso…</p>
+                <p className="text-sm text-foreground font-heading">{L("Activando acceso…", "Activating access…")}</p>
               </div>
             )}
 
@@ -49,14 +51,14 @@ export default function PremiumActivationFeedback() {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground font-heading">Código aceptado</p>
-                  <p className="text-xs text-muted mt-0.5">Tu acceso Pro está activo.</p>
+                  <p className="text-sm text-foreground font-heading">{L("Código aceptado", "Code accepted")}</p>
+                  <p className="text-xs text-muted mt-0.5">{L("Tu acceso Pro está activo.", "Your Pro access is active.")}</p>
                 </div>
                 <button
                   type="button"
                   onClick={handleDismiss}
                   className="shrink-0 p-1 rounded-md hover:bg-ink/5 focus-visible:outline-2 focus-visible:outline-accent transition-colors"
-                  aria-label="Cerrar"
+                  aria-label={L("Cerrar", "Close")}
                 >
                   <X className="w-4 h-4 text-muted" />
                 </button>
@@ -67,9 +69,7 @@ export default function PremiumActivationFeedback() {
             {step === 'preparing' && (
               <div className="flex items-center gap-3">
                 <Loader2 className="w-5 h-5 text-accent shrink-0 animate-spin" aria-hidden="true" />
-                <p className="text-sm text-foreground font-heading">
-                  Tu acceso Pro está activo. Estamos preparando tu lectura…
-                </p>
+                <p className="text-sm text-foreground font-heading">{L("Tu acceso Pro está activo. Estamos preparando tu lectura…", "Your Pro access is active. We're preparing your reading…")}</p>
               </div>
             )}
 
@@ -78,14 +78,14 @@ export default function PremiumActivationFeedback() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-error shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-error font-heading">No se pudo activar el acceso</p>
-                  <p className="text-xs text-muted mt-0.5">Algo salió mal al intentar el código.</p>
+                  <p className="text-sm text-error font-heading">{L("No se pudo activar el acceso", "Access couldn't be activated")}</p>
+                  <p className="text-xs text-muted mt-0.5">{L("Algo salió mal al intentar el código.", "Something went wrong trying the code.")}</p>
                 </div>
                 <button
                   type="button"
                   onClick={handleDismiss}
                   className="shrink-0 p-1 rounded-md hover:bg-ink/5 focus-visible:outline-2 focus-visible:outline-accent transition-colors"
-                  aria-label="Cerrar"
+                  aria-label={L("Cerrar", "Close")}
                 >
                   <X className="w-4 h-4 text-muted" />
                 </button>

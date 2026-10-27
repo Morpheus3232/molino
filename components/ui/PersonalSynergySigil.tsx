@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React, { useMemo } from "react";
 import { calculateLifePath } from "@/lib/calculations";
@@ -76,6 +77,7 @@ export default function PersonalSynergySigil({
   showLegend = true,
   color = "inherit",
 }: PersonalSynergySigilProps) {
+  const L = useL();
   const dataA = useMemo(() => parseDateValues(dateA, 15, 3, 1990), [dateA]);
   const dataB = useMemo(() => parseDateValues(dateB, 22, 7, 1988), [dateB]);
 
@@ -207,7 +209,7 @@ export default function PersonalSynergySigil({
           fontFamily: "'JetBrains Mono', 'Space Grotesk', monospace",
         }}
         role="img"
-        aria-label={`Sello de sinergia entre ${nameA || "Persona A"} y ${nameB || "Persona B"}`}
+        aria-label={L(`Sello de sinergia entre ${nameA || "Persona A"} y ${nameB || "Persona B"}`, `Synergy seal between ${nameA || "Person A"} and ${nameB || "Person B"}`)}
       >
         <defs>
           <filter id="sigilGlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -274,18 +276,18 @@ export default function PersonalSynergySigil({
       {/* 8. Leyenda Mínima de Visualización */}
       {showLegend && (
         <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8 text-sm text-muted label-caps">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">{L(<>
             <span className="w-2.5 h-2.5 rounded-full border border-current opacity-40 inline-block" />
             <span>Afinidad</span>
-          </div>
-          <div className="flex items-center gap-2">
+          </>, <><span className="w-2.5 h-2.5 rounded-full border border-current opacity-40 inline-block" /><span>Affinity</span></>)}</div>
+          <div className="flex items-center gap-2">{L(<>
             <span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" />
             <span className="text-foreground">Tensión</span>
-          </div>
-          <div className="flex items-center gap-2">
+          </>, <><span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" /><span className="text-foreground">Tension</span></>)}</div>
+          <div className="flex items-center gap-2">{L(<>
             <span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" />
             <span className="text-foreground">Resonancia</span>
-          </div>
+          </>, <><span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" /><span className="text-foreground">Resonance</span></>)}</div>
         </div>
       )}
     </div>

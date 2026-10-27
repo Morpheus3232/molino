@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -22,14 +23,14 @@ const AFFINITY_EVENTS: EventType[] = [
   "affinity_save_clicked",
 ];
 
-const EVENT_LABELS: Record<EventType, string> = {
-  affinity_date_entered: "Fecha ingresada",
-  affinity_result_viewed: "Resultado visto",
-  affinity_shared: "Compartido",
-  affinity_profile_cta_clicked: "CTA perfil clickeado",
-  affinity_recommendation_clicked: "Recomendación clickeada",
-  affinity_save_clicked: "Resultado guardado",
-};
+const EVENT_LABELS = (L: Pick2): Record<EventType, string> => ({
+  affinity_date_entered: L("Fecha ingresada", "Date entered"),
+  affinity_result_viewed: L("Resultado visto", "Result viewed"),
+  affinity_shared: L("Compartido", "Shared"),
+  affinity_profile_cta_clicked: L("CTA perfil clickeado", "Profile CTA clicked"),
+  affinity_recommendation_clicked: L("Recomendación clickeada", "Recommendation clicked"),
+  affinity_save_clicked: L("Resultado guardado", "Result saved"),
+});
 
 interface EventCounts {
   date_entered: number;
@@ -52,6 +53,7 @@ const transitionVariants = {
 };
 
 export default function AffinityAnalyticsPage() {
+  const L = useL();
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
 
@@ -155,9 +157,7 @@ export default function AffinityAnalyticsPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Cargando datos de Affinity...">
-                Cargando datos de Affinity...
-              </p>
+              <p className="sr-only" role="status" aria-label="Cargando datos de Affinity...">{L("Cargando datos de Affinity...", "Loading Affinity data...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-8rem mb-6" />
                 <div className="h-9 bg-[var(--skeleton)] rounded w-1/2 mb-2" />
@@ -199,14 +199,14 @@ export default function AffinityAnalyticsPage() {
                 <h1 className="page-title text-foreground mb-2">
                   Affinity Experiment
                 </h1>
-                <p className="text-sm text-muted">
+                <p className="text-sm text-muted">{L(<>
                   P4-A: {totalEvents} eventos de Affinity en total.
-                </p>
+                </>, <>P4-A: {totalEvents} Affinity events in total.</>)}</p>
               </div>
 
               {/* Event counts */}
               <section className="mb-12">
-                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">Conteo por evento</h2>
+                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">{L("Conteo por evento", "Count by event")}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", counts.date_entered],
@@ -225,7 +225,7 @@ export default function AffinityAnalyticsPage() {
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
                       <div className="text-sm text-muted mt-1 label-caps">
-                        {EVENT_LABELS[
+                        {EVENT_LABELS(L)[
                           key === "profile_cta" ? "affinity_profile_cta_clicked"
                           : key === "recommendation_clicked" ? "affinity_recommendation_clicked"
                           : key === "date_entered" ? "affinity_date_entered"
@@ -241,7 +241,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Ratios */}
               <section className="mb-12">
-                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">Ratios (base: resultado visto)</h2>
+                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">{L("Ratios (base: resultado visto)", "Ratios (base: result viewed)")}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <RatioCard label="Save rate" value={pct(ratios.save_rate)} desc={`${counts.save_clicked} / ${counts.result_viewed}`} />
                   <RatioCard label="Share rate" value={pct(ratios.share_rate)} desc={`${counts.shared} / ${counts.result_viewed}`} />
@@ -252,7 +252,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Unique users */}
               <section className="mb-12">
-                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">Usuarios únicos por evento</h2>
+                <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">{L("Usuarios únicos por evento", "Unique users by event")}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", userCounts.date_entered],
@@ -270,7 +270,7 @@ export default function AffinityAnalyticsPage() {
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-                      <div className="text-sm text-muted mt-1 label-caps">usuarios</div>
+                      <div className="text-sm text-muted mt-1 label-caps">{L("usuarios", "users")}</div>
                     </motion.div>
                   ))}
                 </div>
@@ -279,18 +279,18 @@ export default function AffinityAnalyticsPage() {
               {/* Daily evolution */}
               {daily.length > 0 && (
                 <section className="mb-12">
-                  <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">Evolución diaria</h2>
+                  <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-6">{L("Evolución diaria", "Daily evolution")}</h2>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-border">
-                          <th className="text-left py-2 text-muted font-medium">Fecha</th>
-                          <th className="text-right py-2 text-muted font-medium">Ingresados</th>
-                          <th className="text-right py-2 text-muted font-medium">Vistos</th>
-                          <th className="text-right py-2 text-muted font-medium">Guardados</th>
-                          <th className="text-right py-2 text-muted font-medium">Compartidos</th>
-                          <th className="text-right py-2 text-muted font-medium">Recomendados</th>
-                          <th className="text-right py-2 text-muted font-medium">Perfil CTA</th>
+                          <th className="text-left py-2 text-muted font-medium">{L("Fecha", "Date")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Ingresados", "Entered")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Vistos", "Viewed")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Guardados", "Saved")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Compartidos", "Shared")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Recomendados", "Recommended")}</th>
+                          <th className="text-right py-2 text-muted font-medium">{L("Perfil CTA", "Profile CTA")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -317,9 +317,7 @@ export default function AffinityAnalyticsPage() {
                   type="button"
                   onClick={() => router.push("/analytics")}
                   className="text-sm text-muted hover:text-accent transition-colors"
-                >
-                  ← Volver a analytics
-                </button>
+                >{L("← Volver a analytics", "← Back to analytics")}</button>
               </div>
 
             </main>

@@ -1,8 +1,8 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Tu Mundo",
-  description: "Los países, ciudades y marcas que resuenan con tu mapa personal.",
+export const generateMetadata = metadataFor({
+  title: ["Tu Mundo", "Your World"],
+  description: ["Los países, ciudades y marcas que resuenan con tu mapa personal.", "The countries, cities and brands that resonate with your personal map."],
   noIndex: true,
 });
 

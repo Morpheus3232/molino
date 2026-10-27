@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useState } from "react";
 import { Download, X, } from "lucide-react";
@@ -10,6 +11,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function PWAProvider({ children }: { children?: React.ReactNode }) {
+  const L = useL();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -94,17 +96,13 @@ export default function PWAProvider({ children }: { children?: React.ReactNode }
             transition={{ duration: 0.3 }}
             className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 p-4 rounded-lg bg-card border border-accent/30 shadow-2xl backdrop-blur-md"
             role="dialog"
-            aria-label="Instalar Molino como aplicación"
+            aria-label={L("Instalar Molino como aplicación", "Install Molino as an app")}
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2.5">
                 <div>
-                  <h4 className="font-heading text-xs font-bold text-foreground">
-                    Instalá Molino en tu dispositivo
-                  </h4>
-                  <p className="text-[11px] font-mono text-muted mt-0.5">
-                    Acceso instantáneo y cálculos 100% offline.
-                  </p>
+                  <h4 className="font-heading text-xs font-bold text-foreground">{L("Instalá Molino en tu dispositivo", "Install Molino on your device")}</h4>
+                  <p className="text-[11px] font-mono text-muted mt-0.5">{L("Acceso instantáneo y cálculos 100% offline.", "Instant access and 100% offline calculations.")}</p>
                 </div>
               </div>
 
@@ -112,7 +110,7 @@ export default function PWAProvider({ children }: { children?: React.ReactNode }
                 type="button"
                 onClick={handleDismiss}
                 className="p-1 rounded-lg text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
-                aria-label="Cerrar sugerencia de instalación"
+                aria-label={L("Cerrar sugerencia de instalación", "Close install suggestion")}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -125,15 +123,13 @@ export default function PWAProvider({ children }: { children?: React.ReactNode }
                 className="flex-1 py-2 px-3 rounded-xl bg-accent text-background font-mono text-xs font-bold hover:bg-accent/90 transition-colors inline-flex items-center justify-center gap-1.5"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Instalar App</span>
+                <span>{L("Instalar App", "Install App")}</span>
               </button>
               <button
                 type="button"
                 onClick={handleDismiss}
                 className="py-2 px-3 rounded-xl bg-ink/5 hover:bg-ink/10 text-muted hover:text-foreground font-mono text-xs transition-colors"
-              >
-                Ahora no
-              </button>
+              >{L("Ahora no", "Not now")}</button>
             </div>
           </motion.div>
         )}

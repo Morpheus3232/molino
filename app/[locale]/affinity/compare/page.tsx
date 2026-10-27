@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { createRouteMetadata } from "@/lib/seo";
@@ -11,15 +12,14 @@ export const metadata: Metadata = createRouteMetadata({
 });
 
 export default function ComparePickerPage() {
+  const L = useL();
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
   return (
     <Suspense
       fallback={
         <div className="min-h-screen bg-background">
           <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
-            <p className="sr-only" role="status" aria-label="Cargando...">
-              Cargando...
-            </p>
+            <p className="sr-only" role="status" aria-label="Cargando...">{L("Cargando...", "Loading...")}</p>
             <div className="animate-pulse">
               <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
               <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />

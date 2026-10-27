@@ -1,4 +1,5 @@
 "use client";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -14,10 +15,10 @@ import {
 } from "@/lib/engines/affinityEngine";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 
-const TYPE_LABEL: Record<string, string> = {
-  brand: "Marca", city: "Ciudad", country: "País", university: "Universidad",
-  team: "Equipo", movie: "Película", artist: "Famoso",
-};
+const TYPE_LABEL = (L: Pick2): Record<string, string> => ({
+  brand: L("Marca", "Brand"), city: "Ciudad", country: "País", university: L("Universidad", "University"),
+  team: L("Equipo", "Team"), movie: L("Película", "Movie"), artist: L("Famoso", "Famous person"),
+});
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import Button from "@/components/ui/Button";
 import EntityVisual from "@/components/ui/EntityVisual";
@@ -34,6 +35,7 @@ interface CompareContentProps {
 }
 
 export default function CompareContent({ entityA, entityB }: CompareContentProps) {
+  const L = useL();
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
 
@@ -57,8 +59,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
   const tierA = resultA ? TIER_META[resultA.tier] : null;
   const tierB = resultB ? TIER_META[resultB.tier] : null;
   const compTier = entityComparison ? TIER_META[entityComparison.tier] : null;
-  const metaA = { label: TYPE_LABEL[entityA.type] ?? entityA.type };
-  const metaB = { label: TYPE_LABEL[entityB.type] ?? entityB.type };
+  const metaA = { label: TYPE_LABEL(L)[entityA.type] ?? entityA.type };
+  const metaB = { label: TYPE_LABEL(L)[entityB.type] ?? entityB.type };
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,9 +74,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             exit="exit"
           >
             <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Cargando comparación...">
-                Cargando comparación...
-              </p>
+              <p className="sr-only" role="status" aria-label="Cargando comparación...">{L("Cargando comparación...", "Loading comparison...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
                 <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -96,10 +96,10 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               <h1 className="page-title text-foreground mb-4">
                 {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
               </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
+              <p className="text-muted mb-8 max-w-md mx-auto">{L(<>
                 Creá tu perfil para descubrir la comparación simbólica entre {entityA.name} y {entityB.name}.
-              </p>
-              <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
+              </>, <>Create your profile to discover the symbolic comparison between {entityA.name} and {entityB.name}.</>)}</p>
+              <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>{L("Crear mi perfil", "Create my profile")}</Button>
             </main>
           </motion.div>
         ) : !resultA || !resultB || !entityComparison ? (
@@ -112,13 +112,11 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           >
             <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <h1 className="page-title text-foreground mb-4">
-                No se pudo calcular la comparación
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
+              <h1 className="page-title text-foreground mb-4">{L("No se pudo calcular la comparación", "The comparison couldn't be calculated")}</h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">{L(<>
                 Ocurrió un error al calcular la afinidad entre {entityA.name} y {entityB.name}. Intentá de nuevo.
-              </p>
-              <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>Volver a comparar</Button>
+              </>, <>Something went wrong calculating the affinity between {entityA.name} and {entityB.name}. Try again.</>)}</p>
+              <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>{L("Volver a comparar", "Compare again")}</Button>
             </main>
           </motion.div>
         ) : showContent && tierA && tierB && compTier && resultA && resultB && entityComparison ? (
@@ -137,9 +135,9 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                   type="button"
                   onClick={() => router.push("/affinity/compare")}
                   className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
-                >
+                >{L(<>
                   &larr; Elegir otras entidades
-                </button>
+                </>, <>&larr; Pick other entities</>)}</button>
               </motion.div>
 
               {/* Header */}
@@ -149,12 +147,12 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                   <span className="text-muted mx-2 sm:mx-3">vs</span>
                   <span className="inline-block max-w-[45%] truncate align-bottom">{entityB.emoji} {entityB.name}</span>
                 </h1>
-                <p className="text-sm text-muted">Según el zodíaco chino</p>
+                <p className="text-sm text-muted">{L("Según el zodíaco chino", "According to the Chinese zodiac")}</p>
               </motion.section>
 
               {/* Data base — side by side */}
               <motion.section {...fadeUp} className="mb-12">
-                <SectionHeader title="Datos base" />
+                <SectionHeader title={L("Datos base", "Base data")} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <EntityBaseCard
                     entity={entityA}
@@ -173,7 +171,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Entity vs Entity comparison */}
               <motion.section {...fadeUp} className="mb-12">
-                <SectionHeader title="Relación entre ambos" />
+                <SectionHeader title={L("Relación entre ambos", "Relationship between the two")} />
                 <div className="p-6 border border-ink/10 bg-transparent">
                   <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6">
                     <div className="text-center">
@@ -233,14 +231,14 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Your personal connection to each */}
               <motion.section {...fadeUp} className="mb-12">
-                <SectionHeader title="Tu conexión personal" />
-                <p className="text-xs text-muted mb-4">
+                <SectionHeader title={L("Tu conexión personal", "Your personal connection")} />
+                <p className="text-xs text-muted mb-4">{L(<>
                   Según esta tradición, existe una relación simbólica de{" "}
                   <span className="font-medium text-foreground">{resultA.relationship}</span> entre vos y{" "}
                   <span className="font-medium text-foreground">{entityA.name}</span>, y de{" "}
                   <span className="font-medium text-foreground">{resultB.relationship}</span> entre vos y{" "}
                   <span className="font-medium text-foreground">{entityB.name}</span>.
-                </p>
+                </>, <>According to this tradition, there's a symbolic relationship of{" "}<span className="font-medium text-foreground">{resultA.relationship}</span> between you and{" "}<span className="font-medium text-foreground">{entityA.name}</span>, and of{" "}<span className="font-medium text-foreground">{resultB.relationship}</span> between you and{" "}<span className="font-medium text-foreground">{entityB.name}</span>.</>)}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <PersonalCard
                     entityName={entityA.name}
@@ -265,30 +263,30 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Symbolic differences */}
               <motion.section {...fadeUp} className="mb-12">
-                <SectionHeader title="Diferencias simbólicas" />
+                <SectionHeader title={L("Diferencias simbólicas", "Symbolic differences")} />
                 <div className="p-6 border border-ink/10 bg-transparent space-y-4">
                   <DifferenceRow
-                    label="Signos"
+                    label={L("Signos", "Signs")}
                     valueA={`${formatAnimalSimple(resultA.entityAnimal)} (${entityA.name})`}
                     valueB={`${formatAnimalSimple(resultB.entityAnimal)} (${entityB.name})`}
                   />
                   <DifferenceRow
-                    label="Evento base"
+                    label={L("Evento base", "Base event")}
                     valueA={`${resultA.primaryEvent.label} (${resultA.entityYear})`}
                     valueB={`${resultB.primaryEvent.label} (${resultB.entityYear})`}
                   />
                   <DifferenceRow
-                    label="Precisión"
-                    valueA={resultA.isApproximate ? "Año registrado" : "Fecha exacta"}
-                    valueB={resultB.isApproximate ? "Año registrado" : "Fecha exacta"}
+                    label={L("Precisión", "Precision")}
+                    valueA={resultA.isApproximate ? L("Año registrado", "Recorded year") : L("Fecha exacta", "Exact date")}
+                    valueB={resultB.isApproximate ? L("Año registrado", "Recorded year") : L("Fecha exacta", "Exact date")}
                   />
                   <DifferenceRow
-                    label="Relación con vos"
+                    label={L("Relación con vos", "Relationship with you")}
                     valueA={resultA.relationship}
                     valueB={resultB.relationship}
                   />
                   <DifferenceRow
-                    label="Afinidad personal"
+                    label={L("Afinidad personal", "Personal affinity")}
                     valueA={tierA.label}
                     valueB={tierB.label}
                   />
@@ -298,11 +296,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {/* Disclaimer */}
               <motion.section {...fadeUp} className="mb-12">
                 <div className="p-6 border border-ink/10 bg-transparent">
-                  <p className="text-sm text-muted font-medium mb-2 label-caps">Aviso importante</p>
-                  <p className="text-xs text-muted leading-relaxed">
-                    La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
-                    Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.
-                  </p>
+                  <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Aviso importante", "Important notice")}</p>
+                  <p className="text-xs text-muted leading-relaxed">{L("La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica. Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.", "The comparison is a symbolic reading based on Chinese zodiac traditions, not a scientific measurement. Molino is an educational and entertainment platform. Each person may interpret these systems differently.")}</p>
                 </div>
               </motion.section>
 
@@ -313,23 +308,21 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                     type="button"
                     onClick={() => router.push(`/affinity/${entityA.type}/${entityA.id}`)}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
-                  >
+                  >{L(<>
                     Ver {entityA.name}
-                  </button>
+                  </>, <>See {entityA.name}</>)}</button>
                   <button
                     type="button"
                     onClick={() => router.push(`/affinity/${entityB.type}/${entityB.id}`)}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
-                  >
+                  >{L(<>
                     Ver {entityB.name}
-                  </button>
+                  </>, <>See {entityB.name}</>)}</button>
                   <button
                     type="button"
                     onClick={() => router.push("/affinity")}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
-                  >
-                    Explorar más
-                  </button>
+                  >{L("Explorar más", "Explore more")}</button>
                 </div>
               </motion.section>
             </main>
@@ -351,6 +344,7 @@ function EntityBaseCard({
   tierMeta: { label: string; color: string; description: string };
   typeLabel: string;
 }) {
+  const L = useL();
   return (
     <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center gap-3 mb-4">
@@ -370,29 +364,29 @@ function EntityBaseCard({
         </div>
       </div>
       <div className="space-y-2 text-xs">
-        <div className="flex justify-between">
+        <div className="flex justify-between">{L(<>
           <span className="text-muted">Evento</span>
           <span className="text-foreground text-right">{result.primaryEvent.label}</span>
-        </div>
-        <div className="flex justify-between">
+        </>, <><span className="text-muted">Event</span><span className="text-foreground text-right">{result.primaryEvent.label}</span></>)}</div>
+        <div className="flex justify-between">{L(<>
           <span className="text-muted">Fecha</span>
           <span className="text-foreground">
             {result.primaryEvent.date
               ? formatDisplayDate(result.primaryEvent.date)
               : String(result.primaryEvent.year)}
           </span>
-        </div>
-        <div className="flex justify-between">
+        </>, <><span className="text-muted">Date</span><span className="text-foreground">{result.primaryEvent.date ? formatDisplayDate(result.primaryEvent.date) : String(result.primaryEvent.year)}</span></>)}</div>
+        <div className="flex justify-between">{L(<>
           <span className="text-muted">Animal chino</span>
           <span className="font-medium text-foreground">{result.entityAnimal}</span>
-        </div>
+        </>, <><span className="text-muted">Chinese animal</span><span className="font-medium text-foreground">{result.entityAnimal}</span></>)}</div>
         <div className="h-px bg-border my-2" />
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center">{L(<>
           <span className="text-muted">Afinidad personal</span>
           <span className="font-medium" style={{ color: tierMeta.color }}>
             {tierMeta.label}
           </span>
-        </div>
+        </>, <><span className="text-muted">Personal affinity</span><span className="font-medium" style={{ color: tierMeta.color }}>{tierMeta.label}</span></>)}</div>
       </div>
     </div>
   );
@@ -415,6 +409,7 @@ function PersonalCard({
   tierMeta: { label: string; color: string; description: string };
   relationship: string;
 }) {
+  const L = useL();
   return (
     <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center justify-between mb-3">
@@ -426,12 +421,12 @@ function PersonalCard({
           {tierMeta.label}
         </span>
       </div>
-      <p className="text-xs text-muted mb-1">
+      <p className="text-xs text-muted mb-1">{L(<>
         Tu signo: <span className="font-medium text-foreground">{userAnimal || "—"}</span> · el suyo: {animal}
-      </p>
-      <p className="text-xs text-muted">
+      </>, <>Your sign: <span className="font-medium text-foreground">{userAnimal || "—"}</span> · theirs: {animal}</>)}</p>
+      <p className="text-xs text-muted">{L(<>
         Relación: <span className="font-medium text-foreground">{relationship}</span>
-      </p>
+      </>, <>Relationship: <span className="font-medium text-foreground">{relationship}</span></>)}</p>
     </div>
   );
 }
