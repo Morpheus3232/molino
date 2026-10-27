@@ -1,10 +1,10 @@
 import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata: Metadata = createRouteMetadata({
-  title: "Recuperar Premium",
-  description: "Recuperá tu acceso Premium desde el link de tu email de confirmación.",
+export const generateMetadata = metadataFor({
+  title: ["Recuperar Premium", "Recover Premium"],
+  description: ["Recuperá tu acceso Premium desde el link de tu email de confirmación.", "Recover your Premium access from the link in your confirmation email."],
   path: "/premium/claim",
   noIndex: true,
 });

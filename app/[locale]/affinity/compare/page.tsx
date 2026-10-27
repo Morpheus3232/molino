@@ -1,13 +1,13 @@
 import { initLocale, getL } from "@/lib/i18n/server";
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import ComparePicker from "./ComparePickerClient";
 
-export const metadata: Metadata = createRouteMetadata({
-  title: "Comparar afinidad",
-  description: "Elegí dos marcas, países, ciudades o personas históricas y comparalos con tu perfil simbólico.",
+export const generateMetadata = metadataFor({
+  title: ["Comparar afinidad", "Compare affinity"],
+  description: ["Elegí dos marcas, países, ciudades o personas históricas y comparalos con tu perfil simbólico.", "Pick two brands, countries, cities or historical figures and compare them with your symbolic profile."],
   path: "/affinity/compare",
 });
 

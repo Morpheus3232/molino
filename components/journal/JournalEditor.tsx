@@ -176,7 +176,7 @@ export default function JournalEditor({
   const formattedDisplayDate = useMemo(() => {
     const [y, m, d] = date.split("-").map(Number);
     const targetDate = new Date(y, m - 1, d, 12, 0, 0);
-    return targetDate.toLocaleDateString("es-AR", {
+    return targetDate.toLocaleDateString(L("es-AR", "en-US"), {
       weekday: "long",
       day: "numeric",
       month: "long",

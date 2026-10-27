@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, localeAlternates, localeUrl } from "@/lib/seo";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import NumeroContent from "./NumeroContent";
 
@@ -16,24 +16,26 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { numero: numId } = await params;
   const num = NUMBERS.find(n => n.number === parseInt(numId));
 
   if (!num) {
-    return { title: "Número no encontrado" };
+    return { title: L("Número no encontrado", "Number not found") };
   }
 
+  const t = L.t(num.title);
+  const description = L.t(num.meaning).slice(0, 155);
+  const path = `/conocimiento/numerologia/${num.number}`;
   return {
-    title: `Número ${num.number} ${num.title} — Numerología`,
-    description: `${num.meaning.slice(0, 155)}`,
-    alternates: {
-      canonical: siteUrl(`/conocimiento/numerologia/${num.number}`),
-    },
+    title: L(`Número ${num.number} ${num.title} — Numerología`, `Number ${num.number} ${t} — Numerology`),
+    description,
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `Número ${num.number} ${num.title}`,
-      description: `${num.meaning.slice(0, 155)}`,
+      title: L(`Número ${num.number} ${num.title}`, `Number ${num.number} ${t}`),
+      description,
       type: "article",
-      url: siteUrl(`/conocimiento/numerologia/${num.number}`),
+      url: localeUrl(path, L.locale),
     },
   };
 }

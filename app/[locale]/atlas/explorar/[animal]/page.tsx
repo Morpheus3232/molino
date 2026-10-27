@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import { getEntitiesByAnimalWithCountries, getAllAnimalNames } from "@/lib/data/atlas-queries";
 import { getAnimalProfile } from "@/lib/data/animalRelations";
 import type { Animal } from "@/lib/data/animalRelations";
@@ -20,23 +20,27 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { animal } = await params;
   const decoded = decodeURIComponent(animal);
   if (!getAllAnimalNames().includes(decoded)) {
-    return { title: "Animal no encontrado" };
+    return { title: L("Animal no encontrado", "Animal not found") };
   }
   const profile = getAnimalProfile(decoded as Animal);
+  const sign = L.t(decoded);
+  const path = `/atlas/explorar/${decoded}`;
+  const title = L(`${sign} — Explorar | Atlas`, `${sign} — Explore | Atlas`);
   return {
-    title: `${decoded} — Explorar | Atlas`,
+    title,
     description: profile
-      ? `Explorá países, ciudades, marcas y entidades asociadas a ${decoded} ${profile.emoji} según el Zodiaco Chino.`
-      : `Explorá entidades asociadas a ${decoded} según el Zodiaco Chino.`,
-    alternates: { canonical: siteUrl(`/atlas/explorar/${decoded}`) },
+      ? L(`Explorá países, ciudades, marcas y entidades asociadas a ${sign} ${profile.emoji} según el Zodiaco Chino.`, `Explore countries, cities, brands and entities associated with the ${sign} ${profile.emoji} according to the Chinese Zodiac.`)
+      : L(`Explorá entidades asociadas a ${sign} según el Zodiaco Chino.`, `Explore entities associated with the ${sign} according to the Chinese Zodiac.`),
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `${decoded} — Explorar | Atlas`,
-      description: `Explorá el Atlas de Molino filtrado por ${decoded}.`,
+      title,
+      description: L(`Explorá el Atlas de Molino filtrado por ${sign}.`, `Explore Molino's Atlas filtered by ${sign}.`),
       type: "website",
-      url: siteUrl(`/atlas/explorar/${decoded}`),
+      url: localeUrl(path, L.locale),
     },
   };
 }

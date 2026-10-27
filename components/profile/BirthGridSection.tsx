@@ -43,22 +43,20 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
   return (
     <EditorialSection
       tone="paperAlt"
-      eyebrow="Capítulo III · Tu fecha"
-      title="Los dígitos de tu fecha"
-      intro="Se cuenta cuántas veces aparece cada dígito del 1 al 9 en tu fecha y se ubica en la grilla Lo Shu. Podés rehacer la cuenta a mano."
+      eyebrow={L("Capítulo III · Tu fecha", "Chapter III · Your date")}
+      title={L("Los dígitos de tu fecha", "The digits of your date")}
+      intro={L("Se cuenta cuántas veces aparece cada dígito del 1 al 9 en tu fecha y se ubica en la grilla Lo Shu. Podés rehacer la cuenta a mano.", "We count how many times each digit from 1 to 9 appears in your date and place it on the Lo Shu grid. You can redo the math by hand.")}
     >
       <div className="pt-4">
         {/* 1 — El insumo, en crudo y antes que nada. */}
         <div className="mb-10 pb-8 border-b border-ink/10">
-          <p className="text-sm text-muted mb-3 label-caps">
-            Los dígitos de tu fecha
-          </p>
+          <p className="text-sm text-muted mb-3 label-caps">{L("Los dígitos de tu fecha", "The digits of your date")}</p>
           <p className="font-mono text-3xl sm:text-4xl text-foreground tracking-[0.28em] tabular-nums">
             {L.t(digits.map(L.t).join(" "))}
           </p>
-          <p className="mt-3 text-sm text-muted">
+          <p className="mt-3 text-sm text-muted">{L(<>
             {digits.length} dígitos. Los ceros no se colocan: la grilla va del 1 al 9.
-          </p>
+          </>, <>{digits.length} digits. Zeros aren't placed: the grid goes from 1 to 9.</>)}</p>
         </div>
 
         {/* 2 — La distribución: grilla y lista, dos vistas del mismo dato. */}
@@ -102,13 +100,11 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                 );
               })}
             </div>
-            <p className="mt-3 font-mono text-sm text-muted">Disposición Lo Shu</p>
+            <p className="mt-3 font-mono text-sm text-muted">{L("Disposición Lo Shu", "Lo Shu layout")}</p>
           </div>
 
           <div className="min-w-0">
-            <p className="text-sm text-muted mb-4 label-caps">
-              Qué aparece y qué falta
-            </p>
+            <p className="text-sm text-muted mb-4 label-caps">{L("Qué aparece y qué falta", "What appears and what's missing")}</p>
             <ul className="border-t border-ink/10">
               {presentes.map((e) => (
                 <li
@@ -137,22 +133,20 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-sm text-muted">
+            <p className="mt-3 text-sm text-muted">{L(<>
               {presentes.length} dígitos presentes
               {repeated.length > 0
                 ? `, ${repeated.length} repetido${repeated.length > 1 ? "s" : ""}`
                 : ""}
               {missing.length > 0 ? ` · ${missing.length} en gris no aparecen` : ""}
-            </p>
+            </>, <>{presentes.length} digits present{repeated.length > 0 ? `, ${repeated.length} repeated` : ""}{missing.length > 0 ? ` · ${missing.length} in gray don't appear` : ""}</>)}</p>
           </div>
         </div>
 
         {/* 3 — La lectura, ya interpretada, al final. */}
         {lines.length > 0 && (
           <div>
-            <p className="text-sm text-muted mb-4 label-caps">
-              Líneas de la grilla
-            </p>
+            <p className="text-sm text-muted mb-4 label-caps">{L("Líneas de la grilla", "Lines of the grid")}</p>
             <ul className="border-t border-ink/10">
               {lines.map((l) => (
                 <li key={l.name} className="py-5 border-b border-ink/10">
@@ -168,7 +162,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                       {L.t(l.name)}
                     </span>
                     <span className="text-sm text-muted label-caps">
-                      {L.t(l.state === "full" ? "completa" : "vacía")} · {L.t(l.kind)}
+                      {L.t(l.state === "full" ? "completa" : L("vacía", "empty"))} · {L.t(l.kind)}
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-muted leading-relaxed max-w-2xl">{L.t(l.reading)}</p>
@@ -178,11 +172,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
           </div>
         )}
 
-        <p className="mt-10 text-sm text-muted italic max-w-xl">
-          El conteo es aritmética verificable. Las lecturas de repeticiones,
-          ausencias y líneas son interpretación de una tradición numerológica,
-          no una medición de tu persona.
-        </p>
+        <p className="mt-10 text-sm text-muted italic max-w-xl">{L("El conteo es aritmética verificable. Las lecturas de repeticiones, ausencias y líneas son interpretación de una tradición numerológica, no una medición de tu persona.", "The count is verifiable arithmetic. The readings of repetitions, absences and lines are interpretation from a numerological tradition, not a measurement of you as a person.")}</p>
       </div>
     </EditorialSection>
   );

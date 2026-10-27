@@ -1,4 +1,4 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/user";
 import { verifyShareToken } from "@/lib/share";
@@ -6,7 +6,7 @@ import { resolveShareProfile } from "@/lib/kv";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import ProfileHub from "@/components/profile/ProfileHub";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
-import { siteUrl } from "@/lib/seo";
+import { siteUrl, localeAlternates } from "@/lib/seo";
 
 /**
  * /perfil/[hash] — resolves a shared profile.
@@ -24,16 +24,20 @@ interface Props {
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { hash } = await params;
   const payload = verifyShareToken(hash);
   if (!payload) {
-    return { title: "Perfil compartido", robots: { index: false, follow: true } };
+    return { title: L("Perfil compartido", "Shared profile"), robots: { index: false, follow: true } };
   }
   return {
-    title: "Mapa personal compartido",
-    description: "Mapa personal de autoconocimiento compartido: numerología, astrología y zodíaco chino.",
+    title: L("Mapa personal compartido", "Shared personal map"),
+    description: L(
+      "Mapa personal de autoconocimiento compartido: numerología, astrología y zodíaco chino.",
+      "A shared personal self-knowledge map: numerology, astrology and the Chinese zodiac.",
+    ),
     robots: { index: false, follow: true },
-    alternates: { canonical: siteUrl(`/perfil/${hash}`) },
+    alternates: localeAlternates(`/perfil/${hash}`, L.locale),
   };
 }
 

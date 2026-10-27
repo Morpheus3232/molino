@@ -1,10 +1,10 @@
 import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata: Metadata = createRouteMetadata({
-  title: "Analytics de Afinidad",
-  description: "Panel interno de eventos de afinidad.",
+export const generateMetadata = metadataFor({
+  title: ["Analytics de Afinidad", "Affinity analytics"],
+  description: ["Panel interno de eventos de afinidad.", "Internal panel of affinity events."],
   path: "/analytics/affinity",
   noIndex: true,
 });

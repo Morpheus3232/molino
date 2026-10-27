@@ -2,7 +2,7 @@ import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
-  title: "Onboarding",
+  title: ["Onboarding", "Onboarding"],
   description: ["Completá tu perfil en Molino.", "Complete your profile on Molino."],
   noIndex: true,
   noFollow: true,

@@ -52,10 +52,22 @@ function buildLifePathSteps(birthDate: string): LifePathStep[] {
   return steps;
 }
 
+const MONTH_EN: Record<string, string> = {
+  ene: "Jan", feb: "Feb", mar: "Mar", abr: "Apr", may: "May", jun: "Jun",
+  jul: "Jul", ago: "Aug", sep: "Sep", oct: "Oct", nov: "Nov", dic: "Dec",
+};
+
+/** "21 mar" → "Mar 21" en inglés. */
+function dayMonth(s: string, en: boolean): string {
+  if (!en) return s;
+  const [d, m] = s.split(" ");
+  return `${MONTH_EN[m] ?? m} ${d}`;
+}
+
 /** Devuelve el símbolo + el rango de fechas del signo, o los muestra tal cual. */
-function sunSignSummary(sign: string): string {
+function sunSignSummary(sign: string, en = false): string {
   const range = SUN_SIGN_RANGES[sign];
-  return range ? `${range[0]} → ${range[1]}` : sign;
+  return range ? `${dayMonth(range[0], en)} → ${dayMonth(range[1], en)}` : sign;
 }
 
 export default function CalculationDetails({ profile }: { profile: UserProfile }) {
@@ -107,9 +119,9 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           <p className="mt-2">{L(<>
             Rango del signo:{" "}
             <span className="font-mono text-foreground">
-              {L.t(sunSignSummary(sunSign))}
+              {sunSignSummary(sunSign, L.locale === "en")}
             </span>
-          </>, <>Range of the sign:{" "}<span className="font-mono text-foreground">{L.t(sunSignSummary(sunSign))}</span></>)}</p>
+          </>, <>Range of the sign:{" "}<span className="font-mono text-foreground">{sunSignSummary(sunSign, L.locale === "en")}</span></>)}</p>
           <p>{L(<>
             Tu fecha cae dentro de este intervalo →{" "}
             <span className="font-mono text-accent">{L.t(sunSign)}</span>

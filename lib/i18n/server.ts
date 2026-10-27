@@ -24,3 +24,11 @@ export async function initLocale(params: Promise<object>): Promise<SiteLocale> {
   setRequestLocale(safe);
   return safe;
 }
+
+/**
+ * Para generateMetadata: el locale sale de los params (no de headers) y el
+ * traductor trae el diccionario de contenido del servidor.
+ */
+export async function metaL(params: Promise<object>): Promise<Pick2> {
+  return pickFor(await initLocale(params), serverContentDict());
+}

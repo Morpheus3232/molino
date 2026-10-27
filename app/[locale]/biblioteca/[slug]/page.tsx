@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, localeAlternates, localeUrl } from "@/lib/seo";
 import { SOURCES, getSourceBySlug } from "@/lib/data/biblioteca-content";
 import BibliotecaSourceContent from "./BibliotecaSourceContent";
 
@@ -15,25 +15,22 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { slug } = await params;
   const source = getSourceBySlug(slug);
 
   if (!source) {
-    return { title: "Fuente no encontrada" };
+    return { title: L("Fuente no encontrada", "Source not found") };
   }
 
+  const path = `/biblioteca/${source.slug}`;
+  const title = L(`${source.title} — Biblioteca`, `${L.t(source.title)} — Library`);
+  const description = L.t(source.metaDescription);
   return {
-    title: `${source.title} — Biblioteca`,
-    description: source.metaDescription,
-    alternates: {
-      canonical: siteUrl(`/biblioteca/${source.slug}`),
-    },
-    openGraph: {
-      title: `${source.title} — Biblioteca`,
-      description: source.metaDescription,
-      type: "article",
-      url: siteUrl(`/biblioteca/${source.slug}`),
-    },
+    title,
+    description,
+    alternates: localeAlternates(path, L.locale),
+    openGraph: { title, description, type: "article", url: localeUrl(path, L.locale) },
   };
 }
 

@@ -1,7 +1,7 @@
-import { initLocale } from "@/lib/i18n/server";
+import { initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import { buildEntityListJsonLd } from "@/lib/seo-jsonld";
 import { DRILL_DOWN_LISTINGS, getAllAnimalNames, getEntitiesByAnimalAndCategory, listingMeta } from "@/lib/data/atlas-queries";
 import { getAnimalProfile } from "@/lib/data/animalRelations";
@@ -29,31 +29,32 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { animal: rawAnimal, category } = await params;
   const animal = decodeURIComponent(rawAnimal);
   if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category)) {
-    return { title: "No encontrado" };
+    return { title: L("No encontrado", "Not found") };
   }
   const meta = listingMeta(category)!;
   const profile = getAnimalProfile(animal as Animal);
-  const canonical = siteUrl(`/atlas/explorar/${animal}/${category}`);
+  const sign = L.t(animal);
+  const plural = L.t(meta.plural);
+  const path = `/atlas/explorar/${animal}/${category}`;
+  const title = L(`${plural} de ${sign} — Atlas`, `${plural} of the ${sign} — Atlas`);
+  const description = profile
+    ? L(`Explorá ${plural.toLowerCase()} asociadas a ${sign} ${profile.emoji} según el Zodiaco Chino.`, `Explore ${plural.toLowerCase()} associated with the ${sign} ${profile.emoji} according to the Chinese Zodiac.`)
+    : L(`Explorá ${plural.toLowerCase()} asociadas a ${sign} según el Zodiaco Chino.`, `Explore ${plural.toLowerCase()} associated with the ${sign} according to the Chinese Zodiac.`);
   return {
-    title: `${meta.plural} de ${animal} — Atlas`,
-    description: profile
-      ? `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} ${profile.emoji} según el Zodiaco Chino.`
-      : `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} según el Zodiaco Chino.`,
-    alternates: { canonical },
+    title,
+    description,
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `${meta.plural} de ${animal} — Atlas`,
-      description: `Explorá ${meta.plural.toLowerCase()} del Zodiaco Chino en el Atlas de Molino.`,
+      title,
+      description: L(`Explorá ${plural.toLowerCase()} del Zodiaco Chino en el Atlas de Molino.`, `Explore Chinese Zodiac ${plural.toLowerCase()} in Molino's Atlas.`),
       type: "website",
-      url: canonical,
+      url: localeUrl(path, L.locale),
     },
-    twitter: {
-      card: "summary_large_image",
-      title: `${meta.plural} de ${animal} — Atlas`,
-      description: `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} según el Zodiaco Chino.`,
-    },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

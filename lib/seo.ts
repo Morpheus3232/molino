@@ -36,6 +36,11 @@ export function languageAlternates(path: string): Record<string, string> {
   };
 }
 
+/** canonical del idioma actual + hreflang de los dos, para metadata ya traducida. */
+export function localeAlternates(path: string, locale: SiteLocale = "es") {
+  return { canonical: localeUrl(path, locale), languages: languageAlternates(path) };
+}
+
 export const OG_LOCALE: Record<SiteLocale, string> = { es: "es_419", en: "en_US" };
 
 /** Texto bilingüe: [español, inglés]. */

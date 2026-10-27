@@ -1,8 +1,8 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { ANIMALS } from "@/lib/data/animalRelations";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
@@ -32,25 +32,31 @@ function listingEntities(listing: string) {
   return getEntitiesByType("brand").filter((e) => brandListingOf(e.category) === listing);
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ type: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; type: string }> }): Promise<Metadata> {
+  const L = await metaL(params);
   const { type } = await params;
   if (!VALID_TYPES.includes(type)) {
-    return { title: "Categoría no encontrada" };
+    return { title: L("Categoría no encontrada", "Category not found") };
   }
   const meta = listingMeta(type);
   const count = listingEntities(type).length;
+  const plural = L.t(meta.plural);
+  const desc = L.t(meta.description);
+  const title = L(`Afinidad Personal · ${plural}`, `Personal Affinity · ${plural}`);
+  const path = `/affinity/${type}`;
 
   return {
-    title: `Afinidad Personal · ${meta.plural}`,
-    description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
-    alternates: {
-      canonical: siteUrl(`/affinity/${type}`),
-    },
+    title,
+    description: L(
+      `${desc}. ${count} ${plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
+      `${desc}. ${count} real ${plural.toLowerCase()} analyzed with Molino's Personal Affinity system.`,
+    ),
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `Afinidad Personal · ${meta.plural}`,
-      description: meta.description,
+      title,
+      description: desc,
       type: "website",
-      url: siteUrl(`/affinity/${type}`),
+      url: localeUrl(path, L.locale),
     },
   };
 }

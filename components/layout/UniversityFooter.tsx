@@ -3,6 +3,7 @@ import { getL } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
+import LanguageSwitch from "@/components/layout/LanguageSwitch";
 import { getMemberCount } from "@/lib/metrics";
 
 // El header solo lleva lo que es del usuario; el contenido del sitio vive
@@ -23,8 +24,8 @@ const FOOTER_COLUMNS = (L: Pick2) => ([
   {
     title: L("Conocer y explorar", "Learn and explore"),
     links: [
-      { href: "/conocimiento/numerologia", label: "Numerología" },
-      { href: "/conocimiento/astrologia", label: "Astrología" },
+      { href: "/conocimiento/numerologia", label: L("Numerología", "Numerology") },
+      { href: "/conocimiento/astrologia", label: L("Astrología", "Astrology") },
       { href: "/conocimiento/zodiaco-chino", label: L("Zodíaco chino", "Chinese zodiac") },
       { href: "/blog", label: "Blog" },
       { href: "/biblioteca", label: L("Biblioteca", "Library") },
@@ -114,6 +115,7 @@ export default async function UniversityFooter() {
         <div className="mt-12 pt-6 border-t border-paper/20 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6 text-sm text-paper/70">
           <p className="text-paper/70">© 2026 Molino</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+            <LanguageSwitch className="inline-flex items-center min-h-[40px] text-paper/70 hover:text-accent-light transition-colors underline underline-offset-4" />
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               className="inline-flex items-center gap-1.5 min-h-[40px] text-paper/70 hover:text-accent-light transition-colors"

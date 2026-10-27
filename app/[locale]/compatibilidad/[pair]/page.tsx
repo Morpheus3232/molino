@@ -1,11 +1,11 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n/navigation";
 import { SIGN_SLUGS, SIGN_NAMES, SIGN_PROFILES, canonicalPairSlug, pairMeta } from "@/lib/seo/programmatic";
 import { SIGN_FACTS } from "@/lib/data/facts/astrology-facts";
 import { pairReading, harmoniousSigns } from "@/lib/seo/compat-matrix";
-import { siteUrl, SITE_URL } from "@/lib/seo";
+import { siteUrl, SITE_URL, localeAlternates, localeUrl } from "@/lib/seo";
 import { SectionDiptych } from "@/components/ui/SectionCover";
 import { signImageKey } from "@/lib/data/section-images";
 
@@ -40,15 +40,19 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { pair } = await params;
   const parsed = parsePair(pair);
-  if (!parsed) return { title: "Compatibilidad no encontrada" };
-  const { title, description } = pairMeta(parsed.a, parsed.b);
-  const url = siteUrl(`/compatibilidad/${pair}`);
+  if (!parsed) return { title: L("Compatibilidad no encontrada", "Compatibility not found") };
+  const meta = pairMeta(parsed.a, parsed.b);
+  const title = L.t(meta.title);
+  const description = L.t(meta.description);
+  const path = `/compatibilidad/${pair}`;
+  const url = localeUrl(path, L.locale);
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: localeAlternates(path, L.locale),
     openGraph: { title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description },
   };

@@ -8,8 +8,8 @@ import { motion } from "framer-motion";
 import { fadeUp, fadeUpMount } from "@/lib/utils/motion";
 import { getBlogPostBySlug, getReadingTime, type BlogPost } from "@/lib/data/blog-content";
 
-function formatDate(iso: string): string {
-  return new Date(iso + "T00:00:00").toLocaleDateString("es-AR", {
+function formatDate(iso: string, tag = "es-AR"): string {
+  return new Date(iso + "T00:00:00").toLocaleDateString(tag, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -152,10 +152,10 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               <div className="flex items-center gap-4 text-xs text-muted/70">{L(<>
                 <span>{L.t(post.author)}</span>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
-                <time dateTime={post.date}>{L.t(formatDate(post.date))}</time>
+                <time dateTime={post.date}>{formatDate(post.date, L("es-AR", "en-US"))}</time>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
                 <span>{L.t(readTime)} min de lectura</span>
-              </>, <><span>{L.t(post.author)}</span><span className="w-px h-3 bg-border" aria-hidden="true" /><time dateTime={post.date}>{L.t(formatDate(post.date))}</time><span className="w-px h-3 bg-border" aria-hidden="true" /><span>{L.t(readTime)} min read</span></>)}</div>
+              </>, <><span>{L.t(post.author)}</span><span className="w-px h-3 bg-border" aria-hidden="true" /><time dateTime={post.date}>{formatDate(post.date, L("es-AR", "en-US"))}</time><span className="w-px h-3 bg-border" aria-hidden="true" /><span>{L.t(readTime)} min read</span></>)}</div>
             </motion.header>
 
             {/* Portada — above the fold, dispara al montar */}

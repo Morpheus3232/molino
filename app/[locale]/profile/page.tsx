@@ -1,6 +1,6 @@
-import { initLocale } from "@/lib/i18n/server";
+import { initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { siteUrl, localeAlternates } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { decodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import { verifyShareToken } from "@/lib/share";
@@ -13,6 +13,7 @@ import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-enti
 export const dynamic = "force-dynamic";
 
 interface Props {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ dob?: string; data?: string; share?: string }>;
 }
 
@@ -35,7 +36,8 @@ function buildProfile(calculated: UserProfile, name: string, birthDate: string):
   };
 }
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({ params: routeParams, searchParams }: Props): Promise<Metadata> {
+  const L = await metaL(routeParams);
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;
@@ -67,11 +69,11 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
   const hasData = Boolean(shareToken || dob || dataParam);
   const dateStr = birthDate
-    ? formatDate(new Date(birthDate + "T00:00:00"), { day: "numeric", month: "long", year: "numeric" })
+    ? formatDate(new Date(birthDate + "T00:00:00"), { day: "numeric", month: "long", year: "numeric" }, L.locale)
     : "";
   // El onboarding es birthDate-first: casi nunca hay un name real acá. Cuando
   // no hay nombre, "Tu Mapa" en vez de "Mapa de tu" (que no cierra en español).
-  const titleBase = name ? `Mapa de ${name}` : "Tu Mapa";
+  const titleBase = name ? L(`Mapa de ${name}`, `${name}'s Map`) : L("Tu Mapa", "Your Map");
 
   // lifePath y archetype ya se tratan como dato público compartible en
   // /circulo y /mundo (ver PublicShareData en lib/utils/profileShare.ts) —
@@ -82,18 +84,21 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     try {
       const calculated = calculateUserProfile(name, birthDate);
       lifePath = calculated.lifePath ?? null;
-      archetype = calculated.archetype || calculated.archetypeInfo?.name || "";
+      archetype = L.t(calculated.archetype || calculated.archetypeInfo?.name || "");
     } catch {}
   }
 
   const socialTitle = lifePath
-    ? `El Camino de Vida de ${name || "este mapa"} es ${lifePath} 🔮`
+    ? L(`El Camino de Vida de ${name || "este mapa"} es ${lifePath} 🔮`, `The Life Path of ${name || "this map"} is ${lifePath} 🔮`)
     : hasData
       ? `${titleBase}`
-      : "Tu Mapa Personal";
+      : L("Tu Mapa Personal", "Your Personal Map");
   const socialDescription = hasData
-    ? `Descubrí la síntesis de numerología, astrología y zodíaco chino${name ? ` de ${name}` : ""}. 100% privado y gratuito en Molino.app.`
-    : "Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.";
+    ? L(
+        `Descubrí la síntesis de numerología, astrología y zodíaco chino${name ? ` de ${name}` : ""}. 100% privado y gratuito en Molino.app.`,
+        `Discover the synthesis of numerology, astrology and the Chinese zodiac${name ? ` for ${name}` : ""}. 100% private and free on Molino.app.`,
+      )
+    : L("Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.", "Your self-knowledge profile with numerology, astrology and the Chinese zodiac.");
   const ogImage = lifePath
     ? siteUrl(
         `/api/og?l=${lifePath}${name ? `&n=${encodeURIComponent(name)}` : ""}${
@@ -103,16 +108,24 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     : undefined;
 
   return {
-    title: hasData ? (lifePath ? `Camino de Vida ${lifePath}${name ? ` de ${name}` : ""}` : titleBase) : "Tu Mapa Personal",
+    title: hasData
+      ? (lifePath ? L(`Camino de Vida ${lifePath}${name ? ` de ${name}` : ""}`, `Life Path ${lifePath}${name ? ` of ${name}` : ""}`) : titleBase)
+      : L("Tu Mapa Personal", "Your Personal Map"),
     description: hasData
-      ? `Mapa personal de autoconocimiento${name ? ` de ${name}` : ""}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
-      : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
+      ? L(
+          `Mapa personal de autoconocimiento${name ? ` de ${name}` : ""}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`,
+          `Personal self-knowledge map${name ? ` of ${name}` : ""}, born on ${dateStr}. Numerology, astrology and the Chinese zodiac in a single profile.`,
+        )
+      : L(
+          "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
+          "Your self-knowledge profile: symbolic identity, affinities and deep connections. Discover your map on Molino.",
+        ),
     // Un perfil con datos (?dob=, ?data= o ?share=) es contenido personal de
     // una sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
     // sí con los de otros usuarios. Solo la landing "vacía" es indexable.
     ...(hasData
       ? { robots: { index: false, follow: true } }
-      : { alternates: { canonical: siteUrl("/profile") } }),
+      : { alternates: localeAlternates("/profile", L.locale) }),
     openGraph: {
       title: socialTitle,
       description: socialDescription,

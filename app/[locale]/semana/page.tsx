@@ -123,7 +123,7 @@ function SemanaContent() {
             {weekResults.map((day) => {
               const isTodayCell = day.date === todayKey;
               const date = new Date(day.date + "T12:00:00");
-              const dayName = date.toLocaleDateString("es-AR", { weekday: "long" });
+              const dayName = date.toLocaleDateString(L("es-AR", "en-US"), { weekday: "long" });
               return (
                 <li
                   key={day.date}
@@ -167,7 +167,7 @@ function SemanaContent() {
                 <div className="flex items-baseline gap-4">
                   <span className="font-display text-5xl leading-none text-foreground tabular-nums">{L.t(day.personalDay)}</span>
                   <span className="text-base text-foreground capitalize">
-                    {date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric" })}
+                    {date.toLocaleDateString(L("es-AR", "en-US"), { weekday: "long", day: "numeric" })}
                     {isTodayCell && <span className="text-muted">{L(" · hoy", " · today")}</span>}
                   </span>
                 </div>

@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, localeAlternates, localeUrl } from "@/lib/seo";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
 import SignoContent from "./SignoContent";
 
@@ -20,24 +20,26 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { signo: signId } = await params;
   const sign = ZODIAC_SIGNS.find(s => normalize(s.name) === normalize(signId));
 
   if (!sign) {
-    return { title: "Signo no encontrado" };
+    return { title: L("Signo no encontrado", "Sign not found") };
   }
 
+  const name = L.t(sign.name);
+  const description = L.t(sign.meaning).slice(0, 155);
+  const path = `/conocimiento/astrologia/${normalize(sign.name)}`;
   return {
-    title: `${sign.symbol} ${sign.name} — Astrología`,
-    description: `${sign.meaning.slice(0, 155)}`,
-    alternates: {
-      canonical: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
-    },
+    title: L(`${sign.symbol} ${name} — Astrología`, `${sign.symbol} ${name} — Astrology`),
+    description,
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `${sign.symbol} ${sign.name}`,
-      description: `${sign.meaning.slice(0, 155)}`,
+      title: `${sign.symbol} ${name}`,
+      description,
       type: "article",
-      url: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
+      url: localeUrl(path, L.locale),
     },
   };
 }

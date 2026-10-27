@@ -1,5 +1,5 @@
 "use client";
-import { useL } from "@/lib/i18n/useL";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import Image from "next/image";
 import { Link } from "@/lib/i18n/navigation";
@@ -15,16 +15,16 @@ import { Eyebrow } from "@/components/sections/HomeOrnaments";
  * vuelve rojo, lo negro queda negro). Los créditos completos están en cada
  * página; acá van sin pie.
  */
-const ENTRIES = [
-  { href: "/conocimiento/numerologia", title: "Numerología", note: "Los números del 1 al 33", image: "numerologia/hub" },
-  { href: "/conocimiento/astrologia", title: "Astrología", note: "Los doce signos", image: "astrologia/hub" },
-  { href: "/conocimiento/zodiaco-chino", title: "Zodíaco chino", note: "Los doce animales", image: "zodiaco-chino/hub" },
-  { href: "/calendario", title: "Calendario", note: "El número de cada día", image: "paginas/calendario" },
-  { href: "/atlas", title: "Atlas", note: "Países, ciudades y marcas", image: "paginas/atlas" },
-  { href: "/herramientas", title: "Herramientas", note: "Calculadoras rápidas", image: "herramientas/hub" },
-  { href: "/academy", title: "Academia", note: "De dónde viene cada sistema", image: "academia/hub" },
-  { href: "/biblioteca", title: "Biblioteca", note: "Las fuentes, una por una", image: "biblioteca/hub" },
-] as const;
+const ENTRIES = (L: Pick2) => ([
+  { href: "/conocimiento/numerologia", title: L("Numerología", "Numerology"), note: L("Los números del 1 al 33", "The numbers from 1 to 33"), image: "numerologia/hub" },
+  { href: "/conocimiento/astrologia", title: L("Astrología", "Astrology"), note: L("Los doce signos", "The twelve signs"), image: "astrologia/hub" },
+  { href: "/conocimiento/zodiaco-chino", title: L("Zodíaco chino", "Chinese zodiac"), note: L("Los doce animales", "The twelve animals"), image: "zodiaco-chino/hub" },
+  { href: "/calendario", title: L("Calendario", "Calendar"), note: L("El número de cada día", "The number of each day"), image: "paginas/calendario" },
+  { href: "/atlas", title: "Atlas", note: L("Países, ciudades y marcas", "Countries, cities and brands"), image: "paginas/atlas" },
+  { href: "/herramientas", title: L("Herramientas", "Tools"), note: L("Calculadoras rápidas", "Quick calculators"), image: "herramientas/hub" },
+  { href: "/academy", title: L("Academia", "Academy"), note: L("De dónde viene cada sistema", "Where each system comes from"), image: "academia/hub" },
+  { href: "/biblioteca", title: L("Biblioteca", "Library"), note: L("Las fuentes, una por una", "The sources, one by one"), image: "biblioteca/hub" },
+] as const);
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
@@ -42,15 +42,13 @@ export default function HomeGallery() {
   return (
     <section aria-labelledby="indice-home">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 py-16 sm:py-24">
-        <Eyebrow className="mb-3">Índice de láminas</Eyebrow>
-        <h2 id="indice-home" className="section-title text-center text-foreground">
-          Para seguir leyendo
-        </h2>
+        <Eyebrow className="mb-3">{L("Índice de láminas", "Index of plates")}</Eyebrow>
+        <h2 id="indice-home" className="section-title text-center text-foreground">{L("Para seguir leyendo", "Further reading")}</h2>
         <ul
           ref={ref}
           className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 auto-rows-[12rem] sm:auto-rows-[15rem] lg:auto-rows-[14.5rem] gap-3 sm:gap-4"
         >
-          {ENTRIES.map((e, i) => {
+          {ENTRIES(L).map((e, i) => {
             const img = getSectionImage(e.image);
             const lead = i === 0;
             return (
@@ -85,9 +83,9 @@ export default function HomeGallery() {
                   <span
                     className="absolute left-0 top-0 bg-ink px-2.5 py-1 text-xs text-paper label-caps"
                     aria-hidden="true"
-                  >
+                  >{L(<>
                     Lám. {ROMAN[i]}
-                  </span>
+                  </>, <>Pl. {ROMAN[i]}</>)}</span>
                   <span className="absolute bottom-0 left-0 max-w-[88%] bg-paper px-3 pt-2 pb-2.5 sm:px-4 sm:pt-2.5 sm:pb-3">
                     <span
                       className={`block font-display leading-tight text-foreground group-hover:underline underline-offset-4 ${

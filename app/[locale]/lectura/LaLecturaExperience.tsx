@@ -1,5 +1,6 @@
 "use client";
 import { useL } from "@/lib/i18n/useL";
+import { pageLocale } from "@/lib/i18n/pageLocale";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -50,6 +51,7 @@ async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation 
         salt: getProfileSalt(),
         type: "personal_profile",
         premiumToken: getPremiumTokenClient(),
+        locale: pageLocale(),
       }),
       signal: controller.signal,
     });

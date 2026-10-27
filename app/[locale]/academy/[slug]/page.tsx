@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, localeAlternates, localeUrl } from "@/lib/seo";
 import { ACADEMY_PIECES, getAcademyPieceBySlug } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import AcademyArticleContent from "./AcademyArticleContent";
@@ -25,38 +25,20 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { slug } = await params;
-  const piece = getAcademyPieceBySlug(slug);
-  if (piece) {
-    return {
-      title: `${piece.title} — La Academia`,
-      description: piece.metaDescription,
-      alternates: { canonical: siteUrl(`/academy/${piece.slug}`) },
-      openGraph: {
-        title: `${piece.title} — La Academia`,
-        description: piece.metaDescription,
-        type: "article",
-        url: siteUrl(`/academy/${piece.slug}`),
-      },
-    };
-  }
+  const item = getAcademyPieceBySlug(slug) ?? getAcademyGuideBySlug(slug);
+  if (!item) return { title: L("Artículo no encontrado", "Article not found") };
 
-  const guide = getAcademyGuideBySlug(slug);
-  if (guide) {
-    return {
-      title: `${guide.title} — La Academia`,
-      description: guide.metaDescription,
-      alternates: { canonical: siteUrl(`/academy/${guide.slug}`) },
-      openGraph: {
-        title: `${guide.title} — La Academia`,
-        description: guide.metaDescription,
-        type: "article",
-        url: siteUrl(`/academy/${guide.slug}`),
-      },
-    };
-  }
-
-  return { title: "Artículo no encontrado" };
+  const path = `/academy/${item.slug}`;
+  const title = L(`${item.title} — La Academia`, `${L.t(item.title)} — The Academy`);
+  const description = L.t(item.metaDescription);
+  return {
+    title,
+    description,
+    alternates: localeAlternates(path, L.locale),
+    openGraph: { title, description, type: "article", url: localeUrl(path, L.locale) },
+  };
 }
 
 export default async function AcademyArticlePage({ params }: Props) {

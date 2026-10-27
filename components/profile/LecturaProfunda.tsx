@@ -1,5 +1,6 @@
 "use client";
 import { useL } from "@/lib/i18n/useL";
+import { pageLocale } from "@/lib/i18n/pageLocale";
 
 import { useEffect, useState } from "react";
 import type { UserProfile } from "@/types/user";
@@ -424,6 +425,7 @@ function LecturaProfundaDesbloqueada({
             salt: getProfileSalt(),
             type: "personal_profile",
             premiumToken: getPremiumTokenClient(),
+            locale: pageLocale(),
           }),
         })
           .then((res) => res.json())

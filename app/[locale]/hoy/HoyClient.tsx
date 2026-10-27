@@ -43,7 +43,7 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
   const personal = Boolean(daily?.isPersonalized && profile);
 
   const formattedToday = ready
-    ? new Date().toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })
+    ? new Date().toLocaleDateString(L("es-AR", "en-US"), { weekday: "long", day: "numeric", month: "long" })
     : L("Hoy", "Today");
 
   return (

@@ -1,7 +1,7 @@
-import { initLocale } from "@/lib/i18n/server";
+import { initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import {
   getAllCountryISOs,
   getCategoriesByCountry,
@@ -25,19 +25,25 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { countryISO } = await params;
-  const name = getCountryName(countryISO.toUpperCase());
-  if (!name) return { title: "País no encontrado" };
-  const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}`);
+  const nameEs = getCountryName(countryISO.toUpperCase());
+  if (!nameEs) return { title: L("País no encontrado", "Country not found") };
+  const name = L.t(nameEs);
+  const path = `/atlas/${countryISO.toUpperCase()}`;
+  const title = L(`Atlas de ${name} — Afinidades`, `Atlas of ${name} — Affinities`);
   return {
-    title: `Atlas de ${name} — Afinidades`,
-    description: `Explorá las afinidades simbólicas de ${name}: ciudades, clubes, universidades, marcas y famosos según el zodíaco chino.`,
-    alternates: { canonical },
+    title,
+    description: L(
+      `Explorá las afinidades simbólicas de ${name}: ciudades, clubes, universidades, marcas y famosos según el zodíaco chino.`,
+      `Explore the symbolic affinities of ${name}: cities, universities, brands and famous people according to the Chinese zodiac.`,
+    ),
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `Atlas de ${name} — Afinidades`,
-      description: `Explorá las afinidades simbólicas de ${name} según el zodíaco chino.`,
+      title,
+      description: L(`Explorá las afinidades simbólicas de ${name} según el zodíaco chino.`, `Explore the symbolic affinities of ${name} according to the Chinese zodiac.`),
       type: "website",
-      url: canonical,
+      url: localeUrl(path, L.locale),
     },
   };
 }

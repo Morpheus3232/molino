@@ -1,22 +1,22 @@
 "use client";
-import { useL } from "@/lib/i18n/useL";
+import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { Code, Calculator, Globe, BookOpen, Hash, Sun, Moon } from "lucide-react";
 
-const engines = [
+const engines = (L: Pick2) => ([
   {
     icon: Hash,
-    title: "Motor de Numerología",
+    title: L("Motor de Numerología", "Numerology Engine"),
     slug: "numerologia",
-    description: "Calcula Camino de Vida, Expresión, Personalidad y Ciclos de vida. Camino de Vida, Personalidad y Ciclos salen de la fecha de nacimiento; Expresión, del nombre completo.",
+    description: L("Calcula Camino de Vida, Expresión, Personalidad y Ciclos de vida. Camino de Vida, Personalidad y Ciclos salen de la fecha de nacimiento; Expresión, del nombre completo.", "Calculates Life Path, Expression, Personality and Life Cycles. Life Path, Personality and Cycles come from the date of birth; Expression, from the full name."),
     formulas: [
-      { name: "Camino de Vida (Life Path)", formula: "Suma reductiva de DD + MM + AAAA → dígito 1-9 (11, 22, 33 como maestros)", example: "15/03/1990 → 1+5+0+3+1+9+9+0 = 28 → 2+8 = 10 → 1+0 = 1" },
-      { name: "Expresión (Destiny)", formula: "Suma de valores pitagóricos de cada letra del nombre completo → reducido a 1-9", example: "JUAN PEREZ → J(1)+U(3)+A(1)+N(5) + P(7)+E(5)+R(9)+E(5)+Z(8) = 44 → 4+4 = 8" },
-      { name: "Personalidad", formula: "Se obtiene exclusivamente del día de nacimiento (no del nombre): día del mes reducido a un dígito, o mantenido si es 11/22/33.", example: "Nacido el 9, el 18 o el 27 → Personalidad 9. Nacido el 15 → 1+5 = 6." },
-      { name: "Ciclos de Vida (Pinnacles/Challenges)", formula: "Basados en fecha de nacimiento: 4 ciclos de ~27-28 años cada uno", example: "Ciclo 1: 0-27 años, Ciclo 2: 28-55, Ciclo 3: 56-83, Ciclo 4: 84+" },
+      { name: L("Camino de Vida (Life Path)", "Life Path"), formula: L("Suma reductiva de DD + MM + AAAA → dígito 1-9 (11, 22, 33 como maestros)", "Reductive sum of DD + MM + YYYY → digit 1-9 (11, 22, 33 as masters)"), example: "15/03/1990 → 1+5+0+3+1+9+9+0 = 28 → 2+8 = 10 → 1+0 = 1" },
+      { name: L("Expresión (Destiny)", "Expression (Destiny)"), formula: L("Suma de valores pitagóricos de cada letra del nombre completo → reducido a 1-9", "Sum of the Pythagorean values of each letter of the full name → reduced to 1-9"), example: L("JUAN PEREZ → J(1)+U(3)+A(1)+N(5) + P(7)+E(5)+R(9)+E(5)+Z(8) = 44 → 4+4 = 8", "JOHN SMITH → J(1)+O(6)+H(8)+N(5) + S(1)+M(4)+I(9)+T(2)+H(8) = 44 → 4+4 = 8") },
+      { name: L("Personalidad", "Personality"), formula: L("Se obtiene exclusivamente del día de nacimiento (no del nombre): día del mes reducido a un dígito, o mantenido si es 11/22/33.", "It comes exclusively from the day of birth (not from the name): the day of the month reduced to a single digit, or kept as is if it's 11/22/33."), example: L("Nacido el 9, el 18 o el 27 → Personalidad 9. Nacido el 15 → 1+5 = 6.", "Born on the 9th, 18th or 27th → Personality 9. Born on the 15th → 1+5 = 6.") },
+      { name: L("Ciclos de Vida (Pinnacles/Challenges)", "Life Cycles (Pinnacles/Challenges)"), formula: L("Basados en fecha de nacimiento: 4 ciclos de ~27-28 años cada uno", "Based on the date of birth: 4 cycles of ~27-28 years each"), example: L("Ciclo 1: 0-27 años, Ciclo 2: 28-55, Ciclo 3: 56-83, Ciclo 4: 84+", "Cycle 1: ages 0-27, Cycle 2: 28-55, Cycle 3: 56-83, Cycle 4: 84+") },
     ],
     codeExample: `// Cálculo Camino de Vida (simplificado)
 function lifePath(day: number, month: number, year: number): number {
@@ -33,13 +33,13 @@ const PYTHAGOREAN: Record<string, number> = {
   },
   {
     icon: Sun,
-    title: "Motor de Astrología Tropical",
+    title: L("Motor de Astrología Tropical", "Tropical Astrology Engine"),
     slug: "astrologia",
-    description: "Calcula signo solar y lunar a partir de tu fecha de nacimiento.",
+    description: L("Calcula signo solar y lunar a partir de tu fecha de nacimiento.", "Calculates the sun and moon signs from your date of birth."),
     formulas: [
-      { name: "Signo Solar", formula: "Posición geocéntrica del Sol en el zodíaco al momento exacto de nacimiento", example: "Sol a 23°15' Aries → Signo: Aries, Grado: 23°15'" },
-      { name: "Signo Lunar", formula: "Posición geocéntrica de la Luna (rápida: ~13°/día, requiere hora exacta)", example: "Luna a 12°40' Cáncer → Signo: Cáncer" },
-      { name: "Elemento / Modalidad", formula: "Mapeo directo signo → elemento (Fuego/Tierra/Aire/Agua) y signo → modalidad (Cardinal/Fijo/Mutable)", example: "Aries → Elemento: Fuego, Modalidad: Cardinal" },
+      { name: L("Signo Solar", "Sun Sign"), formula: L("Posición geocéntrica del Sol en el zodíaco al momento exacto de nacimiento", "Geocentric position of the Sun in the zodiac at the exact moment of birth"), example: L("Sol a 23°15' Aries → Signo: Aries, Grado: 23°15'", "Sun at 23°15' Aries → Sign: Aries, Degree: 23°15'") },
+      { name: L("Signo Lunar", "Moon Sign"), formula: L("Posición geocéntrica de la Luna (rápida: ~13°/día, requiere hora exacta)", "Geocentric position of the Moon (fast: ~13°/day, requires exact time)"), example: L("Luna a 12°40' Cáncer → Signo: Cáncer", "Moon at 12°40' Cancer → Sign: Cancer") },
+      { name: L("Elemento / Modalidad", "Element / Modality"), formula: L("Mapeo directo signo → elemento (Fuego/Tierra/Aire/Agua) y signo → modalidad (Cardinal/Fijo/Mutable)", "Direct mapping sign → element (Fire/Earth/Air/Water) and sign → modality (Cardinal/Fixed/Mutable)"), example: L("Aries → Elemento: Fuego, Modalidad: Cardinal", "Aries → Element: Fire, Modality: Cardinal") },
     ],
     codeExample: `// Cálculo signo solar (aprox., sin efemérides)
 function sunSign(day: number, month: number): string {
@@ -61,16 +61,16 @@ function sunSign(day: number, month: number): string {
   },
   {
     icon: Moon,
-    title: "Motor de Zodíaco Chino",
+    title: L("Motor de Zodíaco Chino", "Chinese Zodiac Engine"),
     slug: "zodiaco-chino",
-    description: "Determina animal del año, elemento, pilares (Año, Mes, Día, Hora) y ciclo sexagenario (60 combinaciones) usando calendario lunisolar chino.",
+    description: L("Determina animal del año, elemento, pilares (Año, Mes, Día, Hora) y ciclo sexagenario (60 combinaciones) usando calendario lunisolar chino.", "Determines the animal of the year, the element, the pillars (Year, Month, Day, Hour) and the sexagenary cycle (60 combinations) using the Chinese lunisolar calendar."),
     formulas: [
-      { name: "Animal del Año", formula: "(Año - 4) % 12 → índice 0-11: Rata, Buey, Tigre, Conejo, Dragón, Serpiente, Caballo, Cabra, Mono, Gallo, Perro, Cerdo", example: "1990 → (1990-4)%12 = 6 → Caballo" },
-      { name: "Elemento del Año", formula: "Piso((Año - 4) % 10 / 2) → 0:Madera, 1:Fuego, 2:Tierra, 3:Metal, 4:Agua", example: "1990 → (1986%10)/2 = 3 → Metal → Caballo de Metal" },
-      { name: "Ciclo Sexagenario (Ganzhi)", formula: "Combinación de 10 Troncos Celestiales × 12 Ramas Terrestres = 60 pares únicos", example: "1990 = Geng Wu (Metal Caballo) - año 27 del ciclo" },
-      { name: "Pilar del Mes", formula: "Basado en mes solar chino (Jieqi) + año; usa tablas de correspondencia", example: "Marzo 1990 → Pilar Mes: Ji Mao (Tierra Conejo)" },
-      { name: "Pilar del Día", formula: "Cuenta días desde época base (ej. 1900-01-01 = Jia Zi) módulo 60", example: "15/03/1990 → Día #32874 → 32874%60 = 54 → Ding Hai" },
-      { name: "Pilar de la Hora", formula: "Cada hora china = 2h occidental; 12 horas × 5 elementos = ciclo 60", example: "14:30 → Hora Wei (13-15h) → Pilar Hora según día" },
+      { name: L("Animal del Año", "Animal of the Year"), formula: L("(Año - 4) % 12 → índice 0-11: Rata, Buey, Tigre, Conejo, Dragón, Serpiente, Caballo, Cabra, Mono, Gallo, Perro, Cerdo", "(Year - 4) % 12 → index 0-11: Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig"), example: L("1990 → (1990-4)%12 = 6 → Caballo", "1990 → (1990-4)%12 = 6 → Horse") },
+      { name: L("Elemento del Año", "Element of the Year"), formula: L("Piso((Año - 4) % 10 / 2) → 0:Madera, 1:Fuego, 2:Tierra, 3:Metal, 4:Agua", "Floor((Year - 4) % 10 / 2) → 0:Wood, 1:Fire, 2:Earth, 3:Metal, 4:Water"), example: L("1990 → (1986%10)/2 = 3 → Metal → Caballo de Metal", "1990 → (1986%10)/2 = 3 → Metal → Metal Horse") },
+      { name: L("Ciclo Sexagenario (Ganzhi)", "Sexagenary Cycle (Ganzhi)"), formula: L("Combinación de 10 Troncos Celestiales × 12 Ramas Terrestres = 60 pares únicos", "Combination of 10 Heavenly Stems × 12 Earthly Branches = 60 unique pairs"), example: L("1990 = Geng Wu (Metal Caballo) - año 27 del ciclo", "1990 = Geng Wu (Metal Horse) - year 27 of the cycle") },
+      { name: L("Pilar del Mes", "Month Pillar"), formula: L("Basado en mes solar chino (Jieqi) + año; usa tablas de correspondencia", "Based on the Chinese solar month (Jieqi) + year; uses correspondence tables"), example: L("Marzo 1990 → Pilar Mes: Ji Mao (Tierra Conejo)", "March 1990 → Month Pillar: Ji Mao (Earth Rabbit)") },
+      { name: L("Pilar del Día", "Day Pillar"), formula: L("Cuenta días desde época base (ej. 1900-01-01 = Jia Zi) módulo 60", "Counts days from a base epoch (e.g. 1900-01-01 = Jia Zi) modulo 60"), example: L("15/03/1990 → Día #32874 → 32874%60 = 54 → Ding Hai", "03/15/1990 → Day #32874 → 32874%60 = 54 → Ding Hai") },
+      { name: L("Pilar de la Hora", "Hour Pillar"), formula: L("Cada hora china = 2h occidental; 12 horas × 5 elementos = ciclo 60", "Each Chinese hour = 2 Western hours; 12 hours × 5 elements = cycle of 60"), example: L("14:30 → Hora Wei (13-15h) → Pilar Hora según día", "14:30 → Wei Hour (13-15h) → Hour Pillar depending on the day") },
     ],
     codeExample: `// Animal y Elemento del Año
 const ANIMALES = [
@@ -94,7 +94,7 @@ function chineseYearInfo(year: number) {
 // Para pilares exactos: requiere conversión fecha gregoriana → calendario chino
 // Librería recomendada: chinese-calendar o implementación propia de Jieqi`
   },
-];
+]);
 
 export default function MotoresContent() {
   const L = useL();
@@ -106,18 +106,13 @@ export default function MotoresContent() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <h1 className="page-title text-foreground">
-            Motores de cálculo
-          </h1>
-          <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
-            Especificaciones fórmulas y ejemplos de código de los tres motores que impulsan Molino.
-            Código abierto, auditable, sin cajas negras.
-          </p>
+          <h1 className="page-title text-foreground">{L("Motores de cálculo", "Calculation engines")}</h1>
+          <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">{L("Especificaciones fórmulas y ejemplos de código de los tres motores que impulsan Molino. Código abierto, auditable, sin cajas negras.", "Formula specs and code samples for the three engines that power Molino. Open source, auditable, no black boxes.")}</p>
         </motion.section>
 
         {/* Engines grid */}
-        <div className="space-y-20" role="list" aria-label="Motores de cálculo">
-          {engines.map((engine, engineIndex) => (
+        <div className="space-y-20" role="list" aria-label={L("Motores de cálculo", "Calculation engines")}>
+          {engines(L).map((engine, engineIndex) => (
             <motion.article
               key={engine.slug}
               role="listitem"
@@ -143,11 +138,11 @@ export default function MotoresContent() {
               {/* Fórmulas: en el celular cada una es un bloque; desde sm, tres columnas.
                   Con <table> la columna "Ejemplo" quedaba cortada en pantallas chicas. */}
               <div className="border-t border-border">
-                <div className="hidden sm:grid grid-cols-[10rem_1fr_14rem] gap-6 py-2 border-b border-border text-sm text-muted label-caps">
+                <div className="hidden sm:grid grid-cols-[10rem_1fr_14rem] gap-6 py-2 border-b border-border text-sm text-muted label-caps">{L(<>
                   <span>Fórmula</span>
                   <span>Descripción</span>
                   <span>Ejemplo</span>
-                </div>
+                </>, <><span>Formula</span><span>Description</span><span>Example</span></>)}</div>
                 {engine.formulas.map((f) => (
                   <div key={f.name} className="py-4 border-b border-border sm:grid sm:grid-cols-[10rem_1fr_14rem] sm:gap-6">
                     <p className="text-sm font-semibold text-foreground">{L.t(f.name)}</p>
@@ -161,7 +156,7 @@ export default function MotoresContent() {
               <div className="rounded-md border border-border overflow-hidden bg-muted/30">
                 <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/20">
                   <Code className="w-4 h-4 text-foreground" aria-hidden="true" />
-                  <span className="text-sm text-foreground label-caps">TypeScript — Implementación de referencia</span>
+                  <span className="text-sm text-foreground label-caps">{L("TypeScript — Implementación de referencia", "TypeScript — Reference implementation")}</span>
                 </div>
                 <pre className="p-4 overflow-x-auto text-sm"><code className="text-foreground">{L.t(engine.codeExample)}</code></pre>
               </div>
@@ -173,7 +168,7 @@ export default function MotoresContent() {
                   className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background shadow-sm text-sm font-medium hover:border-accent hover:text-accent transition-colors"
                 >
                   <Globe className="w-4 h-4" aria-hidden="true" />
-                  Ver en Conocimiento
+                  {L("Ver en Conocimiento", "See in Knowledge")}
                 </a>
                 <a
                   href={`https://github.com/molino/molino/tree/main/lib/engines/${engine.slug}`}
@@ -182,7 +177,7 @@ export default function MotoresContent() {
                   className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background shadow-sm text-sm font-medium hover:border-accent hover:text-accent transition-colors"
                 >
                   <BookOpen className="w-4 h-4" aria-hidden="true" />
-                  Código fuente
+                  {L("Código fuente", "Source code")}
                 </a>
               </div>
             </motion.article>
@@ -191,13 +186,13 @@ export default function MotoresContent() {
 
         {/* Footer note */}
         <motion.section {...fadeUp} className="mt-20 pt-12 border-t border-border text-center">
-          <p className="text-sm text-muted max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm text-muted max-w-2xl mx-auto leading-relaxed">{L(<>
             Todas las fórmulas son implementaciones de referencia. Los motores de producción usan
             <a href="https://github.com/aloistr/swisseph" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">
               Swiss Ephemeris
             </a>{" "}
             para posiciones planetarias de precisión astronómica y bibliotecas validadas para conversión de calendario chino.
-          </p>
+          </>, <>All the formulas are reference implementations. The production engines use <a href="https://github.com/aloistr/swisseph" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">Swiss Ephemeris</a>{" "}for planetary positions with astronomical precision and validated libraries for Chinese calendar conversion.</>)}</p>
         </motion.section>
       </main>
 

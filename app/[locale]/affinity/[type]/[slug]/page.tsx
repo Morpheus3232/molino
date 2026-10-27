@@ -1,7 +1,8 @@
-import { initLocale } from "@/lib/i18n/server";
+import { initLocale, metaL } from "@/lib/i18n/server";
+import type { Pick2 } from "@/lib/i18n/useL";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import { buildEntityJsonLd } from "@/lib/seo-jsonld";
 import { ENTITY_TYPES, getEntityById, getEntitiesByType, resolveEntityAnimalData, type EntityType } from "@/lib/data/symbolic-entities";
 import { amigosDe, enemigoDe } from "@/lib/engines/personalMapEngine";
@@ -28,24 +29,26 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ type: string; slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; type: string; slug: string }> }): Promise<Metadata> {
+  const L = await metaL(params);
   const { type, slug: rawSlug } = await params;
   // Los ids con tilde/ñ (david-lebón) llegan percent-encoded al render.
   const slug = decodeURIComponent(rawSlug);
   if (!VALID_TYPES.includes(type as EntityType)) {
-    return { title: "No encontrada" };
+    return { title: L("No encontrada", "Not found") };
   }
   const entity = getEntityById(slug);
   if (!entity) {
-    return { title: "Entidad no encontrada" };
+    return { title: L("Entidad no encontrada", "Entity not found") };
   }
-  const { title, description } = entitySeo(entity, type as EntityType);
-  const url = siteUrl(`/affinity/${type}/${slug}`);
+  const { title, description } = entitySeo(entity, type as EntityType, L);
+  const path = `/affinity/${type}/${slug}`;
+  const url = localeUrl(path, L.locale);
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: localeAlternates(path, L.locale),
     // Sin fecha exacta el signo no es afirmable (CLAUDE.md) y la ficha queda
     // sin su sección de signo: no se ofrece a Google. Sigue enlazando.
     ...(getPrimaryEvent(entity)?.date ? {} : { robots: { index: false, follow: true } }),
@@ -62,32 +65,47 @@ const PERSON_TYPES = new Set<EntityType>(["artist", "football_player"]);
  * separa homónimos (Claudio Bravo pintor y arquero; Universidad de Chile club
  * y universidad). Sin fecha exacta no se afirma signo: la ficha va noindex.
  */
-function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: EntityType) {
+function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: EntityType, L: Pick2) {
   const primary = getPrimaryEvent(entity);
   if (!primary?.date) {
     return {
-      title: `${entity.name} · ${ENTITY_TYPES[type].label}`,
-      description: `${entity.name} en el Atlas de Molino: su origen documentado y su lugar en el zodíaco chino.`,
+      title: `${L.t(entity.name)} · ${L.t(ENTITY_TYPES[type].label)}`,
+      description: L(
+        `${entity.name} en el Atlas de Molino: su origen documentado y su lugar en el zodíaco chino.`,
+        `${L.t(entity.name)} in Molino's Atlas: its documented origin and its place in the Chinese zodiac.`,
+      ),
     };
   }
-  const { animal, year } = resolveEntityAnimalData(entity);
-  const fecha = new Date(`${primary.date}T12:00:00Z`).toLocaleDateString("es-AR", {
+  const { animal: animalEs, year } = resolveEntityAnimalData(entity);
+  const animal = L.t(animalEs);
+  const name = L.t(entity.name);
+  const fecha = new Date(`${primary.date}T12:00:00Z`).toLocaleDateString(L("es-AR", "en-US"), {
     day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
   });
-  const amigos = amigosDe(animal as Animal);
-  const enemigo = enemigoDe(animal as Animal);
-  const relaciones = `Sus dos signos amigos son ${amigos.join(" y ")}${enemigo ? `; su opuesto, ${enemigo}` : ""}.`;
+  const amigos = amigosDe(animalEs as Animal).map((a) => L.t(a));
+  const enemigoEs = enemigoDe(animalEs as Animal);
+  const enemigo = enemigoEs ? L.t(enemigoEs) : null;
+  const relaciones = L(
+    `Sus dos signos amigos son ${amigos.join(" y ")}${enemigo ? `; su opuesto, ${enemigo}` : ""}.`,
+    `Its two friend signs are ${amigos.join(" and ")}${enemigo ? `; its opposite, ${enemigo}` : ""}.`,
+  );
   if (PERSON_TYPES.has(type)) {
     return {
-      title: `¿Qué signo chino es ${entity.name}? ${animal} (${year})`,
-      description: `${entity.name} nació el ${fecha}: en el zodíaco chino es ${animal}. ${relaciones}`,
+      title: L(`¿Qué signo chino es ${name}? ${animal} (${year})`, `What Chinese sign is ${name}? ${animal} (${year})`),
+      description: L(
+        `${name} nació el ${fecha}: en el zodíaco chino es ${animal}. ${relaciones}`,
+        `${name} was born on ${fecha}: in the Chinese zodiac they are a ${animal}. ${relaciones}`,
+      ),
     };
   }
   return {
-    title: `${entity.name} en el zodíaco chino: signo ${animal} (${year})`,
+    title: L(`${name} en el zodíaco chino: signo ${animal} (${year})`, `${name} in the Chinese zodiac: ${animal} sign (${year})`),
     // La etiqueta del evento viene de muchas formas ("Fundación", "Revolución
     // Francesa", "Independencia de Mongolia"): entre paréntesis lee bien con todas.
-    description: `${primary.label} (${fecha}): ${entity.name} es ${animal} en el zodíaco chino. ${relaciones}`,
+    description: L(
+      `${primary.label} (${fecha}): ${name} es ${animal} en el zodíaco chino. ${relaciones}`,
+      `${L.t(primary.label)} (${fecha}): ${name} is a ${animal} in the Chinese zodiac. ${relaciones}`,
+    ),
   };
 }
 

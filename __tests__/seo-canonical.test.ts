@@ -15,14 +15,26 @@ describe("Technical SEO & Canonical URLs", () => {
       // Must not contain double slashes in path
       const urlObj = new URL(entry.url);
       expect(urlObj.pathname).not.toMatch(/\/{2,}/);
-      // Must not point to non-existent /en or /pt paths
-      expect(urlObj.pathname.startsWith("/en")).toBe(false);
+      // Solo español (raíz) e inglés (/en): nada de /pt ni otros prefijos.
       expect(urlObj.pathname.startsWith("/pt")).toBe(false);
       // Priority must be within 0.0 - 1.0
       if (entry.priority !== undefined) {
         expect(entry.priority).toBeGreaterThanOrEqual(0);
         expect(entry.priority).toBeLessThanOrEqual(1);
       }
+    }
+  });
+
+  it("anuncia cada URL en español y en inglés, con hreflang a la otra", () => {
+    const entries = sitemap();
+    const urls = new Set(entries.map((e) => e.url));
+    const es = entries.filter((e) => !new URL(e.url).pathname.startsWith("/en"));
+    expect(es.length * 2).toBe(entries.length);
+    for (const e of es) {
+      const en = e.alternates?.languages?.en as string;
+      expect(en).toMatch(new RegExp(`^${SITE_URL}/en`));
+      expect(urls.has(en)).toBe(true);
+      expect(e.alternates?.languages?.es).toBe(e.url);
     }
   });
 
@@ -33,7 +45,7 @@ describe("Technical SEO & Canonical URLs", () => {
     // (2026-10-17) pero solo con las 78 canónicas: ningún par aparece en
     // los dos órdenes.
     const compat = entries.map((e) => e.url.match(/\/compatibilidad\/([a-z]+)-([a-z]+)$/)).filter(Boolean) as RegExpMatchArray[];
-    expect(compat.length).toBe(78);
+    expect(compat.length).toBe(78 * 2);
     const pairs = new Set(compat.map((m) => [m[1], m[2]].sort().join("|")));
     expect(pairs.size).toBe(78);
     expect(entries.filter((e) => /\/signo\/\d+\/casa\/\d+/.test(e.url)).length).toBe(0);

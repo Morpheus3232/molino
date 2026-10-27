@@ -45,6 +45,15 @@ export const maxDuration = 60;
 // content leak.
 const PREMIUM_INTERPRETATION_TYPES = new Set<InterpretationType>(['personal_profile', 'question']);
 
+// Los prompts están escritos en español; para la versión en inglés del sitio
+// se le pide al modelo que conteste en inglés, manteniendo el mismo formato
+// (las claves del JSON no se traducen: las lee el parser).
+const ENGLISH_OUTPUT_INSTRUCTION = `
+
+<idioma_de_salida>
+Write the entire answer in natural, clear English (the reader is using the English version of the site). Keep exactly the same structure and output format requested above — if JSON is requested, keep the same keys in Spanish and translate only the values. Translate the names of signs, animals and numbers' archetypes into English (e.g. "Caballo" → "Horse", "Tauro" → "Taurus").
+</idioma_de_salida>`;
+
 // Entitlement-dependent responses must never be cached by a shared CDN:
 // a premium payload cached as `public` could be replayed to anonymous
 // visitors. Every response in this route carries private, no-store.
@@ -102,6 +111,9 @@ export async function POST(req: NextRequest) {
     }
 
     const name = typeof body.name === 'string' ? body.name.slice(0, 120) : '';
+    // Idioma de la página que pide la lectura (/en → inglés). Entra en el
+    // prompt, y por lo tanto en el hash del caché: cada idioma cachea aparte.
+    const locale = (body as { locale?: unknown }).locale === 'en' ? 'en' : 'es';
     // Mismo motivo que el tope de conversationHistory: inflado de tokens.
     const question = typeof body.question === 'string' ? body.question.slice(0, 1000) : undefined;
 
@@ -242,7 +254,8 @@ export async function POST(req: NextRequest) {
     const synthesis = buildSynthesis(profile);
 
     const fallback = generateFallbackInterpretation({ type, context, question });
-    const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext, synthesis });
+    const basePrompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext, synthesis });
+    const prompt = locale === 'en' ? `${basePrompt}${ENGLISH_OUTPUT_INSTRUCTION}` : basePrompt;
 
     // El modelo efectivo determina el hash del caché: si cambia el modelo
     // (ej. DeepSeek → Gemini), las respuestas viejas no se sirven.

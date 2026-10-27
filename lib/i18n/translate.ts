@@ -64,14 +64,19 @@ export function makeTranslator(dict: ContentDict | null | undefined): Translator
     if (input === input.toLowerCase()) return en.toLowerCase();
     if (input === input.toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(input)) return en.toUpperCase();
     const first = input.trimStart()[0];
-    if (first && first === first.toLowerCase() && first !== first.toUpperCase()) {
-      const i = en.search(/\S/);
-      return i < 0 ? en : en.slice(0, i) + en[i].toLowerCase() + en.slice(i + 1);
+    const i = en.search(/\S/);
+    if (!first || i < 0) return en;
+    if (first === first.toLowerCase() && first !== first.toUpperCase()) {
+      return en.slice(0, i) + en[i].toLowerCase() + en.slice(i + 1);
+    }
+    if (first === first.toUpperCase() && first !== first.toLowerCase()) {
+      return en.slice(0, i) + en[i].toUpperCase() + en.slice(i + 1);
     }
     return en;
   };
   const str = (s: string, depth = 0): string => {
     const direct = exact.get(s);
+    // Coincidencia exacta: la clave trae su propia caja ("enero" → "January").
     if (direct !== undefined) return direct;
     const trimmed = s.trim();
     if (trimmed !== s) {
@@ -84,8 +89,9 @@ export function makeTranslator(dict: ContentDict | null | undefined): Translator
     for (const p of patterns) {
       const m = p.re.exec(s);
       if (m) {
+        // `{}` toma las partes en orden; `{2}` permite reordenarlas.
         let i = 1;
-        return p.out.replace(/\{\}/g, () => str(m[i++] ?? "", depth + 1));
+        return p.out.replace(/\{(\d*)\}/g, (_, n: string) => str(m[n ? Number(n) : i++] ?? "", depth + 1));
       }
     }
     return s;

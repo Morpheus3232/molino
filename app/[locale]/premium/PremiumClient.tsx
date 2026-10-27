@@ -107,7 +107,7 @@ export default function PremiumClient() {
         </div>
 
         {/* 5. Specific FAQ */}
-        <PricingFAQ items={PREMIUM_FAQS} subtitle={L("Sobre el pago y tus datos.", "About payment and your data.")} />
+        <PricingFAQ items={L.tx(PREMIUM_FAQS)} subtitle={L("Sobre el pago y tus datos.", "About payment and your data.")} />
       </div>
     </main>
   );

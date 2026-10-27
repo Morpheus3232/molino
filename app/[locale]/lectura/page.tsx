@@ -1,13 +1,14 @@
-import { initLocale } from "@/lib/i18n/server";
+import { initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
-import { siteUrl } from "@/lib/seo";
+import { siteUrl, localeAlternates } from "@/lib/seo";
 import LecturaClient from "./LecturaClient";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const L = await metaL(params);
   return {
-    title: "La Lectura",
-    alternates: { canonical: siteUrl("/lectura") },
+    title: L("La Lectura", "The Reading"),
+    alternates: localeAlternates("/lectura", L.locale),
     // Contenido personal de una sola persona — no tiene sentido indexarlo.
     robots: { index: false, follow: true },
   };

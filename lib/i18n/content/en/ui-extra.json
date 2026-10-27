@@ -1,0 +1,10 @@
+{
+ "¿Premium es una suscripción?": "Is Premium a subscription?",
+ "No. Es un pago único de $8 USD con acceso permanente de por vida. Sin renovaciones, sin cargos recurrentes — no hay nada que cancelar.": "No. It's a one-time payment of $8 USD with permanent lifetime access. No renewals, no recurring charges — there's nothing to cancel.",
+ "¿Qué pasa con mis datos de nacimiento?": "What happens to my birth data?",
+ "Tu mapa se calcula 100% en tu navegador. Tu fecha de nacimiento nunca se envía a nuestros servidores. Los datos de pago los procesa Mercado Pago de forma segura; nosotros nunca guardamos información personal.": "Your map is calculated 100% in your browser. Your date of birth is never sent to our servers. Payment data is processed securely by Mercado Pago; we never store personal information.",
+ "¿Qué métodos de pago aceptan?": "Which payment methods do you accept?",
+ "Mercado Pago. Procesa pagos de forma segura y te permite recuperar acceso usando el ID de tu compra.": "Mercado Pago. It processes payments securely and lets you recover access using your purchase ID.",
+ "¿Es una herramienta determinista o un oráculo?": "Is it a deterministic tool or an oracle?",
+ "Ni una ni otro. Molino es estructurada pero no determinista: te muestra arquetipos, ciclos y dinámicas como marco de reflexión. Los arquetipos describen, no predicen. Las decisiones son tuyas.": "Neither. Molino is structured but not deterministic: it shows you archetypes, cycles and dynamics as a framework for reflection. Archetypes describe, they don't predict. The decisions are yours."
+}

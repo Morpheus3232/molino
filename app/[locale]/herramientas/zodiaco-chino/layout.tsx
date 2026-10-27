@@ -3,7 +3,7 @@ import { type Pick2 } from "@/lib/i18n/useL";
 import { siteUrl, metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
-  title: "Zodiaco Chino",
+  title: ["Zodiaco Chino", "Chinese Zodiac"],
   description:
     ["Calculá tu animal del zodíaco chino con tu fecha de nacimiento. Conocé los 12 animales, los 5 elementos y las compatibilidades.", "Calculate your Chinese zodiac animal from your date of birth. Get to know the 12 animals, the 5 elements and the compatibilities."],
   path: "/herramientas/zodiaco-chino",

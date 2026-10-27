@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { siteUrl } from "@/lib/seo";
+import { localeAlternates, localeUrl } from "@/lib/seo";
 import { DRILL_DOWN_LISTINGS, getAllCountryISOs, getCategoriesByCountry, getCountryName, getEntitiesByTaxonomy, listingMeta } from "@/lib/data/atlas-queries";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import AtlasCategoryListing from "@/components/atlas/AtlasCategoryListing";
@@ -27,21 +27,24 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { countryISO, category } = await params;
-  const name = getCountryName(countryISO.toUpperCase());
-  const catLabel = categoryLabel(category);
-  if (!name || !catLabel) return { title: "No encontrado" };
-  const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}/${category}`);
+  const nameEs = getCountryName(countryISO.toUpperCase());
+  const catEs = categoryLabel(category);
+  if (!nameEs || !catEs) return { title: L("No encontrado", "Not found") };
+  const name = L.t(nameEs);
+  const catLabel = L.t(catEs);
+  const path = `/atlas/${countryISO.toUpperCase()}/${category}`;
+  const title = L(`${catLabel} de ${name} — Atlas`, `${catLabel} of ${name} — Atlas`);
+  const description = L(
+    `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
+    `Discover the ${catLabel.toLowerCase()} of ${name} and their symbolic affinity according to the Chinese zodiac.`,
+  );
   return {
-    title: `${catLabel} de ${name} — Atlas`,
-    description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
-    alternates: { canonical },
-    openGraph: {
-      title: `${catLabel} de ${name} — Atlas`,
-      description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
-      type: "website",
-      url: canonical,
-    },
+    title,
+    description,
+    alternates: localeAlternates(path, L.locale),
+    openGraph: { title, description, type: "website", url: localeUrl(path, L.locale) },
   };
 }
 

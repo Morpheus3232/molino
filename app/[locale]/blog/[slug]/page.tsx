@@ -1,7 +1,7 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, localeAlternates, localeUrl } from "@/lib/seo";
 import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/data/blog-content";
 import BlogArticleContent from "./BlogArticleContent";
 
@@ -17,36 +17,34 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
-    return { title: "Artículo no encontrado" };
+    return { title: L("Artículo no encontrado", "Article not found") };
   }
 
-  const url = siteUrl(`/blog/${post.slug}`);
+  const path = `/blog/${post.slug}`;
+  const url = localeUrl(path, L.locale);
+  const title = L.t(post.title);
+  const description = L.t(post.metaDescription);
   // og:image (y, por fallback, la de X) la genera opengraph-image.tsx:
   // la foto de portada con el título encima.
 
   return {
-    title: post.title,
-    description: post.metaDescription,
-    alternates: {
-      canonical: url,
-    },
+    title,
+    description,
+    alternates: localeAlternates(path, L.locale),
     openGraph: {
-      title: `${post.title}`,
-      description: post.metaDescription,
+      title,
+      description,
       type: "article",
       url,
       publishedTime: post.date,
-      authors: [post.author],
+      authors: [L.t(post.author)],
     },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.metaDescription,
-    },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

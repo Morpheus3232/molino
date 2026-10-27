@@ -1,5 +1,6 @@
 "use client";
 import { useL } from "@/lib/i18n/useL";
+import { pageLocale } from "@/lib/i18n/pageLocale";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -129,6 +130,7 @@ export default function PremiumChatSection({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             type: "question",
+            locale: pageLocale(),
             dob: profile.birthDate,
             name: profile.name,
             salt: getProfileSalt(),

@@ -1,15 +1,19 @@
+import { getL } from "@/lib/i18n/server";
 import { useL, type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import type { Metadata } from "next";
 import { Compass, Asterisk, Sun, Heart, BookOpen, ArrowRight, Home } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "404 — Coordenada Fuera de Órbita",
-  description: "Esta página no se encuentra en el mapa simbólico actual. Descubrí tu camino de vuelta.",
-  // Sin esto el 404 salía con dos robots: el "index, follow" del layout y el
-  // "noindex" que agrega Next. El estado 404 ya lo dice; esto evita la contradicción.
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const L = await getL();
+  return {
+    title: L("404 — Coordenada Fuera de Órbita", "404 — Coordinate Out of Orbit"),
+    description: L("Esta página no se encuentra en el mapa simbólico actual. Descubrí tu camino de vuelta.", "This page isn't on the current symbolic map. Find your way back."),
+    // Sin esto el 404 salía con dos robots: el "index, follow" del layout y el
+    // "noindex" que agrega Next. El estado 404 ya lo dice; esto evita la contradicción.
+    robots: { index: false, follow: true },
+  };
+}
 
 const SUGGESTED_ROUTES = (L: Pick2) => ([
   { href: "/", label: L("Inicio", "Home"), icon: Home, desc: L("Instrumento principal", "Main instrument") },

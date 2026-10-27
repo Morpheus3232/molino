@@ -1,10 +1,10 @@
-import { getL, initLocale } from "@/lib/i18n/server";
+import { getL, initLocale, metaL } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n/navigation";
 import { HOUSE_BY_NUMBER, HOUSE_NUMBERS } from "@/lib/seo/programmatic";
 import { NUMBERS } from "@/lib/data/numerologia-content";
-import { siteUrl, SITE_URL } from "@/lib/seo";
+import { siteUrl, SITE_URL, localeAlternates, localeUrl } from "@/lib/seo";
 import SectionCover from "@/components/ui/SectionCover";
 
 /**
@@ -35,20 +35,30 @@ function numberFact(n: number) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const L = await metaL(params);
   const { n, c } = await params;
   const num = Number(n);
   const house = HOUSE_BY_NUMBER[Number(c)];
   const fact = numberFact(num);
-  if (!house || !fact) return { title: "No encontrado" };
+  if (!house || !fact) return { title: L("No encontrado", "Not found") };
 
-  const title = `Número ${num} (${fact.title}) en la Casa ${house.number} (${house.name})`;
-  const description = `Qué significa tu número ${num} (${fact.title}: ${fact.keywords.join(", ")}) manifestado en la casa astrológica ${house.number} (${house.name}, ${house.area}). Síntesis de numerología y astrología.`;
-  const url = siteUrl(`/signo/${num}/casa/${house.number}`);
+  const ft = L.t(fact.title);
+  const hn = L.t(house.name);
+  const title = L(
+    `Número ${num} (${fact.title}) en la Casa ${house.number} (${house.name})`,
+    `Number ${num} (${ft}) in House ${house.number} (${hn})`,
+  );
+  const description = L(
+    `Qué significa tu número ${num} (${fact.title}: ${fact.keywords.join(", ")}) manifestado en la casa astrológica ${house.number} (${house.name}, ${house.area}). Síntesis de numerología y astrología.`,
+    `What your number ${num} (${ft}: ${fact.keywords.map((k) => L.t(k)).join(", ")}) means when expressed in astrological house ${house.number} (${hn}, ${L.t(house.area)}). A synthesis of numerology and astrology.`,
+  );
+  const path = `/signo/${num}/casa/${house.number}`;
+  const url = localeUrl(path, L.locale);
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: localeAlternates(path, L.locale),
     robots: { index: false, follow: true },
     openGraph: { title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description },

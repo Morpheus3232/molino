@@ -26,11 +26,11 @@ interface JournalTimelineProps {
   className?: string;
 }
 
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string, tag = "es-AR"): string {
   if (!dateStr) return "";
   try {
     const d = new Date(dateStr + "T12:00:00");
-    return d.toLocaleDateString("es-AR", {
+    return d.toLocaleDateString(tag, {
       weekday: "short",
       day: "numeric",
       month: "short",
@@ -83,7 +83,7 @@ export default function JournalTimeline({
     );
     return sortedAsc.map((e) => ({
       date: e.date,
-      formattedDate: formatDate(e.date),
+      formattedDate: formatDate(e.date, L("es-AR", "en-US")),
       mood: e.mood,
       personalDay: e.cycleContext?.dayEnergy?.personalDay,
       theme: e.cycleContext?.dayEnergy?.theme,
@@ -223,13 +223,13 @@ export default function JournalTimeline({
             return (
               <article
                 key={entry.id}
-                aria-label={L.t(formatDate(entry.date))}
+                aria-label={formatDate(entry.date, L("es-AR", "en-US"))}
                 className="group grid grid-cols-1 md:grid-cols-[13rem_1fr] gap-x-10 gap-y-3 py-8 border-b border-ink/15"
               >
                 <div>
                   <p className="font-display text-5xl leading-none text-foreground tabular-nums">{L.t(d.getDate())}</p>
                   <p className="mt-1 text-base text-foreground first-letter:uppercase">
-                    {d.toLocaleDateString("es-AR", { weekday: "long" })}, {d.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}
+                    {d.toLocaleDateString(L("es-AR", "en-US"), { weekday: "long" })}, {d.toLocaleDateString(L("es-AR", "en-US"), { month: "long", year: "numeric" })}
                   </p>
                   <p className="mt-2 text-base text-muted">
                     <span aria-hidden="true">{L.t(moodCfg.emoji)}</span> {L.t(moodCfg.label.toLowerCase())}

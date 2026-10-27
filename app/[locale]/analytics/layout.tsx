@@ -1,8 +1,8 @@
 import { initLocale } from "@/lib/i18n/server";
-import { createRouteMetadata } from "@/lib/seo";
+import { metadataFor } from "@/lib/seo";
 
-export const metadata = createRouteMetadata({
-  title: "Analytics",
+export const generateMetadata = metadataFor({
+  title: ["Analytics", "Analytics"],
   noIndex: true,
   noFollow: true,
 });

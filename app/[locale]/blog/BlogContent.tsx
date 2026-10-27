@@ -24,8 +24,8 @@ const CATEGORY_LEAD = (L: Pick2): Record<Filter, string> => ({
   Autoconocimiento: L("Herramientas para leerte con más calma.", "Tools to read yourself more calmly."),
 });
 
-function formatDate(iso: string): string {
-  return new Date(iso + "T00:00:00").toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+function formatDate(iso: string, tag = "es-AR"): string {
+  return new Date(iso + "T00:00:00").toLocaleDateString(tag, { year: "numeric", month: "long", day: "numeric" });
 }
 
 const byDate = [...BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
@@ -46,8 +46,8 @@ function Featured({ post }: { post: BlogPost }) {
         </h2>
         <p className="mt-5 text-xl text-foreground/85 leading-snug">{L.t(post.excerpt)}</p>
         <p className="mt-6 text-base text-muted">{L(<>
-          <time dateTime={post.date}>{L.t(formatDate(post.date))}</time> · {L.t(getReadingTime(post))} min de lectura
-        </>, <><time dateTime={post.date}>{L.t(formatDate(post.date))}</time> · {L.t(getReadingTime(post))} min read</>)}</p>
+          <time dateTime={post.date}>{formatDate(post.date, L("es-AR", "en-US"))}</time> · {L.t(getReadingTime(post))} min de lectura
+        </>, <><time dateTime={post.date}>{formatDate(post.date, L("es-AR", "en-US"))}</time> · {L.t(getReadingTime(post))} min read</>)}</p>
       </div>
     </article>
   );
@@ -77,7 +77,7 @@ function PostCell({ post }: { post: BlogPost }) {
         </h3>
         <p className="mt-3 text-base text-muted leading-relaxed flex-1">{L.t(post.excerpt)}</p>
         <time dateTime={post.date} className="mt-5 pt-4 border-t border-ink/15 text-sm text-muted">
-          {L.t(formatDate(post.date))}
+          {formatDate(post.date, L("es-AR", "en-US"))}
         </time>
       </div>
     </article>

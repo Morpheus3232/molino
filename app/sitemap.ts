@@ -7,7 +7,7 @@ import { ACADEMY_PIECES } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES } from "@/lib/data/academy-guides";
 import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
 import { BLOG_POSTS } from "@/lib/data/blog-content";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, localeUrl } from "@/lib/seo";
 import { getPrimaryEvent } from "@/lib/data/entity-events";
 import { compatibilidadSignosRoutes } from "@/lib/seo/programmatic";
 
@@ -156,6 +156,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // El protocolo de sitemaps exige URLs escapadas: ids como "dragón" o
   // "david-lebón" salían crudos. encodeURI no toca lo que ya es ASCII.
-  return [...staticPages, ...affinityPages, ...entityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages]
-    .map((entry) => ({ ...entry, url: encodeURI(entry.url) }));
+  const all: MetadataRoute.Sitemap = [...staticPages, ...affinityPages, ...entityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages];
+
+  // Cada URL existe en español (raíz) y en inglés (/en): se anuncian las dos
+  // y cada una declara a la otra como alternativa (hreflang).
+  return all.flatMap((entry) => {
+    const path = entry.url.slice(BASE_URL.length) || "/";
+    const es = encodeURI(localeUrl(path, "es"));
+    const en = encodeURI(localeUrl(path, "en"));
+    const alternates = { languages: { es, en, "x-default": es } };
+    return [
+      { ...entry, url: es, alternates },
+      { ...entry, url: en, alternates },
+    ];
+  });
 }

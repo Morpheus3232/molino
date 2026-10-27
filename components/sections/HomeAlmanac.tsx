@@ -21,8 +21,8 @@ export default function HomeAlmanac() {
     setHasMap(Boolean(getOrCreateProfile()?.birthDate));
   }, []);
 
-  const weekday = today?.toLocaleDateString("es-AR", { weekday: "long" });
-  const month = today?.toLocaleDateString("es-AR", { month: "long" });
+  const weekday = today?.toLocaleDateString(L("es-AR", "en-US"), { weekday: "long" });
+  const month = today?.toLocaleDateString(L("es-AR", "en-US"), { month: "long" });
 
   return (
     <header className="mb-8 sm:mb-10 text-center">
