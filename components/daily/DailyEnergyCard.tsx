@@ -27,8 +27,8 @@ export default function DailyEnergyCard({ profile, daily, streakDays = 1, classN
       : [{ k: L("Fortaleza del día", "Strength of the day"), v: daily.strengths?.[0] || L("Claridad", "Clarity") }]),
     ...(profile
       ? [
-          { k: L("Tu elemento", "Your element"), v: `${profile.element || "Fuego"} en sintonía` },
-          { k: L("Tu arquetipo", "Your archetype"), v: profile.archetype },
+          { k: L("Tu elemento", "Your element"), v: L(`${profile.element || "Fuego"} en sintonía`, `${L.t(profile.element || "Fuego")} in tune`) },
+          { k: L("Tu arquetipo", "Your archetype"), v: L.t(profile.archetype) },
         ]
       : []),
   ];

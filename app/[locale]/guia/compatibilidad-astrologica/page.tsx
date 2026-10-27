@@ -113,7 +113,7 @@ export default async function CompatibilidadAstrologicaPage({ params }: { params
                   <p className="text-foreground">
                     <span className="capitalize">{L.t(a.name)}</span>
                     <span className="block text-sm text-muted tabular-nums">
-                      {L.t(i === 0 ? L("mismo signo", "same sign") : `${i} ${i === 1 ? "signo" : "signos"} · ${a.angle}°`)} · {L.t(a.verdict)}
+                      {L.t(i === 0 ? L("mismo signo", "same sign") : `${i} ${i === 1 ? L("signo", "sign") : L("signos", "signs")} · ${a.angle}°`)} · {L.t(a.verdict)}
                     </span>
                   </p>
                   <p className="mt-1 sm:mt-0 text-[0.95rem]">{L(<>Los dos {L.t(a.answer)}</>, <>Both {L.t(a.answer)}</>)}</p>

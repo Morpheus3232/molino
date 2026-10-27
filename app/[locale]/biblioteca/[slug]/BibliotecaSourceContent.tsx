@@ -55,7 +55,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
           <h1 className="page-title text-foreground mb-4">
             {L.t(source.title)}
           </h1>
-          <p className="text-sm sm:text-base text-muted">{L.t(source.author)} · {source.year}</p>
+          <p className="text-sm sm:text-base text-muted">{L.t(source.author)} · {L.t(source.year)}</p>
           {/* Portada por categoría: 39 obras, cinco temas. */}
           <SectionCover imageKey={`biblioteca/${source.category}`} priority className="mt-10" />
         </motion.section>

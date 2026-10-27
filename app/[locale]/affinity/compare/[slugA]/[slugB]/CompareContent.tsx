@@ -74,7 +74,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             exit="exit"
           >
             <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Cargando comparación...">{L("Cargando comparación...", "Loading comparison...")}</p>
+              <p className="sr-only" role="status" aria-label={L("Cargando comparación...", "Loading comparison...")}>{L("Cargando comparación...", "Loading comparison...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
                 <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
@@ -372,10 +372,10 @@ function EntityBaseCard({
           <span className="text-muted">Fecha</span>
           <span className="text-foreground">
             {result.primaryEvent.date
-              ? formatDisplayDate(result.primaryEvent.date)
+              ? formatDisplayDate(result.primaryEvent.date, L.locale)
               : String(result.primaryEvent.year)}
           </span>
-        </>, <><span className="text-muted">Date</span><span className="text-foreground">{result.primaryEvent.date ? formatDisplayDate(result.primaryEvent.date) : String(result.primaryEvent.year)}</span></>)}</div>
+        </>, <><span className="text-muted">Date</span><span className="text-foreground">{result.primaryEvent.date ? formatDisplayDate(result.primaryEvent.date, L.locale) : String(result.primaryEvent.year)}</span></>)}</div>
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Animal chino</span>
           <span className="font-medium text-foreground">{L.t(result.entityAnimal)}</span>
@@ -460,8 +460,11 @@ function SectionHeader({ title }: { title: string }) {
   );
 }
 
-function formatDisplayDate(dateStr: string): string {
+function formatDisplayDate(dateStr: string, locale: "es" | "en" = "es"): string {
   const [year, month, day] = dateStr.split("-");
+  if (locale === "en") {
+    return new Date(`${dateStr}T12:00:00Z`).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  }
   const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   const monthIdx = parseInt(month, 10) - 1;
   return `${parseInt(day, 10)} de ${months[monthIdx]} de ${year}`;

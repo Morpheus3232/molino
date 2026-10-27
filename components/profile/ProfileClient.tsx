@@ -174,7 +174,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
-          <p className="sr-only" role="status" aria-label="Cargando tu mapa...">{L("Cargando tu mapa...", "Loading your map...")}</p>
+          <p className="sr-only" role="status" aria-label={L("Cargando tu mapa...", "Loading your map...")}>{L("Cargando tu mapa...", "Loading your map...")}</p>
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-[25rem] mb-6" />
             <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />

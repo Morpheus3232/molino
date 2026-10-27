@@ -25,7 +25,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ locale: s
     <main id="main-content" className="bg-background">
       <PageHero
         crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Guía", "Guide") }]}
-        eyebrow={`Guía · ${articles(L).length} lecturas largas`}
+        eyebrow={L(`Guía · ${articles(L).length} lecturas largas`, `Guide · ${articles(L).length} long reads`)}
         title={L("Para entrar en profundidad", "To go in depth")}
         lead={L("Guías completas sobre un número, una familia de números o una forma de cruzar signos. Para leer de punta a punta.", "Complete guides on one number, a family of numbers or a way of crossing signs. To read from start to finish.")}
         imageKey="guia/hub"

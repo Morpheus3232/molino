@@ -1,5 +1,6 @@
 import { initLocale } from "@/lib/i18n/server";
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { permanentRedirect } from "@/lib/i18n/navigation";
 import { getEntityById } from "@/lib/data/symbolic-entities";
 
 /**
@@ -15,9 +16,9 @@ export default async function CompatibilityRedirect({
 }: {
   params: Promise<{ entity: string }>;
 }) {
-  await initLocale(params);
+  const locale = await initLocale(params);
   const { entity: id } = await params;
   const entity = getEntityById(id);
   if (!entity) notFound();
-  permanentRedirect(`/affinity/${entity.type}/${entity.id}`);
+  permanentRedirect({ href: `/affinity/${entity.type}/${entity.id}`, locale });
 }

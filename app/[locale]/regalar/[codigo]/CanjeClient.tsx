@@ -66,7 +66,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
       });
       const data = await res.json();
       if (!res.ok || !data.redeemed) {
-        toast.error(data.error || "No pudimos canjear tu regalo.");
+        toast.error(L.t(data.error || "No pudimos canjear tu regalo."));
         setRedeeming(false);
         return;
       }
@@ -76,7 +76,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
       toast.success(L("¡Regalo canjeado! Redirigiendo a tu mapa...", "Gift redeemed! Taking you to your map..."));
       router.push("/profile");
     } catch {
-      toast.error("No pudimos canjear tu regalo. Intentá de nuevo.");
+      toast.error(L.t("No pudimos canjear tu regalo. Intentá de nuevo."));
       setRedeeming(false);
     }
   };

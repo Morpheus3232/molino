@@ -78,7 +78,7 @@ export default function AffinityEditorialContent({
           <div className="space-y-2">
             {primaryEvent && (
               <p className="text-lg text-foreground">
-                {L.t(primaryEvent.label)}, {primaryEvent.date ? formatDisplayDate(primaryEvent.date) : L(`año ${primaryEvent.year}`, `year ${primaryEvent.year}`)}
+                {L.t(primaryEvent.label)}, {primaryEvent.date ? L.t(formatDisplayDate(primaryEvent.date)) : L(`año ${primaryEvent.year}`, `year ${primaryEvent.year}`)}
                 {signo && <span className="text-muted">{L(<>: año {L.t(signo)}.</>, <>: {L.t(signo)} year.</>)}</span>}
               </p>
             )}
@@ -88,7 +88,7 @@ export default function AffinityEditorialContent({
                 <Link href={`/atlas/${entity.countryISO}`} className="underline underline-offset-4 hover:no-underline">
                   Todo {entity.country} en el Atlas
                 </Link>
-              </>, <><Link href={`/atlas/${entity.countryISO}`} className="underline underline-offset-4 hover:no-underline">All of {entity.country} in the Atlas</Link></>)}</p>
+              </>, <><Link href={`/atlas/${entity.countryISO}`} className="underline underline-offset-4 hover:no-underline">All of {L.t(entity.country)} in the Atlas</Link></>)}</p>
             )}
           </div>
         }
@@ -224,7 +224,7 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
                   <span className="font-display text-xl text-foreground group-hover:underline underline-offset-4">{L.t(e.name)}</span>
                   <span className="text-sm text-muted sm:text-right shrink-0">
                     {L.t(ENTITY_TYPES[e.type as EntityType]?.label)}
-                    {e.country && e.country !== entity.country ? ` · ${e.country}` : ""}
+                    {e.country && e.country !== entity.country ? ` · ${L.t(e.country)}` : ""}
                     {" · "}
                     {L.t(e.originLabel)} {L.t(e.originDate && formatDisplayDate(e.originDate))}
                   </span>

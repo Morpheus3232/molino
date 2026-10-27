@@ -77,7 +77,7 @@ export default function EvolutionPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Cargando tu recorrido...">{L("Cargando tu recorrido...", "Loading your journey...")}</p>
+              <p className="sr-only" role="status" aria-label={L("Cargando tu recorrido...", "Loading your journey...")}>{L("Cargando tu recorrido...", "Loading your journey...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
                 <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />

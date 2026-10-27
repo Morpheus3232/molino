@@ -122,7 +122,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                     {L.t(g.label)}
                   </h2>
                   <span className="font-mono text-[11px] text-muted">
-                    {g.entities.length} {g.entities.length === 1 ? "entidad" : "entidades"}
+                    {g.entities.length} {g.entities.length === 1 ? L("entidad", "entity") : L("entidades", "entities")}
                   </span>
                 </div>
 
@@ -154,7 +154,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                         )}
                       </div>
                       <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
-                        {e.country || ""}
+                        {L.t(e.country || "")}
                       </span>
                     </Link>
                   ))}

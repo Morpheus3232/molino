@@ -1,7 +1,7 @@
 import { initLocale } from "@/lib/i18n/server";
-import { permanentRedirect } from "next/navigation";
+import { permanentRedirect } from "@/lib/i18n/navigation";
 
 export default async function AstrologiaPage({ params }: { params: Promise<{ locale: string }> }) {
-  await initLocale(params);
-  permanentRedirect("/conocimiento/astrologia");
+  const locale = await initLocale(params);
+  permanentRedirect({ href: "/conocimiento/astrologia", locale });
 }

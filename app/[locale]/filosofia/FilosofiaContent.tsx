@@ -91,10 +91,10 @@ export default function FilosofiaContent() {
   return (
     <main id="main-content" className="bg-background">
       <PageHero
-        crumbs={[{ href: "/", label: "Inicio" }, { label: "Filosofía" }]}
-        eyebrow="Filosofía · cómo se hace Molino"
-        title="Principios y fundamentos"
-        lead="Molino no es otra app de predicciones. Es una herramienta de autoconocimiento con reglas claras: libertad, privacidad, transparencia y honestidad intelectual."
+        crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: L("Filosofía", "Philosophy") }]}
+        eyebrow={L("Filosofía · cómo se hace Molino", "Philosophy · how Molino is made")}
+        title={L("Principios y fundamentos", "Principles and foundations")}
+        lead={L("Molino no es otra app de predicciones. Es una herramienta de autoconocimiento con reglas claras: libertad, privacidad, transparencia y honestidad intelectual.", "Molino isn't another prediction app. It's a self-knowledge tool with clear rules: freedom, privacy, transparency and intellectual honesty.")}
         imageKey="paginas/filosofia"
       >{L(<>
         <Link href="/nosotros" className="text-lg underline underline-offset-4 hover:no-underline">

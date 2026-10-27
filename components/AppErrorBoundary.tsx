@@ -1,5 +1,6 @@
 "use client";
 
+import { pageLocale } from "@/lib/i18n/pageLocale";
 import { Component, ReactNode } from "react";
 
 interface ErrorBoundaryProps {
@@ -47,7 +48,7 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
       // reload to home is the only reliable recovery. useRouter() is not
       // available in a class component without context plumbing.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.assign("/");
+      window.location.assign(pageLocale() === "en" ? "/en" : "/");
     }
   };
 

@@ -7,4 +7,4 @@ import { routing } from "./routing";
  * la ruta SIN prefijo, así las comparaciones de "ruta activa" siguen
  * funcionando igual en los dos idiomas.
  */
-export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing);
+export const { Link, redirect, permanentRedirect, usePathname, useRouter, getPathname } = createNavigation(routing);

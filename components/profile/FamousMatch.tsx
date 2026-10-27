@@ -90,7 +90,7 @@ function Coordinates({
       <span
         className={`whitespace-nowrap ${matchLifePath ? "" : "text-muted/70"}`}
         style={on(matchLifePath)}
-        title={`Camino de vida: ${person.lifePath}`}
+        title={L(`Camino de vida: ${person.lifePath}`, `Life path: ${person.lifePath}`)}
       >{L(<>
         Camino {L.t(person.lifePath)}
       </>, <>Path {L.t(person.lifePath)}</>)}</span>

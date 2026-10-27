@@ -6,8 +6,9 @@
  * las claves con las que trabaja la lógica ("Caballo", "Fuego"…).
  *
  * El diccionario es español → inglés, por frase exacta. Una clave puede
- * llevar comodines `{}` para frases con partes variables ("Día {}: {}"):
- * cada parte capturada se vuelve a traducir.
+ * llevar comodines `{}` para frases con partes variables ("Día {}: {}") o
+ * `{#}` para números, o `{w}` para una sola palabra: cada parte capturada
+ * se vuelve a traducir.
  */
 export type ContentDict = Record<string, string>;
 
@@ -37,8 +38,17 @@ function compile(dict: ContentDict): Compiled {
   const lower = new Map<string, string>();
   const patterns: Compiled["patterns"] = [];
   for (const [es, en] of Object.entries(dict)) {
-    if (es.includes("{}")) {
-      const re = new RegExp("^" + es.split("{}").map(escapeRe).join("([\\s\\S]+?)") + "$");
+    if (/\{[#w]?\}/.test(es)) {
+      // `{}` captura cualquier texto; `{#}` solo dígitos (fechas, años);
+      // `{w}` una sola palabra (nombres de signo: "El {w} es…" no debe
+      // tragarse una oración entera que casualmente empieza con "El").
+      const src = es
+        .split(/(\{[#w]?\})/)
+        .map((part) =>
+          part === "{}" ? "([\\s\\S]+?)" : part === "{#}" ? "(\\d+)" : part === "{w}" ? "(\\S+)" : escapeRe(part),
+        )
+        .join("");
+      const re = new RegExp("^" + src + "$");
       patterns.push({ re, out: en });
     } else {
       exact.set(es, en);
@@ -93,6 +103,23 @@ export function makeTranslator(dict: ContentDict | null | undefined): Translator
         let i = 1;
         return p.out.replace(/\{(\d*)\}/g, (_, n: string) => str(m[n ? Number(n) : i++] ?? "", depth + 1));
       }
+    }
+    // Enumeraciones ("liderazgo, independencia y coraje"): solo si TODAS las
+    // partes tienen traducción, para no dejar un "and" en medio del español.
+    const pieces = s.split(/(, | y | e )/);
+    if (pieces.length > 1) {
+      const out: string[] = [];
+      for (let k = 0; k < pieces.length; k++) {
+        const piece = pieces[k];
+        if (k % 2 === 1) {
+          out.push(piece === ", " ? ", " : " and ");
+          continue;
+        }
+        const tr = str(piece, depth + 1);
+        if (tr === piece) return s;
+        out.push(tr);
+      }
+      return out.join("");
     }
     return s;
   };

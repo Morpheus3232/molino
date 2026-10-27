@@ -114,7 +114,7 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
                     </p>
                   </div>
                   <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
-                    {e.country || ""}
+                    {L.t(e.country || "")}
                   </span>
                 </Link>
               </motion.div>

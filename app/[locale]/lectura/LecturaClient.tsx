@@ -63,9 +63,9 @@ export default function LecturaClient({ catalog }: Props) {
   const animalName = getZodiacDisplay(profile.chineseZodiac ?? "").name;
   const chineseElement = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
   const coords = [
-    { label: "Numerología", value: `${lifePath} · ${archetypeDisplayName(archetype.name)}`, href: "/profile#pilar-numerologia" },
-    { label: "Astrología", value: `Sol en ${profile.sunSign}`, href: "/profile#pilar-astrologia" },
-    { label: L("Zodíaco chino", "Chinese zodiac"), value: `${animalName}${chineseElement ? ` de ${chineseElement}` : ""}`, href: "/profile#pilar-zodiaco-chino" },
+    { label: L("Numerología", "Numerology"), value: `${lifePath} · ${L.t(archetypeDisplayName(archetype.name))}`, href: "/profile#pilar-numerologia" },
+    { label: L("Astrología", "Astrology"), value: L(`Sol en ${profile.sunSign}`, `Sun in ${L.t(profile.sunSign)}`), href: "/profile#pilar-astrologia" },
+    { label: L("Zodíaco chino", "Chinese zodiac"), value: L(`${animalName}${chineseElement ? ` de ${chineseElement}` : ""}`, `${chineseElement ? `${L.t(chineseElement)} ` : ""}${L.t(animalName)}`), href: "/profile#pilar-zodiaco-chino" },
   ];
 
   return (

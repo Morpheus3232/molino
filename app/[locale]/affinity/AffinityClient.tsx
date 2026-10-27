@@ -14,8 +14,8 @@ const EXPLORE_COPY = (L: Pick2): Record<string, string> => ({
   autos: L("Explorar marcas de autos que comparten tu signo.", "Explore car brands that share your sign."),
   ropa: L("Explorar marcas de ropa que comparten tu signo.", "Explore clothing brands that share your sign."),
   brand: L("Explorar otras marcas que comparten tu signo.", "Explore other brands that share your sign."),
-  country: "Explorar países que comparten tu signo.",
-  city: "Explorar ciudades que comparten tu signo.",
+  country: L("Explorar países que comparten tu signo.", "Explore countries that share your sign."),
+  city: L("Explorar ciudades que comparten tu signo.", "Explore cities that share your sign."),
   university: L("Explorar universidades que comparten tu signo.", "Explore universities that share your sign."),
   movie: L("Explorar películas que comparten tu signo.", "Explore movies that share your sign."),
   artist: L("Explorar famosos que comparten tu signo.", "Explore famous people who share your sign."),
@@ -71,7 +71,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
             exit="exit"
           >
             <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Preparando tu afinidad...">{L("Preparando tu afinidad...", "Preparing your affinity...")}</p>
+              <p className="sr-only" role="status" aria-label={L("Preparando tu afinidad...", "Preparing your affinity...")}>{L("Preparando tu afinidad...", "Preparing your affinity...")}</p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
                 <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />

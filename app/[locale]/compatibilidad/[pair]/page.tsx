@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const list = (items: string[]) => items.join(", ").replace(/, ([^,]*)$/, " y $1");
+const list = (items: string[], and = "y") => items.join(", ").replace(/, ([^,]*)$/, ` ${and} $1`);
 
 export default async function CompatibilidadPage({ params }: Props) {
   await initLocale(params);
@@ -76,10 +76,10 @@ export default async function CompatibilidadPage({ params }: Props) {
   const url = `${SITE_URL}/compatibilidad/${pair}`;
 
   const faq = [
-    { q: L(`¿${nameA} y ${nameB} son compatibles?`, `Are ${L.t(nameA)} and ${L.t(nameB)} compatible?`), a: `${r.aspect.verdict}. ${r.answer}` },
+    { q: L(`¿${nameA} y ${nameB} son compatibles?`, `Are ${L.t(nameA)} and ${L.t(nameB)} compatible?`), a: `${L.t(r.aspect.verdict)}. ${L.t(r.answer)}` },
     ...[nameA, ...(same ? [] : [nameB])].map((n) => ({
       q: L(`¿Con qué signos es más compatible ${n}?`, `Which signs is ${L.t(n)} most compatible with?`),
-      a: L(`Por tradición, con los de su mismo elemento (trígono) y los de elemento complementario (sextil): ${list(harmoniousSigns(n))}.`, `By tradition, with those of its own element (trine) and those of the complementary element (sextile): ${L.t(list(harmoniousSigns(n)))}.`),
+      a: L(`Por tradición, con los de su mismo elemento (trígono) y los de elemento complementario (sextil): ${list(harmoniousSigns(n))}.`, `By tradition, with those of its own element (trine) and those of the complementary element (sextile): ${list(harmoniousSigns(n).map((x) => L.t(x)), "and")}.`),
     })),
     {
       q: same ? L(`¿Qué elemento es ${nameA}?`, `What element is ${L.t(nameA)}?`) : L(`¿Qué elemento son ${nameA} y ${nameB}?`, `What elements are ${L.t(nameA)} and ${L.t(nameB)}?`),
@@ -178,13 +178,13 @@ export default async function CompatibilidadPage({ params }: Props) {
           <div>
             <h2 className="font-display text-2xl mb-3">{L.t(same ? L("Lo que aportan", "What they bring") : L("Lo que aporta cada uno", "What each one brings"))}</h2>
             {r.bring.map(({ sign, items }) => (
-              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L.t(list(items).toLowerCase())}.</p>
+              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L(list(items), list(items.map((x) => L.t(x)), "and")).toLowerCase()}.</p>
             ))}
           </div>
           <div>
             <h2 className="font-display text-2xl mb-3">{L("Dónde pueden chocar", "Where they can clash")}</h2>
             {r.clash.map(({ sign, items }) => (
-              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L.t(list(items).toLowerCase())}.</p>
+              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L(list(items), list(items.map((x) => L.t(x)), "and")).toLowerCase()}.</p>
             ))}
           </div>
         </section>

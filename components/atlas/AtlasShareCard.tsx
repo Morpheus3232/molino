@@ -85,7 +85,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
       setTimeout(() => setCopied(false), 2200);
       toast.success(L("Enlace copiado", "Link copied"));
     } catch {
-      toast.error("No pudimos compartir. Intentá de nuevo.");
+      toast.error(L.t("No pudimos compartir. Intentá de nuevo."));
     } finally {
       setBusy(false);
     }
@@ -175,7 +175,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
               setTimeout(() => setCopied(false), 2200);
               toast.success(L("Enlace copiado", "Link copied"));
             } catch {
-              toast.error("No pudimos copiar el enlace.");
+              toast.error(L.t("No pudimos copiar el enlace."));
             }
           }}
           className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm border border-ink/10 bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px]"

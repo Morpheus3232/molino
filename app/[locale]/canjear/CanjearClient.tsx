@@ -46,7 +46,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
       });
       const data = await res.json();
       if (!res.ok || !data.valid) {
-        toast.error(data.reason || data.error || "Ese código no es válido.");
+        toast.error(L.t(data.reason || data.error || "Ese código no es válido."));
         setRedeeming(false);
         return;
       }
@@ -55,7 +55,7 @@ export default function CanjearClient({ initialCode }: { initialCode: string }) 
       toast.success(L("¡Listo! Abriendo tu lectura…", "Done! Opening your reading…"));
       router.push("/lectura");
     } catch {
-      toast.error("No pudimos canjear el código. Intentá de nuevo.");
+      toast.error(L.t("No pudimos canjear el código. Intentá de nuevo."));
       setRedeeming(false);
     }
   };

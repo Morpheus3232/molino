@@ -142,7 +142,7 @@ export default function CalendarioClient() {
                 type="button"
                 onClick={() => setSelected(date)}
                 aria-pressed={isSelected}
-                aria-label={`${day} de ${MONTH_NAMES(L)[month]}: número ${content.number}${isToday ? ", hoy" : ""}`}
+                aria-label={L(`${day} de ${MONTH_NAMES(L)[month]}: número ${content.number}${isToday ? ", hoy" : ""}`, `${MONTH_NAMES(L)[month]} ${day}: number ${content.number}${isToday ? ", today" : ""}`)}
                 className={`relative aspect-square sm:aspect-auto sm:h-24 flex flex-col items-center justify-center transition-colors ${
                   isSelected ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt text-foreground"
                 }`}
@@ -197,7 +197,7 @@ export default function CalendarioClient() {
                           }
                         }}
                         aria-pressed={isSel}
-                        aria-label={`${day} de ${MONTH_NAMES(L)[month]}`}
+                        aria-label={L(`${day} de ${MONTH_NAMES(L)[month]}`, `${MONTH_NAMES(L)[month]} ${day}`)}
                         className={`relative w-11 h-11 text-base tabular-nums border transition-colors ${
                           isSel ? "bg-ink text-paper border-ink" : "bg-background text-foreground border-ink/25 hover:border-ink"
                         }`}

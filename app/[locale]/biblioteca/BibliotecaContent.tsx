@@ -178,7 +178,7 @@ export default function BibliotecaContent() {
                               </span>
                               <span className="mt-1 block text-base text-muted">
                                 {L.t(source.author)}
-                                {source.year ? `, ${source.year}` : ""} · {L.t(meta.label)}
+                                {source.year ? `, ${L.t(source.year)}` : ""} · {L.t(meta.label)}
                               </span>
                             </span>
                             <span className="text-lg text-foreground/80 leading-relaxed">{L.t(source.description)}</span>

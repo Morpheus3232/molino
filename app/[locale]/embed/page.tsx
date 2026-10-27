@@ -1,4 +1,5 @@
 "use client";
+import { pageLocale } from "@/lib/i18n/pageLocale";
 import { useL } from "@/lib/i18n/useL";
 
 import { useState, useRef, useCallback } from "react";
@@ -40,7 +41,7 @@ export default function EmbedWidgetPage() {
 
     // Open full map in new tab if embedded in an external iframe
     if (typeof window !== "undefined" && window.top !== window.self) {
-      window.open(`/profile?dob=${dateValue}`, "_blank");
+      window.open(`${pageLocale() === "en" ? "/en" : ""}/profile?dob=${dateValue}`, "_blank");
     } else {
       router.push(`/profile?dob=${dateValue}`);
     }

@@ -156,7 +156,7 @@ export default function ProfileHub({
     },
     {
       system: L("Zodíaco chino", "Chinese zodiac"),
-      value: `${display.name} de ${chineseElement}`,
+      value: L(`${display.name} de ${chineseElement}`, `${L.t(chineseElement)} ${L.t(display.name)}`),
       what: L(`El animal del año lunar en que naciste · polaridad ${polarity}.`, `The animal of the lunar year you were born in · ${L.t(polarity)} polarity.`),
       image: animalImageKey(display.name),
       href: "#pilar-zodiaco-chino",
@@ -174,7 +174,7 @@ export default function ProfileHub({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
             <div className="lg:col-span-6 lg:row-start-1 lg:pt-6">
               <p className="text-sm text-accent mb-4 label-caps">{L("Mapa personal simbólico", "Personal symbolic map")}</p>
-              <h1 className="page-title text-foreground" aria-label={`Camino de Vida ${lifePath} · ${archetypeName}`}>{L(<>
+              <h1 className="page-title text-foreground" aria-label={L(`Camino de Vida ${lifePath} · ${archetypeName}`, `Life Path ${lifePath} · ${L.t(archetypeName)}`)}>{L(<>
                 <span className="block">Camino de Vida {L.t(lifePath)}</span>
                 <span className="block">{L.t(archetypeName)}</span>
               </>, <><span className="block">Life Path {L.t(lifePath)}</span><span className="block">{L.t(archetypeName)}</span></>)}</h1>
