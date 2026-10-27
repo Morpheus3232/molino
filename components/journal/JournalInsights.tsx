@@ -10,16 +10,17 @@ function moodEmojiFor(avgMood: number): string {
 }
 
 function InsightGroup({ title, groups }: { title: string; groups: MoodInsightGroup[] }) {
+  const L = useL();
   if (groups.length === 0) return null;
   return (
     <div className="bg-background p-6">
-      <p className="font-display text-xl text-foreground mb-3">{title}</p>
+      <p className="font-display text-xl text-foreground mb-3">{L.t(title)}</p>
       <div className="divide-y divide-ink/10">
         {groups.slice(0, 4).map((g) => (
           <div key={g.label} className="flex items-center justify-between gap-3 py-2 text-base">
-            <span className="text-foreground truncate">{g.label}</span>
+            <span className="text-foreground truncate">{L.t(g.label)}</span>
             <span className="flex items-center gap-1.5 text-muted tabular-nums shrink-0">
-              {moodEmojiFor(g.avgMood)} {g.avgMood.toFixed(1)}
+              {L.t(moodEmojiFor(g.avgMood))} {g.avgMood.toFixed(1)}
               <span className="text-muted/60">({g.count})</span>
             </span>
           </div>

@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Asterisk, ShieldCheck, Zap, Heart, BookOpen, Code2, Bookmark, Users, Sun, MapPin, Bitcoin, Gift } from "lucide-react";
 import { PageHero } from "@/components/knowledge/Kit";
 import { metadataFor } from "@/lib/seo";
@@ -155,8 +156,9 @@ const RELEASES = (L: Pick2) => ([
   },
 ]);
 
-export default function ChangelogPage() {
-  const L = useL();
+export default async function ChangelogPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="bg-background pt-12 sm:pt-16 pb-24 text-foreground">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -172,15 +174,15 @@ export default function ChangelogPage() {
           {RELEASES(L).map((release) => (
             <li key={release.version} className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6 py-12 border-b border-ink/15 first:pt-0">
               <div className="lg:col-span-3 lg:sticky lg:top-24 self-start">
-                <p className="font-display text-5xl leading-none text-foreground">{release.version}</p>
-                <p className="mt-3 text-lg text-foreground">{release.date}</p>
-                <p className="mt-1 text-base text-muted">{release.badge}</p>
+                <p className="font-display text-5xl leading-none text-foreground">{L.t(release.version)}</p>
+                <p className="mt-3 text-lg text-foreground">{L.t(release.date)}</p>
+                <p className="mt-1 text-base text-muted">{L.t(release.badge)}</p>
               </div>
               <ul className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-px bg-ink/15 border border-ink/15">
                 {release.highlights.map((item) => (
                   <li key={item.title} className="bg-background p-6 sm:p-7">
-                    <h3 className="font-display text-2xl leading-tight text-foreground">{item.title}</h3>
-                    <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{item.desc}</p>
+                    <h3 className="font-display text-2xl leading-tight text-foreground">{L.t(item.title)}</h3>
+                    <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{L.t(item.desc)}</p>
                   </li>
                 ))}
               </ul>

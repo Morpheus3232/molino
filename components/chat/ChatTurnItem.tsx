@@ -40,7 +40,7 @@ export default function ChatTurnItem({
           Pregunta {index + 1}
         </>, <>Question {index + 1}</>)}</p>
         <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug">
-          {turn.question}
+          {L.t(turn.question)}
         </p>
       </div>
 
@@ -62,7 +62,7 @@ export default function ChatTurnItem({
       {/* Error */}
       {turn.error && (
         <p role="alert" className="text-base text-vermilion border-l-2 border-vermilion pl-4 leading-relaxed">
-          {turn.error}
+          {L.t(turn.error)}
         </p>
       )}
 
@@ -106,7 +106,7 @@ export default function ChatTurnItem({
                       className="group w-full flex items-start gap-3 py-3 text-left text-base sm:text-lg text-foreground hover:bg-ink/[0.03] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                     >
                       <CornerDownRight className="w-4 h-4 mt-1.5 shrink-0 text-muted group-hover:text-foreground" aria-hidden="true" />
-                      <span className="group-hover:underline underline-offset-4">{sug}</span>
+                      <span className="group-hover:underline underline-offset-4">{L.t(sug)}</span>
                     </button>
                   </li>
                 ))}

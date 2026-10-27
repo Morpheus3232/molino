@@ -376,7 +376,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
 
       {missingField && (
         <p id={errorId} role="alert" aria-live="polite" className="mt-2 px-3 text-xs font-medium text-error text-center">
-          {MISSING_FIELD_MESSAGE(L)[missingField]}
+          {L.t(MISSING_FIELD_MESSAGE(L)[missingField])}
         </p>
       )}
     </div>

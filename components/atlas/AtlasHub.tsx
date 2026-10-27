@@ -49,7 +49,7 @@ function CategoryPreview({
   return (
     <motion.div className="group" {...fadeUp}>
       <h3 className="section-title text-foreground mb-3">
-        {label}
+        {L.t(label)}
       </h3>
 
       <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5 mb-3">
@@ -71,9 +71,9 @@ function CategoryPreview({
                 size={20}
                 className="shrink-0"
               />
-              <span className="truncate max-w-[200px]">{e.name}</span>
+              <span className="truncate max-w-[200px]">{L.t(e.name)}</span>
               {e.origin && (
-                <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {e.origin}</span>
+                <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {L.t(e.origin)}</span>
               )}
             </Link>
             {i < entities.length - 1 && (
@@ -87,9 +87,9 @@ function CategoryPreview({
         href={`/atlas/explorar/${userAnimal}/${type}`}
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
       >{L(<>
-        <span>Ver {label.toLowerCase()}</span>
+        <span>Ver {L.t(label.toLowerCase())}</span>
         <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
-      </>, <><span>See {label.toLowerCase()}</span><span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
+      </>, <><span>See {L.t(label.toLowerCase())}</span><span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
     </motion.div>
   );
 }
@@ -105,7 +105,7 @@ function AnimalSelector({
   return (
     <div>
       <p className="text-sm text-muted font-medium mb-3 label-caps">
-        {selected ? L("Cambiar signo", "Change sign") : L("Elegí tu signo para explorar", "Pick your sign to explore")}
+        {L.t(selected ? L("Cambiar signo", "Change sign") : L("Elegí tu signo para explorar", "Pick your sign to explore"))}
       </p>
       <div className="grid grid-cols-3 gap-2">
         {ANIMALS.map((animal) => {
@@ -130,7 +130,7 @@ function AnimalSelector({
                 size={22}
                 className={`shrink-0 ${isActive ? "text-accent" : "text-foreground/70"}`}
               />
-              <span className="whitespace-nowrap leading-tight">{animal}</span>
+              <span className="whitespace-nowrap leading-tight">{L.t(animal)}</span>
             </button>
           );
         })}
@@ -154,7 +154,7 @@ function NoCoverageBanner({ country, topCountries }: { country: string; topCount
             href={`/atlas/${c.iso}`}
             className="px-3 py-1.5 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 transition-colors"
           >
-            <span className="flag-emoji">{c.flag}</span> {c.name}
+            <span className="flag-emoji">{L.t(c.flag)}</span> {L.t(c.name)}
           </a>
         ))}
       </div>
@@ -265,7 +265,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
             <div>
               <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Energía opuesta", "Opposite energy")}</p>
               <h2 className="section-title text-foreground/60">
-                {enemyName}
+                {L.t(enemyName)}
               </h2>
             </div>
             <Link
@@ -340,7 +340,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
                 href={`/atlas/${userCountryISO}/${cat}`}
                 className="px-4 py-2.5 border border-ink/25 text-base text-foreground hover:border-ink hover:bg-paper-alt transition-colors"
               >
-                {label}
+                {L.t(label)}
               </Link>
             ))}
           </div>

@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NumeroPage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { numero: numId } = await params;
   const num = NUMBERS.find(n => n.number === parseInt(numId));
@@ -49,7 +50,7 @@ export default async function NumeroPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: L(`Número ${num.number} ${num.title}`, `Number ${num.number} ${num.title}`),
+      headline: L(`Número ${num.number} ${num.title}`, `Number ${num.number} ${L.t(num.title)}`),
       description: num.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },

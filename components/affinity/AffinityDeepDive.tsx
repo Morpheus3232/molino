@@ -30,9 +30,9 @@ export default function AffinityDeepDive({
     <div className="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
       <div className="lg:col-span-7">
         <p className="text-sm text-muted label-caps mb-3">{L("Por qué se lee así", "Why it reads this way")}</p>
-        <p className="text-lg text-foreground/90 leading-relaxed">{result.summary}</p>
-        {result.tradition && <p className="mt-4 text-base text-muted italic leading-relaxed">{result.tradition}</p>}
-        <p className="mt-4 text-base text-muted leading-relaxed">{result.methodNote}</p>
+        <p className="text-lg text-foreground/90 leading-relaxed">{L.t(result.summary)}</p>
+        {result.tradition && <p className="mt-4 text-base text-muted italic leading-relaxed">{L.t(result.tradition)}</p>}
+        <p className="mt-4 text-base text-muted leading-relaxed">{L.t(result.methodNote)}</p>
       </div>
 
       {otherEvents.length > 0 && (
@@ -46,21 +46,21 @@ export default function AffinityDeepDive({
             <span className="text-sm text-muted label-caps">
               {otherEvents.length === 1 ? L("Otro hito documentado", "Another documented milestone") : L(`Otros ${otherEvents.length} hitos documentados`, `${otherEvents.length} other documented milestones`)}
             </span>
-            <span className="text-sm text-foreground underline underline-offset-4">{showOtherEvents ? L("Ocultar", "Hide") : L("Ver", "Show")}</span>
+            <span className="text-sm text-foreground underline underline-offset-4">{L.t(showOtherEvents ? L("Ocultar", "Hide") : L("Ver", "Show"))}</span>
           </button>
           {showOtherEvents && (
             <ul className="divide-y divide-ink/15">
               {otherEvents.map((e) => (
                 <li key={e.id} className="py-4">
                   <p className="flex items-baseline justify-between gap-4">
-                    <span className="font-display text-xl text-foreground">{e.label}</span>
+                    <span className="font-display text-xl text-foreground">{L.t(e.label)}</span>
                     <span className="text-base text-muted tabular-nums">
                       {e.year}
-                      {e.calculatedAnimal ? ` · ${e.calculatedAnimal}` : ""}
+                      {L.t(e.calculatedAnimal ? ` · ${e.calculatedAnimal}` : "")}
                     </span>
                   </p>
-                  <p className="mt-1 text-base text-muted leading-relaxed">{e.description}</p>
-                  <p className="mt-1 text-sm text-muted">{L(<>Fuente: {e.source}{e.isApproximate ? " · año documentado" : ""}</>, <>Source: {e.source}{e.isApproximate ? " · year documented" : ""}</>)}</p>
+                  <p className="mt-1 text-base text-muted leading-relaxed">{L.t(e.description)}</p>
+                  <p className="mt-1 text-sm text-muted">{L(<>Fuente: {L.t(e.source)}{L.t(e.isApproximate ? " · año documentado" : "")}</>, <>Source: {L.t(e.source)}{e.isApproximate ? " · year documented" : ""}</>)}</p>
                 </li>
               ))}
             </ul>

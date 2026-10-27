@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import HomeOpening from "@/components/sections/HomeOpening";
 import { Fleuron } from "@/components/sections/HomeOrnaments";
@@ -52,8 +53,9 @@ export const generateMetadata = metadataFor({
     ["Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.", "Discover your personal pattern: numerology, astrology, Chinese zodiac. Basic map 100% local, no sign-up. Radical transparency."],
 });
 
-export default function HomePage() {
-  const L = useL();
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <>
       <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden pt-16">
@@ -91,7 +93,7 @@ export default function HomePage() {
       </main>
 
       {/* JSON-LD Schema */}
-      <script type="application/ld+json">{JSON.stringify(homeSchemas(L))}</script>
+      <script type="application/ld+json">{L.t(JSON.stringify(homeSchemas(L)))}</script>
     </>
   );
 }

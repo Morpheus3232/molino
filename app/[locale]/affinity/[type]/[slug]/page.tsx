@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -91,6 +92,7 @@ function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: 
 }
 
 export default async function AffinityDetailPage({ params }: { params: Promise<{ type: string; slug: string }> }) {
+  await initLocale(params);
   const { type, slug: rawSlug } = await params;
   // Los ids con tilde/ñ (david-lebón) llegan percent-encoded al render.
   const slug = decodeURIComponent(rawSlug);

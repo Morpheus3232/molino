@@ -155,7 +155,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                         colSpan={3}
                         className="py-2.5 px-6 text-sm text-gold bg-ink/[0.03] border-y border-ink/10 font-bold label-caps"
                       >
-                        {category}
+                        {L.t(category)}
                       </td>
                     </tr>
                     {catFeatures.map((f) => (
@@ -166,10 +166,10 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                         }`}
                       >
                         <td className="py-4 px-6 text-xs sm:text-sm text-foreground">
-                          <span className="font-semibold block">{f.name}</span>
+                          <span className="font-semibold block">{L.t(f.name)}</span>
                           {f.description && (
                             <span className="text-xs text-muted block mt-0.5 font-normal">
-                              {f.description}
+                              {L.t(f.description)}
                             </span>
                           )}
                         </td>
@@ -206,7 +206,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                 className="rounded-xl border border-ink/10 bg-card p-5 space-y-4"
               >
                 <h3 className="text-sm text-gold font-bold border-b border-ink/10 pb-2 label-caps">
-                  {category}
+                  {L.t(category)}
                 </h3>
                 <div className="space-y-3.5">
                   {catFeatures.map((f) => (
@@ -215,10 +215,10 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                       className="flex items-start justify-between gap-3 text-xs"
                     >
                       <div className="flex-1">
-                        <span className="font-semibold text-foreground block">{f.name}</span>
+                        <span className="font-semibold text-foreground block">{L.t(f.name)}</span>
                         {f.description && (
                           <span className="text-[11px] text-muted block mt-0.5">
-                            {f.description}
+                            {L.t(f.description)}
                           </span>
                         )}
                       </div>

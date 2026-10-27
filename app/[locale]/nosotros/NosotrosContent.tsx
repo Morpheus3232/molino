@@ -54,7 +54,7 @@ export default function NosotrosContent() {
       <KnowledgeSection label={L("El origen", "The origin")}>
         <div className="max-w-3xl space-y-6 text-xl sm:text-2xl text-foreground/85 leading-relaxed">
           {origin(L).map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
+            <p key={i}>{L.t(paragraph)}</p>
           ))}
         </div>
       </KnowledgeSection>

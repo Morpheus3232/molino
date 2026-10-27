@@ -253,20 +253,20 @@ export default function JournalEditor({
       {/* La fecha es el título de la hoja; el contexto del día, su bajada. */}
       <header>
         <p className="text-sm text-muted label-caps">
-          {editingEntry ? L("Corrigiendo una página", "Correcting a page") : L("Página de hoy", "Today's page")}
+          {L.t(editingEntry ? L("Corrigiendo una página", "Correcting a page") : L("Página de hoy", "Today's page"))}
         </p>
         <h2 className="mt-2 font-display font-normal text-[clamp(2.25rem,5vw,3.75rem)] leading-[1] tracking-tight text-foreground first-letter:uppercase">
-          {formattedDisplayDate}
+          {L.t(formattedDisplayDate)}
         </h2>
         {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.dayEnergy?.moonPhase) && (
           <p className="mt-3 text-lg text-muted">
-            {[
-              cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${cycle.dayEnergy.personalDay}`),
+            {L.t([
+              cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${L.t(cycle.dayEnergy.personalDay)}`),
               cycle.dayEnergy?.theme,
               cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
             ]
-              .filter(Boolean)
-              .join(" · ")}
+              .filter(Boolean).map(L.t)
+              .join(" · "))}
           </p>
         )}
       </header>
@@ -290,18 +290,18 @@ export default function JournalEditor({
                     isSelected ? "bg-ink text-paper" : "bg-background text-muted hover:bg-paper-alt hover:text-foreground"
                   }`}
                   aria-pressed={isSelected}
-                  aria-label={cfg.label}
+                  aria-label={L.t(cfg.label)}
                 >
                   <span aria-hidden="true" className={`text-2xl leading-none ${isSelected ? "" : "opacity-60"}`}>
-                    {cfg.emoji}
+                    {L.t(cfg.emoji)}
                   </span>
-                  <span className="hidden sm:block text-sm leading-none" aria-hidden="true">{cfg.label}</span>
+                  <span className="hidden sm:block text-sm leading-none" aria-hidden="true">{L.t(cfg.label)}</span>
                 </button>
               );
             })}
           </div>
           <p className="sm:hidden mt-2 text-center text-base text-foreground" aria-live="polite">
-            {MOOD_CONFIG[mood].label}
+            {L.t(MOOD_CONFIG[mood].label)}
           </p>
         </fieldset>
 
@@ -313,7 +313,7 @@ export default function JournalEditor({
               id="journal-content"
               ariaLabel={L("Lo que querés escribir hoy", "What you want to write today")}
               initialMarkdown={editingEntry?.content ?? ""}
-              placeholder={editingEntry ? "" : currentPrompt}
+              placeholder={L.t(editingEntry ? "" : currentPrompt)}
               onChange={(md) => {
                 setContent(md);
                 setDraftNote(null);
@@ -322,7 +322,7 @@ export default function JournalEditor({
             />
           </div>
           <p className="mt-2 max-w-[46rem] flex justify-between gap-4 text-sm text-muted" aria-live="polite">
-            <span>{draftNote}</span>
+            <span>{L.t(draftNote)}</span>
             <span className="tabular-nums">
               {wordCount > 0 && `${wordCount} ${wordCount === 1 ? "palabra" : "palabras"}`}
             </span>
@@ -361,7 +361,7 @@ export default function JournalEditor({
                         selected ? "bg-ink text-paper border-ink" : "bg-background text-muted border-ink/25 hover:border-ink hover:text-foreground"
                       }`}
                     >
-                      #{tag}
+                      #{L.t(tag)}
                     </button>
                   );
                 })}
@@ -388,7 +388,7 @@ export default function JournalEditor({
                 {L("Guardado", "Saved")}
               </>
             ) : (
-              <>{editingEntry ? L("Guardar la corrección", "Save the correction") : L("Guardar en el diario", "Save to the journal")}</>
+              <>{L.t(editingEntry ? L("Guardar la corrección", "Save the correction") : L("Guardar en el diario", "Save to the journal"))}</>
             )}
           </button>
         </div>

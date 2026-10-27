@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import type { ReactNode } from "react";
 
 /**
@@ -21,6 +22,7 @@ function inline(text: string): ReactNode[] {
 const cells = (row: string) => row.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
 
 export default function LegalText({ body }: { body: string }) {
+  const L = useL();
   const blocks: ReactNode[] = [];
   const lines = body.split("\n");
 
@@ -43,9 +45,9 @@ export default function LegalText({ body }: { body: string }) {
             const [first, ...others] = cells(r);
             return (
               <div key={k} className="py-3 space-y-1">
-                <p className="font-semibold text-foreground">{inline(first)}</p>
+                <p className="font-semibold text-foreground">{L.t(inline(first))}</p>
                 {others.map((c, j) => (
-                  <p key={j}><span className="text-muted">{headers[j + 1]}: </span>{inline(c)}</p>
+                  <p key={j}><span className="text-muted">{headers[j + 1]}: </span>{L.t(inline(c))}</p>
                 ))}
               </div>
             );
@@ -54,11 +56,11 @@ export default function LegalText({ body }: { body: string }) {
         <div key={i} className="hidden sm:block">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr>{headers.map((c, j) => <th key={j} className="border-b border-ink/15 py-2 pr-3 font-semibold text-foreground">{inline(c)}</th>)}</tr>
+              <tr>{headers.map((c, j) => <th key={j} className="border-b border-ink/15 py-2 pr-3 font-semibold text-foreground">{L.t(inline(c))}</th>)}</tr>
             </thead>
             <tbody>
               {rest.map((r, k) => (
-                <tr key={k}>{cells(r).map((c, j) => <td key={j} className="border-b border-ink/10 py-2 pr-3 align-top">{inline(c)}</td>)}</tr>
+                <tr key={k}>{cells(r).map((c, j) => <td key={j} className="border-b border-ink/10 py-2 pr-3 align-top">{L.t(inline(c))}</td>)}</tr>
               ))}
             </tbody>
           </table>
@@ -72,15 +74,15 @@ export default function LegalText({ body }: { body: string }) {
       while (i < lines.length && lines[i].startsWith("- ")) items.push(lines[i++].slice(2));
       blocks.push(
         <ul key={i} className="list-disc pl-5 space-y-1">
-          {items.map((it, k) => <li key={k}>{inline(it)}</li>)}
+          {items.map((it, k) => <li key={k}>{L.t(inline(it))}</li>)}
         </ul>,
       );
       continue;
     }
 
-    blocks.push(<p key={i}>{inline(line)}</p>);
+    blocks.push(<p key={i}>{L.t(inline(line))}</p>);
     i++;
   }
 
-  return <div className="space-y-3">{blocks}</div>;
+  return <div className="space-y-3">{L.t(blocks)}</div>;
 }

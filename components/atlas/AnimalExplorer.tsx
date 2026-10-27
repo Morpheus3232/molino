@@ -95,12 +95,12 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
           <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10">
             <div className="flex-1">
               <h1 className="page-title text-foreground">
-                {animal}
+                {L.t(animal)}
               </h1>
               <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
-                {isEnemy
+                {L.t(isEnemy
                   ? L("Explorá entidades asociadas al animal opuesto en el ciclo zodiacal.", "Explore entities associated with the opposite animal in the zodiac cycle.")
-                  : L("Explorá países, ciudades, marcas y entidades que comparten este animal del Zodiaco Chino.", "Explore countries, cities, brands and entities that share this Chinese Zodiac animal.")}
+                  : L("Explorá países, ciudades, marcas y entidades que comparten este animal del Zodiaco Chino.", "Explore countries, cities, brands and entities that share this Chinese Zodiac animal."))}
               </p>
             </div>
             <div className="shrink-0 select-none">
@@ -119,7 +119,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
               <motion.div key={g.type} {...fadeUpDelayed(i * 0.05)}>
                 <div className="flex items-end justify-between mb-4">
                   <h2 className="font-heading text-xl sm:text-2xl text-foreground">
-                    {g.label}
+                    {L.t(g.label)}
                   </h2>
                   <span className="font-mono text-[11px] text-muted">
                     {g.entities.length} {g.entities.length === 1 ? "entidad" : "entidades"}
@@ -147,10 +147,10 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                       />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                          {e.name}
+                          {L.t(e.name)}
                         </p>
                         {e.origin && (
-                          <p className="text-[11px] text-muted mt-0.5 truncate">{e.origin}</p>
+                          <p className="text-[11px] text-muted mt-0.5 truncate">{L.t(e.origin)}</p>
                         )}
                       </div>
                       <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
@@ -165,7 +165,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                     href={`/atlas/explorar/${animal}/${g.type}`}
                     className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
                   >
-                    <span>{formatViewAll(g.type, g.label)}</span>
+                    <span>{L.t(formatViewAll(g.type, g.label))}</span>
                     <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
                   </Link>
                 )}
@@ -177,8 +177,8 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
         {grouped.length === 0 && (
           <motion.div {...fadeUpDelayed(0.1)} className="text-center py-16">
             <p className="text-sm text-muted">{L(<>
-              No hay entidades registradas para {animal} en este momento.
-            </>, <>There are no entities recorded for {animal} right now.</>)}</p>
+              No hay entidades registradas para {L.t(animal)} en este momento.
+            </>, <>There are no entities recorded for {L.t(animal)} right now.</>)}</p>
           </motion.div>
         )}
 

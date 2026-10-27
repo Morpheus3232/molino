@@ -63,9 +63,9 @@ export default function PremiumPreview({
             className="section-title text-foreground mt-1"
           >{L("Así se ve tu lectura desbloqueada", "This is what your unlocked reading looks like")}</h2>
           <p className="text-xs sm:text-sm text-muted mt-2 max-w-xl mx-auto">{L(<>
-            Interactuá con la vista previa basada en tu mapa ({archetypeName}, {displayProfile.sunSign},{" "}
-            {displayProfile.chineseZodiac}).
-          </>, <>Play with the preview based on your map ({archetypeName}, {displayProfile.sunSign},{" "}{displayProfile.chineseZodiac}).</>)}</p>
+            Interactuá con la vista previa basada en tu mapa ({L.t(archetypeName)}, {L.t(displayProfile.sunSign)},{" "}
+            {L.t(displayProfile.chineseZodiac)}).
+          </>, <>Play with the preview based on your map ({L.t(archetypeName)}, {L.t(displayProfile.sunSign)},{" "}{L.t(displayProfile.chineseZodiac)}).</>)}</p>
 
           {/* Interactive Toggle */}
           <div className="flex justify-center mt-6">
@@ -109,13 +109,13 @@ export default function PremiumPreview({
                   Perfil Activo
                 </span>
                 <span className="font-heading text-sm sm:text-base font-bold text-foreground">
-                  {archetypeName} · Camino {lifePath} · {displayProfile.sunSign}
+                  {L.t(archetypeName)} · Camino {L.t(lifePath)} · {L.t(displayProfile.sunSign)}
                 </span>
-              </>, <><span className="text-sm text-muted block label-caps">Active Profile</span><span className="font-heading text-sm sm:text-base font-bold text-foreground">{archetypeName} · Path {lifePath} · {displayProfile.sunSign}</span></>)}</div>
+              </>, <><span className="text-sm text-muted block label-caps">Active Profile</span><span className="font-heading text-sm sm:text-base font-bold text-foreground">{L.t(archetypeName)} · Path {L.t(lifePath)} · {L.t(displayProfile.sunSign)}</span></>)}</div>
             </div>
 
             <span className="font-mono text-xs text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full font-bold">
-              {isUnlockedPreview ? L("Modo Pro Desbloqueado", "Pro Mode Unlocked") : L("🔒 Modo Free", "🔒 Free Mode")}
+              {L.t(isUnlockedPreview ? L("Modo Pro Desbloqueado", "Pro Mode Unlocked") : L("🔒 Modo Free", "🔒 Free Mode"))}
             </span>
           </div>
 
@@ -128,10 +128,10 @@ export default function PremiumPreview({
               </>, <><span>Convergence Synthesis</span></>)}</div>
               <h3 className="font-heading text-lg font-bold text-foreground">{L("La tensión entre tu visión y tu ritmo", "The tension between your vision and your rhythm")}</h3>
               <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">{L(<>
-                Tu Camino {lifePath} ({archetypeName}) te impulsa a construir con autonomía, pero tu
-                naturaleza de {displayProfile.chineseZodiac} ({displayProfile.chineseZodiacInfo?.element || "Fuego"}) busca
+                Tu Camino {L.t(lifePath)} ({L.t(archetypeName)}) te impulsa a construir con autonomía, pero tu
+                naturaleza de {L.t(displayProfile.chineseZodiac)} ({L.t(displayProfile.chineseZodiacInfo?.element || "Fuego")}) busca
                 movimiento continuo.
-              </>, <>Your Path {lifePath} ({archetypeName}) drives you to build autonomously, but your {displayProfile.chineseZodiac} nature ({displayProfile.chineseZodiacInfo?.element || "Fire"}) seeks constant movement.</>)}</p>
+              </>, <>Your Path {L.t(lifePath)} ({L.t(archetypeName)}) drives you to build autonomously, but your {L.t(displayProfile.chineseZodiac)} nature ({L.t(displayProfile.chineseZodiacInfo?.element || "Fire")}) seeks constant movement.</>)}</p>
               <div className="p-3 rounded-xl bg-accent/5 border border-accent/15 text-xs text-muted leading-relaxed">{L(<>
                 <strong>Clave de integración:</strong> No intentes frenar tu impulso de exploración. Usá tu
                 capacidad analítica para seleccionar 2 objetivos al año y canalizar toda tu energía allí.
@@ -152,7 +152,7 @@ export default function PremiumPreview({
                 </>, <>&ldquo;Is this a good month to change jobs?&rdquo;</>)}</div>
                 <div className="p-3.5 rounded-xl bg-accent/10 border border-accent/20 text-foreground mr-6 leading-relaxed">
                   <p className="font-semibold text-accent mb-1">Molino:</p>
-                  {L("Estás en tu Año Personal ", "You're in your Personal Year")} {displayProfile.cycles?.personalYear || 7} {L(" (Introspección y Estrategia), un ciclo que muchas personas usan para planificar antes de actuar. Esto no determina si es buen momento para vos — es una perspectiva más para sumar a lo que ya sabés de tu situación.", " (Introspection and Strategy), a cycle many people use to plan before acting. This doesn't determine whether it's a good moment for you — it's one more perspective to add to what you already know about your situation.")}
+                  {L("Estás en tu Año Personal ", "You're in your Personal Year ")} {displayProfile.cycles?.personalYear || 7} {L(" (Introspección y Estrategia), un ciclo que muchas personas usan para planificar antes de actuar. Esto no determina si es buen momento para vos — es una perspectiva más para sumar a lo que ya sabés de tu situación.", " (Introspection and Strategy), a cycle many people use to plan before acting. This doesn't determine whether it's a good moment for you — it's one more perspective to add to what you already know about your situation.")}
                 </div>
               </div>
             </div>

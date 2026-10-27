@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -43,6 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SignoPage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { signo: signId } = await params;
   const sign = ZODIAC_SIGNS.find(s => normalize(s.name) === normalize(signId));

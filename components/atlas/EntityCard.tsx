@@ -44,15 +44,15 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
       />
       <div className="flex-1 min-w-0">
         <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
-          {entity.name}
+          {L.t(entity.name)}
         </p>
         <p className="text-xs text-muted mt-0.5">
-          {entity.animal}
-          {entity.origin ? ` · ${entity.origin}` : ""}
+          {L.t(entity.animal)}
+          {L.t(entity.origin ? ` · ${entity.origin}` : "")}
         </p>
         {reasoning && (
           <p className="text-xs text-muted mt-1 leading-relaxed line-clamp-2">
-            {reasoning}
+            {L.t(reasoning)}
           </p>
         )}
       </div>
@@ -60,9 +60,9 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
       {resonanceStyle && resonance && (
         <span
           className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-sm font-medium border label-caps ${resonanceStyle.className}`}
-          title={resonance.label}
+          title={L.t(resonance.label)}
         >
-          {resonanceStyle.label}
+          {L.t(resonanceStyle.label)}
         </span>
       )}
 
@@ -83,7 +83,7 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
         rel={entityLinkRel(entity)}
         className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
-        {content}
+        {L.t(content)}
       </Link>
     </motion.div>
   );

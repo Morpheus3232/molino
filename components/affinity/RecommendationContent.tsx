@@ -88,7 +88,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-sm text-accent font-medium mb-4 label-caps">{L("Recomendaciones Simbólicas", "Symbolic Recommendations")}</p>
           <h1 className="page-title text-foreground mb-4">
-            {title}
+            {L.t(title)}
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">{L("Creá tu perfil para descubrir recomendaciones personalizadas.", "Create your profile to discover personalized recommendations.")}</p>
           <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>{L("Crear mi perfil", "Create my profile")}</Button>
@@ -123,18 +123,18 @@ export default function RecommendationContent({ entityType, catalog, title, subt
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
           <p className="text-sm text-accent font-medium mb-4 label-caps">
-            Recomendaciones Simbólicas · {TYPE_LABEL(L)[entityType] ?? entityType}
+            Recomendaciones Simbólicas · {L.t(TYPE_LABEL(L)[entityType] ?? entityType)}
           </p>
           <h1 className="page-title text-foreground mb-3">
-            {title}
+            {L.t(title)}
           </h1>
           <p className="text-sm text-muted">
-            {subtitle}
+            {L.t(subtitle)}
           </p>
           <div className="mt-4 flex items-center gap-2 text-xs text-muted">{L(<>
             <span>Tu signo:</span>
-            <span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span>
-          </>, <><span>Your sign:</span><span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span></>)}</div>
+            <span className="font-medium text-foreground">{L.t(formatAnimalSimple(userAnimal))}</span>
+          </>, <><span>Your sign:</span><span className="font-medium text-foreground">{L.t(formatAnimalSimple(userAnimal))}</span></>)}</div>
         </motion.section>
 
         {/* Recommendation groups with AnimatePresence on search/filter change */}
@@ -143,7 +143,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
             <RecommendationGroup
               key="mismo"
               title={L("Tu propio signo · 本命", "Your own sign · 本命")}
-              subtitle={L(`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`, `Its date of origin falls in a ${userAnimal} year, like yours.`)}
+              subtitle={L(`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`, `Its date of origin falls in a ${L.t(userAnimal)} year, like yours.`)}
               recommendations={same}
               accentColor="var(--color-accent)"
               router={router}
@@ -212,6 +212,7 @@ function RecommendationGroup({
   router: ReturnType<typeof useRouter>;
   transitionDelay?: number;
 }) {
+  const L = useL();
   return (
     <motion.section
       key={title}
@@ -223,9 +224,9 @@ function RecommendationGroup({
     >
       <div className="flex items-center gap-3 mb-2">
         <div className="w-8 h-px" style={{ backgroundColor: accentColor }} aria-hidden="true" />
-        <h2 className="text-sm font-medium label-caps" style={{ color: accentColor }}>{title}</h2>
+        <h2 className="text-sm font-medium label-caps" style={{ color: accentColor }}>{L.t(title)}</h2>
       </div>
-      <p className="text-xs text-muted mb-4 ml-11">{subtitle}</p>
+      <p className="text-xs text-muted mb-4 ml-11">{L.t(subtitle)}</p>
       <motion.div {...staggerContainer} className="space-y-3">
         {recommendations.map((rec, i) => (
           <RecommendationCard key={rec.id} rec={rec} router={router} index={i} />
@@ -244,6 +245,7 @@ function RecommendationCard({
   router: ReturnType<typeof useRouter>;
   index: number;
 }) {
+  const L = useL();
   return (
     <motion.button
       {...staggerItem}
@@ -273,10 +275,10 @@ function RecommendationCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
-              {rec.name}
+              {L.t(rec.name)}
             </h3>
           </div>
-          <p className="text-xs text-muted mb-1">{formatAnimalSimple(rec.animal)}{rec.origin ? ` · ${rec.origin}` : ""}</p>
+          <p className="text-xs text-muted mb-1">{L.t(formatAnimalSimple(rec.animal))}{L.t(rec.origin ? ` · ${rec.origin}` : "")}</p>
         </div>
       </div>
     </motion.button>

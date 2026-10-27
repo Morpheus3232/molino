@@ -54,7 +54,7 @@ export default function RegalarClient() {
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-4 py-4 text-lg sm:text-xl text-foreground/90 leading-snug">
                   <Check className="w-5 h-5 mt-1 shrink-0 text-foreground" aria-hidden="true" />
-                  {f}
+                  {L.t(f)}
                 </li>
               ))}
             </ul>
@@ -81,7 +81,7 @@ export default function RegalarClient() {
               className="mt-8 w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps min-h-[52px] disabled:opacity-60"
             >
               <Gift className="w-4 h-4" aria-hidden="true" />
-              {loading ? L("Abriendo Mercado Pago…", "Opening Mercado Pago…") : L("Comprar con Mercado Pago", "Buy with Mercado Pago")}
+              {L.t(loading ? L("Abriendo Mercado Pago…", "Opening Mercado Pago…") : L("Comprar con Mercado Pago", "Buy with Mercado Pago"))}
             </button>
             <p className="mt-4 text-sm text-muted">{L("Al terminar el pago recibís el código y el link para enviar.", "Once the payment is done you get the code and the link to send.")}</p>
           </aside>

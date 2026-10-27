@@ -21,10 +21,10 @@ export default function ChatHero({
   const hookData = useMemo(() => generateChatContextualHook(profile), [profile]);
 
   const coords = [
-    L(`Camino de Vida ${profile.lifePath}`, `Life Path ${profile.lifePath}`),
-    L(`Sol en ${profile.sunSign}`, `Sun in ${profile.sunSign}`),
-    ...(hookData.moonSign ? [L(`Luna en ${hookData.moonSign}`, `Moon in ${hookData.moonSign}`)] : []),
-    ...(profile.chineseZodiac ? [L(`${profile.chineseZodiac} de ${profile.chineseZodiacInfo?.element || ""}`, `${profile.chineseZodiacInfo?.element || ""} ${profile.chineseZodiac}`).trim()] : []),
+    L(`Camino de Vida ${profile.lifePath}`, `Life Path ${L.t(profile.lifePath)}`),
+    L(`Sol en ${profile.sunSign}`, `Sun in ${L.t(profile.sunSign)}`),
+    ...(hookData.moonSign ? [L(`Luna en ${hookData.moonSign}`, `Moon in ${L.t(hookData.moonSign)}`)] : []),
+    ...(profile.chineseZodiac ? [L(`${profile.chineseZodiac} de ${profile.chineseZodiacInfo?.element || ""}`, `${L.t(profile.chineseZodiacInfo?.element || "")} ${L.t(profile.chineseZodiac)}`).trim()] : []),
     L(`Año personal ${hookData.personalYear}`, `Personal year ${hookData.personalYear}`),
   ];
 
@@ -45,7 +45,7 @@ export default function ChatHero({
         <p className="text-sm text-muted label-caps mb-2">{L("Molino responde con", "Molino answers with")}</p>
         <ul className="flex flex-wrap gap-x-6 gap-y-1 text-base text-foreground">
           {coords.map((c) => (
-            <li key={c}>{c}</li>
+            <li key={c}>{L.t(c)}</li>
           ))}
         </ul>
       </div>
@@ -62,9 +62,9 @@ export default function ChatHero({
                   onClick={() => onSelectStarter(q)}
                   className="group w-full flex items-baseline justify-between gap-4 py-4 text-left font-display text-xl sm:text-2xl leading-snug text-foreground hover:bg-ink/[0.03] transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
                 >{L(<>
-                  <span className="group-hover:underline underline-offset-4 decoration-1">{q}</span>
+                  <span className="group-hover:underline underline-offset-4 decoration-1">{L.t(q)}</span>
                   <span className="shrink-0 text-base text-muted group-hover:text-foreground" aria-hidden="true">Preguntar</span>
-                </>, <><span className="group-hover:underline underline-offset-4 decoration-1">{q}</span><span className="shrink-0 text-base text-muted group-hover:text-foreground" aria-hidden="true">Ask</span></>)}</button>
+                </>, <><span className="group-hover:underline underline-offset-4 decoration-1">{L.t(q)}</span><span className="shrink-0 text-base text-muted group-hover:text-foreground" aria-hidden="true">Ask</span></>)}</button>
               </li>
             ))}
           </ul>

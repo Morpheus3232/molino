@@ -23,6 +23,7 @@ function FAQItem({
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const L = useL();
   const id = useId();
   const buttonId = `${id}-button`;
   const panelId = `${id}-panel`;
@@ -39,7 +40,7 @@ function FAQItem({
           className="group flex w-full items-center justify-between gap-4 py-5 sm:py-6 text-left transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <span className="font-heading text-base sm:text-lg text-foreground group-hover:text-accent transition-colors">
-            {question}
+            {L.t(question)}
           </span>
           <span className="shrink-0 text-accent" aria-hidden="true">
             {isOpen ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
@@ -60,7 +61,7 @@ function FAQItem({
             className="overflow-hidden"
           >
             <p className="text-sm sm:text-base text-muted leading-relaxed pb-5 sm:pb-6 max-w-2xl">
-              {answer}
+              {L.t(answer)}
             </p>
           </motion.div>
         )}
@@ -81,7 +82,7 @@ export default function PricingFAQ({ items = PRICING_FAQS, subtitle = "Sobre pla
           className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-3 leading-[1.05]"
         >{L("Preguntas frecuentes", "Frequently asked questions")}</motion.h2>
         <motion.p {...fadeUp} className="text-center text-muted text-sm sm:text-base mb-12">
-          {subtitle}
+          {L.t(subtitle)}
         </motion.p>
 
         <motion.div {...fadeUp}>

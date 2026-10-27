@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { SITE_URL, siteUrl, metadataFor } from "@/lib/seo";
 import MotoresContent from "./MotoresContent";
 
@@ -32,8 +33,9 @@ const jsonLd = (L: Pick2) => ([
   },
 ]);
 
-export default function MotoresPage() {
-  const L = useL();
+export default async function MotoresPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />

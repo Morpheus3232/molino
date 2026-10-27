@@ -246,7 +246,7 @@ export default function PremiumChatSection({
           >
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>{reloadNotice}</span>
+              <span>{L.t(reloadNotice)}</span>
             </div>
             <span className="text-sm text-muted">{L("Listo para seguir", "Ready to continue")}</span>
           </motion.div>

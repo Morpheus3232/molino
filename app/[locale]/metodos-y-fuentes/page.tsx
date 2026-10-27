@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { SITE_URL, siteUrl, metadataFor } from "@/lib/seo";
 import { Compass, Github, Asterisk } from "lucide-react";
@@ -84,8 +85,9 @@ const SECTIONS = (L: Pick2) => ([
   },
 ]);
 
-export default function MetodosYFuentesPage() {
-  const L = useL();
+export default async function MetodosYFuentesPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />
@@ -102,10 +104,10 @@ export default function MetodosYFuentesPage() {
             <div className={`${CONTAINER} py-16 sm:py-20 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6`}>
               <div className="lg:col-span-4">
                 <p className="text-sm text-muted mb-3 label-caps">{[L("Los sistemas", "The systems"), L("El cálculo", "The calculation"), L("El uso", "The use")][i] ?? L("Método", "Method")}</p>
-                <h2 className="section-title text-foreground">{title}</h2>
+                <h2 className="section-title text-foreground">{L.t(title)}</h2>
               </div>
               <div className="lg:col-span-8 max-w-3xl text-lg sm:text-xl text-foreground/85 leading-relaxed space-y-5 [&_a]:underline [&_a]:underline-offset-4">
-                {body}
+                {L.t(body)}
               </div>
             </div>
           </section>

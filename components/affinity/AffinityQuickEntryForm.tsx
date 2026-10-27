@@ -178,8 +178,8 @@ export default function AffinityQuickEntryForm({
           <motion.section {...fadeUp} className="mb-12">
             <div className="max-w-xl border-2 border-ink p-6 sm:p-8">
               <p className="font-display text-2xl text-foreground leading-snug mb-1">{L(<>
-                Escribí tu fecha de nacimiento para ver cómo resuena {entity.name} con vos
-              </>, <>Type your date of birth to see how {entity.name} resonates with you</>)}</p>
+                Escribí tu fecha de nacimiento para ver cómo resuena {L.t(entity.name)} con vos
+              </>, <>Type your date of birth to see how {L.t(entity.name)} resonates with you</>)}</p>
               <p className="text-base text-muted mb-6">{L("Solo necesitamos tu fecha. No se guarda permanentemente.", "We only need your date. It isn't stored permanently.")}</p>
 
               <div className="grid grid-cols-3 gap-3 mb-4">
@@ -193,7 +193,7 @@ export default function AffinityQuickEntryForm({
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                      <option key={d} value={d}>{d}</option>
+                      <option key={d} value={d}>{L.t(d)}</option>
                     ))}
                   </select>
                 </div>
@@ -206,7 +206,7 @@ export default function AffinityQuickEntryForm({
                     className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
-                      <option key={m} value={m}>{MONTH_LABELS(L)[i]}</option>
+                      <option key={m} value={m}>{L.t(MONTH_LABELS(L)[i])}</option>
                     ))}
                   </select>
                 </div>
@@ -219,14 +219,14 @@ export default function AffinityQuickEntryForm({
                     className="w-full px-3 py-3 border border-ink/30 bg-background text-foreground text-lg focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
-                      <option key={y} value={y}>{y}</option>
+                      <option key={y} value={y}>{L.t(y)}</option>
                     ))}
                   </select>
                 </div>
               </div>
 
               {error && (
-                <p className="text-base text-vermilion mb-3">{error}</p>
+                <p className="text-base text-vermilion mb-3">{L.t(error)}</p>
               )}
 
               <button
@@ -258,9 +258,9 @@ export default function AffinityQuickEntryForm({
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-muted mb-1 label-caps">{L("Guardá tu resultado", "Save your result")}</p>
                     <p className="text-base text-muted leading-relaxed">
-                      {saved
+                      {L.t(saved
                         ? L("Tu resonancia con esta entidad está guardada.", "Your resonance with this entity is saved.")
-                        : L("Guardá tu resonancia para accederla después sin reingresar tu fecha.", "Save your resonance to access it later without re-entering your date.")
+                        : L("Guardá tu resonancia para accederla después sin reingresar tu fecha.", "Save your resonance to access it later without re-entering your date."))
                       }
                     </p>
                   </div>

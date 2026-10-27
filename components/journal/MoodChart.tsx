@@ -34,16 +34,16 @@ function CustomTooltip({ active, payload }: any) {
     const moodCfg = MOOD_CONFIG[data.mood as JournalMood];
     return (
       <div className="bg-paper-alt border border-ink/15 rounded-xl p-3 shadow-xl text-xs">
-        <div className="font-mono text-muted text-[10px] mb-1">{data.formattedDate}</div>
+        <div className="font-mono text-muted text-[10px] mb-1">{L.t(data.formattedDate)}</div>
         <div className="flex items-center gap-1.5 font-bold text-foreground">
-          <span>{moodCfg?.emoji}</span>
-          <span style={{ color: moodCfg?.color }}>{moodCfg?.label}</span>
-          <span className="text-muted font-mono">({data.mood}/5)</span>
+          <span>{L.t(moodCfg?.emoji)}</span>
+          <span style={{ color: moodCfg?.color }}>{L.t(moodCfg?.label)}</span>
+          <span className="text-muted font-mono">({L.t(data.mood)}/5)</span>
         </div>
         {data.theme && (
           <div className="mt-1 font-mono text-[10px] text-accent">{L(<>
-            Día {data.personalDay}: {data.theme}
-          </>, <>Day {data.personalDay}: {data.theme}</>)}</div>
+            Día {L.t(data.personalDay)}: {L.t(data.theme)}
+          </>, <>Day {L.t(data.personalDay)}: {L.t(data.theme)}</>)}</div>
         )}
       </div>
     );
@@ -109,9 +109,9 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
         <tbody>
           {chartData.map((d, i) => (
             <tr key={i}>
-              <td>{d.formattedDate}</td>
-              <td>{L(<>{d.mood} de 5</>, <>{d.mood} of 5</>)}</td>
-              <td>{d.theme ? L(`Día ${d.personalDay}: ${d.theme}`, `Day ${d.personalDay}: ${d.theme}`) : L("Sin tema", "No theme")}</td>
+              <td>{L.t(d.formattedDate)}</td>
+              <td>{L(<>{L.t(d.mood)} de 5</>, <>{L.t(d.mood)} of 5</>)}</td>
+              <td>{L.t(d.theme ? L(`Día ${d.personalDay}: ${d.theme}`, `Day ${L.t(d.personalDay)}: ${L.t(d.theme)}`) : L("Sin tema", "No theme"))}</td>
             </tr>
           ))}
         </tbody>

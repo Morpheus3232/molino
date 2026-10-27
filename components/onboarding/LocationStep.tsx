@@ -132,7 +132,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
               <span className="flex items-center gap-2 text-sm text-foreground">
                 <Check className="w-4 h-4 text-accent shrink-0" aria-hidden="true" />
                 <span className="flag-emoji text-lg" aria-hidden="true">{selectedCountry.flag}</span>
-                {selectedCountry.name}
+                {L.t(selectedCountry.name)}
               </span>
               <button
                 type="button"
@@ -159,8 +159,8 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
                     onClick={() => selectCountry(c.name)}
                     className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm text-foreground transition-colors hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   >
-                    <span className="flag-emoji" aria-hidden="true">{c.flag}</span>
-                    {c.name}
+                    <span className="flag-emoji" aria-hidden="true">{L.t(c.flag)}</span>
+                    {L.t(c.name)}
                   </button>
                 ))}
               </div>
@@ -182,8 +182,8 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
                         onClick={() => selectCountry(c.name)}
                         className="flex w-full items-center gap-2.5 px-4 py-3 text-sm text-foreground text-left transition-colors hover:bg-ink/[0.04] focus:outline-none focus-visible:bg-ink/[0.06] border-b border-border last:border-b-0"
                       >
-                        <span className="flag-emoji" aria-hidden="true">{c.flag}</span>
-                        {c.name}
+                        <span className="flag-emoji" aria-hidden="true">{L.t(c.flag)}</span>
+                        {L.t(c.name)}
                       </button>
                     ))
                   ) : (

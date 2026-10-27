@@ -31,8 +31,8 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
             <p className="text-sm text-muted mb-3 label-caps">{L("Tu año personal", "Your personal year")}</p>
             <p className="font-display text-[clamp(6rem,14vw,10rem)] leading-[0.8] text-foreground tabular-nums">{daily.personalYear}</p>
             <h2 className="mt-4 font-display text-3xl sm:text-4xl leading-tight text-foreground">{L(<>
-              Año Personal {daily.personalYear}: {yearMeaning.theme}
-            </>, <>Personal Year {daily.personalYear}: {yearMeaning.theme}</>)}</h2>
+              Año Personal {daily.personalYear}: {L.t(yearMeaning.theme)}
+            </>, <>Personal Year {daily.personalYear}: {L.t(yearMeaning.theme)}</>)}</h2>
           </div>
           <dl className="lg:col-span-8 border-t-2 border-ink divide-y divide-ink/15">
             {[
@@ -41,8 +41,8 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
               [L("Oportunidades", "Opportunities"), yearMeaning.opportunities],
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-1 sm:grid-cols-[11rem_1fr] gap-x-8 gap-y-1 py-5">
-                <dt className="font-display text-xl text-foreground">{k}</dt>
-                <dd className="text-lg text-foreground/85 leading-relaxed">{v}</dd>
+                <dt className="font-display text-xl text-foreground">{L.t(k)}</dt>
+                <dd className="text-lg text-foreground/85 leading-relaxed">{L.t(v)}</dd>
               </div>
             ))}
             <div className="py-5">{L(<>

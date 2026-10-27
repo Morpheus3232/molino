@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { NUMBERS, CALCULATIONS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
@@ -7,6 +8,7 @@ import { CONTAINER } from "@/components/knowledge/Kit";
 import SectionCover from "@/components/ui/SectionCover";
 
 export default function NumerologiaContent() {
+  const L = useL();
   return (
     <div className="min-h-screen bg-background">
 
@@ -17,7 +19,7 @@ export default function NumerologiaContent() {
         {/* Disclaimer */}
         <Reveal tag="section" delay={0.05} className="mb-12">
           <div className="py-2 pl-5 border-l-2 border-ink">
-            <p className="text-sm text-muted leading-relaxed">{NUMEROLOGY_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(NUMEROLOGY_DISCLAIMER)}</p>
           </div>
         </Reveal>
 
@@ -36,7 +38,7 @@ export default function NumerologiaContent() {
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
               <a key={item.id} href={`#${item.id}`} className="border-r border-b border-ink/15 px-5 py-4 font-display text-xl text-foreground hover:bg-ink/[0.03] hover:underline underline-offset-4">
-                {item.label}
+                {L.t(item.label)}
               </a>
             ))}
           </div>
@@ -106,7 +108,7 @@ export default function NumerologiaContent() {
               <p className="text-sm text-accent font-medium mb-3 label-caps">Tabla de correspondencia</p>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-foreground">
                 {["A=1", "B=2", "C=3", "D=4", "E=5", "F=6", "G=7", "H=8", "I=9", "J=1", "K=2", "L=3", "M=4", "N=5", "O=6", "P=7", "Q=8", "R=9", "S=1", "T=2", "U=3", "V=4", "W=5", "X=6", "Y=7", "Z=8"].map((v) => (
-                  <span key={v} className="text-center py-1 px-2 rounded bg-background text-sm">{v}</span>
+                  <span key={v} className="text-center py-1 px-2 rounded bg-background text-sm">{L.t(v)}</span>
                 ))}
               </div>
             </div>
@@ -122,10 +124,10 @@ export default function NumerologiaContent() {
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
               <div key={calc.title} className="p-6 border border-ink/10">
-                <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{calc.title}</h3>
-                <p className="text-sm text-muted leading-relaxed mb-3">{calc.description}</p>
-                <div className="p-3 rounded-md bg-background text-sm text-foreground font-mono mb-3">{calc.formula}</div>
-                <p className="text-sm text-muted italic">{calc.caveat}</p>
+                <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{L.t(calc.title)}</h3>
+                <p className="text-sm text-muted leading-relaxed mb-3">{L.t(calc.description)}</p>
+                <div className="p-3 rounded-md bg-background text-sm text-foreground font-mono mb-3">{L.t(calc.formula)}</div>
+                <p className="text-sm text-muted italic">{L.t(calc.caveat)}</p>
               </div>
             ))}
           </div>
@@ -143,8 +145,8 @@ export default function NumerologiaContent() {
                 <Link href={`/conocimiento/numerologia/${num.number}`} className="group flex h-full gap-5 p-6 hover:bg-ink/[0.03] transition-colors">
                   <span className="font-display text-6xl leading-none text-foreground w-10 shrink-0">{num.number}</span>
                   <span className="min-w-0">
-                    <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{num.title}</span>
-                    <span className="mt-2 block text-base text-muted leading-snug line-clamp-3">{num.meaning}</span>
+                    <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{L.t(num.title)}</span>
+                    <span className="mt-2 block text-base text-muted leading-snug line-clamp-3">{L.t(num.meaning)}</span>
                   </span>
                 </Link>
               </li>
@@ -163,8 +165,8 @@ export default function NumerologiaContent() {
               <li key={num.number} className="border-b border-ink/15 sm:border-b-0 sm:border-r last:border-r-0">
                 <Link href={`/conocimiento/numerologia/${num.number}`} className="group block h-full p-6 hover:bg-ink/[0.03] transition-colors">
                   <span className="block font-display text-6xl leading-none text-foreground">{num.number}</span>
-                  <span className="mt-3 block font-display text-2xl text-foreground group-hover:underline underline-offset-4">{num.title}</span>
-                  <span className="mt-2 block text-base text-muted leading-relaxed">{num.meaning}</span>
+                  <span className="mt-3 block font-display text-2xl text-foreground group-hover:underline underline-offset-4">{L.t(num.title)}</span>
+                  <span className="mt-2 block text-base text-muted leading-relaxed">{L.t(num.meaning)}</span>
                 </Link>
               </li>
             ))}
@@ -203,8 +205,8 @@ export default function NumerologiaContent() {
               <div key={src.title} className="flex items-start gap-3 py-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" />
                 <div>
-                  <p className="text-sm text-foreground">{src.title}</p>
-                  <p className="text-sm text-muted">{src.author}{src.url ? ` · ${src.url}` : ""}</p>
+                  <p className="text-sm text-foreground">{L.t(src.title)}</p>
+                  <p className="text-sm text-muted">{L.t(src.author)}{L.t(src.url ? ` · ${src.url}` : "")}</p>
                 </div>
               </div>
             ))}
@@ -242,7 +244,7 @@ export default function NumerologiaContent() {
         {/* Disclaimer final */}
         <Reveal tag="section" delay={0.26}>
           <div className="p-6 border border-ink/10">
-            <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(MOLINO_DISCLAIMER)}</p>
           </div>
         </Reveal>
 

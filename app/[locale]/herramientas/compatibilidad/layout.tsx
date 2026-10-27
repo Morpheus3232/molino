@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { siteUrl, metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
@@ -23,8 +24,9 @@ const jsonLd = (L: Pick2) => ({
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 });
 
-export default function CompatibilidadLayout({ children }: { children: React.ReactNode }) {
-  const L = useL();
+export default async function CompatibilidadLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />

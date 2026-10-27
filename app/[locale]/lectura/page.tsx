@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import { siteUrl } from "@/lib/seo";
@@ -14,7 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // El perfil llega por el fragmento (#), que nunca toca el servidor — no hay
 // nada que leer de searchParams acá, así que la página puede ser estática.
-export default function LecturaPage() {
+export default async function LecturaPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
   return <LecturaClient catalog={catalog} />;
 }

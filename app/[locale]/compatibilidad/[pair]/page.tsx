@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n/navigation";
@@ -57,6 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const list = (items: string[]) => items.join(", ").replace(/, ([^,]*)$/, " y $1");
 
 export default async function CompatibilidadPage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { pair } = await params;
   const parsed = parsePair(pair);
@@ -71,16 +72,16 @@ export default async function CompatibilidadPage({ params }: Props) {
   const url = `${SITE_URL}/compatibilidad/${pair}`;
 
   const faq = [
-    { q: L(`¿${nameA} y ${nameB} son compatibles?`, `Are ${nameA} and ${nameB} compatible?`), a: `${r.aspect.verdict}. ${r.answer}` },
+    { q: L(`¿${nameA} y ${nameB} son compatibles?`, `Are ${L.t(nameA)} and ${L.t(nameB)} compatible?`), a: `${r.aspect.verdict}. ${r.answer}` },
     ...[nameA, ...(same ? [] : [nameB])].map((n) => ({
-      q: L(`¿Con qué signos es más compatible ${n}?`, `Which signs is ${n} most compatible with?`),
-      a: L(`Por tradición, con los de su mismo elemento (trígono) y los de elemento complementario (sextil): ${list(harmoniousSigns(n))}.`, `By tradition, with those of its own element (trine) and those of the complementary element (sextile): ${list(harmoniousSigns(n))}.`),
+      q: L(`¿Con qué signos es más compatible ${n}?`, `Which signs is ${L.t(n)} most compatible with?`),
+      a: L(`Por tradición, con los de su mismo elemento (trígono) y los de elemento complementario (sextil): ${list(harmoniousSigns(n))}.`, `By tradition, with those of its own element (trine) and those of the complementary element (sextile): ${L.t(list(harmoniousSigns(n)))}.`),
     })),
     {
-      q: same ? L(`¿Qué elemento es ${nameA}?`, `What element is ${nameA}?`) : L(`¿Qué elemento son ${nameA} y ${nameB}?`, `What elements are ${nameA} and ${nameB}?`),
+      q: same ? L(`¿Qué elemento es ${nameA}?`, `What element is ${L.t(nameA)}?`) : L(`¿Qué elemento son ${nameA} y ${nameB}?`, `What elements are ${L.t(nameA)} and ${L.t(nameB)}?`),
       a: same
-        ? L(`${nameA} es un signo de ${factA.element}, de modalidad ${factA.modality.toLowerCase()}.`, `${nameA} is a ${factA.element} sign, of ${factA.modality.toLowerCase()} modality.`)
-        : L(`${nameA} es de ${factA.element} (${factA.modality.toLowerCase()}) y ${nameB} es de ${factB.element} (${factB.modality.toLowerCase()}).`, `${nameA} is ${factA.element} (${factA.modality.toLowerCase()}) and ${nameB} is ${factB.element} (${factB.modality.toLowerCase()}).`),
+        ? L(`${nameA} es un signo de ${factA.element}, de modalidad ${factA.modality.toLowerCase()}.`, `${L.t(nameA)} is a ${L.t(factA.element)} sign, of ${L.t(factA.modality.toLowerCase())} modality.`)
+        : L(`${nameA} es de ${factA.element} (${factA.modality.toLowerCase()}) y ${nameB} es de ${factB.element} (${factB.modality.toLowerCase()}).`, `${L.t(nameA)} is ${L.t(factA.element)} (${L.t(factA.modality.toLowerCase())}) and ${L.t(nameB)} is ${L.t(factB.element)} (${L.t(factB.modality.toLowerCase())}).`),
     },
   ];
 
@@ -88,7 +89,7 @@ export default async function CompatibilidadPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: L(`Compatibilidad ${nameA} y ${nameB}`, `${nameA} and ${nameB} compatibility`),
+      headline: L(`Compatibilidad ${nameA} y ${nameB}`, `${L.t(nameA)} and ${L.t(nameB)} compatibility`),
       description: pairMeta(a, b).description,
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino", url: SITE_URL },
@@ -117,10 +118,10 @@ export default async function CompatibilidadPage({ params }: Props) {
         <header className="text-center mb-10">
           <p className="text-sm text-accent font-bold mb-3 label-caps">{L("Compatibilidad astrológica", "Astrological compatibility")}</p>
           <h1 className="page-title text-foreground">{L(<>
-            {nameA} y {nameB}
-          </>, <>{nameA} and {nameB}</>)}</h1>
+            {L.t(nameA)} y {L.t(nameB)}
+          </>, <>{L.t(nameA)} and {L.t(nameB)}</>)}</h1>
           <p className="text-sm text-muted mt-3">
-            {factA.symbol} {nameA} ({factA.element}, {factA.modality}) · {factB.symbol} {nameB} ({factB.element}, {factB.modality})
+            {L.t(factA.symbol)} {L.t(nameA)} ({L.t(factA.element)}, {L.t(factA.modality)}) · {L.t(factB.symbol)} {L.t(nameB)} ({L.t(factB.element)}, {L.t(factB.modality)})
           </p>
         </header>
 
@@ -128,10 +129,10 @@ export default async function CompatibilidadPage({ params }: Props) {
 
         <div className="p-6 border border-ink/15 bg-card text-center mb-10">
           <span className="text-sm text-muted block mb-2 label-caps">{L(<>
-            Compatibilidad · {r.aspect.name} ({r.aspect.angle}°)
-          </>, <>Compatibility · {r.aspect.name} ({r.aspect.angle}°)</>)}</span>
-          <div className="font-display text-4xl font-bold my-2 leading-tight">{r.aspect.verdict}</div>
-          <p className="text-base max-w-xl mx-auto leading-relaxed">{r.answer}</p>
+            Compatibilidad · {L.t(r.aspect.name)} ({L.t(r.aspect.angle)}°)
+          </>, <>Compatibility · {L.t(r.aspect.name)} ({L.t(r.aspect.angle)}°)</>)}</span>
+          <div className="font-display text-4xl font-bold my-2 leading-tight">{L.t(r.aspect.verdict)}</div>
+          <p className="text-base max-w-xl mx-auto leading-relaxed">{L.t(r.answer)}</p>
         </div>
 
         <div className={`grid gap-4 text-center ${same ? "grid-cols-1" : "grid-cols-2"}`}>
@@ -141,52 +142,52 @@ export default async function CompatibilidadPage({ params }: Props) {
             const profile = SIGN_PROFILES[slug as keyof typeof SIGN_PROFILES];
             return (
               <Link key={slug} href={`/conocimiento/astrologia/${slug}`} className="p-4 bg-card border border-ink/10 hover:border-ink/40 transition-colors">
-                <div className="text-2xl">{fact.symbol}</div>
-                <h2 className="font-display text-lg font-bold mt-1">{name}</h2>
-                <p className="text-sm text-muted mt-1">{fact.element} · {fact.modality}</p>
-                <p className="text-sm text-muted mt-1">{L(<>{profile.dates} · regente {profile.ruler}</>, <>{profile.dates} · ruled by {profile.ruler}</>)}</p>
-                <p className="text-sm text-foreground mt-2 leading-relaxed">{profile.energy}.</p>
+                <div className="text-2xl">{L.t(fact.symbol)}</div>
+                <h2 className="font-display text-lg font-bold mt-1">{L.t(name)}</h2>
+                <p className="text-sm text-muted mt-1">{L.t(fact.element)} · {L.t(fact.modality)}</p>
+                <p className="text-sm text-muted mt-1">{L(<>{L.t(profile.dates)} · regente {L.t(profile.ruler)}</>, <>{L.t(profile.dates)} · ruled by {L.t(profile.ruler)}</>)}</p>
+                <p className="text-sm text-foreground mt-2 leading-relaxed">{L.t(profile.energy)}.</p>
               </Link>
             );
           })}
         </div>
 
         <section className="mt-12 space-y-3 text-base leading-relaxed">
-          <h2 className="font-display text-2xl">{L(<>{nameA} y {nameB} en el amor</>, <>{nameA} and {nameB} in love</>)}</h2>
-          <p>{r.love}</p>
+          <h2 className="font-display text-2xl">{L(<>{L.t(nameA)} y {L.t(nameB)} en el amor</>, <>{L.t(nameA)} and {L.t(nameB)} in love</>)}</h2>
+          <p>{L.t(r.love)}</p>
         </section>
 
         <section className="mt-10 space-y-3 text-base leading-relaxed">
           <h2 className="font-display text-2xl">{L("En la amistad y el trabajo", "In friendship and work")}</h2>
-          <p>{r.work}</p>
+          <p>{L.t(r.work)}</p>
         </section>
 
         <section className="mt-10 space-y-3 text-base leading-relaxed">
           <h2 className="font-display text-2xl">{L("Por qué se llevan así", "Why they get along this way")}</h2>
-          <p>{L(<><strong>Elemento — {r.element.level}.</strong> {r.element.desc}</>, <><strong>Element — {r.element.level}.</strong> {r.element.desc}</>)}</p>
-          <p>{L(<><strong>Ritmo.</strong> {r.rhythm}</>, <><strong>Rhythm.</strong> {r.rhythm}</>)}</p>
-          <p>{L(<><strong>Polaridad.</strong> {r.polarity}</>, <><strong>Polarity.</strong> {r.polarity}</>)}</p>
-          <p>{L(<><strong>Regentes.</strong> {r.rulers}</>, <><strong>Rulers.</strong> {r.rulers}</>)}</p>
+          <p>{L(<><strong>Elemento — {L.t(r.element.level)}.</strong> {L.t(r.element.desc)}</>, <><strong>Element — {L.t(r.element.level)}.</strong> {L.t(r.element.desc)}</>)}</p>
+          <p>{L(<><strong>Ritmo.</strong> {L.t(r.rhythm)}</>, <><strong>Rhythm.</strong> {L.t(r.rhythm)}</>)}</p>
+          <p>{L(<><strong>Polaridad.</strong> {L.t(r.polarity)}</>, <><strong>Polarity.</strong> {L.t(r.polarity)}</>)}</p>
+          <p>{L(<><strong>Regentes.</strong> {L.t(r.rulers)}</>, <><strong>Rulers.</strong> {L.t(r.rulers)}</>)}</p>
         </section>
 
         <section className="mt-10 grid sm:grid-cols-2 gap-8 text-base leading-relaxed">
           <div>
-            <h2 className="font-display text-2xl mb-3">{same ? L("Lo que aportan", "What they bring") : L("Lo que aporta cada uno", "What each one brings")}</h2>
+            <h2 className="font-display text-2xl mb-3">{L.t(same ? L("Lo que aportan", "What they bring") : L("Lo que aporta cada uno", "What each one brings"))}</h2>
             {r.bring.map(({ sign, items }) => (
-              <p key={sign} className="mb-2"><strong>{same ? L("Los dos", "Both") : sign}:</strong> {list(items).toLowerCase()}.</p>
+              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L.t(list(items).toLowerCase())}.</p>
             ))}
           </div>
           <div>
             <h2 className="font-display text-2xl mb-3">{L("Dónde pueden chocar", "Where they can clash")}</h2>
             {r.clash.map(({ sign, items }) => (
-              <p key={sign} className="mb-2"><strong>{same ? L("Los dos", "Both") : sign}:</strong> {list(items).toLowerCase()}.</p>
+              <p key={sign} className="mb-2"><strong>{L.t(same ? L("Los dos", "Both") : sign)}:</strong> {L.t(list(items).toLowerCase())}.</p>
             ))}
           </div>
         </section>
 
         <section className="mt-10 space-y-3 text-base leading-relaxed">
           <h2 className="font-display text-2xl">{L("Cómo cuidar el vínculo", "How to look after the bond")}</h2>
-          <p>{r.aspect.advice}</p>
+          <p>{L.t(r.aspect.advice)}</p>
         </section>
 
         <section className="mt-12">
@@ -194,8 +195,8 @@ export default async function CompatibilidadPage({ params }: Props) {
           <dl className="space-y-5 text-base leading-relaxed">
             {faq.map((f) => (
               <div key={f.q}>
-                <dt className="font-semibold">{f.q}</dt>
-                <dd className="mt-1">{f.a}</dd>
+                <dt className="font-semibold">{L.t(f.q)}</dt>
+                <dd className="mt-1">{L.t(f.a)}</dd>
               </div>
             ))}
           </dl>
@@ -208,16 +209,16 @@ export default async function CompatibilidadPage({ params }: Props) {
         </>, <>This compares sun signs only. With both full dates, <Link href="/pareja" className="underline underline-offset-4">Couple Mode</Link> also crosses numerology and the Chinese zodiac.</>)}</p>
 
         {[a, ...(same ? [] : [b])].map((slug) => (
-          <nav key={slug} className="mt-10 border-t border-ink/10 pt-6" aria-label={L(`Compatibilidad de ${SIGN_NAMES[slug]}`, `${SIGN_NAMES[slug]} compatibility`)}>
-            <h2 className="font-heading text-sm font-bold mb-3">{L(<>{SIGN_NAMES[slug]} con cada signo</>, <>{SIGN_NAMES[slug]} with each sign</>)}</h2>
+          <nav key={slug} className="mt-10 border-t border-ink/10 pt-6" aria-label={L(`Compatibilidad de ${SIGN_NAMES[slug]}`, `${L.t(SIGN_NAMES[slug])} compatibility`)}>
+            <h2 className="font-heading text-sm font-bold mb-3">{L(<>{L.t(SIGN_NAMES[slug])} con cada signo</>, <>{L.t(SIGN_NAMES[slug])} with each sign</>)}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
               {SIGN_SLUGS.map((other) => {
                 const target = canonicalPairSlug(slug, other);
                 if (target === pair) return null;
                 return (
                   <Link key={other} href={`/compatibilidad/${target}`} className="p-2 bg-card border border-ink/5 hover:border-ink/40 text-muted hover:text-foreground text-center">{L(<>
-                    {SIGN_NAMES[slug]} y {SIGN_NAMES[other]}
-                  </>, <>{SIGN_NAMES[slug]} and {SIGN_NAMES[other]}</>)}</Link>
+                    {L.t(SIGN_NAMES[slug])} y {L.t(SIGN_NAMES[other])}
+                  </>, <>{L.t(SIGN_NAMES[slug])} and {L.t(SIGN_NAMES[other])}</>)}</Link>
                 );
               })}
             </div>

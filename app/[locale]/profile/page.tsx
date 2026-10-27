@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -127,7 +128,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-export default async function ProfilePage({ searchParams }: Props) {
+export default async function ProfilePage({ searchParams, params: routeParams }: Props & { params: Promise<{ locale: string }> }) {
+  await initLocale(routeParams);
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;

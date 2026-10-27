@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import TerminosContent from "./TerminosContent";
 import { metadataFor } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = metadataFor({
   image: "/opengraph-image",
 });
 
-export default function TerminosPage() {
+export default async function TerminosPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <TerminosContent />;
 }

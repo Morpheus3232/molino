@@ -32,10 +32,10 @@ export default function MasterNumberPersonalization() {
         {hits.map((hit) => (
           <div key={hit.position}>
             <p className="font-heading text-xl sm:text-2xl text-foreground mb-1">
-              Tu número maestro: {hit.number} en {MASTER_POSITION_LABELS_ES[hit.position]}
+              Tu número maestro: {hit.number} en {L.t(MASTER_POSITION_LABELS_ES[hit.position])}
             </p>
             <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">
-              {getMasterPositionMeaning(hit.number, hit.position)}
+              {L.t(getMasterPositionMeaning(hit.number, hit.position))}
             </p>
           </div>
         ))}

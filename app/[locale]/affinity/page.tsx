@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { LightweightEntity } from "@/types/atlas";
 import { ENTITY_TYPES, getEntitiesByType, getAvailableTypes, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
@@ -21,7 +22,8 @@ export const generateMetadata = metadataFor({
  * no prose) and passes them to the client hub. The rich data layer and the
  * engines never reach the client bundle — only the minimal payload does.
  */
-export default function AffinityPage() {
+export default async function AffinityPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   const byType: Record<string, LightweightEntity[]> = {};
   const typeMeta: Record<string, (typeof ENTITY_TYPES)[EntityType]> = {};
   for (const type of getAvailableTypes()) {

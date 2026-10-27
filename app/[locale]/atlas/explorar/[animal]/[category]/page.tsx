@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AnimalCategoryPage({ params }: Props) {
+  await initLocale(params);
   const { animal: rawAnimal, category } = await params;
   const animal = decodeURIComponent(rawAnimal);
 

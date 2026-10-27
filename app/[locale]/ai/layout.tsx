@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
@@ -7,6 +8,7 @@ export const generateMetadata = metadataFor({
   noFollow: true,
 });
 
-export default function AiLayout({ children }: { children: React.ReactNode }) {
+export default async function AiLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

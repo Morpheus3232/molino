@@ -45,6 +45,7 @@ function ChapterNumber({
   number: string;
   elementDot?: { color: string; label: string };
 }) {
+  const L = useL();
   return (
     <div className="flex items-center gap-3 mb-6">
       <span className="text-sm text-accent label-caps" aria-hidden="true">
@@ -58,7 +59,7 @@ function ChapterNumber({
             style={{ backgroundColor: elementDot.color }}
             aria-hidden="true"
           />
-          <span className="font-mono text-sm text-muted">{elementDot.label}</span>
+          <span className="font-mono text-sm text-muted">{L.t(elementDot.label)}</span>
         </span>
       )}
     </div>
@@ -89,11 +90,11 @@ function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
                 {hit.number}
               </span>
               <span className="text-sm text-muted label-caps">
-                {MASTER_POSITION_LABELS_ES[hit.position]}
+                {L.t(MASTER_POSITION_LABELS_ES[hit.position])}
               </span>
             </div>
             <p className="text-sm text-foreground leading-relaxed max-w-2xl">
-              {getMasterPositionMeaning(hit.number, hit.position)}
+              {L.t(getMasterPositionMeaning(hit.number, hit.position))}
             </p>
           </div>
         ))}
@@ -124,13 +125,13 @@ function PatronCentral({
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
         <p className="text-sm text-muted mb-2 label-caps">
-          {pattern.label}
+          {L.t(pattern.label)}
         </p>
         <p className="section-title text-accent mb-4">
-          {pattern.keyword}
+          {L.t(pattern.keyword)}
         </p>
         <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
-          {pattern.description}
+          {L.t(pattern.description)}
         </p>
 
         {/* Tensión — el pliegue del patrón */}
@@ -139,10 +140,10 @@ function PatronCentral({
             <p className="text-sm text-muted mb-1 label-caps">{L("Tu tensión", "Your tension")}</p>
             <p className="text-sm text-muted mb-3 max-w-lg">{L("El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.", "The central pattern isn't even: here's the point where it pulls in two directions at once.")}</p>
             <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
-              {tension.title}
+              {L.t(tension.title)}
             </p>
             <p className="text-sm text-muted leading-relaxed">
-              {tension.evidence}
+              {L.t(tension.evidence)}
             </p>
           </div>
         )}
@@ -201,8 +202,8 @@ function TuMomento({
           {personalYear}
         </p>
         <p className="text-sm text-muted mt-2 label-caps">{L(<>
-          Año personal · {yearTheme ?? "—"}
-        </>, <>Personal year · {yearTheme ?? "—"}</>)}</p>
+          Año personal · {L.t(yearTheme ?? "—")}
+        </>, <>Personal year · {L.t(yearTheme ?? "—")}</>)}</p>
         <p className="mt-4 text-sm text-muted leading-relaxed max-w-md">{L("Tu año personal marca el clima de fondo de los próximos 12 meses. Sobre ese clima, cada día suma o resta energía en cuatro áreas — es lo que muestran las barras de abajo.", "Your personal year sets the background climate for the next 12 months. On top of that climate, each day adds or subtracts energy in four areas — that's what the bars below show.")}</p>
 
         {Object.keys(areas).length > 0 && (
@@ -221,13 +222,13 @@ function TuMomento({
                 <div key={key} className="py-4 border-b border-ink/10">
                   <div className="flex items-baseline justify-between gap-4 mb-2">
                     <span className="text-sm text-muted label-caps">
-                      {nombre}
+                      {L.t(nombre)}
                     </span>
                     <span
                       className="font-heading text-sm font-bold shrink-0"
                       style={{ color: barColor }}
                     >
-                      {getScoreLabel(area.score)}
+                      {L.t(getScoreLabel(area.score))}
                     </span>
                   </div>
                   {/* Barra: la misma cifra que separa "Favorable" de
@@ -236,7 +237,7 @@ function TuMomento({
                   <div
                     className="h-1.5 rounded-full bg-ink/8 overflow-hidden"
                     role="img"
-                    aria-label={L(`${nombre}: ${getScoreLabel(area.score)}, ${area.score} de 100`, `${nombre}: ${getScoreLabel(area.score)}, ${area.score} out of 100`)}
+                    aria-label={L(`${nombre}: ${getScoreLabel(area.score)}, ${area.score} de 100`, `${L.t(nombre)}: ${L.t(getScoreLabel(area.score))}, ${area.score} out of 100`)}
                   >
                     <div
                       className="h-full rounded-full transition-[width]"
@@ -249,8 +250,8 @@ function TuMomento({
                       una alarma que la barra ya no necesita. */}
                   {area.reasons && area.reasons.length > 0 && (
                     <p className="mt-1.5 font-mono text-sm text-accent">{L(<>
-                      A favor: {area.reasons.join(" · ")}
-                    </>, <>In favor: {area.reasons.join(" · ")}</>)}</p>
+                      A favor: {L.t(area.reasons.map(L.t).join(" · "))}
+                    </>, <>In favor: {L.t(area.reasons.map(L.t).join(" · "))}</>)}</p>
                   )}
                 </div>
               );
@@ -287,7 +288,7 @@ function PiezasLibres({
   }, []);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${element || "—"}`) };
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${L.t(element || "—")}`) };
 
   const dailyEnergy = calculateDailyEnergy(profile);
   const patterns = buildPatterns(profile);
@@ -330,9 +331,9 @@ function PiezasLibres({
       {mainTension && (
         <div className="flex items-center gap-4 text-sm text-muted">{L(<>
           <span className="h-px flex-1 bg-ink/10" />
-          <span>Más abajo: qué hacer cuando {mainTension.title.toLowerCase()}.</span>
+          <span>Más abajo: qué hacer cuando {L.t(mainTension.title.toLowerCase())}.</span>
           <span className="h-px flex-1 bg-ink/10" />
-        </>, <><span className="h-px flex-1 bg-ink/10" /><span>Further down: what to do when {mainTension.title.toLowerCase()}.</span><span className="h-px flex-1 bg-ink/10" /></>)}</div>
+        </>, <><span className="h-px flex-1 bg-ink/10" /><span>Further down: what to do when {L.t(mainTension.title.toLowerCase())}.</span><span className="h-px flex-1 bg-ink/10" /></>)}</div>
       )}
     </div>
   );
@@ -358,7 +359,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
         aria-expanded={open}
         className="text-sm text-accent hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent label-caps"
       >
-        {open ? L("Ocultar conexiones", "Hide connections") : L("Ver conexiones", "Show connections")}
+        {L.t(open ? L("Ocultar conexiones", "Hide connections") : L("Ver conexiones", "Show connections"))}
       </button>
       {open && (
         <div className="mt-5">
@@ -370,8 +371,8 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
                   className="absolute -left-[1.6rem] top-1 w-2 h-2 rounded-full bg-accent"
                   aria-hidden="true"
                 />
-                <p className="text-sm text-accent/80 label-caps">{n.kind}</p>
-                <p className="text-sm text-foreground/90 leading-relaxed mt-1">{n.label}</p>
+                <p className="text-sm text-accent/80 label-caps">{L.t(n.kind)}</p>
+                <p className="text-sm text-foreground/90 leading-relaxed mt-1">{L.t(n.label)}</p>
               </li>
             ))}
           </ol>
@@ -403,7 +404,7 @@ function LecturaProfundaDesbloqueada({
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretationType | null>(null);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${element || "—"}`) };
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: L(`Elemento ${element || "—"}`, `Element ${L.t(element || "—")}`) };
 
   // La Lectura en sí vive en su propia pestaña (app/lectura) — esta llamada
   // acá es silenciosa, solo para alimentar el trazado "Esta lectura conecta"
@@ -444,7 +445,7 @@ function LecturaProfundaDesbloqueada({
         ...pieces.patterns.map((p) => ({ kind: "Patrón", label: `${p.label}: ${p.keyword}` })),
         ...pieces.rules.slice(0, 1).map((r) => ({ kind: "Regla", label: r.rule })),
         ...pieces.tensions.map((t) => ({ kind: "Tensión", label: t.title })),
-        { kind: "Ciclo", label: L(`Año personal ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}`, `Personal year ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}`) },
+        { kind: "Ciclo", label: L(`Año personal ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}`, `Personal year ${pieces.dailyEnergy.personalYear} — ${L.t(getYearTheme(pieces.dailyEnergy.personalYear))}`) },
       ]
     : [];
 
@@ -465,8 +466,8 @@ function LecturaProfundaDesbloqueada({
         <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">{L("La Lectura", "The Reading")}</h3>
         <p className="text-sm text-muted mb-8 max-w-xl leading-relaxed">{L(<>
           La conversación entre tus sistemas, en su propio espacio — con tus mayores afinidades de países, ciudades y marcas.
-          {justUnlocked && " Se abrió en una pestaña nueva."}
-        </>, <>The conversation between your systems, in its own space — with your strongest affinities among countries, cities and brands.{justUnlocked && " It opened in a new tab."}</>)}</p>
+          {L.t(justUnlocked && " Se abrió en una pestaña nueva.")}
+        </>, <>The conversation between your systems, in its own space — with your strongest affinities among countries, cities and brands.{L.t(justUnlocked && " It opened in a new tab.")}</>)}</p>
         <a
           href={`/lectura#${encodeProfileData(profile)}`}
           target="_blank"

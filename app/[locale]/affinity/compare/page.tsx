@@ -1,4 +1,4 @@
-import { useL } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { createRouteMetadata } from "@/lib/seo";
@@ -11,8 +11,9 @@ export const metadata: Metadata = createRouteMetadata({
   path: "/affinity/compare",
 });
 
-export default function ComparePickerPage() {
-  const L = useL();
+export default async function ComparePickerPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
   return (
     <Suspense

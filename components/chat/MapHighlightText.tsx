@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React, { useMemo } from "react";
 
@@ -16,6 +17,7 @@ export default function MapHighlightText({
   className = "",
   highlightClassName = "font-bold text-accent-light bg-accent-light/10 px-1 py-0.5 rounded-[--radius-sm]",
 }: MapHighlightTextProps) {
+  const L = useL();
   const parts = useMemo(() => {
     if (!text) return [];
     // Split by markdown bold **...**
@@ -34,10 +36,10 @@ export default function MapHighlightText({
       {parts.map((part) =>
         part.isBold ? (
           <strong key={part.key} className={highlightClassName}>
-            {part.text}
+            {L.t(part.text)}
           </strong>
         ) : (
-          <React.Fragment key={part.key}>{part.text}</React.Fragment>
+          <React.Fragment key={part.key}>{L.t(part.text)}</React.Fragment>
         )
       )}
     </span>

@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { siteUrl, SITE_URL, metadataFor } from "@/lib/seo";
 import { Asterisk, ArrowRight, Zap, Sun, Heart, Smartphone, Moon, ExternalLink, Check, Copy } from "lucide-react";
@@ -38,8 +39,9 @@ const SHORTCUTS = (L: Pick2) => ([
   },
 ]);
 
-export default function ShortcutsPage() {
-  const L = useL();
+export default async function ShortcutsPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
       <div className="mx-auto max-w-4xl px-4 sm:px-8 lg:px-12">
@@ -67,19 +69,19 @@ export default function ShortcutsPage() {
             <Card key={s.id} padding="lg" className="border-ink/10 bg-card/70 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-ink/10">
                 <h3 className="font-heading text-lg font-bold text-foreground">
-                  {s.title}
+                  {L.t(s.title)}
                 </h3>
                 <span className="font-mono text-xs text-accent px-2.5 py-1 rounded-lg bg-accent/10 border border-accent/20">
-                  {s.siriPhrase}
+                  {L.t(s.siriPhrase)}
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                {s.desc}
+                {L.t(s.desc)}
               </p>
 
               <div className="p-3 rounded-xl bg-background border border-ink/5 font-mono text-xs text-foreground/80 flex items-center justify-between gap-2 overflow-x-auto">
-                <code className="text-[11px] text-accent truncate">{s.action}</code>
+                <code className="text-[11px] text-accent truncate">{L.t(s.action)}</code>
                 <Link
                   href={s.directUrl}
                   className="px-3 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 text-xs font-mono text-foreground inline-flex items-center gap-1 flex-shrink-0 transition-colors"

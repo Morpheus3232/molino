@@ -178,7 +178,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                 }`}
               >
                 <Icon className="w-4 h-4" aria-hidden="true" />
-                {label}
+                {L.t(label)}
               </button>
             ))}
           </div>
@@ -287,7 +287,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                     <div key={i} className="rounded-xl border border-ink/15 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                       <div className="flex items-center justify-between">
                         <span className="text-sm px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold label-caps">
-                          {socioLabel(i)}
+                          {L.t(socioLabel(i))}
                         </span>
                         {socios.length > MIN_SOCIOS && (
                           <button
@@ -330,7 +330,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
                       className="inline-flex items-center gap-2 px-5 py-2.5 border border-ink/20 text-sm text-foreground hover:border-ink transition-colors"
                     >
                       <UserPlus className="w-4 h-4" aria-hidden="true" />
-                      {L("Agregar socio (", "Add partner (")}{socios.length} {L(" de ", " of")} {MAX_SOCIOS})
+                      {L("Agregar socio (", "Add partner (")}{socios.length} {L(" de ", " of ")} {L.t(MAX_SOCIOS)})
                     </button>
                   </div>
                 )}

@@ -94,9 +94,9 @@ export default function MapWheel({
         role="img"
         aria-label={L(`Rueda de tu mapa: Camino de Vida ${lifePath}, Sol en ${sunSign}, ${animal}${
           kinds
-            ? `, con ${[...friends].join(" y ")} como amigos y ${enemy} como opuesto`
+            ? `, con ${[...friends].map(L.t).join(" y ")} como amigos y ${enemy} como opuesto`
             : ""
-        }.`, `Wheel of your map: Life Path ${lifePath}, Sun in ${sunSign}, ${animal}${kinds ? `, with ${[...friends].join(" and ")} as friends and ${enemy} as its opposite` : ""}.`)}
+        }.`, `Wheel of your map: Life Path ${L.t(lifePath)}, Sun in ${L.t(sunSign)}, ${L.t(animal)}${L.t(kinds ? `, with ${[...friends].map(L.t).join(" and ")} as friends and ${L.t(enemy)} as its opposite` : "")}.`)}
         className="w-full h-auto text-foreground map-wheel"
       >
         {/* Anillo de los signos */}
@@ -228,7 +228,7 @@ export default function MapWheel({
         {/* Triángulo de amigos */}
         {trine.length === 3 && (
           <polygon
-            points={trine.map((p) => `${p.x},${p.y}`).join(" ")}
+            points={trine.map((p) => `${p.x},${p.y}`).map(L.t).join(" ")}
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -258,7 +258,7 @@ export default function MapWheel({
               letterSpacing: "-0.02em",
             }}
           >
-            {lifePath}
+            {L.t(lifePath)}
           </text>
         </g>
       </svg>

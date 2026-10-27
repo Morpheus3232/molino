@@ -330,15 +330,15 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               <p className="text-sm text-muted mb-6 label-caps">{L("I · La frase que te resume", "I · The sentence that sums you up")}</p>
               {interpretation.opening && (
                 <p className="text-center font-display italic text-lg sm:text-xl leading-[1.4] text-muted mb-10 max-w-xl mx-auto">
-                  {interpretation.opening}
+                  {L.t(interpretation.opening)}
                 </p>
               )}
               <p className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[1.06] tracking-tight text-foreground max-w-2xl">
-                {interpretation.summary}
+                {L.t(interpretation.summary)}
               </p>
               {interpretation.corePattern && (
                 <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-xl mt-8 pt-6 border-t border-ink/15">
-                  {interpretation.corePattern.whyItMatters}
+                  {L.t(interpretation.corePattern.whyItMatters)}
                 </p>
               )}
             </motion.section>
@@ -358,14 +358,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     {interpretation.strengths.map((s, i) => (
                       <li key={i} className="flex items-start gap-3 text-base text-foreground leading-relaxed">
                         <span className="w-3 h-px bg-ink mt-[0.75em] shrink-0" aria-hidden="true" />
-                        {s}
+                        {L.t(s)}
                       </li>
                     ))}
                   </ul>
                 )}
                 {interpretation.howYouOperate && (
                   <p className="text-base text-muted leading-relaxed pt-4 border-t border-ink/10">
-                    {interpretation.howYouOperate}
+                    {L.t(interpretation.howYouOperate)}
                   </p>
                 )}
               </motion.div>
@@ -382,7 +382,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     {interpretation.tensions.map((t, i) => (
                       <li key={i} className="flex items-start gap-3 text-base text-foreground/85 leading-relaxed">
                         <span className="w-3 h-px bg-ink/40 mt-[0.75em] shrink-0" aria-hidden="true" />
-                        {t}
+                        {L.t(t)}
                       </li>
                     ))}
                   </ul>
@@ -390,7 +390,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 {interpretation.whatToConsider.length > 0 && (
                   <ul className="space-y-2 pt-4 border-t border-ink/10">
                     {interpretation.whatToConsider.map((c, i) => (
-                      <li key={i} className="text-base text-muted leading-relaxed">{c}</li>
+                      <li key={i} className="text-base text-muted leading-relaxed">{L.t(c)}</li>
                     ))}
                   </ul>
                 )}
@@ -422,7 +422,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     2.93:1 sobre el fondo ink — abajo del piso de 3:1 de WCAG
                     AA incluso contando como texto grande. */}
                 <p className="font-display text-[clamp(1.6rem,3.8vw,2.4rem)] leading-[1.25] max-w-2xl text-paper">
-                  {interpretation.blindSpot}
+                  {L.t(interpretation.blindSpot)}
                 </p>
               </motion.section>
             )}
@@ -448,8 +448,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     ["decisiones", L("Decisiones", "Decisions"), interpretation.lifeAreas.decisions],
                   ] as const).map(([num, label, body]) => (
                     <div key={num} className="bg-paper p-6 sm:p-7">
-                      <h3 className="font-display text-xl text-foreground mb-3">{label}</h3>
-                      <p className="text-base text-muted leading-relaxed">{body}</p>
+                      <h3 className="font-display text-xl text-foreground mb-3">{L.t(label)}</h3>
+                      <p className="text-base text-muted leading-relaxed">{L.t(body)}</p>
                     </div>
                   ))}
                 </div>
@@ -466,7 +466,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               >
                 <p className="text-sm text-muted mb-3 label-caps">{L("El paso siguiente", "The next step")}</p>
                 <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug max-w-2xl">
-                  {interpretation.suggestedNextStep}
+                  {L.t(interpretation.suggestedNextStep)}
                 </p>
               </motion.div>
             )}
@@ -479,7 +479,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.5 }}
                 className="text-center font-display italic text-2xl sm:text-3xl leading-[1.45] text-foreground max-w-xl mx-auto py-10 sm:py-16 mb-16 sm:mb-20"
               >
-                &laquo;{interpretation.closingSynthesis}&raquo;
+                &laquo;{L.t(interpretation.closingSynthesis)}&raquo;
               </motion.blockquote>
             )}
 

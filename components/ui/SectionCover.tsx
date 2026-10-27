@@ -23,6 +23,7 @@ export default function SectionCover({
   aspect?: string;
   sizes?: string;
 }) {
+  const L = useL();
   const img = getSectionImage(imageKey);
   if (!img) return null;
 
@@ -31,7 +32,7 @@ export default function SectionCover({
       <div className={`relative ${aspect} overflow-hidden border border-border bg-paper-alt`}>
         <Image
           src={img.src}
-          alt={img.alt}
+          alt={L.t(img.alt)}
           fill
           priority={priority}
           sizes={sizes}
@@ -56,14 +57,14 @@ export function SectionCredit({
     const same = img.credit.name === img.source.name;
     return (
       <figcaption className={`${className} text-xs text-muted/70`}>
-        {img.kind}:{" "}
+        {L.t(img.kind)}:{" "}
         <a
           href={img.credit.url}
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-2 hover:text-foreground"
         >
-          {img.credit.name}
+          {L.t(img.credit.name)}
         </a>
         {!same && (
           <>
@@ -75,7 +76,7 @@ export function SectionCredit({
               rel="noopener noreferrer"
               className="underline underline-offset-2 hover:text-foreground"
             >
-              {img.source.name}
+              {L.t(img.source.name)}
             </a>
           </>
         )}
@@ -84,14 +85,14 @@ export function SectionCredit({
   }
   return (
     <figcaption className={`${className} text-xs text-muted/70`}>{L(<>
-      {img.kind}:{" "}
+      {L.t(img.kind)}:{" "}
       <a
         href={`${img.credit.url}${UTM}`}
         target="_blank"
         rel="noopener noreferrer"
         className="underline underline-offset-2 hover:text-foreground"
       >
-        {img.credit.name}
+        {L.t(img.credit.name)}
       </a>{" "}
       en{" "}
       <a
@@ -102,7 +103,7 @@ export function SectionCredit({
       >
         Unsplash
       </a>
-    </>, <>{img.kind}:{" "}<a href={`${img.credit.url}${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{img.credit.name}</a>{" "}on{" "}<a href={`https://unsplash.com/${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
+    </>, <>{L.t(img.kind)}:{" "}<a href={`${img.credit.url}${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{L.t(img.credit.name)}</a>{" "}on{" "}<a href={`https://unsplash.com/${UTM}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
   );
 }
 
@@ -117,6 +118,7 @@ export function SectionDiptych({
   imageKeys: string[];
   className?: string;
 }) {
+  const L = useL();
   const imgs = [...new Set(imageKeys)]
     .map((k) => getSectionImage(k))
     .filter((i): i is SectionImage => Boolean(i));
@@ -132,7 +134,7 @@ export function SectionDiptych({
           >
             <Image
               src={img.src}
-              alt={img.alt}
+              alt={L.t(img.alt)}
               fill
               sizes="(max-width: 768px) 50vw, 400px"
               className="object-cover"

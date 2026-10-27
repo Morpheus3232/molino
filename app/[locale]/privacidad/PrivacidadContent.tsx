@@ -124,7 +124,7 @@ export default function PrivacidadContent() {
                 className={`border border-ink/10 p-6 sm:p-8 animate-fade-in-up ${i < 6 ? `stagger-${i + 3}` : ""}`}
               >
                 <h2 className="font-heading text-xl font-semibold text-foreground mb-4">
-                  {section.title}
+                  {L.t(section.title)}
                 </h2>
                 <div className="text-foreground/70 leading-relaxed text-sm">
                   <LegalText body={section.body} />

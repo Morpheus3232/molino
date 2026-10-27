@@ -73,19 +73,19 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
       <div className="lg:col-span-8">
         <p className="text-sm text-muted label-caps">{L("Consejo del Momento", "Advice for the Moment")}</p>
         <blockquote className="mt-4 font-display text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.12] text-foreground">
-          &ldquo;{daily.dailyAdvice}&rdquo;
+          &ldquo;{L.t(daily.dailyAdvice)}&rdquo;
         </blockquote>
         {daily.orientationEvidence && daily.orientationEvidence.length > 0 && (
           <p className="mt-5 flex flex-wrap gap-x-6 gap-y-1 text-base text-muted">
             {daily.orientationEvidence.map((e) => (
               <span key={e.label}>
-                {e.label}: <span className="text-foreground">{e.value}</span>
+                {L.t(e.label)}: <span className="text-foreground">{L.t(e.value)}</span>
               </span>
             ))}
           </p>
         )}
         {journalStreak >= 2 && (
-          <p className="mt-3 text-base text-muted">{L(<>{journalStreak} días seguidos escribiendo en tu diario.</>, <>{journalStreak} days in a row writing in your journal.</>)}</p>
+          <p className="mt-3 text-base text-muted">{L(<>{L.t(journalStreak)} días seguidos escribiendo en tu diario.</>, <>{L.t(journalStreak)} days in a row writing in your journal.</>)}</p>
         )}
       </div>
       <div className="lg:col-span-4 lg:justify-self-end">
@@ -93,7 +93,7 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
           href={journalHref}
           className="inline-flex w-full sm:w-auto items-center justify-center px-8 py-4 bg-vermilion text-paper text-sm font-bold hover:bg-vermilion-hover transition-colors label-caps"
         >
-          {todayEntry ? L("Ver tu entrada de hoy", "See today's entry") : L("Anotar en mi diario", "Write in my journal")}
+          {L.t(todayEntry ? L("Ver tu entrada de hoy", "See today's entry") : L("Anotar en mi diario", "Write in my journal"))}
         </Link>
       </div>
     </div>
@@ -109,12 +109,12 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
         <div className="bg-background p-8 sm:p-10 border-t-4 border-t-vermilion">
           <p className="text-sm text-muted label-caps">{L("Favorable hoy", "Favorable today")}</p>
           <h3 className="mt-3 font-display text-3xl text-foreground">{L("Acción recomendada", "Recommended action")}</h3>
-          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{daily.focusAction}</p>
+          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{L.t(daily.focusAction)}</p>
         </div>
         <div className="bg-background p-8 sm:p-10 border-t-4 border-t-ink">
           <p className="text-sm text-muted label-caps">{L("Observar hoy", "Watch today")}</p>
           <h3 className="mt-3 font-display text-3xl text-foreground">{L("Punto de fricción a posponer", "Friction point to postpone")}</h3>
-          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{daily.avoidAction}</p>
+          <p className="mt-3 text-lg text-foreground/90 leading-relaxed">{L.t(daily.avoidAction)}</p>
         </div>
       </div>
 
@@ -130,10 +130,10 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
             <div key={key} className="bg-background p-6 sm:p-7">
               <div className="flex items-center gap-2.5">
                 <Icon className="w-5 h-5 text-foreground shrink-0" aria-hidden="true" />
-                <span className="font-display text-2xl text-foreground">{name}</span>
+                <span className="font-display text-2xl text-foreground">{L.t(name)}</span>
               </div>
-              <p className={`mt-3 text-base ${strong ? "text-vermilion" : "text-muted"}`}>{area.label}</p>
-              <p className="mt-2 text-base text-foreground/80 leading-relaxed">{advice}</p>
+              <p className={`mt-3 text-base ${strong ? "text-vermilion" : "text-muted"}`}>{L.t(area.label)}</p>
+              <p className="mt-2 text-base text-foreground/80 leading-relaxed">{L.t(advice)}</p>
             </div>
           );
         })}

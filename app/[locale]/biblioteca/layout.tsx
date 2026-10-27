@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
@@ -9,6 +10,7 @@ export const generateMetadata = metadataFor({
   ogDescription: ["Fuentes y referencias bibliográficas de los sistemas simbólicos de Molino.", "Sources and bibliographic references for Molino's symbolic systems."],
 });
 
-export default function BibliotecaLayout({ children }: { children: React.ReactNode }) {
+export default async function BibliotecaLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return children;
 }

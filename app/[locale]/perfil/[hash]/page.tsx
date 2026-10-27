@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/user";
 import { verifyShareToken } from "@/lib/share";
@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SharedProfilePage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { hash } = await params;
 

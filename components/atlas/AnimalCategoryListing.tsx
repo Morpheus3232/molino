@@ -68,22 +68,22 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
 
         <motion.header className="mb-12" {...fadeUp}>
           <p className="text-sm text-accent font-semibold mb-3 label-caps">
-            {animal}
+            {L.t(animal)}
           </p>
 
           <div className="flex items-end gap-4">
             <h1 className="page-title text-foreground">
-              {catLabel}
+              {L.t(catLabel)}
             </h1>
             <ZodiacAnimalIcon animal={animal} size={28} className="text-accent/40 shrink-0" />
           </div>
 
           <p className="text-sm text-muted mt-3">{L(<>
-            {entities.length} {entities.length === 1 ? "entidad" : "entidades"} con animal {animal} — priorizando tu país.
-          </>, <>{entities.length} {entities.length === 1 ? "entity" : "entities"} with the {animal} animal — your country first.</>)}</p>
+            {entities.length} {entities.length === 1 ? "entidad" : "entidades"} con animal {L.t(animal)} — priorizando tu país.
+          </>, <>{entities.length} {entities.length === 1 ? "entity" : "entities"} with the {L.t(animal)} animal — your country first.</>)}</p>
         </motion.header>
 
-        <section aria-label={L(`${catLabel} de ${animal}`, `${catLabel} of ${animal}`)} className="relative">
+        <section aria-label={L(`${catLabel} de ${animal}`, `${L.t(catLabel)} of ${L.t(animal)}`)} className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/15 hidden sm:block" aria-hidden="true" />
 
           <div className="sm:pl-10 space-y-2">
@@ -110,7 +110,7 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                      {e.name}
+                      {L.t(e.name)}
                     </p>
                   </div>
                   <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
@@ -125,8 +125,8 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
         {sorted.length === 0 && (
           <motion.div {...fadeUpDelayed(0.1)} className="text-center py-16">
             <p className="text-sm text-muted">{L(<>
-              No hay {catLabel.toLowerCase()} registradas para {animal} en este momento.
-            </>, <>There are no {catLabel.toLowerCase()} recorded for {animal} right now.</>)}</p>
+              No hay {L.t(catLabel.toLowerCase())} registradas para {L.t(animal)} en este momento.
+            </>, <>There are no {L.t(catLabel.toLowerCase())} recorded for {L.t(animal)} right now.</>)}</p>
           </motion.div>
         )}
 
@@ -136,9 +136,9 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
             className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"
           >
             <span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span>
-            <span>Volver a {animal}</span>
+            <span>Volver a {L.t(animal)}</span>
           </Link>
-        </>, <><Link href={`/atlas/explorar/${animal}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"><span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span><span>Back to {animal}</span></Link></>)}</div>
+        </>, <><Link href={`/atlas/explorar/${animal}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group"><span className="group-hover:-translate-x-0.5 transition-transform" aria-hidden="true">←</span><span>Back to {L.t(animal)}</span></Link></>)}</div>
       </div>
     </main>
   );

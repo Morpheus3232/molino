@@ -56,10 +56,10 @@ function CategoryBlock({
               : "font-display text-base font-bold text-foreground/80 label-caps"
           }
         >
-          {label ?? CATEGORY_LABEL(L)[group.category] ?? group.category}
+          {L.t(label ?? CATEGORY_LABEL(L)[group.category] ?? group.category)}
         </Heading>
         <span className="shrink-0 text-sm text-muted border border-ink/10 rounded-full px-2.5 py-1 label-caps">
-          {LEVEL_LABEL(L)[group.level]}
+          {L.t(LEVEL_LABEL(L)[group.level])}
         </span>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -74,8 +74,8 @@ function CategoryBlock({
       </div>
       {entities === group.entities && group.totalAvailable > group.entities.length && (
         <p className="text-xs text-muted mt-3">{L(<>
-          Mostrando {group.entities.length} de {group.totalAvailable}.
-        </>, <>Showing {group.entities.length} of {group.totalAvailable}.</>)}</p>
+          Mostrando {group.entities.length} de {L.t(group.totalAvailable)}.
+        </>, <>Showing {group.entities.length} of {L.t(group.totalAvailable)}.</>)}</p>
       )}
     </div>
   );
@@ -90,7 +90,7 @@ function FootballPlayerBlock({ group }: { group: PersonalAtlasGroup }) {
   return (
     <div>
       <h4 className="font-display text-base font-bold text-foreground/80 mb-6 label-caps">
-        {CATEGORY_LABEL(L).football_player}
+        {L.t(CATEGORY_LABEL(L).football_player)}
       </h4>
       <div className="space-y-6 sm:pl-6 sm:border-l border-ink/10">
         {actual.length > 0 && <CategoryBlock group={group} heading="h4" label={L("Actualidad", "Today")} entities={actual} />}
@@ -166,7 +166,7 @@ export default function PersonalAtlasPilot({ animal, countryISO }: PersonalAtlas
 
       <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Tu Atlas", "Your Atlas")}</p>
       <h2 className="section-title text-foreground mb-10">
-        {animal}
+        {L.t(animal)}
       </h2>
 
       <div className="space-y-12">

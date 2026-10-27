@@ -100,8 +100,8 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                 <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">{L("Cómo aparecen tus patrones en países, ciudades y marcas de tu mundo.", "How your patterns show up in the countries, cities and brands of your world.")}</p>
                 {profile && (
                   <p className="text-sm text-muted mt-3">{L(<>
-                    Tu signo: {profile.chineseZodiac}
-                  </>, <>Your sign: {profile.chineseZodiac}</>)}</p>
+                    Tu signo: {L.t(profile.chineseZodiac)}
+                  </>, <>Your sign: {L.t(profile.chineseZodiac)}</>)}</p>
                 )}
               </motion.section>
 
@@ -130,9 +130,9 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                         className="text-left p-6 border-t border-ink/10 border-b border-ink/10 hover:bg-ink/[0.02] transition-colors group relative"
                       >
                         <Icon className="w-7 h-7 mb-3 text-accent" strokeWidth={1.5} aria-hidden="true" />
-                        <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
-                        <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
-                        <p className="text-xs text-accent font-medium mt-4 pt-3">{EXPLORE_COPY(L)[type]}</p>
+                        <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{L.t(meta.plural)}</h3>
+                        <p className="text-sm text-muted mt-2 leading-relaxed">{L.t(meta.description)}</p>
+                        <p className="text-xs text-accent font-medium mt-4 pt-3">{L.t(EXPLORE_COPY(L)[type])}</p>
                       </motion.button>
                     );
                   })}

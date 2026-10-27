@@ -1,4 +1,4 @@
-import { useL } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
 import HoyClient from "./HoyClient";
 import { metadataFor } from "@/lib/seo";
 
@@ -11,8 +11,9 @@ export const generateMetadata = metadataFor({
   ogDescription: ["Vibración diaria, vista de 3 días y foco de acción según tu numerología y astrología.", "Daily vibration, 3-day view and focus for action according to your numerology and astrology."],
 });
 
-export default function HoyPage() {
-  const L = useL();
+export default async function HoyPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <HoyClient
       heading={

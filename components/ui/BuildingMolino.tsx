@@ -198,7 +198,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeOut", delay: reduceMotion ? 0 : 0.08 }}
           className="section-title mt-3 text-balance text-foreground"
         >
-          {hero}
+          {L.t(hero)}
         </motion.h3>
 
         {/* Progress hairline + composing caret */}
@@ -233,7 +233,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
               isReady ? "text-accent" : "text-muted/70"
             }`}
           >
-            {isReady ? L("Lista", "Ready") : L("En proceso", "In progress")}
+            {L.t(isReady ? L("Lista", "Ready") : L("En proceso", "In progress"))}
           </p>
           <p className="font-mono text-xs tracking-[0.2em] text-muted/70">
             {String(counter).padStart(2, "0")} / {String(STEPS(L).length).padStart(2, "0")}
@@ -279,7 +279,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
                     isActive ? "text-foreground" : isComplete ? "text-foreground/75" : "text-muted/70"
                   }`}
                 >
-                  {step}
+                  {L.t(step)}
                 </span>
                 <span className="flex w-5 shrink-0 items-center justify-center">
                   {isComplete ? (
@@ -291,7 +291,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
                       }
                       className="flex h-5 w-5 items-center justify-center rounded-full border border-accent bg-accent"
                     >
-                      {CHECK_MARK}
+                      {L.t(CHECK_MARK)}
                     </motion.span>
                   ) : null}
                 </span>

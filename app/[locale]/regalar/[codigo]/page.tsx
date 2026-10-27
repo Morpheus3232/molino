@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { createRouteMetadata } from "@/lib/seo";
 import CanjeClient from "./CanjeClient";
 
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function CanjePage({ params }: Props) {
+  await initLocale(params);
   const { codigo } = await params;
   return <CanjeClient codigo={codigo} />;
 }

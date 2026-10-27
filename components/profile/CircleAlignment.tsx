@@ -56,8 +56,8 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
                 <h3 className="font-medium text-foreground">{L("BUENA COMPATIBILIDAD — Animales aliados", "GOOD COMPATIBILITY — Allied animals")}</h3>
               </div>
               <p className="text-sm text-muted mb-4">{L(<>
-                Tu {display.name} de {profile.chineseZodiacInfo?.element} tiene buena compatibilidad con estos animales aliados. Juntos crean un ciclo de apoyo mutuo.
-              </>, <>Your {profile.chineseZodiacInfo?.element} {display.name} is highly compatible with these allied animals. Together they create a cycle of mutual support.</>)}</p>
+                Tu {L.t(display.name)} de {L.t(profile.chineseZodiacInfo?.element)} tiene buena compatibilidad con estos animales aliados. Juntos crean un ciclo de apoyo mutuo.
+              </>, <>Your {L.t(profile.chineseZodiacInfo?.element)} {L.t(display.name)} is highly compatible with these allied animals. Together they create a cycle of mutual support.</>)}</p>
               <div className="flex flex-wrap gap-3">
                 {allies.map((ally, i) => (
                   <AnimalCard key={i} animal={ally} />
@@ -103,10 +103,10 @@ function AnimalCard({ animal }: { animal: Animal }) {
     <div className="min-w-[150px] px-4 py-3 border border-ink/10 rounded-lg bg-background">
       <div className="flex items-center gap-2 mb-2">
         <ZodiacAnimalIcon animal={animal} size={20} className="text-accent" />
-        <span className="font-medium">{display.name}</span>
+        <span className="font-medium">{L.t(display.name)}</span>
       </div>
       <p className="text-sm text-muted mb-1.5 label-caps">{L("Años de nacimiento", "Birth years")}</p>
-      <p className="font-mono text-xs text-muted leading-relaxed">{years.join(" · ")}</p>
+      <p className="font-mono text-xs text-muted leading-relaxed">{L.t(years.map(L.t).join(" · "))}</p>
     </div>
   );
 }

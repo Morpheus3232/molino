@@ -92,12 +92,12 @@ export default function CalendarioClient() {
         <div className="flex items-end justify-between gap-4 pb-6 border-b-2 border-ink">
           <div>
             <h2 className="font-display font-normal text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] tracking-tight text-foreground">
-              {MONTH_NAMES(L)[month]} {year}
+              {L.t(MONTH_NAMES(L)[month])} {year}
             </h2>
             <p className="mt-2 text-base text-muted">{L(<>
-              {daysInMonth} días · {monthStats.masters.length}{" "}
+              {L.t(daysInMonth)} días · {monthStats.masters.length}{" "}
               {monthStats.masters.length === 1 ? "día especial" : "días especiales"} (maestros y 28)
-            </>, <>{daysInMonth} days · {monthStats.masters.length}{" "}{monthStats.masters.length === 1 ? "special day" : "special days"} (masters and 28)</>)}</p>
+            </>, <>{L.t(daysInMonth)} days · {monthStats.masters.length}{" "}{monthStats.masters.length === 1 ? "special day" : "special days"} (masters and 28)</>)}</p>
           </div>
           <div className="flex items-center gap-px bg-ink/15 border border-ink/15 shrink-0">
             <button
@@ -123,7 +123,7 @@ export default function CalendarioClient() {
         <div className="mt-6 grid grid-cols-7">
           {DAY_NAMES(L).map((d) => (
             <div key={d} className="pb-3 text-center text-sm text-muted">
-              {d}
+              {L.t(d)}
             </div>
           ))}
         </div>
@@ -148,12 +148,12 @@ export default function CalendarioClient() {
                 }`}
               >
                 <span className={`absolute top-1.5 left-2 text-xs sm:text-sm tabular-nums ${isSelected ? "text-paper/70" : "text-muted"}`}>
-                  {day}
+                  {L.t(day)}
                 </span>
                 <span className="font-display text-2xl sm:text-4xl leading-none tabular-nums">{content.number}</span>
                 {special(content) && (
                   <span className={`hidden sm:block mt-1 text-[11px] leading-none ${isSelected ? "text-paper/80" : "text-muted"}`}>
-                    {content.abundance ? "abundancia" : "maestro"}
+                    {L.t(content.abundance ? "abundancia" : "maestro")}
                   </span>
                 )}
                 {isToday && <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-vermilion" aria-hidden="true" />}
@@ -174,11 +174,11 @@ export default function CalendarioClient() {
                 <span className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{g.number}</span>
                 <div className="min-w-0">
                   <p className="font-display text-xl sm:text-2xl leading-tight text-foreground">
-                    {g.title}
+                    {L.t(g.title)}
                     {g.special && <span className="ml-2 text-base text-muted">{g.number === 28 ? "abundancia" : "maestro"}</span>}
                     {hasToday && <span className="ml-2 text-base text-vermilion">{L("· hoy", "· today")}</span>}
                   </p>
-                  <p className="mt-0.5 text-base text-muted leading-snug">{g.purpose}</p>
+                  <p className="mt-0.5 text-base text-muted leading-snug">{L.t(g.purpose)}</p>
                 </div>
                 <div className="col-start-2 sm:col-start-auto flex flex-wrap gap-1.5 sm:justify-end">
                   {g.days.map((day) => {
@@ -202,7 +202,7 @@ export default function CalendarioClient() {
                           isSel ? "bg-ink text-paper border-ink" : "bg-background text-foreground border-ink/25 hover:border-ink"
                         }`}
                       >
-                        {day}
+                        {L.t(day)}
                         {isToday && <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-vermilion" aria-hidden="true" />}
                       </button>
                     );
@@ -228,10 +228,10 @@ export default function CalendarioClient() {
               aria-live="polite"
             >
               <p className="text-sm text-muted label-caps">
-                {selected.getDate()} de {MONTH_NAMES(L)[selected.getMonth()].toLowerCase()} de {selected.getFullYear()}
+                {L.t(selected.getDate())} de {L.t(MONTH_NAMES(L)[selected.getMonth()].toLowerCase())} de {selected.getFullYear()}
               </p>
               <p className="mt-4 font-display text-[7rem] leading-[0.8] text-foreground tabular-nums">{selectedContent.number}</p>
-              <h3 className="mt-4 font-display text-4xl leading-tight text-foreground">{selectedContent.title}</h3>
+              <h3 className="mt-4 font-display text-4xl leading-tight text-foreground">{L.t(selectedContent.title)}</h3>
               {(selectedContent.master || selectedContent.abundance) && (
                 <p className="mt-1 text-base text-muted">
                   {selectedContent.master ? L("Número maestro", "Master number") : L("Número de la abundancia", "Number of abundance")}
@@ -241,10 +241,10 @@ export default function CalendarioClient() {
               <dl className="mt-6 border-t border-ink/15 divide-y divide-ink/15">
                 <div className="py-4">
                   <dt className="text-sm text-muted">{L("Propósito del día", "Purpose of the day")}</dt>
-                  <dd className="mt-1 text-lg text-foreground">{selectedContent.purpose}</dd>
+                  <dd className="mt-1 text-lg text-foreground">{L.t(selectedContent.purpose)}</dd>
                 </div>
                 <div className="py-4">
-                  <dd className="text-lg text-foreground/85 leading-relaxed">{selectedContent.description}</dd>
+                  <dd className="text-lg text-foreground/85 leading-relaxed">{L.t(selectedContent.description)}</dd>
                 </div>
                 {selectedContent.recommendations && selectedContent.recommendations.length > 0 && (
                   <div className="py-4">
@@ -254,7 +254,7 @@ export default function CalendarioClient() {
                         {selectedContent.recommendations.map((rec) => (
                           <li key={rec} className="flex items-start gap-3 text-base text-foreground/90 leading-snug">
                             <span className="w-3 h-px bg-ink/50 mt-[0.75em] shrink-0" aria-hidden="true" />
-                            {rec}
+                            {L.t(rec)}
                           </li>
                         ))}
                       </ul>
@@ -263,7 +263,7 @@ export default function CalendarioClient() {
                 )}
                 {selectedContent.tags.length > 0 && (
                   <div className="py-4">
-                    <dd className="text-base text-muted">{selectedContent.tags.join(" · ").toLowerCase()}</dd>
+                    <dd className="text-base text-muted">{L.t(selectedContent.tags.map(L.t).join(" · ").toLowerCase())}</dd>
                   </div>
                 )}
               </dl>

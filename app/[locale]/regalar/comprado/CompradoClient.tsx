@@ -40,7 +40,7 @@ export default function CompradoClient() {
     }
   };
 
-  const shareMessage = L(`Te regalé un mapa personal de Molino. Canjealo acá: ${shareUrl}`, `I got you a personal Molino map. Redeem it here: ${shareUrl}`);
+  const shareMessage = L(`Te regalé un mapa personal de Molino. Canjealo acá: ${shareUrl}`, `I got you a personal Molino map. Redeem it here: ${L.t(shareUrl)}`);
 
   const share = async () => {
     if (typeof navigator !== "undefined" && navigator.share) {
@@ -67,27 +67,27 @@ export default function CompradoClient() {
         <div className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left">
           <p className="text-sm text-muted mb-2 label-caps">{L("Tu código", "Your code")}</p>
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-background border border-ink/10">
-            <span className="font-mono text-lg sm:text-xl font-bold text-foreground tracking-wider">{code}</span>
+            <span className="font-mono text-lg sm:text-xl font-bold text-foreground tracking-wider">{L.t(code)}</span>
             <button
               type="button"
               onClick={() => copy(code, setCopiedCode)}
               className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline shrink-0"
             >
               {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-              {copiedCode ? L("Copiado", "Copied") : L("Copiar", "Copy")}
+              {L.t(copiedCode ? L("Copiado", "Copied") : L("Copiar", "Copy"))}
             </button>
           </div>
 
           <p className="text-sm text-muted mt-6 mb-2 label-caps">{L("Enviale este link", "Send them this link")}</p>
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-background border border-ink/10">
-            <span className="font-mono text-xs text-foreground truncate">{shareUrl}</span>
+            <span className="font-mono text-xs text-foreground truncate">{L.t(shareUrl)}</span>
             <button
               type="button"
               onClick={() => copy(shareUrl, setCopiedLink)}
               className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline shrink-0"
             >
               {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-              {copiedLink ? L("Copiado", "Copied") : L("Copiar", "Copy")}
+              {L.t(copiedLink ? L("Copiado", "Copied") : L("Copiar", "Copy"))}
             </button>
           </div>
 

@@ -94,11 +94,11 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
               <h1 className="page-title text-foreground mb-4">
-                {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
+                {L.t(entityA.emoji)} {L.t(entityA.name)} vs {L.t(entityB.emoji)} {L.t(entityB.name)}
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">{L(<>
-                Creá tu perfil para descubrir la comparación simbólica entre {entityA.name} y {entityB.name}.
-              </>, <>Create your profile to discover the symbolic comparison between {entityA.name} and {entityB.name}.</>)}</p>
+                Creá tu perfil para descubrir la comparación simbólica entre {L.t(entityA.name)} y {L.t(entityB.name)}.
+              </>, <>Create your profile to discover the symbolic comparison between {L.t(entityA.name)} and {L.t(entityB.name)}.</>)}</p>
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>{L("Crear mi perfil", "Create my profile")}</Button>
             </main>
           </motion.div>
@@ -114,8 +114,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
               <h1 className="page-title text-foreground mb-4">{L("No se pudo calcular la comparación", "The comparison couldn't be calculated")}</h1>
               <p className="text-muted mb-8 max-w-md mx-auto">{L(<>
-                Ocurrió un error al calcular la afinidad entre {entityA.name} y {entityB.name}. Intentá de nuevo.
-              </>, <>Something went wrong calculating the affinity between {entityA.name} and {entityB.name}. Try again.</>)}</p>
+                Ocurrió un error al calcular la afinidad entre {L.t(entityA.name)} y {L.t(entityB.name)}. Intentá de nuevo.
+              </>, <>Something went wrong calculating the affinity between {L.t(entityA.name)} and {L.t(entityB.name)}. Try again.</>)}</p>
               <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>{L("Volver a comparar", "Compare again")}</Button>
             </main>
           </motion.div>
@@ -143,9 +143,9 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {/* Header */}
               <motion.section {...fadeUp} className="mb-12 text-center">
                 <h1 className="page-title text-foreground mb-3 line-clamp-2">
-                  <span className="inline-block max-w-[45%] truncate align-bottom">{entityA.emoji} {entityA.name}</span>
+                  <span className="inline-block max-w-[45%] truncate align-bottom">{L.t(entityA.emoji)} {L.t(entityA.name)}</span>
                   <span className="text-muted mx-2 sm:mx-3">vs</span>
-                  <span className="inline-block max-w-[45%] truncate align-bottom">{entityB.emoji} {entityB.name}</span>
+                  <span className="inline-block max-w-[45%] truncate align-bottom">{L.t(entityB.emoji)} {L.t(entityB.name)}</span>
                 </h1>
                 <p className="text-sm text-muted">{L("Según el zodíaco chino", "According to the Chinese zodiac")}</p>
               </motion.section>
@@ -187,8 +187,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                         shape="circle"
                         className="mx-auto mb-2"
                       />
-                      <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultA.entityAnimal)}</p>
-                      <p className="text-xs text-muted mt-1">{entityA.name}</p>
+                      <p className="font-heading text-xl font-bold text-foreground">{L.t(formatAnimalSimple(resultA.entityAnimal))}</p>
+                      <p className="text-xs text-muted mt-1">{L.t(entityA.name)}</p>
                     </div>
 
                     <div className="flex flex-col items-center">
@@ -196,7 +196,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                         className="font-heading text-lg font-bold text-center"
                         style={{ color: compTier.color }}
                       >
-                        {entityComparison.relationship}
+                        {L.t(entityComparison.relationship)}
                       </span>
                     </div>
 
@@ -213,18 +213,18 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                         shape="circle"
                         className="mx-auto mb-2"
                       />
-                      <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
-                      <p className="text-xs text-muted mt-1">{entityB.name}</p>
+                      <p className="font-heading text-xl font-bold text-foreground">{L.t(formatAnimalSimple(resultB.entityAnimal))}</p>
+                      <p className="text-xs text-muted mt-1">{L.t(entityB.name)}</p>
                     </div>
                   </div>
 
                   <div className="h-px bg-border my-5" />
 
                   <p className="text-sm text-foreground leading-relaxed mb-3">
-                    {entityComparison.explanation}
+                    {L.t(entityComparison.explanation)}
                   </p>
                   {entityComparison.tradition && (
-                    <p className="text-xs text-muted italic">{entityComparison.tradition}</p>
+                    <p className="text-xs text-muted italic">{L.t(entityComparison.tradition)}</p>
                   )}
                 </div>
               </motion.section>
@@ -234,11 +234,11 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 <SectionHeader title={L("Tu conexión personal", "Your personal connection")} />
                 <p className="text-xs text-muted mb-4">{L(<>
                   Según esta tradición, existe una relación simbólica de{" "}
-                  <span className="font-medium text-foreground">{resultA.relationship}</span> entre vos y{" "}
-                  <span className="font-medium text-foreground">{entityA.name}</span>, y de{" "}
-                  <span className="font-medium text-foreground">{resultB.relationship}</span> entre vos y{" "}
-                  <span className="font-medium text-foreground">{entityB.name}</span>.
-                </>, <>According to this tradition, there's a symbolic relationship of{" "}<span className="font-medium text-foreground">{resultA.relationship}</span> between you and{" "}<span className="font-medium text-foreground">{entityA.name}</span>, and of{" "}<span className="font-medium text-foreground">{resultB.relationship}</span> between you and{" "}<span className="font-medium text-foreground">{entityB.name}</span>.</>)}</p>
+                  <span className="font-medium text-foreground">{L.t(resultA.relationship)}</span> entre vos y{" "}
+                  <span className="font-medium text-foreground">{L.t(entityA.name)}</span>, y de{" "}
+                  <span className="font-medium text-foreground">{L.t(resultB.relationship)}</span> entre vos y{" "}
+                  <span className="font-medium text-foreground">{L.t(entityB.name)}</span>.
+                </>, <>According to this tradition, there's a symbolic relationship of{" "}<span className="font-medium text-foreground">{L.t(resultA.relationship)}</span> between you and{" "}<span className="font-medium text-foreground">{L.t(entityA.name)}</span>, and of{" "}<span className="font-medium text-foreground">{L.t(resultB.relationship)}</span> between you and{" "}<span className="font-medium text-foreground">{L.t(entityB.name)}</span>.</>)}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <PersonalCard
                     entityName={entityA.name}
@@ -309,15 +309,15 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                     onClick={() => router.push(`/affinity/${entityA.type}/${entityA.id}`)}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
                   >{L(<>
-                    Ver {entityA.name}
-                  </>, <>See {entityA.name}</>)}</button>
+                    Ver {L.t(entityA.name)}
+                  </>, <>See {L.t(entityA.name)}</>)}</button>
                   <button
                     type="button"
                     onClick={() => router.push(`/affinity/${entityB.type}/${entityB.id}`)}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
                   >{L(<>
-                    Ver {entityB.name}
-                  </>, <>See {entityB.name}</>)}</button>
+                    Ver {L.t(entityB.name)}
+                  </>, <>See {L.t(entityB.name)}</>)}</button>
                   <button
                     type="button"
                     onClick={() => router.push("/affinity")}
@@ -359,15 +359,15 @@ function EntityBaseCard({
           size={36}
         />
         <div>
-          <p className="font-heading text-lg font-semibold text-foreground">{entity.name}</p>
-          <p className="text-xs text-muted">{typeLabel} · {entity.country}</p>
+          <p className="font-heading text-lg font-semibold text-foreground">{L.t(entity.name)}</p>
+          <p className="text-xs text-muted">{L.t(typeLabel)} · {entity.country}</p>
         </div>
       </div>
       <div className="space-y-2 text-xs">
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Evento</span>
-          <span className="text-foreground text-right">{result.primaryEvent.label}</span>
-        </>, <><span className="text-muted">Event</span><span className="text-foreground text-right">{result.primaryEvent.label}</span></>)}</div>
+          <span className="text-foreground text-right">{L.t(result.primaryEvent.label)}</span>
+        </>, <><span className="text-muted">Event</span><span className="text-foreground text-right">{L.t(result.primaryEvent.label)}</span></>)}</div>
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Fecha</span>
           <span className="text-foreground">
@@ -378,15 +378,15 @@ function EntityBaseCard({
         </>, <><span className="text-muted">Date</span><span className="text-foreground">{result.primaryEvent.date ? formatDisplayDate(result.primaryEvent.date) : String(result.primaryEvent.year)}</span></>)}</div>
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Animal chino</span>
-          <span className="font-medium text-foreground">{result.entityAnimal}</span>
-        </>, <><span className="text-muted">Chinese animal</span><span className="font-medium text-foreground">{result.entityAnimal}</span></>)}</div>
+          <span className="font-medium text-foreground">{L.t(result.entityAnimal)}</span>
+        </>, <><span className="text-muted">Chinese animal</span><span className="font-medium text-foreground">{L.t(result.entityAnimal)}</span></>)}</div>
         <div className="h-px bg-border my-2" />
         <div className="flex justify-between items-center">{L(<>
           <span className="text-muted">Afinidad personal</span>
           <span className="font-medium" style={{ color: tierMeta.color }}>
-            {tierMeta.label}
+            {L.t(tierMeta.label)}
           </span>
-        </>, <><span className="text-muted">Personal affinity</span><span className="font-medium" style={{ color: tierMeta.color }}>{tierMeta.label}</span></>)}</div>
+        </>, <><span className="text-muted">Personal affinity</span><span className="font-medium" style={{ color: tierMeta.color }}>{L.t(tierMeta.label)}</span></>)}</div>
       </div>
     </div>
   );
@@ -414,19 +414,19 @@ function PersonalCard({
     <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-lg shrink-0">{emoji ?? "·"}</span>
-          <span className="text-sm font-medium text-foreground truncate">{entityName}</span>
+          <span className="text-lg shrink-0">{L.t(emoji ?? "·")}</span>
+          <span className="text-sm font-medium text-foreground truncate">{L.t(entityName)}</span>
         </div>
         <span className="font-heading text-sm font-bold shrink-0 label-caps" style={{ color: tierMeta.color }}>
-          {tierMeta.label}
+          {L.t(tierMeta.label)}
         </span>
       </div>
       <p className="text-xs text-muted mb-1">{L(<>
-        Tu signo: <span className="font-medium text-foreground">{userAnimal || "—"}</span> · el suyo: {animal}
-      </>, <>Your sign: <span className="font-medium text-foreground">{userAnimal || "—"}</span> · theirs: {animal}</>)}</p>
+        Tu signo: <span className="font-medium text-foreground">{L.t(userAnimal || "—")}</span> · el suyo: {L.t(animal)}
+      </>, <>Your sign: <span className="font-medium text-foreground">{L.t(userAnimal || "—")}</span> · theirs: {L.t(animal)}</>)}</p>
       <p className="text-xs text-muted">{L(<>
-        Relación: <span className="font-medium text-foreground">{relationship}</span>
-      </>, <>Relationship: <span className="font-medium text-foreground">{relationship}</span></>)}</p>
+        Relación: <span className="font-medium text-foreground">{L.t(relationship)}</span>
+      </>, <>Relationship: <span className="font-medium text-foreground">{L.t(relationship)}</span></>)}</p>
     </div>
   );
 }
@@ -440,20 +440,22 @@ function DifferenceRow({
   valueA: string;
   valueB: string;
 }) {
+  const L = useL();
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-3 items-center text-xs">
-      <span className="text-foreground text-right truncate" title={valueA}>{valueA}</span>
-      <span className="text-muted font-medium w-16 sm:w-24 text-center shrink-0">{label}</span>
-      <span className="text-foreground text-left truncate" title={valueB}>{valueB}</span>
+      <span className="text-foreground text-right truncate" title={L.t(valueA)}>{L.t(valueA)}</span>
+      <span className="text-muted font-medium w-16 sm:w-24 text-center shrink-0">{L.t(label)}</span>
+      <span className="text-foreground text-left truncate" title={L.t(valueB)}>{L.t(valueB)}</span>
     </div>
   );
 }
 
 function SectionHeader({ title }: { title: string }) {
+  const L = useL();
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L.t(title)}</h2>
     </div>
   );
 }

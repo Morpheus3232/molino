@@ -61,9 +61,9 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
           <span style={{ color: "#0A0A0A", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
         </div>
 
-        <span style={{ fontSize: 96, lineHeight: 1 }}>{isoToFlagEmoji(iso)}</span>
-        <span style={{ color: "#0A0A0A", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
-        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>{L(<>de {name}</>, <>of {name}</>)}</span>
+        <span style={{ fontSize: 96, lineHeight: 1 }}>{L.t(isoToFlagEmoji(iso))}</span>
+        <span style={{ color: "#0A0A0A", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{L.t(catLabel)}</span>
+        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>{L(<>de {L.t(name)}</>, <>of {L.t(name)}</>)}</span>
         <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 36 }}>{L("Explorá las afinidades simbólicas en Molino", "Explore symbolic affinities on Molino")}</span>
       </div>
     ),

@@ -77,13 +77,13 @@ export default function SignoSolarPage() {
                 <select value={month} onChange={(e) => setMonth(e.target.value)} className="input flex-1" aria-label={L("Mes", "Month")}>
                   <option value="">{L("Mes", "Month")}</option>
                   {MONTHS(L).map((m) => (
-                    <option key={m.value} value={m.value}>{m.label}</option>
+                    <option key={m.value} value={m.value}>{L.t(m.label)}</option>
                   ))}
                 </select>
                 <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label={L("Año", "Year")}>
                   <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
+                    <option key={y} value={String(y)}>{L.t(y)}</option>
                   ))}
                 </select>
               </div>
@@ -121,7 +121,7 @@ export default function SignoSolarPage() {
                     transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     className="text-6xl sm:text-7xl mb-4"
                   >
-                    {result.symbol}
+                    {L.t(result.symbol)}
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 8 }}
@@ -129,7 +129,7 @@ export default function SignoSolarPage() {
                     transition={{ delay: 0.4, duration: 0.4 }}
                     className="font-heading text-3xl font-semibold text-foreground"
                   >
-                    {result.sign}
+                    {L.t(result.sign)}
                   </motion.p>
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -137,13 +137,13 @@ export default function SignoSolarPage() {
                     transition={{ delay: 0.5, duration: 0.35 }}
                     className="flex items-center justify-center gap-3 mt-3 text-sm text-muted"
                   >
-                    <span className="px-3 py-1 rounded-md border border-border transition-colors hover:border-accent/40">{result.element}</span>
-                    <span className="px-3 py-1 rounded-md border border-border transition-colors hover:border-accent/40">{result.modality}</span>
+                    <span className="px-3 py-1 rounded-md border border-border transition-colors hover:border-accent/40">{L.t(result.element)}</span>
+                    <span className="px-3 py-1 rounded-md border border-border transition-colors hover:border-accent/40">{L.t(result.modality)}</span>
                   </motion.div>
                 </div>
 
                 {/* Sign description */}
-                {(() => {
+                {L.t((() => {
                   const signData = getSignData(result.sign);
                   return signData ? (
                     <motion.div
@@ -152,15 +152,15 @@ export default function SignoSolarPage() {
                       transition={{ delay: 0.55, duration: 0.4 }}
                       className="max-w-lg mx-auto"
                     >
-                      <p className="text-sm text-muted leading-relaxed text-center mb-4">{signData.keywords.join(" \u00b7 ")}</p>
+                      <p className="text-sm text-muted leading-relaxed text-center mb-4">{L.t(signData.keywords.map(L.t).join(" \u00b7 "))}</p>
                       <div className="p-4 rounded-md bg-card border border-border">
                         <p className="text-sm text-foreground leading-relaxed">{L(<>
-                          Según la tradición astrológica, {result.sign} es un signo {result.modality.toLowerCase()} de elemento {result.element.toLowerCase()}. {result.sign === "Aries" ? "Se asocia con el inicio, la iniciativa y la energía pionera." : result.sign === "Tauro" ? "Se asocia con la estabilidad, la sensualidad y la conexión con la tierra." : result.sign === "G\u00e9minis" ? "Se asocia con la dualidad, la comunicación y la curiosidad intelectual." : result.sign === "C\u00e1ncer" ? "Se asocia con las emociones, el hogar y la protecci\u00f3n." : result.sign === "Leo" ? "Se asocia con la creatividad, el liderazgo y la expresi\u00f3n personal." : result.sign === "Virgo" ? "Se asocia con el an\u00e1lisis, la precisi\u00f3n y el servicio." : result.sign === "Libra" ? "Se asocia con el equilibrio, la armon\u00eda y la justicia." : result.sign === "Escorpio" ? "Se asocia con la transformaci\u00f3n, la intensidad y lo oculto." : result.sign === "Sagitario" ? "Se asocia con la expansi\u00f3n, la filosof\u00eda y la aventura." : result.sign === "Capricornio" ? "Se asocia con la ambici\u00f3n, la disciplina y la estructura." : result.sign === "Acuario" ? "Se asocia con la innovaci\u00f3n, la humanidad y la originalidad." : "Se asocia con la intuici\u00f3n, la espiritualidad y la compasi\u00f3n."}
-                        </>, <>According to the astrological tradition, {result.sign} is a {result.modality.toLowerCase()} {result.element.toLowerCase()} sign. {result.sign === "Aries" ? "It's associated with beginnings, initiative and pioneering energy." : result.sign === "Tauro" ? "It's associated with stability, sensuality and connection with the earth." : result.sign === "Géminis" ? "It's associated with duality, communication and intellectual curiosity." : result.sign === "Cáncer" ? "It's associated with emotions, home and protection." : result.sign === "Leo" ? "It's associated with creativity, leadership and personal expression." : result.sign === "Virgo" ? "It's associated with analysis, precision and service." : result.sign === "Libra" ? "It's associated with balance, harmony and justice." : result.sign === "Escorpio" ? "It's associated with transformation, intensity and the hidden." : result.sign === "Sagitario" ? "It's associated with expansion, philosophy and adventure." : result.sign === "Capricornio" ? "It's associated with ambition, discipline and structure." : result.sign === "Acuario" ? "It's associated with innovation, humanity and originality." : "It's associated with intuition, spirituality and compassion."}</>)}</p>
+                          Según la tradición astrológica, {L.t(result.sign)} es un signo {L.t(result.modality.toLowerCase())} de elemento {L.t(result.element.toLowerCase())}. {L.t(result.sign === "Aries" ? "Se asocia con el inicio, la iniciativa y la energía pionera." : result.sign === "Tauro" ? "Se asocia con la estabilidad, la sensualidad y la conexión con la tierra." : result.sign === "G\u00e9minis" ? "Se asocia con la dualidad, la comunicación y la curiosidad intelectual." : result.sign === "C\u00e1ncer" ? "Se asocia con las emociones, el hogar y la protecci\u00f3n." : result.sign === "Leo" ? "Se asocia con la creatividad, el liderazgo y la expresi\u00f3n personal." : result.sign === "Virgo" ? "Se asocia con el an\u00e1lisis, la precisi\u00f3n y el servicio." : result.sign === "Libra" ? "Se asocia con el equilibrio, la armon\u00eda y la justicia." : result.sign === "Escorpio" ? "Se asocia con la transformaci\u00f3n, la intensidad y lo oculto." : result.sign === "Sagitario" ? "Se asocia con la expansi\u00f3n, la filosof\u00eda y la aventura." : result.sign === "Capricornio" ? "Se asocia con la ambici\u00f3n, la disciplina y la estructura." : result.sign === "Acuario" ? "Se asocia con la innovaci\u00f3n, la humanidad y la originalidad." : "Se asocia con la intuici\u00f3n, la espiritualidad y la compasi\u00f3n.")}
+                        </>, <>According to the astrological tradition, {L.t(result.sign)} is a {L.t(result.modality.toLowerCase())} {L.t(result.element.toLowerCase())} sign. {L.t(result.sign === "Aries" ? "It's associated with beginnings, initiative and pioneering energy." : result.sign === "Tauro" ? "It's associated with stability, sensuality and connection with the earth." : result.sign === "Géminis" ? "It's associated with duality, communication and intellectual curiosity." : result.sign === "Cáncer" ? "It's associated with emotions, home and protection." : result.sign === "Leo" ? "It's associated with creativity, leadership and personal expression." : result.sign === "Virgo" ? "It's associated with analysis, precision and service." : result.sign === "Libra" ? "It's associated with balance, harmony and justice." : result.sign === "Escorpio" ? "It's associated with transformation, intensity and the hidden." : result.sign === "Sagitario" ? "It's associated with expansion, philosophy and adventure." : result.sign === "Capricornio" ? "It's associated with ambition, discipline and structure." : result.sign === "Acuario" ? "It's associated with innovation, humanity and originality." : "It's associated with intuition, spirituality and compassion.")}</>)}</p>
                       </div>
                     </motion.div>
                   ) : null;
-                })()}
+                })())}
               </motion.div>
 
               {/* Disclaimer */}
@@ -185,9 +185,9 @@ export default function SignoSolarPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = L(`Mi signo solar es ${result.sign} (${result.element} · ${result.modality}). Leé el tuyo en Molino.`, `My sun sign is ${result.sign} (${result.element} · ${result.modality}). Read yours on Molino.`);
+                    const text = L(`Mi signo solar es ${result.sign} (${result.element} · ${result.modality}). Leé el tuyo en Molino.`, `My sun sign is ${L.t(result.sign)} (${L.t(result.element)} · ${L.t(result.modality)}). Read yours on Molino.`);
                     if (navigator.share) {
-                      navigator.share({ title: L(`Mi Signo Solar — ${result.sign}`, `My Sun Sign — ${result.sign}`), text }).catch(() => {});
+                      navigator.share({ title: L(`Mi Signo Solar — ${result.sign}`, `My Sun Sign — ${L.t(result.sign)}`), text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

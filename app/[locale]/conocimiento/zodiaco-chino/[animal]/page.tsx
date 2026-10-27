@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { CHINESE_ANIMALS, delAnimal } from "@/lib/data/zodiaco-chino-content";
@@ -62,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AnimalPage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { animal: animalId } = await params;
   const animal = findAnimal(animalId);
@@ -70,7 +71,7 @@ export default async function AnimalPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: L(`${animal.name} en el horóscopo chino`, `${animal.name} in the Chinese horoscope`),
+      headline: L(`${animal.name} en el horóscopo chino`, `${L.t(animal.name)} in the Chinese horoscope`),
       description: animal.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },

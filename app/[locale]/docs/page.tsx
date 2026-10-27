@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { PageHero, Columns } from "@/components/knowledge/Kit";
 import { siteUrl, SITE_URL, metadataFor } from "@/lib/seo";
@@ -75,8 +76,9 @@ const ENDPOINTS = (L: Pick2) => ([
   },
 ]);
 
-export default function DocsPage() {
-  const L = useL();
+export default async function DocsPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="bg-background pt-12 sm:pt-16 pb-24 text-foreground">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -90,14 +92,14 @@ export default function DocsPage() {
             <div className="border-2 border-ink">
               <p className="px-5 py-3 border-b border-ink/15 text-sm text-muted">{L("Una consulta de ejemplo", "A sample query")}</p>
               <pre className="p-5 text-sm sm:text-base font-mono text-foreground overflow-x-auto leading-relaxed bg-paper-alt/60">
-                <code>{`curl "${SITE_URL}/api/v1/map?date=1990-03-15"
+                <code>{L.t(`curl "${SITE_URL}/api/v1/map?date=1990-03-15"
 
 "map": {
   "numerology": { "lifePath": 1 },
   "astrology": { "sunSign": "Piscis" },
   "chineseZodiac": { "animal": "Caballo" },
   ...
-}`}</code>
+}`)}</code>
               </pre>
             </div>
           }
@@ -125,19 +127,19 @@ export default function DocsPage() {
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    {ep.method}
+                    {L.t(ep.method)}
                   </span>
                   <span className="font-mono text-sm sm:text-base font-bold text-foreground">
-                    {ep.path}
+                    {L.t(ep.path)}
                   </span>
                 </div>
                 <span className="font-heading text-sm text-accent font-semibold">
-                  {ep.title}
+                  {L.t(ep.title)}
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                {ep.desc}
+                {L.t(ep.desc)}
               </p>
 
               {/* Parameters Table */}
@@ -156,8 +158,8 @@ export default function DocsPage() {
                     <tbody className="divide-y divide-ink/5">
                       {ep.params.map((p) => (
                         <tr key={p.name}>
-                          <td className="py-2.5 pr-4 font-bold text-accent">{p.name}</td>
-                          <td className="py-2.5 pr-4 text-muted">{p.type}</td>
+                          <td className="py-2.5 pr-4 font-bold text-accent">{L.t(p.name)}</td>
+                          <td className="py-2.5 pr-4 text-muted">{L.t(p.type)}</td>
                           <td className="py-2.5 pr-4">
                             <span
                               className={`px-1.5 py-0.5 rounded text-[10px] ${
@@ -166,10 +168,10 @@ export default function DocsPage() {
                                   : "bg-ink/5 text-muted"
                               }`}
                             >
-                              {p.required ? L("Sí", "Yes") : L("Opcional", "Optional")}
+                              {L.t(p.required ? L("Sí", "Yes") : L("Opcional", "Optional"))}
                             </span>
                           </td>
-                          <td className="py-2.5 text-muted">{p.desc}</td>
+                          <td className="py-2.5 text-muted">{L.t(p.desc)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -187,11 +189,11 @@ export default function DocsPage() {
                     rel="noopener noreferrer"
                     className="text-xs font-mono text-accent hover:underline inline-flex items-center gap-1"
                   >
-                    {L("Probar en vivo ", "Try it live")} <ArrowRight className="w-3 h-3" />
+                    {L("Probar en vivo ", "Try it live ")} <ArrowRight className="w-3 h-3" />
                   </a>
                 </div>
                 <pre className="p-4 rounded-lg bg-background border border-ink/10 text-[11px] font-mono text-foreground/90 overflow-x-auto leading-relaxed">
-                  <code>{ep.response}</code>
+                  <code>{L.t(ep.response)}</code>
                 </pre>
               </div>
             </div>

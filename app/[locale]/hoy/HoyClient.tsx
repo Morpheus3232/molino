@@ -54,22 +54,22 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-10 items-center">
             <div className="lg:col-span-6">
               <p className="text-sm text-accent mb-4 label-caps first-letter:uppercase">
-                {formattedToday}
-                {ready && (personal ? L(` · mapa de ${profile?.name || profile?.archetype}`, ` · ${profile?.name || profile?.archetype}'s map`) : L(" · energía universal del día", " · universal energy of the day"))}
+                {L.t(formattedToday)}
+                {L.t(ready && (personal ? L(` · mapa de ${profile?.name || profile?.archetype}`, ` · ${L.t(profile?.name || profile?.archetype)}'s map`) : L(" · energía universal del día", " · universal energy of the day")))}
               </p>
-              {heading}
+              {L.t(heading)}
 
               {ready && today && breakdown ? (
                 <>
                   <p className="mt-8 font-display text-[clamp(1.75rem,3.4vw,2.75rem)] leading-[1.1] text-foreground">{L(<>
-                    Día {today.number}: {today.title}.
-                  </>, <>Day {today.number}: {today.title}.</>)}</p>
-                  <p className="mt-4 text-xl text-foreground/85 leading-snug max-w-xl">{today.description}</p>
+                    Día {today.number}: {L.t(today.title)}.
+                  </>, <>Day {today.number}: {L.t(today.title)}.</>)}</p>
+                  <p className="mt-4 text-xl text-foreground/85 leading-snug max-w-xl">{L.t(today.description)}</p>
 
                   <div className="mt-8 max-w-xl border-l-2 border-ink pl-5">
                     <p className="text-sm text-muted">{L("La cuenta con la fecha de hoy", "The math with today's date")}</p>
                     <p className="mt-1 font-mono tabular-nums text-lg text-foreground break-words">
-                      {formatDateNumberBreakdown(breakdown)}
+                      {L.t(formatDateNumberBreakdown(breakdown))}
                     </p>
                     {(breakdown.isMaster || breakdown.isAbundance) && (
                       <p className="mt-1 text-base text-muted">
@@ -83,14 +83,14 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
                       { mark: DIAL_MARKS.day, text: <>{L(<>En negro, el número del día, igual para todos: <span className="text-foreground">{today.number}</span>.</>, <>In black, the number of the day, the same for everyone: <span className="text-foreground">{today.number}</span>.</>)}</> },
                       ...(personal && daily
                         ? [
-                            { mark: DIAL_MARKS.personalDay, text: <>{L(<>El punto rojo, tu Día Personal, que suma tu fecha de nacimiento: <span className="text-foreground">{daily.personalDay}</span>.</>, <>The red dot, your Personal Day, which adds in your date of birth: <span className="text-foreground">{daily.personalDay}</span>.</>)}</> },
+                            { mark: DIAL_MARKS.personalDay, text: <>{L(<>El punto rojo, tu Día Personal, que suma tu fecha de nacimiento: <span className="text-foreground">{L.t(daily.personalDay)}</span>.</>, <>The red dot, your Personal Day, which adds in your date of birth: <span className="text-foreground">{L.t(daily.personalDay)}</span>.</>)}</> },
                             { mark: DIAL_MARKS.personalYear, text: <>{L(<>El anillo, tu Año Personal: <span className="text-foreground">{daily.personalYear}</span>.</>, <>The ring, your Personal Year: <span className="text-foreground">{daily.personalYear}</span>.</>)}</> },
                           ]
                         : []),
                     ].map((row, i) => (
                       <div key={i} className="grid grid-cols-[2.5rem_1fr] gap-x-4 py-3 items-start">
-                        <dt className="pt-0.5" aria-hidden="true">{row.mark}</dt>
-                        <dd className="text-base leading-snug text-muted">{row.text}</dd>
+                        <dt className="pt-0.5" aria-hidden="true">{L.t(row.mark)}</dt>
+                        <dd className="text-base leading-snug text-muted">{L.t(row.text)}</dd>
                       </div>
                     ))}
                   </dl>
@@ -120,7 +120,7 @@ export default function HoyClient({ heading }: { heading: ReactNode }) {
                   day={today.number}
                   personalDay={personal ? daily?.personalDay : null}
                   personalYear={personal ? daily?.personalYear : null}
-                  ariaLabel={L(`Cuadrante del ciclo de nueve con el ${today.number} marcado${personal && daily ? `, tu Día Personal ${daily.personalDay} y tu Año Personal ${daily.personalYear}` : ""}.`, `Dial of the cycle of nine with ${today.number} marked${personal && daily ? `, your Personal Day ${daily.personalDay} and your Personal Year ${daily.personalYear}` : ""}.`)}
+                  ariaLabel={L(`Cuadrante del ciclo de nueve con el ${today.number} marcado${personal && daily ? `, tu Día Personal ${daily.personalDay} y tu Año Personal ${daily.personalYear}` : ""}.`, `Dial of the cycle of nine with ${today.number} marked${personal && daily ? `, your Personal Day ${L.t(daily.personalDay)} and your Personal Year ${daily.personalYear}` : ""}.`)}
                   className="mx-auto max-w-[34rem]"
                 />
               ) : (

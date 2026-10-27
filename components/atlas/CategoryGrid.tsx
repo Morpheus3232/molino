@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { Link } from "@/lib/i18n/navigation";
 import { motion } from "framer-motion";
@@ -23,6 +24,7 @@ interface CategoryGridProps {
 }
 
 export default function CategoryGrid({ countryISO, categories }: CategoryGridProps) {
+  const L = useL();
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {categories.map((category, i) => {
@@ -41,7 +43,7 @@ export default function CategoryGrid({ countryISO, categories }: CategoryGridPro
               <Icon className="w-6 h-6 text-accent" strokeWidth={1.5} aria-hidden="true" />
               <div>
                 <h3 className="font-heading text-xl font-semibold text-foreground group-hover:text-accent transition-colors">
-                  {category.plural}
+                  {L.t(category.plural)}
                 </h3>
                 <p className="text-sm text-muted mt-1 label-caps">
                   {category.count} {category.count === 1 ? "entidad" : "entidades"}

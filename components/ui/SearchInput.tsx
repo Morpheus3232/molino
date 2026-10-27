@@ -34,8 +34,8 @@ export default function SearchInput({
         type="search"
         value={value}
         onChange={(e) => onValueChange(e.target.value)}
-        placeholder={placeholder}
-        aria-label={label}
+        placeholder={L.t(placeholder)}
+        aria-label={L.t(label)}
         className="w-full min-h-[44px] pl-11 pr-11 py-3 rounded-md border border-border bg-card text-base text-foreground placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:border-accent focus:shadow-md [&::-webkit-search-cancel-button]:hidden"
         {...props}
       />
@@ -43,7 +43,7 @@ export default function SearchInput({
         <button
           type="button"
           onClick={() => onValueChange("")}
-          aria-label={L(`Limpiar ${label.toLowerCase()}`, `Clear ${label.toLowerCase()}`)}
+          aria-label={L(`Limpiar ${label.toLowerCase()}`, `Clear ${L.t(label.toLowerCase())}`)}
           className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-7 h-7 rounded-sm text-muted transition-colors hover:text-foreground hover:bg-ink/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <X className="w-4 h-4" aria-hidden="true" />

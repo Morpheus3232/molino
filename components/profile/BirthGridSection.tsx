@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
 import type { UserProfile } from "@/types/user";
@@ -18,6 +19,7 @@ import EditorialSection from "@/components/ui/EditorialSection";
  * a lo interpretado.
  */
 export default function BirthGridSection({ profile }: { profile: UserProfile }) {
+  const L = useL();
   const grid = useMemo(() => {
     const fecha = typeof profile.birthDate === "string" ? profile.birthDate : "";
     return fecha ? buildBirthGrid(fecha) : null;
@@ -52,7 +54,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
             Los dígitos de tu fecha
           </p>
           <p className="font-mono text-3xl sm:text-4xl text-foreground tracking-[0.28em] tabular-nums">
-            {digits.join(" ")}
+            {L.t(digits.map(L.t).join(" "))}
           </p>
           <p className="mt-3 text-sm text-muted">
             {digits.length} dígitos. Los ceros no se colocan: la grilla va del 1 al 9.
@@ -87,7 +89,7 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                         presente ? "text-foreground" : "text-ink/20"
                       }`}
                     >
-                      {c.digit}
+                      {L.t(c.digit)}
                     </span>
                     <span
                       className={`font-mono text-sm tabular-nums ${
@@ -114,10 +116,10 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                   className="flex items-baseline gap-4 py-3 border-b border-ink/10"
                 >
                   <span className="font-mono text-sm text-accent tabular-nums shrink-0 w-10">
-                    {e.digit}
+                    {L.t(e.digit)}
                     <span className="text-muted"> ×{e.count}</span>
                   </span>
-                  <span className="text-sm text-foreground">{getMissingReading(e.digit)}</span>
+                  <span className="text-sm text-foreground">{L.t(getMissingReading(e.digit))}</span>
                 </li>
               ))}
               {missing.map((d, i) => (
@@ -128,10 +130,10 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                   }`}
                 >
                   <span className="font-mono text-sm text-ink/30 tabular-nums shrink-0 w-10">
-                    {d}
+                    {L.t(d)}
                     <span className="sr-only"> ausente</span>
                   </span>
-                  <span className="text-sm text-muted">{getMissingReading(d)}</span>
+                  <span className="text-sm text-muted">{L.t(getMissingReading(d))}</span>
                 </li>
               ))}
             </ul>
@@ -160,16 +162,16 @@ export default function BirthGridSection({ profile }: { profile: UserProfile }) 
                         l.state === "full" ? "text-accent" : "text-ink/30"
                       }`}
                     >
-                      {l.digits.join("-")}
+                      {L.t(l.digits.map(L.t).join("-"))}
                     </span>
                     <span className="font-heading text-base font-bold text-foreground">
-                      {l.name}
+                      {L.t(l.name)}
                     </span>
                     <span className="text-sm text-muted label-caps">
-                      {l.state === "full" ? "completa" : "vacía"} · {l.kind}
+                      {L.t(l.state === "full" ? "completa" : "vacía")} · {L.t(l.kind)}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-muted leading-relaxed max-w-2xl">{l.reading}</p>
+                  <p className="mt-2 text-sm text-muted leading-relaxed max-w-2xl">{L.t(l.reading)}</p>
                 </li>
               ))}
             </ul>

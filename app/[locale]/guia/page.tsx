@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { metadataFor } from "@/lib/seo";
 import { PageHero, CONTAINER } from "@/components/knowledge/Kit";
@@ -17,8 +18,9 @@ const articles = (L: Pick2) => ([
   { slug: "compatibilidad-astrologica", title: L("Compatibilidad Astrológica", "Astrological Compatibility"), subtitle: L("Elementos y modalidades", "Elements and modalities"), description: L("Cómo se relacionan los signos según sus elementos y modalidades. Fuego, Tierra, Aire y Agua en acción.", "How the signs relate according to their elements and modalities. Fire, Earth, Air and Water in action."), icon: "☉" },
 ]);
 
-export default function GuiaPage() {
-  const L = useL();
+export default async function GuiaPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="bg-background">
       <PageHero
@@ -38,18 +40,18 @@ export default function GuiaPage() {
                   className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[8rem_1fr_auto] gap-x-6 sm:gap-x-10 items-baseline py-10 hover:bg-paper-alt/60 transition-colors"
                 >
                   <span className="font-display text-5xl sm:text-7xl leading-none text-foreground text-center" aria-hidden="true">
-                    {article.icon}
+                    {L.t(article.icon)}
                   </span>
                   <span>
-                    <span className="block text-base text-muted">{article.subtitle}</span>
+                    <span className="block text-base text-muted">{L.t(article.subtitle)}</span>
                     <span className="mt-1 block font-display text-[clamp(2rem,4vw,3rem)] leading-tight text-foreground group-hover:underline underline-offset-[6px]">
-                      {article.title}
+                      {L.t(article.title)}
                     </span>
-                    <span className="mt-3 block text-lg text-foreground/80 leading-relaxed max-w-2xl">{article.description}</span>
+                    <span className="mt-3 block text-lg text-foreground/80 leading-relaxed max-w-2xl">{L.t(article.description)}</span>
                   </span>
                   <span className="hidden sm:block text-base underline underline-offset-4 pr-2">Leer la guía</span>
                 </Link>
-              </>, <><Link href={`/guia/${article.slug}`} className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[8rem_1fr_auto] gap-x-6 sm:gap-x-10 items-baseline py-10 hover:bg-paper-alt/60 transition-colors"><span className="font-display text-5xl sm:text-7xl leading-none text-foreground text-center" aria-hidden="true">{article.icon}</span><span><span className="block text-base text-muted">{article.subtitle}</span><span className="mt-1 block font-display text-[clamp(2rem,4vw,3rem)] leading-tight text-foreground group-hover:underline underline-offset-[6px]">{article.title}</span><span className="mt-3 block text-lg text-foreground/80 leading-relaxed max-w-2xl">{article.description}</span></span><span className="hidden sm:block text-base underline underline-offset-4 pr-2">Read the guide</span></Link></>)}</li>
+              </>, <><Link href={`/guia/${article.slug}`} className="group grid grid-cols-[4.5rem_1fr] sm:grid-cols-[8rem_1fr_auto] gap-x-6 sm:gap-x-10 items-baseline py-10 hover:bg-paper-alt/60 transition-colors"><span className="font-display text-5xl sm:text-7xl leading-none text-foreground text-center" aria-hidden="true">{L.t(article.icon)}</span><span><span className="block text-base text-muted">{L.t(article.subtitle)}</span><span className="mt-1 block font-display text-[clamp(2rem,4vw,3rem)] leading-tight text-foreground group-hover:underline underline-offset-[6px]">{L.t(article.title)}</span><span className="mt-3 block text-lg text-foreground/80 leading-relaxed max-w-2xl">{L.t(article.description)}</span></span><span className="hidden sm:block text-base underline underline-offset-4 pr-2">Read the guide</span></Link></>)}</li>
             ))}
           </ol>
           <p className="mt-10 text-lg text-muted max-w-2xl">{L(<>

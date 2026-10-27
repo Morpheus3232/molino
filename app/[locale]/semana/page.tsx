@@ -112,7 +112,7 @@ function SemanaContent() {
           <Breadcrumb items={crumbs} />
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-6 items-end">
             <div className="lg:col-span-7">
-              <p className="text-sm text-accent mb-4 label-caps">{weekRange}</p>
+              <p className="text-sm text-accent mb-4 label-caps">{L.t(weekRange)}</p>
               <h1 className="font-display font-normal text-[clamp(3.5rem,9vw,7rem)] leading-[0.92] tracking-tight text-foreground">{L("Tu semana", "Your week")}</h1>
             </div>
             <p className="lg:col-span-5 text-xl sm:text-2xl text-foreground/85 leading-snug">{L("Siete días con tu Día Personal: el número que sale de sumar tu fecha de nacimiento con cada fecha. Hoy va en negro.", "Seven days with your Personal Day: the number you get by adding your date of birth to each date. Today is in black.")}</p>
@@ -134,13 +134,13 @@ function SemanaContent() {
                 >
                   <div className="w-24 sm:w-auto shrink-0">
                     <p className={`text-sm capitalize ${isTodayCell ? "text-paper/75" : "text-muted"}`}>
-                      {dayName}
-                      {isTodayCell && L(" · hoy", " · today")}
+                      {L.t(dayName)}
+                      {L.t(isTodayCell && L(" · hoy", " · today"))}
                     </p>
-                    <p className={`text-base tabular-nums ${isTodayCell ? "text-paper/75" : "text-muted"}`}>{date.getDate()}</p>
+                    <p className={`text-base tabular-nums ${isTodayCell ? "text-paper/75" : "text-muted"}`}>{L.t(date.getDate())}</p>
                   </div>
-                  <p className={`sm:mt-6 font-display text-5xl lg:text-7xl leading-none tabular-nums ${isTodayCell ? "text-paper" : "text-foreground"}`}>{day.personalDay}</p>
-                  <p className={`sm:mt-3 font-display text-xl sm:text-base lg:text-xl leading-tight hyphens-auto break-words min-w-0 ${isTodayCell ? "text-paper" : "text-foreground"}`} lang="es">{day.theme}</p>
+                  <p className={`sm:mt-6 font-display text-5xl lg:text-7xl leading-none tabular-nums ${isTodayCell ? "text-paper" : "text-foreground"}`}>{L.t(day.personalDay)}</p>
+                  <p className={`sm:mt-3 font-display text-xl sm:text-base lg:text-xl leading-tight hyphens-auto break-words min-w-0 ${isTodayCell ? "text-paper" : "text-foreground"}`} lang="es">{L.t(day.theme)}</p>
                 </li>
               );
             })}
@@ -149,8 +149,8 @@ function SemanaContent() {
       </header>
 
       {todayResult && (
-        <KnowledgeSection label={L("Tu día de hoy", "Your day today")} title={<>{L(<>Día {todayResult.personalDay}: {todayResult.theme}</>, <>Day {todayResult.personalDay}: {todayResult.theme}</>)}</>}>
-          <p className="text-xl text-foreground/85 leading-relaxed max-w-3xl">{todayResult.description}</p>
+        <KnowledgeSection label={L("Tu día de hoy", "Your day today")} title={<>{L(<>Día {L.t(todayResult.personalDay)}: {L.t(todayResult.theme)}</>, <>Day {L.t(todayResult.personalDay)}: {L.t(todayResult.theme)}</>)}</>}>
+          <p className="text-xl text-foreground/85 leading-relaxed max-w-3xl">{L.t(todayResult.description)}</p>
           <p className="mt-6 text-base">{L(<>
             <Link href="/hoy" className="underline underline-offset-4 hover:no-underline">Ver todo el día de hoy</Link>
           </>, <><Link href="/hoy" className="underline underline-offset-4 hover:no-underline">See all of today</Link></>)}</p>
@@ -165,15 +165,15 @@ function SemanaContent() {
             return (
               <article key={day.date} className="grid grid-cols-1 md:grid-cols-[14rem_1fr] gap-x-10 gap-y-2 py-6 border-b border-ink/15">
                 <div className="flex items-baseline gap-4">
-                  <span className="font-display text-5xl leading-none text-foreground tabular-nums">{day.personalDay}</span>
+                  <span className="font-display text-5xl leading-none text-foreground tabular-nums">{L.t(day.personalDay)}</span>
                   <span className="text-base text-foreground capitalize">
                     {date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric" })}
                     {isTodayCell && <span className="text-muted">{L(" · hoy", " · today")}</span>}
                   </span>
                 </div>
                 <div>
-                  <h3 className="font-display text-2xl text-foreground">{day.theme}</h3>
-                  <p className="mt-1 text-lg text-foreground/85 leading-relaxed max-w-3xl">{day.description}</p>
+                  <h3 className="font-display text-2xl text-foreground">{L.t(day.theme)}</h3>
+                  <p className="mt-1 text-lg text-foreground/85 leading-relaxed max-w-3xl">{L.t(day.description)}</p>
                 </div>
               </article>
             );

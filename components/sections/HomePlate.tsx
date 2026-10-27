@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import Image from "next/image";
 import { useRef } from "react";
@@ -22,6 +23,7 @@ export default function HomePlate({
   imageKey: string;
   className?: string;
 }) {
+  const L = useL();
   const img = getSectionImage(imageKey);
   const frame = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -41,7 +43,7 @@ export default function HomePlate({
         <motion.div className="absolute inset-x-0 -inset-y-[9%]" style={{ y: reduce ? 0 : y }}>
           <Image
             src={img.src}
-            alt={img.alt}
+            alt={L.t(img.alt)}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
             className="object-cover grayscale contrast-[1.12]"

@@ -47,7 +47,7 @@ function PremiumClaimContent() {
     <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
       {error ? (
         <>
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="text-sm text-red-400">{L.t(error)}</p>
           <p className="text-xs text-muted">{L("Podés recuperar tu acceso desde la página Premium con tu ID de pago.", "You can recover your access from the Premium page with your payment ID.")}</p>
         </>
       ) : (

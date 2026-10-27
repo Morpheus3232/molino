@@ -85,7 +85,7 @@ export default function FilosofiaContent() {
     },
     {
       q: L("No es todo gratis", "Not everything is free"),
-      a: L(`Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral es una capa Premium opcional de ${t.premium.priceLabel}, pago único y para siempre. Sin suscripciones.`, `Your map, your patterns and the traditions are free to explore, with no sign-up. Only the integral synthesis is an optional Premium layer for ${t.premium.priceLabel}, a one-time payment, yours forever. No subscriptions.`),
+      a: L(`Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral es una capa Premium opcional de ${t.premium.priceLabel}, pago único y para siempre. Sin suscripciones.`, `Your map, your patterns and the traditions are free to explore, with no sign-up. Only the integral synthesis is an optional Premium layer for ${L.t(t.premium.priceLabel)}, a one-time payment, yours forever. No subscriptions.`),
     },
   ];
   return (
@@ -107,8 +107,8 @@ export default function FilosofiaContent() {
           {principles(L).map((principle, i) => (
             <li key={principle.id} id={principle.id} className="grid grid-cols-[3rem_1fr] sm:grid-cols-[5rem_minmax(0,4fr)_minmax(0,7fr)] gap-x-8 gap-y-2 py-8 border-b border-ink/15 items-baseline">
               <span className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{i + 1}</span>
-              <h3 className="font-display text-2xl sm:text-3xl leading-tight text-foreground">{principle.title}</h3>
-              <p className="col-start-2 sm:col-start-auto text-lg text-foreground/80 leading-relaxed">{principle.description}</p>
+              <h3 className="font-display text-2xl sm:text-3xl leading-tight text-foreground">{L.t(principle.title)}</h3>
+              <p className="col-start-2 sm:col-start-auto text-lg text-foreground/80 leading-relaxed">{L.t(principle.description)}</p>
             </li>
           ))}
         </ol>
@@ -126,7 +126,7 @@ export default function FilosofiaContent() {
                 <h3 className="font-display text-2xl text-foreground border-b-2 border-ink pb-2">{L("Tradición antigua", "Ancient tradition")}</h3>
                 <ul className="mt-3 divide-y divide-ink/10 text-lg">
                   {ancientTraditions(L).map((name) => (
-                    <li key={name} className="py-2 text-foreground/85">{name}</li>
+                    <li key={name} className="py-2 text-foreground/85">{L.t(name)}</li>
                   ))}
                 </ul>
               </div>
@@ -135,7 +135,7 @@ export default function FilosofiaContent() {
                 <ul className="mt-3 divide-y divide-ink/10 text-lg">
                   {contemporarySystems.map((sys) => (
                     <li key={sys.name} className="py-2 text-foreground/85">
-                      {sys.name} <span className="text-muted">({sys.author}, {sys.year})</span>
+                      {L.t(sys.name)} <span className="text-muted">({L.t(sys.author)}, {sys.year})</span>
                     </li>
                   ))}
                 </ul>

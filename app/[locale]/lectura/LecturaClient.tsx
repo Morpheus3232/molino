@@ -91,10 +91,10 @@ export default function LecturaClient({ catalog }: Props) {
                 <dl className="mt-8 border-t border-ink/15 max-w-xl">
                   {coords.map((c) => (
                     <div key={c.label} className="grid grid-cols-[8.5rem_1fr] gap-x-4 py-3 border-b border-ink/15 items-baseline">
-                      <dt className="text-sm text-muted label-caps">{c.label}</dt>
+                      <dt className="text-sm text-muted label-caps">{L.t(c.label)}</dt>
                       <dd>
                         <Link href={c.href} className="font-display text-xl text-foreground hover:underline underline-offset-4">
-                          {c.value}
+                          {L.t(c.value)}
                         </Link>
                       </dd>
                     </div>

@@ -79,7 +79,7 @@ export default function ExplorePage() {
         </div>
         {filteredConcepts.length === 0 ? (
           <p className="text-lg text-muted">
-            No hay conceptos para &ldquo;{searchTerm}&rdquo;.{" "}
+            No hay conceptos para &ldquo;{L.t(searchTerm)}&rdquo;.{" "}
             <button type="button" onClick={() => setSearchTerm("")} className="underline underline-offset-4 text-foreground">{L("Ver todos", "See all")}</button>
           </p>
         ) : (
@@ -87,8 +87,8 @@ export default function ExplorePage() {
             {filteredConcepts.map((concept) => (
               <li key={concept.title} className="bg-background">
                 <Link href={concept.href} className="group block h-full p-6 sm:p-7 hover:bg-paper-alt/70 transition-colors">
-                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{concept.title}</span>
-                  <span className="mt-2 block text-base text-foreground/80 leading-relaxed">{concept.description}</span>
+                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{L.t(concept.title)}</span>
+                  <span className="mt-2 block text-base text-foreground/80 leading-relaxed">{L.t(concept.description)}</span>
                 </Link>
               </li>
             ))}
@@ -97,7 +97,7 @@ export default function ExplorePage() {
       </KnowledgeSection>
 
       <KnowledgeSection label={L("Fuentes", "Sources")} title={L("Las obras de referencia", "The reference works")}>
-        <Columns cols={SOURCES(L).map((s) => ({ title: s.title, body: <><span className="block text-base text-muted">{s.author}</span><span className="mt-2 block">{s.description}</span></> }))} />
+        <Columns cols={SOURCES(L).map((s) => ({ title: s.title, body: <><span className="block text-base text-muted">{L.t(s.author)}</span><span className="mt-2 block">{L.t(s.description)}</span></> }))} />
         <p className="mt-6 text-lg">{L(<>
           <Link href="/biblioteca" className="underline underline-offset-4 hover:no-underline">Ver la biblioteca completa</Link>
         </>, <><Link href="/biblioteca" className="underline underline-offset-4 hover:no-underline">See the full library</Link></>)}</p>

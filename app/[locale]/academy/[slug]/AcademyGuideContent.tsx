@@ -20,16 +20,16 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">La Academia</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">{guide.title}</span>
-        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{guide.title}</span></>)}</nav>
+          <span className="text-foreground font-medium" aria-current="page">{L.t(guide.title)}</span>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{L.t(guide.title)}</span></>)}</nav>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-10 sm:mb-12">
           <p className="text-sm text-accent font-medium mb-4 label-caps">{L("Guía · Aprender", "Guide · Learn")}</p>
           <h1 className="page-title text-foreground mb-6">
-            {guide.title}
+            {L.t(guide.title)}
           </h1>
-          <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{guide.subtitle}</p>
+          <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{L.t(guide.subtitle)}</p>
           <SectionCover imageKey={`academia/${guide.slug}`} priority className="mt-10" />
         </motion.section>
 
@@ -40,7 +40,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
             {guide.whatYouLearn.map((item) => (
               <li key={item} className="text-sm text-foreground leading-relaxed flex gap-2">
                 <span className="text-accent shrink-0" aria-hidden="true">—</span>
-                <span>{item}</span>
+                <span>{L.t(item)}</span>
               </li>
             ))}
           </ul>
@@ -54,7 +54,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           </div>
           <div className="space-y-4">
             {guide.whatIs.map((p) => (
-              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{p}</p>
+              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{L.t(p)}</p>
             ))}
           </div>
         </motion.section>
@@ -67,7 +67,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           </div>
           <div className="space-y-4">
             {guide.howItWorks.map((p) => (
-              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{p}</p>
+              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{L.t(p)}</p>
             ))}
           </div>
         </motion.section>
@@ -80,7 +80,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           </div>
           <div className="space-y-4">
             {guide.howMolinoUsesIt.map((p) => (
-              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{p}</p>
+              <p key={p.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{L.t(p)}</p>
             ))}
           </div>
         </motion.section>
@@ -99,15 +99,15 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
           <div className="space-y-4">
             <div className="p-5 rounded-md border border-border bg-card">
               <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Dato", "Fact")}</p>
-              <p className="text-sm text-foreground leading-relaxed">{guide.dato}</p>
+              <p className="text-sm text-foreground leading-relaxed">{L.t(guide.dato)}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
               <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Tradición", "Tradition")}</p>
-              <p className="text-sm text-foreground leading-relaxed">{guide.tradicion}</p>
+              <p className="text-sm text-foreground leading-relaxed">{L.t(guide.tradicion)}</p>
             </div>
             <div className="p-5 rounded-md border border-border bg-card">
               <p className="text-sm text-accent font-semibold mb-2 label-caps">{L("Lectura de Molino", "Molino's reading")}</p>
-              <p className="text-sm text-foreground leading-relaxed">{guide.molino}</p>
+              <p className="text-sm text-foreground leading-relaxed">{L.t(guide.molino)}</p>
             </div>
           </div>
         </motion.section>
@@ -122,8 +122,8 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
             <div className="space-y-4">
               {guide.examples.map((ex) => (
                 <div key={ex.title} className="p-5 rounded-md border border-border bg-card">
-                  <p className="text-sm font-semibold text-foreground mb-2">{ex.title}</p>
-                  <p className="text-sm text-muted leading-relaxed">{ex.body}</p>
+                  <p className="text-sm font-semibold text-foreground mb-2">{L.t(ex.title)}</p>
+                  <p className="text-sm text-muted leading-relaxed">{L.t(ex.body)}</p>
                 </div>
               ))}
             </div>
@@ -138,7 +138,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
               {guide.whatItDoesNotMean.map((item) => (
                 <li key={item.slice(0, 40)} className="text-sm text-muted leading-relaxed flex gap-2">
                   <span className="text-accent shrink-0" aria-hidden="true">—</span>
-                  <span>{item}</span>
+                  <span>{L.t(item)}</span>
                 </li>
               ))}
             </ul>
@@ -158,7 +158,7 @@ export default function AcademyGuideContent({ guide }: { guide: AcademyGuide }) 
                 href={link.href}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent/80 transition-colors px-4 py-2 rounded-md border border-border hover:border-accent/50"
               >
-                {link.label} →
+                {L.t(link.label)} →
               </Link>
             ))}
           </div>

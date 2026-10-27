@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 import RegalarClient from "./RegalarClient";
 
@@ -10,6 +11,7 @@ export const generateMetadata = metadataFor({
   ogDescription: ["Un mapa personal completo, de regalo. $8 USD, pago único. El destinatario ingresa su fecha al canjear, no vos.", "A complete personal map, as a gift. $8 USD, one-time payment. The recipient enters their date when redeeming, not you."],
 });
 
-export default function RegalarPage() {
+export default async function RegalarPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <RegalarClient />;
 }

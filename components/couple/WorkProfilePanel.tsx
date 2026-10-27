@@ -31,25 +31,25 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
 
       <div className="text-center">
         <p className="font-display text-2xl sm:text-3xl text-foreground tracking-tight">{L(<>
-          {name} · Camino de Vida {result.lifePath} — {result.lifePathTitle}
-        </>, <>{name} · Life Path {result.lifePath} — {result.lifePathTitle}</>)}</p>
+          {L.t(name)} · Camino de Vida {L.t(result.lifePath)} — {L.t(result.lifePathTitle)}
+        </>, <>{L.t(name)} · Life Path {L.t(result.lifePath)} — {L.t(result.lifePathTitle)}</>)}</p>
         <p className="text-sm sm:text-base text-muted leading-relaxed max-w-xl mx-auto mt-4">
-          {result.workStyle}
+          {L.t(result.workStyle)}
         </p>
       </div>
 
       {result.animal && (
         <div className="pt-6 border-t border-ink/10 text-center">
           <p className="text-sm text-muted mb-2 label-caps">{L(<>
-            Signo del zodíaco chino: {result.animal}
-          </>, <>Chinese zodiac sign: {result.animal}</>)}</p>
+            Signo del zodíaco chino: {L.t(result.animal)}
+          </>, <>Chinese zodiac sign: {L.t(result.animal)}</>)}</p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             {result.animalTraits.map((trait) => (
               <span
                 key={trait}
                 className="text-sm px-2.5 py-1 border border-ink/10 text-foreground label-caps"
               >
-                {trait}
+                {L.t(trait)}
               </span>
             ))}
           </div>

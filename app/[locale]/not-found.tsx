@@ -51,10 +51,10 @@ export default function NotFound() {
                   </div>
                   <div>
                     <span className="font-heading text-xs font-bold text-foreground block">
-                      {route.label}
+                      {L.t(route.label)}
                     </span>
                     <span className="text-[11px] font-mono text-muted">
-                      {route.desc}
+                      {L.t(route.desc)}
                     </span>
                   </div>
                 </div>

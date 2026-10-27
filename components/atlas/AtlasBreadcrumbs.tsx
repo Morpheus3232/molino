@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 
 interface Crumb {
@@ -10,6 +11,7 @@ interface Crumb {
  * interactivity needed beyond links).
  */
 export default function AtlasBreadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
+  const L = useL();
   return (
     <nav className="flex items-center gap-2 text-xs text-muted mb-6 flex-wrap" aria-label="Breadcrumb">
       {crumbs.map((crumb, i) => {
@@ -22,10 +24,10 @@ export default function AtlasBreadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
                 href={crumb.href}
                 className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors"
               >
-                {crumb.label}
+                {L.t(crumb.label)}
               </Link>
             ) : (
-              <span className={isLast ? "text-foreground font-medium" : "text-muted"}>{crumb.label}</span>
+              <span className={isLast ? "text-foreground font-medium" : "text-muted"}>{L.t(crumb.label)}</span>
             )}
           </span>
         );

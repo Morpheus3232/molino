@@ -40,11 +40,11 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
               {isUserCountry && (
                 <span className="absolute top-2 right-3 text-sm text-accent label-caps">{L("Tu país", "Your country")}</span>
               )}
-              <span className="flag-emoji text-4xl leading-none" role="img" aria-label={country.name}>
+              <span className="flag-emoji text-4xl leading-none" role="img" aria-label={L.t(country.name)}>
                 {country.flag}
               </span>
               <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
-                {country.name}
+                {L.t(country.name)}
               </span>
               <span className="text-sm text-muted label-caps">{L(<>
                 {country.count} entidades

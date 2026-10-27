@@ -43,7 +43,7 @@ export default function AtlasSharePanel({ entities, category }: AtlasSharePanelP
                   : "border-ink/10 text-muted hover:border-accent/40 hover:text-foreground"
               }`}
             >
-              {e.name}
+              {L.t(e.name)}
             </button>
           ))}
         </div>

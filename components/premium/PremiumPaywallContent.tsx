@@ -109,32 +109,32 @@ export default function PremiumPaywallContent({
     >
       {/* ── Encabezado ── */}
       <div className="mb-10">
-        <p className="text-sm text-muted label-caps mb-4">{t.premium.eyebrow}</p>
+        <p className="text-sm text-muted label-caps mb-4">{L.t(t.premium.eyebrow)}</p>
         <h2 className="font-display text-[clamp(2.25rem,5.5vw,3.5rem)] leading-[1.02] tracking-tight text-foreground">
-          {t.premium.conversationHeading}{" "}
-          <span className="block">{t.premium.conversationHeadingLine2}</span>
+          {L.t(t.premium.conversationHeading)}{" "}
+          <span className="block">{L.t(t.premium.conversationHeadingLine2)}</span>
         </h2>
         <p className="mt-5 text-lg text-muted leading-relaxed max-w-xl">
-          {t.premium.conversationBody}
+          {L.t(t.premium.conversationBody)}
         </p>
       </div>
 
       {/* ── Lo que ya se ve: la coincidencia, en grande ── */}
       {preview?.pattern && keyword && (
         <section aria-label={L("Lo que ya se ve en tu mapa", "What can already be seen in your map")} className="mb-12 border-y-2 border-ink py-8 sm:py-10">
-          <p className="text-base text-muted">{t.premium.hookTitle.replace(" {keyword}.", ":")}</p>
+          <p className="text-base text-muted">{L.t(t.premium.hookTitle.replace(" {keyword}.", ":"))}</p>
           <p className="mt-2 font-display text-[clamp(2.75rem,8vw,4.75rem)] leading-none tracking-tight text-foreground">
-            {keyword}
+            {L.t(keyword)}
           </p>
           <p className="mt-5 text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl">
-            {sources.length > 1
-              ? L(`Tu ${sources.join(" y tu ").toLowerCase()} se calculan por caminos separados y aterrizan en la misma palabra. Es el rasgo que más cuesta apagar cuando querés pasar desapercibido.`, `Your ${sources.join(" and your ").toLowerCase()} are calculated along separate paths and land on the same word. It's the trait that's hardest to switch off when you want to go unnoticed.`)
-              : t.premium.hookDescription.replace("{keyword}", keyword).replace("{zodiac}", preview.chineseZodiac).replace(" ({element})", "")}
+            {L.t(sources.length > 1
+              ? L(`Tu ${sources.map(L.t).join(" y tu ").toLowerCase()} se calculan por caminos separados y aterrizan en la misma palabra. Es el rasgo que más cuesta apagar cuando querés pasar desapercibido.`, `Your ${L.t(sources.map(L.t).join(" and your ").toLowerCase())} are calculated along separate paths and land on the same word. It's the trait that's hardest to switch off when you want to go unnoticed.`)
+              : t.premium.hookDescription.replace("{keyword}", keyword).replace("{zodiac}", preview.chineseZodiac).replace(" ({element})", ""))}
           </p>
           {preview.tension && (
             <p className="mt-4 text-base text-muted leading-relaxed max-w-xl">{L(<>
-              Y una tensión que la lectura desarma: <span className="text-foreground">{preview.tension.title}</span>.
-            </>, <>And a tension that the reading takes apart: <span className="text-foreground">{preview.tension.title}</span>.</>)}</p>
+              Y una tensión que la lectura desarma: <span className="text-foreground">{L.t(preview.tension.title)}</span>.
+            </>, <>And a tension that the reading takes apart: <span className="text-foreground">{L.t(preview.tension.title)}</span>.</>)}</p>
           )}
         </section>
       )}
@@ -142,16 +142,16 @@ export default function PremiumPaywallContent({
       {/* ── Qué abre la lectura completa: su índice ── */}
       <section aria-labelledby="lectura-indice" className="mb-12">
         <h3 id="lectura-indice" className="font-display font-normal text-2xl sm:text-3xl text-foreground mb-2">
-          {t.premium.headline} {t.premium.headlineLine2}
+          {L.t(t.premium.headline)} {L.t(t.premium.headlineLine2)}
         </h3>
-        <p className="text-base text-muted leading-relaxed mb-6 max-w-xl">{t.premium.body}</p>
+        <p className="text-base text-muted leading-relaxed mb-6 max-w-xl">{L.t(t.premium.body)}</p>
         <ol className="border-t border-ink/15">
           {chapters.map((c) => (
             <li key={c.n} className="grid grid-cols-[2.5rem_1fr] gap-x-3 py-4 border-b border-ink/15">
-              <span className="font-display text-2xl leading-none text-muted" aria-hidden="true">{c.n}</span>
+              <span className="font-display text-2xl leading-none text-muted" aria-hidden="true">{L.t(c.n)}</span>
               <span>
-                <span className="block font-display text-xl leading-tight text-foreground">{c.title}</span>
-                <span className="mt-1 block text-base text-muted leading-snug">{c.desc}</span>
+                <span className="block font-display text-xl leading-tight text-foreground">{L.t(c.title)}</span>
+                <span className="mt-1 block text-base text-muted leading-snug">{L.t(c.desc)}</span>
               </span>
             </li>
           ))}
@@ -163,14 +163,14 @@ export default function PremiumPaywallContent({
       <section aria-label={L("Pago", "Payment")} className="border-2 border-ink p-6 sm:p-8 mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           <p className="flex items-baseline gap-2">
-            <span className="font-display text-5xl sm:text-6xl leading-none tracking-tight text-foreground">${chargePriceUsd}</span>
-            <span className="text-lg text-muted">{t.premium.priceSuffix}</span>
-            <span className="text-sm text-muted">{t.premium.priceArs}</span>
+            <span className="font-display text-5xl sm:text-6xl leading-none tracking-tight text-foreground">${L.t(chargePriceUsd)}</span>
+            <span className="text-lg text-muted">{L.t(t.premium.priceSuffix)}</span>
+            <span className="text-sm text-muted">{L.t(t.premium.priceArs)}</span>
           </p>
-          <p className="text-base text-foreground">{t.premium.priceNote}</p>
+          <p className="text-base text-foreground">{L.t(t.premium.priceNote)}</p>
         </div>
 
-        <p className="mt-4 text-base text-muted leading-relaxed">{t.premium.payDescription}</p>
+        <p className="mt-4 text-base text-muted leading-relaxed">{L.t(t.premium.payDescription)}</p>
 
         <div className="mt-6">
           {mercadoPagoEnabled ? (
@@ -181,11 +181,11 @@ export default function PremiumPaywallContent({
               onClick={onCheckout}
               className="flex items-center justify-center gap-2 py-4 text-base font-bold active:scale-[0.99]"
             >
-              {t.premium.payWithMercadoPago} · ${chargePriceUsd} {t.premium.priceSuffix}
+              {L.t(t.premium.payWithMercadoPago)} · ${L.t(chargePriceUsd)} {L.t(t.premium.priceSuffix)}
             </Button>
           ) : (
             <p className="text-base text-muted border border-ink/15 px-4 py-3 text-center">
-              {t.premium.paymentUnavailable}
+              {L.t(t.premium.paymentUnavailable)}
             </p>
           )}
 
@@ -204,25 +204,25 @@ export default function PremiumPaywallContent({
         <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-muted">
           <li className="inline-flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-            {t.premium.featureBadges.noSurprises}
+            {L.t(t.premium.featureBadges.noSurprises)}
           </li>
           <li className="inline-flex items-center gap-1.5">
             <KeyRound className="w-3.5 h-3.5" aria-hidden="true" />
-            {t.premium.featureBadges.multiDevice}
+            {L.t(t.premium.featureBadges.multiDevice)}
           </li>
           <li className="inline-flex items-center gap-1.5">
             <Zap className="w-3.5 h-3.5" aria-hidden="true" />
-            {t.premium.featureBadges.instantDelivery}
+            {L.t(t.premium.featureBadges.instantDelivery)}
           </li>
         </ul>
 
         <div className="mt-6 pt-4 border-t border-ink/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
           <Link href="/regalar" className="inline-flex items-center gap-1.5 text-foreground underline underline-offset-4 hover:no-underline">
             <Gift className="w-3.5 h-3.5" aria-hidden="true" />
-            {t.premium.giftQuestion}
+            {L.t(t.premium.giftQuestion)}
           </Link>
           <Link href="/premium" className="text-muted hover:text-foreground underline underline-offset-4">
-            {t.premium.faqLink}
+            {L.t(t.premium.faqLink)}
           </Link>
         </div>
       </section>
@@ -236,7 +236,7 @@ export default function PremiumPaywallContent({
           className="w-full flex items-center justify-between text-left group cursor-pointer"
         >
           <span className="font-display text-lg text-foreground group-hover:underline underline-offset-4 flex items-center gap-2">
-            {t.premium.comparisonTitle}
+            {L.t(t.premium.comparisonTitle)}
           </span>
           <ChevronDown
             className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180 text-accent' : ''}`}
@@ -259,7 +259,7 @@ export default function PremiumPaywallContent({
             className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-1.5"
           >
             <KeyRound className="w-3.5 h-3.5" />
-            {t.premium.recoverAccess}
+            {L.t(t.premium.recoverAccess)}
           </button>
         ) : (
           <div className="space-y-3 w-full p-4 border border-ink/15">
@@ -283,12 +283,12 @@ export default function PremiumPaywallContent({
                   size="sm"
                   variant="accent"
                 >
-                  {isRecovering ? '…' : 'OK'}
+                  {L.t(isRecovering ? '…' : 'OK')}
                 </Button>
               </div>
             </form>
             {recoverError && (
-              <p className="text-xs text-red-500">{recoverError}</p>
+              <p className="text-xs text-red-500">{L.t(recoverError)}</p>
             )}
             <button
               type="button"
@@ -305,7 +305,7 @@ export default function PremiumPaywallContent({
             className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-1.5"
           >
             <Ticket className="w-3.5 h-3.5" />
-            {t.premium.haveCoupon}
+            {L.t(t.premium.haveCoupon)}
           </button>
         ) : (
           <div className="space-y-3 w-full p-4 border border-ink/15">
@@ -317,7 +317,7 @@ export default function PremiumPaywallContent({
                   type="text"
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value)}
-                  placeholder={t.premium.couponPlaceholder}
+                  placeholder={L.t(t.premium.couponPlaceholder)}
                   className="flex-1 px-3 py-2 text-sm border border-ink/20 bg-background text-foreground focus:outline-none focus:border-accent transition-colors label-caps"
                 />
                 <Button
@@ -326,11 +326,11 @@ export default function PremiumPaywallContent({
                   size="sm"
                   variant="accent"
                 >
-                  {isApplyingCoupon ? '…' : 'OK'}
+                  {L.t(isApplyingCoupon ? '…' : 'OK')}
                 </Button>
               </div>
               {couponError && (
-                <p className="text-xs text-red-500">{couponError}</p>
+                <p className="text-xs text-red-500">{L.t(couponError)}</p>
               )}
             </form>
             <button

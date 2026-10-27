@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
@@ -42,6 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CountryPage({ params }: Props) {
+  await initLocale(params);
   const { countryISO } = await params;
   const valid = getAllCountryISOs().includes(countryISO.toUpperCase());
   if (!valid) notFound();

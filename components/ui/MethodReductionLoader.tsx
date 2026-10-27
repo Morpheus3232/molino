@@ -184,8 +184,8 @@ export default function MethodReductionLoader({
 
       {/* Screen Reader solo: descripción completa accesible */}
       <div className="sr-only">{L(<>
-        Calculando mapa con reducción teosófica para {birthDate}. Camino de Vida {steps.lifePath.result} ({steps.lifePath.name}), Vibración Base {steps.vibracionBase.result}, Año Personal {steps.anoPersonal.result}.
-      </>, <>Calculating map with theosophical reduction for {birthDate}. Life Path {steps.lifePath.result} ({steps.lifePath.name}), Base Vibration {steps.vibracionBase.result}, Personal Year {steps.anoPersonal.result}.</>)}</div>
+        Calculando mapa con reducción teosófica para {L.t(birthDate)}. Camino de Vida {L.t(steps.lifePath.result)} ({L.t(steps.lifePath.name)}), Vibración Base {L.t(steps.vibracionBase.result)}, Año Personal {L.t(steps.anoPersonal.result)}.
+      </>, <>Calculating map with theosophical reduction for {L.t(birthDate)}. Life Path {L.t(steps.lifePath.result)} ({L.t(steps.lifePath.name)}), Base Vibration {L.t(steps.vibracionBase.result)}, Personal Year {L.t(steps.anoPersonal.result)}.</>)}</div>
 
       {/* Header técnico de transparencia local */}
       <div className="flex items-center justify-between pb-4 mb-6 border-b border-border">
@@ -204,7 +204,7 @@ export default function MethodReductionLoader({
       <div className="min-h-[170px] flex flex-col justify-center items-center text-center">
         {/* Label de la fase actual */}
         <p className="text-sm text-muted mb-3 label-caps">
-          {currentStep.label}
+          {L.t(currentStep.label)}
         </p>
 
         {/* Número grande con efecto flip CSS puro */}
@@ -213,7 +213,7 @@ export default function MethodReductionLoader({
             key={`num-${stage}-${currentStep.result}`}
             className="font-heading text-6xl sm:text-7xl font-bold text-accent leading-none animate-flip-num"
           >
-            {currentStep.result}
+            {L.t(currentStep.result)}
           </span>
         </div>
 
@@ -222,7 +222,7 @@ export default function MethodReductionLoader({
           key={`name-${stage}-${currentStep.name}`}
           className="font-display italic text-xl sm:text-2xl text-ink mt-2 mb-3 animate-formula-fade"
         >
-          {currentStep.name}
+          {L.t(currentStep.name)}
         </p>
 
         {/* Fórmula desglosada */}
@@ -230,16 +230,16 @@ export default function MethodReductionLoader({
           key={`formula-${stage}-${currentStep.formula}`}
           className="font-mono text-xs sm:text-sm text-muted bg-paper-alt py-1.5 px-3.5 rounded-md border border-border animate-formula-fade max-w-full overflow-x-auto"
         >
-          {currentStep.formula}
-          {currentStep.reduced ? ` → ${currentStep.reduced}` : ""}
+          {L.t(currentStep.formula)}
+          {L.t(currentStep.reduced ? ` → ${currentStep.reduced}` : "")}
         </div>
       </div>
 
       {/* Barra de progreso inferior */}
       <div className="mt-6 pt-4 border-t border-border">
         <div className="flex justify-between items-center text-[11px] font-mono text-muted mb-2">
-          <span>{stage >= 2 ? L("Consolidando mapa…", "Consolidating map…") : L("Calculando matrices…", "Calculating matrices…")}</span>
-          <span>{stage === 0 ? "33%" : stage === 1 ? "66%" : "100%"}</span>
+          <span>{L.t(stage >= 2 ? L("Consolidando mapa…", "Consolidating map…") : L("Calculando matrices…", "Calculating matrices…"))}</span>
+          <span>{L.t(stage === 0 ? "33%" : stage === 1 ? "66%" : "100%")}</span>
         </div>
         <div className="w-full h-1.5 bg-paper-alt rounded-full overflow-hidden">
           <div

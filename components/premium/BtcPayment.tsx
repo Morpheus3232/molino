@@ -225,7 +225,7 @@ function BtcPanel({
       {quoteError && (
         <div className="space-y-2">
           <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2.5 rounded-md">
-            {quoteError}
+            {L.t(quoteError)}
           </p>
           <button
             type="button"
@@ -247,18 +247,18 @@ function BtcPanel({
           <div className="space-y-1">
             <p className="text-sm text-muted label-caps">{L("Monto a enviar", "Amount to send")}</p>
             <p className="font-heading text-2xl font-bold text-foreground tabular-nums">
-              {quote.btc} BTC
+              {L.t(quote.btc)} BTC
             </p>
             <p className="font-mono text-xs text-muted">{L(<>
-              ≈ USD {quote.usd} · 1 BTC = USD {Math.round(quote.rate).toLocaleString("es-AR")}
-            </>, <>≈ USD {quote.usd} · 1 BTC = USD {Math.round(quote.rate).toLocaleString("en-US")}</>)}</p>
+              ≈ USD {L.t(quote.usd)} · 1 BTC = USD {L.t(Math.round(quote.rate).toLocaleString("es-AR"))}
+            </>, <>≈ USD {L.t(quote.usd)} · 1 BTC = USD {L.t(Math.round(quote.rate).toLocaleString("en-US"))}</>)}</p>
           </div>
 
           <div className="space-y-1.5">
             <p className="text-sm text-muted label-caps">{L("Dirección", "Address")}</p>
             <div className="flex items-stretch gap-2">
               <code className="flex-1 min-w-0 break-all font-mono text-xs bg-ink/[0.04] border border-ink/10 rounded-md p-2.5 text-foreground">
-                {quote.address}
+                {L.t(quote.address)}
               </code>
               <button
                 type="button"
@@ -298,11 +298,11 @@ function BtcPanel({
             />
             {error && (
               <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2.5 rounded-md">
-                {error}
+                {L.t(error)}
               </p>
             )}
             <Button type="submit" disabled={verifying || txid.trim().length < 64} className="w-full">
-              {verifying ? L("Verificando en la red…", "Verifying on the network…") : L("Verificar y activar", "Verify and activate")}
+              {L.t(verifying ? L("Verificando en la red…", "Verifying on the network…") : L("Verificar y activar", "Verify and activate"))}
             </Button>
             <p className="font-mono text-xs text-muted leading-relaxed">{L("Verificamos la transacción en la blockchain. No hace falta esperar confirmaciones: apenas aparece en la red, se activa.", "We verify the transaction on the blockchain. There's no need to wait for confirmations: as soon as it shows up on the network, it's activated.")}</p>
           </form>

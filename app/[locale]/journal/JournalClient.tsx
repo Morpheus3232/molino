@@ -110,8 +110,8 @@ export default function JournalClient() {
                       : { k: L("Ánimo medio", "Average mood"), v: `${stats.avgMood.toFixed(1)}/5` },
                   ].map((c) => (
                     <div key={c.k} className="bg-background p-5">
-                      <dd className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{c.v}</dd>
-                      <dt className="mt-2 text-sm text-muted">{c.k}</dt>
+                      <dd className="font-display text-4xl sm:text-5xl leading-none text-foreground tabular-nums">{L.t(c.v)}</dd>
+                      <dt className="mt-2 text-sm text-muted">{L.t(c.k)}</dt>
                     </div>
                   ))}
                 </dl>
@@ -120,8 +120,8 @@ export default function JournalClient() {
               )}
               {stats?.topTheme && (
                 <p className="mt-4 text-base text-muted">{L(<>
-                  Lo que más aparece en tus días: <span className="text-foreground">{stats.topTheme}</span>.
-                </>, <>What shows up most in your days: <span className="text-foreground">{stats.topTheme}</span>.</>)}</p>
+                  Lo que más aparece en tus días: <span className="text-foreground">{L.t(stats.topTheme)}</span>.
+                </>, <>What shows up most in your days: <span className="text-foreground">{L.t(stats.topTheme)}</span>.</>)}</p>
               )}
               {!profile && (
                 <p className="mt-6 text-base text-muted max-w-xl">{L(<>
@@ -135,7 +135,7 @@ export default function JournalClient() {
             {cover && (
               <figure className="lg:col-span-5">
                 <div className="relative aspect-[16/9] lg:aspect-[4/5] lg:max-h-[34rem] mx-auto overflow-hidden border border-ink/15 bg-paper-alt">
-                  <Image src={cover.src} alt={cover.alt} fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
+                  <Image src={cover.src} alt={L.t(cover.alt)} fill priority sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
                 </div>
                 <SectionCredit img={cover} />
               </figure>
@@ -170,8 +170,8 @@ export default function JournalClient() {
                     { k: L("Solo en este navegador", "Only in this browser"), v: L("No sube a ningún servidor. Si borrás los datos del navegador, se borra el diario.", "It isn't uploaded to any server. If you clear your browser data, the journal is deleted.") },
                   ].map((r) => (
                     <div key={r.k} className="py-5">
-                      <dt className="font-display text-xl text-foreground">{r.k}</dt>
-                      <dd className="mt-1 text-base text-muted leading-relaxed">{r.v}</dd>
+                      <dt className="font-display text-xl text-foreground">{L.t(r.k)}</dt>
+                      <dd className="mt-1 text-base text-muted leading-relaxed">{L.t(r.v)}</dd>
                     </div>
                   ))}
                 </dl>

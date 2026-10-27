@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -85,6 +86,7 @@ export default function EditorialSection({
   children,
   id,
 }: EditorialSectionProps) {
+  const L = useL();
   const t = TONES[tone];
   const isFullBleed = tone === "ink" || tone === "accent";
   const Heading = as;
@@ -128,7 +130,7 @@ export default function EditorialSection({
               <p
                 className={`text-sm font-semibold mb-6 label-caps ${t.eyebrow}`}
               >
-                {eyebrow}
+                {L.t(eyebrow)}
               </p>
             )}
 
@@ -141,20 +143,20 @@ export default function EditorialSection({
                     }`}
                     aria-hidden="true"
                   >
-                    {numeral}
+                    {L.t(numeral)}
                   </span>
                 )}
                 <Heading
                   className={`section-title max-w-3xl ${t.title}`}
                 >
-                  {title}
+                  {L.t(title)}
                 </Heading>
               </div>
             )}
 
             {intro && (
               <p className={`text-base lg:text-lg mt-8 max-w-xl leading-relaxed ${t.intro}`}>
-                {intro}
+                {L.t(intro)}
               </p>
             )}
           </motion.div>

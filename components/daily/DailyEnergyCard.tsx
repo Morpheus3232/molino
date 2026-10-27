@@ -35,22 +35,22 @@ export default function DailyEnergyCard({ profile, daily, streakDays = 1, classN
 
   return (
     <div className={className}>
-      <h2 className="section-title text-foreground">{L(<>Energía de {daily.theme}</>, <>Energy of {daily.theme}</>)}</h2>
-      <p className="mt-4 text-xl text-foreground/85 leading-relaxed max-w-2xl">{daily.description}</p>
+      <h2 className="section-title text-foreground">{L(<>Energía de {L.t(daily.theme)}</>, <>Energy of {L.t(daily.theme)}</>)}</h2>
+      <p className="mt-4 text-xl text-foreground/85 leading-relaxed max-w-2xl">{L.t(daily.description)}</p>
 
       <dl className={`mt-10 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15`}>
         {cells.map((c) => (
           <div key={c.k} className="bg-background p-6">
-            <dt className="text-sm text-muted">{c.k}</dt>
-            <dd className="mt-1 font-display text-2xl text-foreground leading-tight">{c.v}</dd>
-            {c.note && <dd className="mt-2 text-base text-muted leading-snug">{c.note}</dd>}
+            <dt className="text-sm text-muted">{L.t(c.k)}</dt>
+            <dd className="mt-1 font-display text-2xl text-foreground leading-tight">{L.t(c.v)}</dd>
+            {c.note && <dd className="mt-2 text-base text-muted leading-snug">{L.t(c.note)}</dd>}
           </div>
         ))}
       </dl>
 
       <p className="mt-6 text-base text-muted">{L(<>
-        Día {streakDays} conociéndote.
-      </>, <>Day {streakDays} getting to know yourself.</>)}</p>
+        Día {L.t(streakDays)} conociéndote.
+      </>, <>Day {L.t(streakDays)} getting to know yourself.</>)}</p>
     </div>
   );
 }

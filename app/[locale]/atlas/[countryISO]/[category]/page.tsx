@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
@@ -50,6 +50,7 @@ function categoryLabel(category: string): string | null {
 }
 
 export default async function CategoryPage({ params }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { countryISO, category } = await params;
   const iso = countryISO.toUpperCase();
@@ -74,8 +75,8 @@ export default async function CategoryPage({ params }: Props) {
 
         <header className="mb-8">
           <h1 className="page-title text-foreground">{L(<>
-            {catLabel} de {name}
-          </>, <>{catLabel} of {name}</>)}</h1>
+            {L.t(catLabel)} de {L.t(name)}
+          </>, <>{L.t(catLabel)} of {L.t(name)}</>)}</h1>
           <p className="text-sm text-muted mt-2">{L(<>
             {entities.length} {entities.length === 1 ? "entidad" : "entidades"} — clasificadas por tu animal del zodíaco chino.
           </>, <>{entities.length} {entities.length === 1 ? "entity" : "entities"} — sorted by your Chinese zodiac animal.</>)}</p>

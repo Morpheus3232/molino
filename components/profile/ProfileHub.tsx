@@ -70,7 +70,7 @@ export default function ProfileHub({
     return [parts[0] || 1990, parts[1] || 1, parts[2] || 1];
   }, [profile.birthDate]);
 
-  const birthDateFormatted = L(`${birthD} de ${MESES[birthM - 1]} de ${birthY}`, `${MESES[birthM - 1]} ${birthD}, ${birthY}`);
+  const birthDateFormatted = L(`${birthD} de ${MESES[birthM - 1]} de ${birthY}`, `${L.t(MESES[birthM - 1])} ${L.t(birthD)}, ${L.t(birthY)}`);
 
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
@@ -117,7 +117,7 @@ export default function ProfileHub({
             part: "trine" as WheelPart,
             mark: <WheelMark part="trine" rings={2} />,
             what: L("El triángulo rojo une tu animal con tus dos amigos del ciclo:", "The red triangle links your animal with your two friends in the cycle:"),
-            yours: `${kinds.amigo.join(" y ")}.`,
+            yours: `${kinds.amigo.map(L.t).join(" y ")}.`,
           },
         ]
       : []),
@@ -135,7 +135,7 @@ export default function ProfileHub({
       part: "core" as WheelPart,
       mark: <WheelMark part="core" rings={2} />,
       what: L("En el centro, tu Camino de Vida:", "In the center, your Life Path:"),
-      yours: `${lifePath}${yearTheme ? L(`. Este año transitás el año personal ${personalYear}, ${yearTheme}.`, `. This year you're going through personal year ${personalYear}, ${yearTheme}.`) : "."}`,
+      yours: `${lifePath}${yearTheme ? L(`. Este año transitás el año personal ${personalYear}, ${yearTheme}.`, `. This year you're going through personal year ${personalYear}, ${L.t(yearTheme)}.`) : "."}`,
     },
   ];
 
@@ -157,7 +157,7 @@ export default function ProfileHub({
     {
       system: L("Zodíaco chino", "Chinese zodiac"),
       value: `${display.name} de ${chineseElement}`,
-      what: L(`El animal del año lunar en que naciste · polaridad ${polarity}.`, `The animal of the lunar year you were born in · ${polarity} polarity.`),
+      what: L(`El animal del año lunar en que naciste · polaridad ${polarity}.`, `The animal of the lunar year you were born in · ${L.t(polarity)} polarity.`),
       image: animalImageKey(display.name),
       href: "#pilar-zodiaco-chino",
     },
@@ -175,11 +175,11 @@ export default function ProfileHub({
             <div className="lg:col-span-6 lg:row-start-1 lg:pt-6">
               <p className="text-sm text-accent mb-4 label-caps">{L("Mapa personal simbólico", "Personal symbolic map")}</p>
               <h1 className="page-title text-foreground" aria-label={`Camino de Vida ${lifePath} · ${archetypeName}`}>{L(<>
-                <span className="block">Camino de Vida {lifePath}</span>
-                <span className="block">{archetypeName}</span>
-              </>, <><span className="block">Life Path {lifePath}</span><span className="block">{archetypeName}</span></>)}</h1>
+                <span className="block">Camino de Vida {L.t(lifePath)}</span>
+                <span className="block">{L.t(archetypeName)}</span>
+              </>, <><span className="block">Life Path {L.t(lifePath)}</span><span className="block">{L.t(archetypeName)}</span></>)}</h1>
               <p className="mt-5 text-lg sm:text-xl text-muted leading-relaxed max-w-xl italic">
-                {archetype.essence || archetype.description}
+                {L.t(archetype.essence || archetype.description)}
               </p>
             </div>
 
@@ -210,9 +210,9 @@ export default function ProfileHub({
                       wheelFocus === row.part ? "bg-ink/[0.03]" : ""
                     }`}
                   >
-                    <dt className="pt-0.5" aria-hidden="true">{row.mark}</dt>
+                    <dt className="pt-0.5" aria-hidden="true">{L.t(row.mark)}</dt>
                     <dd className="text-base leading-snug text-muted">
-                      {row.what} <span className="text-foreground">{row.yours}</span>
+                      {L.t(row.what)} <span className="text-foreground">{L.t(row.yours)}</span>
                     </dd>
                   </div>
                 ))}
@@ -220,7 +220,7 @@ export default function ProfileHub({
 
               {/* Franja de datos: fecha, cálculo local, año y atlas */}
               <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-6 gap-y-1.5 text-sm text-muted">
-                <span>{L(<>Naciste el {birthDateFormatted}</>, <>Born on {birthDateFormatted}</>)}</span>
+                <span>{L(<>Naciste el {L.t(birthDateFormatted)}</>, <>Born on {L.t(birthDateFormatted)}</>)}</span>
                 <span className="hidden sm:inline-block w-px h-3.5 bg-border" aria-hidden="true" />
                 <span>{L("Calculado en tu dispositivo", "Calculated on your device")}</span>
                 {atlasEntityCount > 0 && (
@@ -252,7 +252,7 @@ export default function ProfileHub({
                         {img && (
                           <Image
                             src={img.src}
-                            alt={img.alt}
+                            alt={L.t(img.alt)}
                             fill
                             priority
                             sizes="(max-width: 768px) 100vw, 400px"
@@ -261,9 +261,9 @@ export default function ProfileHub({
                         )}
                       </div>
                       <div className="p-5 sm:p-6">
-                        <p className="text-sm text-muted label-caps">{card.system}</p>
-                        <p className="mt-2 font-display text-3xl leading-tight text-foreground">{card.value}</p>
-                        <p className="mt-2 text-base text-muted leading-snug">{card.what}</p>
+                        <p className="text-sm text-muted label-caps">{L.t(card.system)}</p>
+                        <p className="mt-2 font-display text-3xl leading-tight text-foreground">{L.t(card.value)}</p>
+                        <p className="mt-2 text-base text-muted leading-snug">{L.t(card.what)}</p>
                         <p className="mt-4 text-sm text-foreground underline underline-offset-4 group-hover:no-underline">{L("Ver qué es y la cuenta ↓", "See what it is and the math ↓")}</p>
                       </div>
                     </a>
@@ -280,10 +280,10 @@ export default function ProfileHub({
               {CHAPTERS(L).map((c) => (
                 <li key={c.href} className="border-r border-b border-ink/15">
                   <a href={c.href} className="group flex h-full gap-4 p-5 hover:bg-ink/[0.03] transition-colors">
-                    <span className="font-display text-3xl leading-none text-muted group-hover:text-foreground">{c.numeral}</span>
+                    <span className="font-display text-3xl leading-none text-muted group-hover:text-foreground">{L.t(c.numeral)}</span>
                     <span>
-                      <span className="block font-display text-xl leading-tight text-foreground">{c.title}</span>
-                      <span className="mt-1 block text-sm text-muted leading-snug">{c.note}</span>
+                      <span className="block font-display text-xl leading-tight text-foreground">{L.t(c.title)}</span>
+                      <span className="mt-1 block text-sm text-muted leading-snug">{L.t(c.note)}</span>
                     </span>
                   </a>
                 </li>
@@ -333,7 +333,7 @@ export default function ProfileHub({
           ═══════════════════════════════════════════════ */}
       <SpaceIndex
         profile={profile}
-        circleName={L(`${display.name} de ${chineseElement}`, `${chineseElement} ${display.name}`)}
+        circleName={L(`${display.name} de ${chineseElement}`, `${L.t(chineseElement)} ${L.t(display.name)}`)}
         allyName={allies[0] ?? null}
       />
     </div>

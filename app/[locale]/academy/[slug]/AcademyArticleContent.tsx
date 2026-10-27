@@ -37,8 +37,8 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">La Academia</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">{piece.title}</span>
-        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{piece.title}</span></>)}</nav>
+          <span className="text-foreground font-medium" aria-current="page">{L.t(piece.title)}</span>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/academy" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">The Academy</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{L.t(piece.title)}</span></>)}</nav>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
@@ -46,12 +46,12 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             <span className="text-2xl">
               {Icon ? <Icon className="w-7 h-7" /> : null}
             </span>
-            <p className="text-sm text-accent font-medium label-caps">{piece.era}</p>
+            <p className="text-sm text-accent font-medium label-caps">{L.t(piece.era)}</p>
           </div>
           <h1 className="page-title text-foreground mb-6">
-            {piece.title}
+            {L.t(piece.title)}
           </h1>
-          <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{piece.idea}</p>
+          <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">{L.t(piece.idea)}</p>
           <SectionCover imageKey={`academia/${piece.slug}`} priority className="mt-10" />
         </motion.section>
 
@@ -63,7 +63,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
           </div>
           <div className="space-y-4">
             {piece.story.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{paragraph}</p>
+              <p key={paragraph.slice(0, 40)} className="text-base text-foreground leading-relaxed max-w-3xl">{L.t(paragraph)}</p>
             ))}
           </div>
         </motion.section>
@@ -74,7 +74,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Origen", "Origin")}</h2>
           </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl">{piece.origin}</p>
+          <p className="text-sm text-foreground leading-relaxed max-w-3xl">{L.t(piece.origin)}</p>
         </motion.section>
 
         {/* Influencia */}
@@ -86,7 +86,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
           <div className="flex flex-wrap gap-2">
             {piece.influence.map((inf) => (
               <span key={inf} className="text-xs px-2.5 py-1 rounded-sm bg-accent/10 text-accent">
-                {inf}
+                {L.t(inf)}
               </span>
             ))}
           </div>
@@ -96,7 +96,7 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Cómo lo usa Molino", "How Molino uses it")}</p>
-            <p className="text-sm text-foreground leading-relaxed">{piece.molino}</p>
+            <p className="text-sm text-foreground leading-relaxed">{L.t(piece.molino)}</p>
           </div>
         </motion.section>
 
@@ -104,12 +104,12 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         {relatedGuide && (
           <motion.section {...fadeUp} className="mb-12 sm:mb-16">
             <div className="p-6 rounded-md border border-border bg-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <p className="text-sm text-muted">{L(<>¿Querés saber {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</>, <>Want to know {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</>)}</p>
+              <p className="text-sm text-muted">{L(<>¿Querés saber {L.t(relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1))}?</>, <>Want to know {L.t(relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1))}?</>)}</p>
               <Link
                 href={`/academy/${relatedGuide.slug}`}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent/80 transition-colors shrink-0"
               >
-                {relatedGuideLabel} →
+                {L.t(relatedGuideLabel)} →
               </Link>
             </div>
           </motion.section>
@@ -139,13 +139,13 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
             <Link href={`/academy/${prev.slug}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              &larr; {prev.title}
+              &larr; {L.t(prev.title)}
             </Link>
           ) : <div />}
           <Link href="/academy" className="text-sm text-muted font-medium hover:text-accent transition-colors label-caps">{L("La Academia", "The Academy")}</Link>
           {next ? (
             <Link href={`/academy/${next.slug}`} className="text-sm text-accent hover:text-accent/80 transition-colors text-right">
-              {next.title} &rarr;
+              {L.t(next.title)} &rarr;
             </Link>
           ) : <div />}
         </motion.section>

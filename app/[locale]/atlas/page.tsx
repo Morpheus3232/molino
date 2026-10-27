@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { getAtlasCountries, topCountriesByCount, getAllAtlasEntitiesWithCountries } from "@/lib/data/atlas-queries";
 import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
@@ -16,7 +17,8 @@ export const generateMetadata = metadataFor({
  * Server Component; entity catalogs reach the client. AtlasHub resolves the user's
  * animal and renders the sections.
  */
-export default function AtlasPage() {
+export default async function AtlasPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   const countries = getAtlasCountries();
   const topCountries = topCountriesByCount(countries);
   const allEntities = getAllAtlasEntitiesWithCountries();

@@ -42,25 +42,25 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           title={
             <>
               <span className="block">{num.number}</span>
-              <span className="block text-[0.42em] leading-tight mt-3">{num.title}</span>
+              <span className="block text-[0.42em] leading-tight mt-3">{L.t(num.title)}</span>
             </>
           }
           lead={num.coreDrive}
-          meta={<>{L(<>Palabras clave: {num.keywords.join(", ").toLowerCase()}.</>, <>Keywords: {num.keywords.join(", ").toLowerCase()}.</>)}</>}
+          meta={<>{L(<>Palabras clave: {L.t(num.keywords.map(L.t).join(", ").toLowerCase())}.</>, <>Keywords: {L.t(num.keywords.map(L.t).join(", ").toLowerCase())}.</>)}</>}
           legend={
             place
               ? [
                   {
                     mark: MARKS.cell,
                     text: isMaster ? (
-                      <>{L(<>El {num.number} repite el <span className="text-foreground">{digit}</span>: en el cuadrado Lo Shu ocupa su lugar, {place.where}, dos veces.</>, <>{num.number} repeats the <span className="text-foreground">{digit}</span>: in the Lo Shu square it occupies its place, {place.where}, twice.</>)}</>
+                      <>{L(<>El {num.number} repite el <span className="text-foreground">{L.t(digit)}</span>: en el cuadrado Lo Shu ocupa su lugar, {L.t(place.where)}, dos veces.</>, <>{num.number} repeats the <span className="text-foreground">{L.t(digit)}</span>: in the Lo Shu square it occupies its place, {L.t(place.where)}, twice.</>)}</>
                     ) : (
-                      <>{L(<>En el cuadrado Lo Shu, el <span className="text-foreground">{num.number}</span> está {place.where}.</>, <>In the Lo Shu square, <span className="text-foreground">{num.number}</span> sits {place.where}.</>)}</>
+                      <>{L(<>En el cuadrado Lo Shu, el <span className="text-foreground">{num.number}</span> está {L.t(place.where)}.</>, <>In the Lo Shu square, <span className="text-foreground">{num.number}</span> sits {L.t(place.where)}.</>)}</>
                     ),
                   },
                   {
                     mark: MARKS.row,
-                    text: <>{L(<>Su fila suma quince, como todas: <span className="text-foreground">{place.row.join(" + ")} = 15</span>.</>, <>Its row adds up to fifteen, like all of them: <span className="text-foreground">{place.row.join(" + ")} = 15</span>.</>)}</>,
+                    text: <>{L(<>Su fila suma quince, como todas: <span className="text-foreground">{L.t(place.row.map(L.t).join(" + "))} = 15</span>.</>, <>Its row adds up to fifteen, like all of them: <span className="text-foreground">{L.t(place.row.map(L.t).join(" + "))} = 15</span>.</>)}</>,
                   },
                 ]
               : undefined
@@ -73,20 +73,20 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
             <div className={`${CONTAINER} py-10`}>
               <p className="max-w-3xl text-lg text-foreground/85 leading-relaxed border-l-2 border-vermilion pl-5">{L(<>
                 <span className="text-sm text-muted label-caps mr-2">Número maestro</span>
-                {MASTER_NUMBERS_NOTE}{" "}
+                {L.t(MASTER_NUMBERS_NOTE)}{" "}
                 <Link href="/guia/numeros-maestros" className="underline underline-offset-4 hover:no-underline">Leer la guía</Link>.
-              </>, <><span className="text-sm text-muted label-caps mr-2">Master number</span>{MASTER_NUMBERS_NOTE}{" "}<Link href="/guia/numeros-maestros" className="underline underline-offset-4 hover:no-underline">Read the guide</Link>.</>)}</p>
+              </>, <><span className="text-sm text-muted label-caps mr-2">Master number</span>{L.t(MASTER_NUMBERS_NOTE)}{" "}<Link href="/guia/numeros-maestros" className="underline underline-offset-4 hover:no-underline">Read the guide</Link>.</>)}</p>
             </div>
           </section>
         )}
 
         <KnowledgeSection label={L("Significado", "Meaning")} title={<>{L(<>Qué dice el {num.number}</>, <>What {num.number} says</>)}</>}>
           <TextWithFigure figure={<SectionCover imageKey={`numerologia/${num.number}`} priority />}>
-            <p>{num.meaning}</p>
+            <p>{L.t(num.meaning)}</p>
             <div className="border-t border-ink/15 pt-6 space-y-4">
               <p className="text-sm text-muted label-caps">{L("Historia y simbolismo", "History and symbolism")}</p>
-              <p className="text-lg text-foreground/85">{num.history}</p>
-              <p className="text-lg text-muted">{num.symbolism}</p>
+              <p className="text-lg text-foreground/85">{L.t(num.history)}</p>
+              <p className="text-lg text-muted">{L.t(num.symbolism)}</p>
             </div>
           </TextWithFigure>
         </KnowledgeSection>
@@ -94,25 +94,25 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <KnowledgeSection label={L("Estructura", "Structure")} title={L("Cómo funciona por dentro", "How it works inside")} tone="alt">
           <dl className="border-t-2 border-ink max-w-4xl">
             {[
-              [L("Impulso central", "Core drive"), <p key="a">{num.coreDrive}</p>],
-              [L("Cómo suele expresarse", "How it tends to express itself"), <p key="b">{num.behaviorPattern}</p>],
+              [L("Impulso central", "Core drive"), <p key="a">{L.t(num.coreDrive)}</p>],
+              [L("Cómo suele expresarse", "How it tends to express itself"), <p key="b">{L.t(num.behaviorPattern)}</p>],
               [
                 L("Potencial", "Potential"),
                 <ul key="c" className="space-y-1.5">
                   {num.potential.map((p) => (
                     <li key={p} className="flex items-start gap-3">
                       <span className="w-3 h-px bg-ink/50 mt-[0.8em] shrink-0" aria-hidden="true" />
-                      {p}
+                      {L.t(p)}
                     </li>
                   ))}
                 </ul>,
               ],
-              [L("Sombra", "Shadow"), <p key="d" className="text-muted">{num.shadow}</p>],
-              [L("Qué necesita desarrollar", "What it needs to develop"), <p key="e">{num.growthEdge}</p>],
+              [L("Sombra", "Shadow"), <p key="d" className="text-muted">{L.t(num.shadow)}</p>],
+              [L("Qué necesita desarrollar", "What it needs to develop"), <p key="e">{L.t(num.growthEdge)}</p>],
             ].map(([k, v]) => (
               <div key={k as string} className="grid grid-cols-1 sm:grid-cols-[14rem_1fr] gap-x-8 gap-y-1 py-5 border-b border-ink/15">
-                <dt className="font-display text-xl text-foreground">{k}</dt>
-                <dd className="text-lg leading-relaxed text-foreground/85">{v}</dd>
+                <dt className="font-display text-xl text-foreground">{L.t(k)}</dt>
+                <dd className="text-lg leading-relaxed text-foreground/85">{L.t(v)}</dd>
               </div>
             ))}
           </dl>
@@ -141,7 +141,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           <div className={`${CONTAINER} py-16 sm:py-24`}>
             <p className="text-sm text-muted label-caps text-center mb-6">{L(<>Una pregunta para el {num.number}</>, <>A question for {num.number}</>)}</p>
             <blockquote className="mx-auto max-w-3xl text-center font-display italic text-3xl sm:text-4xl leading-snug text-foreground">
-              &laquo;{num.reflectionQuestion}&raquo;
+              &laquo;{L.t(num.reflectionQuestion)}&raquo;
             </blockquote>
           </div>
         </section>
@@ -149,12 +149,12 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <KnowledgeSection label={L("Interpretación de Molino", "Molino's interpretation")} title={<>{L(<>Cómo leemos el {num.number}</>, <>How we read {num.number}</>)}</>}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
             <div className="lg:col-span-7 space-y-6 text-lg sm:text-xl leading-relaxed text-foreground/90">
-              <p>{num.interpretation}</p>
-              <p className="text-lg text-muted">{num.relationshipWithOther}</p>
+              <p>{L.t(num.interpretation)}</p>
+              <p className="text-lg text-muted">{L.t(num.relationshipWithOther)}</p>
             </div>
             <div className="lg:col-span-5 border-l-2 border-ink pl-6">
               <p className="text-sm text-muted label-caps mb-2">{L("Ejemplo", "Example")}</p>
-              <p className="text-lg leading-relaxed text-foreground/85">{num.example}</p>
+              <p className="text-lg leading-relaxed text-foreground/85">{L.t(num.example)}</p>
             </div>
           </div>
         </KnowledgeSection>
@@ -168,13 +168,13 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
               cta={L("Calcular mi número", "Calculate my number")}
             />
             <Note>
-              <p>{num.scientificNote}</p>
-              <p>{NUMEROLOGY_DISCLAIMER}</p>
+              <p>{L.t(num.scientificNote)}</p>
+              <p>{L.t(NUMEROLOGY_DISCLAIMER)}</p>
             </Note>
             <PrevNext
               label={L("Navegación entre números", "Navigation between numbers")}
-              prev={prev ? { href: `/conocimiento/numerologia/${prev.number}`, name: <>{prev.number} · {prev.title}</> } : null}
-              next={next ? { href: `/conocimiento/numerologia/${next.number}`, name: <>{next.number} · {next.title}</> } : null}
+              prev={prev ? { href: `/conocimiento/numerologia/${prev.number}`, name: <>{prev.number} · {L.t(prev.title)}</> } : null}
+              next={next ? { href: `/conocimiento/numerologia/${next.number}`, name: <>{next.number} · {L.t(next.title)}</> } : null}
             />
           </div>
         </section>

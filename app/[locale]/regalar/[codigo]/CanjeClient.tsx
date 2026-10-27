@@ -94,7 +94,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
     return (
       <main id="main-content" className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-6">
         <p className="text-sm text-foreground">
-          {checkState === "already_redeemed" ? L("Este código ya fue usado.", "This code has already been used.") : L("Este código no existe o ya expiró.", "This code doesn't exist or has expired.")}
+          {L.t(checkState === "already_redeemed" ? L("Este código ya fue usado.", "This code has already been used.") : L("Este código no existe o ya expiró.", "This code doesn't exist or has expired."))}
         </p>
         <Link href="/premium" className="text-xs font-mono text-accent hover:underline">{L("Ver planes en /premium →", "See plans at /premium →")}</Link>
       </main>

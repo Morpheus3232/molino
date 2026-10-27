@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { metadataFor } from "@/lib/seo";
 import { ShieldCheck, Users, BookOpen, Lock, Compass, CheckCircle2, XCircle } from "lucide-react";
@@ -58,8 +59,9 @@ const STEPS = (L: Pick2) => ([
   },
 ]);
 
-export default function ProfesionalesPage() {
-  const L = useL();
+export default async function ProfesionalesPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="bg-background text-foreground">
       <PageHero
@@ -87,12 +89,12 @@ export default function ProfesionalesPage() {
             { title: L("Qué sí hacemos", "What we do"), items: WHAT_WE_DO(L), Icon: CheckCircle2 },
           ].map(({ title, items, Icon }) => (
             <div key={title} className="bg-background p-7 sm:p-9">
-              <h3 className="font-display text-3xl text-foreground">{title}</h3>
+              <h3 className="font-display text-3xl text-foreground">{L.t(title)}</h3>
               <ul className="mt-5 space-y-3">
                 {items.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-lg text-foreground/85 leading-snug">
                     <Icon className="w-5 h-5 mt-0.5 shrink-0 text-foreground" aria-hidden="true" />
-                    {item}
+                    {L.t(item)}
                   </li>
                 ))}
               </ul>
@@ -110,8 +112,8 @@ export default function ProfesionalesPage() {
           {STEPS(L).map((s, i) => (
             <li key={s.title} className="grid grid-cols-[3rem_1fr] sm:grid-cols-[5rem_minmax(0,4fr)_minmax(0,7fr)] gap-x-8 gap-y-2 py-8 border-b border-ink/15 items-baseline">
               <span className="font-display text-4xl sm:text-5xl leading-none tabular-nums">{i + 1}</span>
-              <h3 className="font-display text-2xl sm:text-3xl leading-tight">{s.title}</h3>
-              <p className="col-start-2 sm:col-start-auto text-lg text-foreground/80 leading-relaxed">{s.text}</p>
+              <h3 className="font-display text-2xl sm:text-3xl leading-tight">{L.t(s.title)}</h3>
+              <p className="col-start-2 sm:col-start-auto text-lg text-foreground/80 leading-relaxed">{L.t(s.text)}</p>
             </li>
           ))}
         </ol>

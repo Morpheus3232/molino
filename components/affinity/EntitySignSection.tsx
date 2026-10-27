@@ -59,27 +59,27 @@ export default function EntitySignSection({
   return (
     <section aria-labelledby="section-signo-chino">
       <h2 id="section-signo-chino" className="section-title text-foreground mb-4">{L(<>
-        El signo chino de {name}: {animal}
-      </>, <>The Chinese sign of {name}: {animal}</>)}</h2>
+        El signo chino de {L.t(name)}: {L.t(animal)}
+      </>, <>The Chinese sign of {L.t(name)}: {L.t(animal)}</>)}</h2>
       <p className="text-lg sm:text-xl text-foreground/90 leading-relaxed mb-8 max-w-3xl">{L(<>
-        {eventLabel} el {corta(eventDate)}, en el año del{" "}
+        {L.t(eventLabel)} el {L.t(corta(eventDate))}, en el año del{" "}
         <Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">
-          {animal}
+          {L.t(animal)}
         </Link>{" "}
         del calendario chino. En Molino la afinidad se mide signo contra signo: el tuyo, según tu fecha de
-        nacimiento, contra el de {name}.
-      </>, <>{eventLabel} on {corta(eventDate)}, in the year of the{" "}<Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{animal}</Link>{" "}in the Chinese calendar. On Molino, affinity is measured sign against sign: yours, according to your date of birth, against that of {name}.</>)}</p>
+        nacimiento, contra el de {L.t(name)}.
+      </>, <>{L.t(eventLabel)} on {L.t(corta(eventDate))}, in the year of the{" "}<Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(animal)}</Link>{" "}in the Chinese calendar. On Molino, affinity is measured sign against sign: yours, according to your date of birth, against that of {L.t(name)}.</>)}</p>
 
       <dl className="border-t-2 border-ink max-w-4xl divide-y divide-ink/15">
         <div className="py-5">
-          <dt className="font-display text-2xl text-foreground">{L(<>Mismo signo: {animal}</>, <>Same sign: {animal}</>)}</dt>
+          <dt className="font-display text-2xl text-foreground">{L(<>Mismo signo: {L.t(animal)}</>, <>Same sign: {L.t(animal)}</>)}</dt>
           <dd className="text-lg text-muted leading-relaxed mt-2">
-            {L("Resonás más con ", "You resonate most with")} {name} {L(" si naciste entre", " if you were born between")}{" "}
+            {L("Resonás más con ", "You resonate most with ")} {L.t(name)} {L(" si naciste entre", " if you were born between")}{" "}
             {own.map((r, i) => (
               <span key={r.year}>{L(<>
-                {corta(r.start)} y {corta(r.end)}
+                {L.t(corta(r.start))} y {L.t(corta(r.end))}
                 {i < own.length - 2 ? "; " : i === own.length - 2 ? " o " : "."}
-              </>, <>{corta(r.start)} and {corta(r.end)}{i < own.length - 2 ? "; " : i === own.length - 2 ? " or " : "."}</>)}</span>
+              </>, <>{L.t(corta(r.start))} and {L.t(corta(r.end))}{i < own.length - 2 ? "; " : i === own.length - 2 ? " or " : "."}</>)}</span>
             ))}
           </dd>
         </div>
@@ -88,25 +88,25 @@ export default function EntitySignSection({
             {L("Sus dos amigos (三合 San He):", "Its two friends (三合 San He):")}{" "}
             {friends.map((f, i) => (
               <span key={f}>
-                <Link href={signoHref(f)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{f}</Link>
+                <Link href={signoHref(f)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(f)}</Link>
                 {i === 0 ? " y " : ""}
               </span>
             ))}
           </dt>
           <dd className="text-lg text-muted leading-relaxed mt-2">
-            {L("También resuena con quienes nacieron en años ", "It also resonates with people born in years of the")} {friends.join(" o ")}:{" "}
-            {friends.map((f) => `${f}, ${lunarYearsOf(f).map((r) => r.year).join(", ")}`).join("; ")}.
+            {L("También resuena con quienes nacieron en años ", "It also resonates with people born in years of the ")} {L.t(friends.map(L.t).join(" o "))}:{" "}
+            {friends.map((f) => `${f}, ${lunarYearsOf(f).map((r) => r.year).map(L.t).join(", ")}`).map(L.t).join("; ")}.
           </dd>
         </div>
         {enemy && (
           <div className="py-5">
             <dt className="font-display text-2xl text-foreground">{L(<>
               Su enemigo (六冲 Liu Chong):{" "}
-              <Link href={signoHref(enemy)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{enemy}</Link>
-            </>, <>Its enemy (六冲 Liu Chong):{" "}<Link href={signoHref(enemy)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{enemy}</Link></>)}</dt>
+              <Link href={signoHref(enemy)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(enemy)}</Link>
+            </>, <>Its enemy (六冲 Liu Chong):{" "}<Link href={signoHref(enemy)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(enemy)}</Link></>)}</dt>
             <dd className="text-lg text-muted leading-relaxed mt-2">
-              {L("La energía opuesta. Si naciste en año ", "The opposite energy. If you were born in a year of the")} {enemy} ({lunarYearsOf(enemy).map((r) => r.year).join(", ")}),
-              {" "}{L("la de ", "the one with")} {name} {L(" es la relación que conviene evitar.", " is the relationship best avoided.")}
+              {L("La energía opuesta. Si naciste en año ", "The opposite energy. If you were born in a year of the ")} {L.t(enemy)} ({lunarYearsOf(enemy).map((r) => r.year).map(L.t).join(", ")}),
+              {" "}{L("la de ", "the one with ")} {L.t(name)} {L(" es la relación que conviene evitar.", " is the relationship best avoided.")}
             </dd>
           </div>
         )}

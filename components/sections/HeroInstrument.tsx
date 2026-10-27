@@ -82,7 +82,7 @@ export default function HeroInstrument() {
   const isReturningUser = mounted && Boolean(profile?.birthDate);
 
   if (isReturningUser) {
-    const eyebrowText = profile?.name ? L(`Hola, ${profile.name}`, `Hi, ${profile.name}`) : L("Tu mapa personal", "Your personal map");
+    const eyebrowText = profile?.name ? L(`Hola, ${profile.name}`, `Hi, ${L.t(profile.name)}`) : L("Tu mapa personal", "Your personal map");
     return (
       <section
         id="mapa-form"
@@ -92,7 +92,7 @@ export default function HeroInstrument() {
           <motion.div {...fadeUpMount} className="space-y-10">
             <div>
               <p className="text-sm text-muted mb-6 label-caps">
-                {eyebrowText}
+                {L.t(eyebrowText)}
               </p>
               <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(3rem,8vw,5.5rem)]">{L(<>
                 Tu mapa te está{" "}
@@ -124,7 +124,7 @@ export default function HeroInstrument() {
     >
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 pt-12 pb-8 sm:pt-16 sm:pb-10 text-center w-full">
           <div aria-live="polite" aria-atomic="true" className="sr-only">
-            {isSubmitting && L("Generando tu mapa...", "Generating your map...")}
+            {L.t(isSubmitting && L("Generando tu mapa...", "Generating your map..."))}
           </div>
 
         <motion.div {...fadeUpMount} className="space-y-10">

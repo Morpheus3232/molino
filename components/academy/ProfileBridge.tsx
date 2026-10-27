@@ -26,7 +26,7 @@ export default function ProfileBridge({ cta }: ProfileBridgeProps) {
 
   const parts = [
     emoji && animal ? `${emoji} ${animal}` : animal,
-    profile.lifePath ? L(`Camino de Vida ${profile.lifePath}`, `Life Path ${profile.lifePath}`) : null,
+    profile.lifePath ? L(`Camino de Vida ${profile.lifePath}`, `Life Path ${L.t(profile.lifePath)}`) : null,
     profile.sunSign || null,
   ].filter(Boolean);
 
@@ -36,14 +36,14 @@ export default function ProfileBridge({ cta }: ProfileBridgeProps) {
     <div className="rounded-md border border-border bg-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
         <p className="text-sm text-muted font-semibold mb-1 label-caps">{L("En tu mapa", "In your map")}</p>
-        <p className="text-sm text-foreground font-medium">{parts.join(" · ")}</p>
+        <p className="text-sm text-foreground font-medium">{L.t(parts.map(L.t).join(" · "))}</p>
       </div>
       {cta && (
         <Link
           href={cta.href}
           className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:text-accent/80 transition-colors shrink-0"
         >
-          {cta.label} →
+          {L.t(cta.label)} →
         </Link>
       )}
     </div>

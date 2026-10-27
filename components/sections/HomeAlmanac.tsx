@@ -39,20 +39,20 @@ export default function HomeAlmanac() {
             {today ? (
               <>{L(<>
                 <span className="first-letter:uppercase inline-block">
-                  {weekday}
+                  {L.t(weekday)}
                 </span>{" "}
-                <em className="text-gradient-warm">{today.getDate()}</em>
-                <span className="text-muted/70"> de {month}.</span>
-              </>, <><span className="first-letter:uppercase inline-block">{weekday}</span>{" "}<span className="text-muted/70">{month}</span>{" "}<em className="text-gradient-warm">{today.getDate()}</em><span className="text-muted/70">.</span></>)}</>
+                <em className="text-gradient-warm">{L.t(today.getDate())}</em>
+                <span className="text-muted/70"> de {L.t(month)}.</span>
+              </>, <><span className="first-letter:uppercase inline-block">{L.t(weekday)}</span>{" "}<span className="text-muted/70">{L.t(month)}</span>{" "}<em className="text-gradient-warm">{L.t(today.getDate())}</em><span className="text-muted/70">.</span></>)}</>
             ) : (
               <span className="sr-only">{L("Hoy", "Today")}</span>
             )}
           </h2>
 
           <p className="mt-5 mx-auto max-w-xl text-base sm:text-lg text-muted leading-relaxed">
-            {hasMap
+            {L.t(hasMap
               ? L("Lo que trae el día según los números y la luna, cruzado con tu mapa.", "What the day brings according to the numbers and the moon, crossed with your map.")
-              : L("Lo que trae el día según los números y la luna. Es el mismo para todos hasta que sumás tu fecha de nacimiento.", "What the day brings according to the numbers and the moon. It's the same for everyone until you add your date of birth.")}
+              : L("Lo que trae el día según los números y la luna. Es el mismo para todos hasta que sumás tu fecha de nacimiento.", "What the day brings according to the numbers and the moon. It's the same for everyone until you add your date of birth."))}
           </p>
         </div>
 

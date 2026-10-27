@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 
@@ -141,6 +142,7 @@ export default function ZodiacAnimalIcon({
   className = "",
   title,
 }: ZodiacAnimalIconProps) {
+  const L = useL();
   const canonical = normalizeZodiacAnimal(animal);
   const label = title || canonical || animal;
   const paths = SILHOUETTES[canonical];
@@ -152,7 +154,7 @@ export default function ZodiacAnimalIcon({
       height={size}
       className={`inline-block shrink-0 align-middle ${className}`}
       role="img"
-      aria-label={label}
+      aria-label={L.t(label)}
     >
       {paths ? (
         <g fill="currentColor" transform={FIT[canonical]}>

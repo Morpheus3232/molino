@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 /**
  * Marcas de leyenda para las ruedas: una rueda en miniatura con solo la parte
  * que se explica encendida (el sector del signo, el del animal, el triángulo,
@@ -22,6 +23,7 @@ function sector(rIn: number, rOut: number, a0: number, a1: number) {
  * 1 para las ruedas de Conocimiento (un solo anillo de doce).
  */
 export default function WheelMark({ part, rings = 1, className = "" }: { part: WheelMarkPart; rings?: 1 | 2; className?: string }) {
+  const L = useL();
   const rOut = 15;
   const rMid = rings === 2 ? 10.5 : 8.5;
   const rIn = rings === 2 ? 6 : 8.5;
@@ -41,7 +43,7 @@ export default function WheelMark({ part, rings = 1, className = "" }: { part: W
       </g>
       {ringSector && <path d={ringSector} fill="currentColor" />}
       {part === "trine" && (
-        <polygon points={tri.map((p) => `${p.x},${p.y}`).join(" ")} fill="none" stroke="currentColor" strokeWidth={1.6} className="text-vermilion" strokeLinejoin="round" />
+        <polygon points={tri.map((p) => `${p.x},${p.y}`).map(L.t).join(" ")} fill="none" stroke="currentColor" strokeWidth={1.6} className="text-vermilion" strokeLinejoin="round" />
       )}
       {part === "opposite" && (
         <line x1={top.x} y1={top.y} x2={bottom.x} y2={bottom.y} stroke="currentColor" strokeWidth={2} strokeDasharray="3 2" />

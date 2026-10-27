@@ -32,7 +32,7 @@ export default function LoShuFigure({ number, className = "" }: { number: number
       <div
         className="grid grid-cols-3 border-l border-t border-ink/30 w-full max-w-[26rem] mx-auto"
         role="img"
-        aria-label={L(`Cuadrado Lo Shu con el ${digit} marcado${master ? `, que en el ${number} aparece dos veces` : ""}.`, `Lo Shu square with ${digit} marked${master ? `, which appears twice in ${number}` : ""}.`)}
+        aria-label={L(`Cuadrado Lo Shu con el ${digit} marcado${master ? `, que en el ${number} aparece dos veces` : ""}.`, `Lo Shu square with ${L.t(digit)} marked${master ? `, which appears twice in ${number}` : ""}.`)}
       >
         {GRID.flat().map((d) => {
           const on = d === digit;
@@ -41,7 +41,7 @@ export default function LoShuFigure({ number, className = "" }: { number: number
               key={d}
               className={`relative aspect-square border-r border-b border-ink/30 flex items-center justify-center ${on ? "bg-ink text-paper" : "text-muted/60"}`}
             >
-              <span className="font-display text-6xl sm:text-7xl leading-none">{d}</span>
+              <span className="font-display text-6xl sm:text-7xl leading-none">{L.t(d)}</span>
               {on && master && <span className="absolute bottom-2 right-3 text-base text-paper/80">×2</span>}
             </div>
           );

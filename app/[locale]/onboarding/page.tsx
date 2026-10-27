@@ -123,7 +123,7 @@ export default function OnboardingPage() {
                   i <= currentStepIndex ? "text-accent" : "text-muted/70"
                 }`}
               >
-                {s.label}
+                {L.t(s.label)}
               </span>
             ))}
           </div>

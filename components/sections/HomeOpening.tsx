@@ -37,6 +37,7 @@ const LINE = (L: Pick2) => (L("Yo sé quién soy.", "I know who I am."));
 
 /** Cuatro aspas en cruz con su enrejado, como las del original. */
 function Sails() {
+  const L = useL();
   const arm = (
     <g>
       <rect x="6" y="-1.6" width="94" height="3.2" />
@@ -52,7 +53,7 @@ function Sails() {
     <svg viewBox="-104 -104 208 208" className="block h-full w-full" fill="currentColor" aria-hidden="true">
       {[45, 135, 225, 315].map((deg) => (
         <g key={deg} transform={`rotate(${deg})`}>
-          {arm}
+          {L.t(arm)}
         </g>
       ))}
       <circle r="7" />
@@ -171,7 +172,7 @@ export default function HomeOpening() {
           id="apertura-home"
           className="text-balance font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(3.2rem,7.5vw,6.5rem)]"
         >
-          <span className="sr-only">{LINE(L)}</span>
+          <span className="sr-only">{L.t(LINE(L))}</span>
           <span aria-hidden="true">
             {/* Las comillas van pegadas a la primera y la última palabra para
                 que nunca queden solas en un renglón. */}
@@ -179,7 +180,7 @@ export default function HomeOpening() {
               <span key={i}>
                 <span className={s.word} style={{ ["--i" as string]: i }}>
                   {i === 0 ? "«" : ""}
-                  {w}
+                  {L.t(w)}
                   {i === words.length - 1 ? "»" : ""}
                 </span>
                 {i < words.length - 1 ? " " : ""}

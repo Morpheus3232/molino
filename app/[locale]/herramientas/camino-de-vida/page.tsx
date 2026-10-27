@@ -91,13 +91,13 @@ export default function CaminoDeVidaPage() {
                 <select value={month} onChange={(e) => setMonth(e.target.value)} className="input flex-1" aria-label={L("Mes", "Month")}>
                   <option value="">{L("Mes", "Month")}</option>
                   {MONTHS(L).map((m) => (
-                    <option key={m.value} value={m.value}>{m.label}</option>
+                    <option key={m.value} value={m.value}>{L.t(m.label)}</option>
                   ))}
                 </select>
                 <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label={L("Año", "Year")}>
                   <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
+                    <option key={y} value={String(y)}>{L.t(y)}</option>
                   ))}
                 </select>
               </div>
@@ -136,7 +136,7 @@ export default function CaminoDeVidaPage() {
                     className="number-display text-[6rem] sm:text-[8rem] leading-none"
                     style={{ color: "var(--element-fire)" }}
                   >
-                    {result.lifePath}
+                    {L.t(result.lifePath)}
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 8 }}
@@ -144,7 +144,7 @@ export default function CaminoDeVidaPage() {
                     transition={{ delay: 0.4, duration: 0.4 }}
                     className="font-heading text-2xl font-semibold text-foreground mt-4"
                   >
-                    {result.meaning.archetype}
+                    {L.t(result.meaning.archetype)}
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0 }}
@@ -152,7 +152,7 @@ export default function CaminoDeVidaPage() {
                     transition={{ delay: 0.5, duration: 0.4 }}
                     className="text-sm text-muted mt-2"
                   >
-                    {result.meaning.meaning}
+                    {L.t(result.meaning.meaning)}
                   </motion.p>
                 </div>
                 <motion.p
@@ -161,7 +161,7 @@ export default function CaminoDeVidaPage() {
                   transition={{ delay: 0.55, duration: 0.4 }}
                   className="text-sm text-muted leading-relaxed max-w-lg mx-auto text-center"
                 >
-                  {result.meaning.description}
+                  {L.t(result.meaning.description)}
                 </motion.p>
               </motion.div>
 
@@ -187,7 +187,7 @@ export default function CaminoDeVidaPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = L(`Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Leé el tuyo en Molino.`, `My Life Path is ${result.lifePath} — ${result.meaning.archetype}. Read yours on Molino.`);
+                    const text = L(`Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Leé el tuyo en Molino.`, `My Life Path is ${L.t(result.lifePath)} — ${L.t(result.meaning.archetype)}. Read yours on Molino.`);
                     if (navigator.share) {
                       navigator.share({ title: L("Mi Camino de Vida", "My Life Path"), text }).catch(() => {});
                     } else {

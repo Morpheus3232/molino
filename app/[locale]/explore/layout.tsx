@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
@@ -10,6 +11,7 @@ export const generateMetadata = metadataFor({
   image: "/opengraph-image",
 });
 
-export default function ExploreLayout({ children }: { children: React.ReactNode }) {
+export default async function ExploreLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

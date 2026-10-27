@@ -20,6 +20,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, isSiteLocale, type SiteLocale } from "@/lib/i18n/routing";
 import { initLocale } from "@/lib/i18n/server";
+import { ContentDictProvider } from "@/lib/i18n/ContentDictProvider";
+import { CLIENT_CONTENT_DICT_EN } from "@/lib/i18n/content";
 import { languageAlternates, localeUrl, OG_LOCALE } from "@/lib/seo";
 
 // Editorial de libro (Penguin): una sola familia, Garamond, para todo. La
@@ -242,6 +244,7 @@ export default async function LocaleLayout({
       </head>
       <body>
         <NextIntlClientProvider locale={locale} messages={{}}>
+        <ContentDictProvider dict={en ? CLIENT_CONTENT_DICT_EN : null}>
         <SkipLink />
         <SiteIntro />
         <AnalyticsProvider />
@@ -271,6 +274,7 @@ export default async function LocaleLayout({
           }}
         />
         <Analytics />
+        </ContentDictProvider>
         </NextIntlClientProvider>
       </body>
     </html>

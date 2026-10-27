@@ -23,7 +23,7 @@ export default function SharePublicButton({
 
   const handleShare = async () => {
     const url = buildPublicShareUrl(profile, path);
-    const text = L(`Mirá mi ${path === "/circulo" ? "círculo" : "mundo"} de energías en Molino: ${url}`, `Check out my ${path === "/circulo" ? "circle" : "world"} of energies on Molino: ${url}`);
+    const text = L(`Mirá mi ${path === "/circulo" ? "círculo" : "mundo"} de energías en Molino: ${url}`, `Check out my ${L.t(path === "/circulo" ? "circle" : "world")} of energies on Molino: ${L.t(url)}`);
 
     // Track share event
     analytics.trackFeatureUsed(`share_${path === "/circulo" ? "circulo" : "mundo"}`);
@@ -31,7 +31,7 @@ export default function SharePublicButton({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: L(`Mi ${path === "/circulo" ? "círculo" : "mundo"}`, `My ${path === "/circulo" ? "circle" : "world"}`),
+          title: L(`Mi ${path === "/circulo" ? "círculo" : "mundo"}`, `My ${L.t(path === "/circulo" ? "circle" : "world")}`),
           text,
           url,
         });
@@ -56,7 +56,7 @@ export default function SharePublicButton({
       type="button"
       onClick={handleShare}
       className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-md"
-      aria-label={label}
+      aria-label={L.t(label)}
     >
       {copied ? (
         <>
@@ -66,7 +66,7 @@ export default function SharePublicButton({
       ) : (
         <>
           <Share2 className="w-4 h-4" aria-hidden="true" />
-          <span>{label}</span>
+          <span>{L.t(label)}</span>
         </>
       )}
     </button>

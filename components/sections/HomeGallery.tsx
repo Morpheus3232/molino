@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import Image from "next/image";
 import { Link } from "@/lib/i18n/navigation";
@@ -35,6 +36,7 @@ const SPAN = [
 ];
 
 export default function HomeGallery() {
+  const L = useL();
   const { ref, hidden } = useReveal<HTMLUListElement>();
 
   return (
@@ -92,10 +94,10 @@ export default function HomeGallery() {
                         lead ? "text-2xl sm:text-4xl" : "text-lg sm:text-2xl"
                       }`}
                     >
-                      {e.title}
+                      {L.t(e.title)}
                     </span>
                     <span className={`block text-muted ${lead ? "mt-1 text-sm sm:text-base" : "mt-0.5 text-xs sm:text-sm"}`}>
-                      {e.note}
+                      {L.t(e.note)}
                     </span>
                   </span>
                 </Link>

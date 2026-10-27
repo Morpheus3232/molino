@@ -28,9 +28,9 @@ export default function ChatCreditsBadge({
           <>
             {L("Te quedan", "You have")}{" "}
             <strong className={`font-display text-2xl font-normal tabular-nums ${isLow ? "text-vermilion" : "text-foreground"}`}>
-              {remaining}
+              {L.t(remaining)}
             </strong>{" "}
-            {remaining === 1 ? "pregunta" : "preguntas"}
+            {L.t(remaining === 1 ? "pregunta" : "preguntas")}
             {isLow && <span className="text-vermilion">{L(", ya casi no quedan", ", almost none left")}</span>}.
           </>
         )}

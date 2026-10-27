@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { SITE_URL, metadataFor } from "@/lib/seo";
@@ -53,8 +54,9 @@ function buildDemoProfile(): UserProfile {
 const demoProfile = buildDemoProfile();
 const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
 
-export default function EjemploPage() {
-  const L = useL();
+export default async function EjemploPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <main id="main-content" className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(L)) }} />

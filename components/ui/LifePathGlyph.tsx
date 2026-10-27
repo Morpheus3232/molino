@@ -43,7 +43,7 @@ export default function LifePathGlyph({
   const L = useL();
   const digits = String(value).split("");
   const single = digits.length === 1;
-  const label = title || L(`Camino de Vida ${value}`, `Life Path ${value}`);
+  const label = title || L(`Camino de Vida ${value}`, `Life Path ${L.t(value)}`);
 
   return (
     <svg
@@ -52,7 +52,7 @@ export default function LifePathGlyph({
       height={size}
       className={`inline-block shrink-0 align-middle ${className}`}
       role="img"
-      aria-label={label}
+      aria-label={L.t(label)}
     >
       <g
         fill="none"

@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getEntityById } from "@/lib/data/symbolic-entities";
 
@@ -14,6 +15,7 @@ export default async function CompatibilityRedirect({
 }: {
   params: Promise<{ entity: string }>;
 }) {
+  await initLocale(params);
   const { entity: id } = await params;
   const entity = getEntityById(id);
   if (!entity) notFound();

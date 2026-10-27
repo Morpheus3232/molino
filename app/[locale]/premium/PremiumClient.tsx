@@ -42,7 +42,7 @@ export default function PremiumClient() {
           bare
           crumbs={[{ href: "/", label: L("Inicio", "Home") }, { label: "Premium" }]}
           eyebrow={L("Molino Premium · la síntesis", "Molino Premium · the synthesis")}
-          title={hook ? hook.question : L("Tu mapa completo, sin determinismo", "Your complete map, without determinism")}
+          title={L.t(hook ? hook.question : L("Tu mapa completo, sin determinismo", "Your complete map, without determinism"))}
           titleClassName={hook ? "text-[clamp(2.5rem,5.5vw,4.5rem)]" : undefined}
           lead={
             hook

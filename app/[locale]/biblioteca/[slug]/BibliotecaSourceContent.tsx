@@ -29,8 +29,8 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/biblioteca" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Biblioteca</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">{source.title}</span>
-        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/biblioteca" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Library</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{source.title}</span></>)}</nav>
+          <span className="text-foreground font-medium" aria-current="page">{L.t(source.title)}</span>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/biblioteca" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Library</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{L.t(source.title)}</span></>)}</nav>
 
         {/* Hero */}
         <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
@@ -39,23 +39,23 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
               className="text-sm font-semibold px-2 py-0.5 label-caps"
               style={{ background: `${meta.color}15`, color: meta.color }}
             >
-              {meta.label}
+              {L.t(meta.label)}
             </span>
             <span
               className={`text-sm px-2 py-0.5 label-caps ${
                 source.era === "ancestral" ? "bg-accent/10 text-accent" : "bg-ink/5 text-muted"
               }`}
             >
-              {source.era === "ancestral" ? L("Tradición ancestral", "Ancestral tradition") : L("Contemporáneo", "Contemporary")}
+              {L.t(source.era === "ancestral" ? L("Tradición ancestral", "Ancestral tradition") : L("Contemporáneo", "Contemporary"))}
             </span>
             <span className="text-sm text-muted px-2 py-0.5 border border-ink/10 label-caps">
-              {CATEGORY_LABELS[source.category] || source.category}
+              {L.t(CATEGORY_LABELS[source.category] || source.category)}
             </span>
           </div>
           <h1 className="page-title text-foreground mb-4">
-            {source.title}
+            {L.t(source.title)}
           </h1>
-          <p className="text-sm sm:text-base text-muted">{source.author} · {source.year}</p>
+          <p className="text-sm sm:text-base text-muted">{L.t(source.author)} · {source.year}</p>
           {/* Portada por categoría: 39 obras, cinco temas. */}
           <SectionCover imageKey={`biblioteca/${source.category}`} priority className="mt-10" />
         </motion.section>
@@ -66,7 +66,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Qué es", "What it is")}</h2>
           </div>
-          <p className="text-base text-foreground leading-relaxed max-w-3xl">{source.description}</p>
+          <p className="text-base text-foreground leading-relaxed max-w-3xl">{L.t(source.description)}</p>
         </motion.section>
 
         {/* Método */}
@@ -76,7 +76,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
               <div className="w-8 h-px bg-border" aria-hidden="true" />
               <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Método", "Method")}</h2>
             </div>
-            <p className="text-sm text-foreground leading-relaxed max-w-3xl">{source.summary}</p>
+            <p className="text-sm text-foreground leading-relaxed max-w-3xl">{L.t(source.summary)}</p>
           </motion.section>
         )}
 
@@ -87,7 +87,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
               <div className="w-8 h-px bg-border" aria-hidden="true" />
               <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L("Reseña de Molino", "Molino's review")}</h2>
             </div>
-            <p className="text-sm text-foreground leading-relaxed max-w-3xl">{source.review}</p>
+            <p className="text-sm text-foreground leading-relaxed max-w-3xl">{L.t(source.review)}</p>
           </motion.section>
         )}
 
@@ -100,7 +100,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
                   key={tag}
                   className="text-sm bg-background border border-ink/10 px-2 py-0.5 text-muted label-caps"
                 >
-                  #{tag}
+                  #{L.t(tag)}
                 </span>
               ))}
               {source.link && (
@@ -130,8 +130,8 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         {related.length > 0 && (
           <motion.section {...fadeUpMount} className="pt-8 border-t border-border">
             <p className="text-sm text-muted font-medium mb-4 label-caps">{L(<>
-              Seguir explorando · {CATEGORY_LABELS[source.category] || source.category}
-            </>, <>Keep exploring · {CATEGORY_LABELS[source.category] || source.category}</>)}</p>
+              Seguir explorando · {L.t(CATEGORY_LABELS[source.category] || source.category)}
+            </>, <>Keep exploring · {L.t(CATEGORY_LABELS[source.category] || source.category)}</>)}</p>
             <div className="space-y-2">
               {related.map((rel) => (
                 <Link
@@ -139,7 +139,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
                   href={`/biblioteca/${rel.slug}`}
                   className="block text-sm text-accent hover:text-accent/80 transition-colors"
                 >
-                  {rel.title} →
+                  {L.t(rel.title)} →
                 </Link>
               ))}
             </div>

@@ -62,7 +62,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
       )}
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-base">
         <button type="button" onClick={() => router.push(`/affinity/${affinityListingOf(entity)}`)} className="underline underline-offset-4 hover:no-underline">
-          {formatViewAll(type, meta.plural)}
+          {L.t(formatViewAll(type, meta.plural))}
         </button>
         <button type="button" onClick={() => router.push("/conocimiento/zodiaco-chino")} className="underline underline-offset-4 hover:no-underline">{L("Conocé el zodíaco chino", "Get to know the Chinese zodiac")}</button>
       </div>

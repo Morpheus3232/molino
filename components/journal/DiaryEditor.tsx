@@ -164,9 +164,9 @@ const DiaryEditor = forwardRef<DiaryEditorHandle, Props>(function DiaryEditor(
                 // Que el clic no le saque la selección al editor.
                 onMouseDown={(ev) => ev.preventDefault()}
                 onClick={() => run(editor)}
-                aria-label={label}
+                aria-label={L.t(label)}
                 aria-pressed={state[key]}
-                title={label}
+                title={L.t(label)}
                 className={`w-11 h-11 flex items-center justify-center transition-colors border-r border-paper/15 last:border-r-0 ${
                   state[key] ? "bg-paper text-ink" : "text-paper hover:bg-paper/15"
                 }`}

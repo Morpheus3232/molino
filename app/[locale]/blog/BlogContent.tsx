@@ -34,26 +34,27 @@ function Featured({ post }: { post: BlogPost }) {
   const L = useL();
   return (
     <article className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8 items-center">
-      <Link href={`/blog/${post.slug}`} className="lg:col-span-7 block relative aspect-[16/10] overflow-hidden bg-paper-alt" aria-label={post.title}>
-        <Image src={post.image} alt={post.imageAlt ?? post.title} fill priority sizes="(max-width: 1024px) 100vw, 58vw" className="object-cover" />
+      <Link href={`/blog/${post.slug}`} className="lg:col-span-7 block relative aspect-[16/10] overflow-hidden bg-paper-alt" aria-label={L.t(post.title)}>
+        <Image src={post.image} alt={L.t(post.imageAlt ?? post.title)} fill priority sizes="(max-width: 1024px) 100vw, 58vw" className="object-cover" />
       </Link>
       <div className="lg:col-span-5">
-        <p className="text-sm text-muted label-caps">{L(<>El más reciente · {post.category}</>, <>Most recent · {post.category}</>)}</p>
+        <p className="text-sm text-muted label-caps">{L(<>El más reciente · {L.t(post.category)}</>, <>Most recent · {L.t(post.category)}</>)}</p>
         <h2 className="mt-4 font-display font-normal text-[clamp(2rem,4vw,3.25rem)] leading-[1.02] tracking-tight text-foreground">
           <Link href={`/blog/${post.slug}`} className="hover:underline underline-offset-[6px] decoration-2">
-            {post.title}
+            {L.t(post.title)}
           </Link>
         </h2>
-        <p className="mt-5 text-xl text-foreground/85 leading-snug">{post.excerpt}</p>
+        <p className="mt-5 text-xl text-foreground/85 leading-snug">{L.t(post.excerpt)}</p>
         <p className="mt-6 text-base text-muted">{L(<>
-          <time dateTime={post.date}>{formatDate(post.date)}</time> · {getReadingTime(post)} min de lectura
-        </>, <><time dateTime={post.date}>{formatDate(post.date)}</time> · {getReadingTime(post)} min read</>)}</p>
+          <time dateTime={post.date}>{L.t(formatDate(post.date))}</time> · {L.t(getReadingTime(post))} min de lectura
+        </>, <><time dateTime={post.date}>{L.t(formatDate(post.date))}</time> · {L.t(getReadingTime(post))} min read</>)}</p>
       </div>
     </article>
   );
 }
 
 function PostCell({ post }: { post: BlogPost }) {
+  const L = useL();
   return (
     <article className="group bg-background flex flex-col">
       <Link href={`/blog/${post.slug}`} className="block relative aspect-[16/10] overflow-hidden bg-paper-alt" tabIndex={-1} aria-hidden="true">
@@ -67,16 +68,16 @@ function PostCell({ post }: { post: BlogPost }) {
       </Link>
       <div className="flex flex-col flex-1 p-6 sm:p-7">
         <p className="text-sm text-muted">
-          {post.category} · {getReadingTime(post)} min
+          {L.t(post.category)} · {L.t(getReadingTime(post))} min
         </p>
         <h3 className="mt-2 font-display font-normal text-2xl leading-tight text-foreground">
           <Link href={`/blog/${post.slug}`} className="group-hover:underline underline-offset-4">
-            {post.title}
+            {L.t(post.title)}
           </Link>
         </h3>
-        <p className="mt-3 text-base text-muted leading-relaxed flex-1">{post.excerpt}</p>
+        <p className="mt-3 text-base text-muted leading-relaxed flex-1">{L.t(post.excerpt)}</p>
         <time dateTime={post.date} className="mt-5 pt-4 border-t border-ink/15 text-sm text-muted">
-          {formatDate(post.date)}
+          {L.t(formatDate(post.date))}
         </time>
       </div>
     </article>
@@ -132,7 +133,7 @@ export default function BlogContent() {
                         active ? "border-ink text-foreground" : "border-transparent text-muted hover:text-foreground"
                       }`}
                     >
-                      <span className="font-display text-2xl sm:text-[1.65rem] leading-none">{f}</span>
+                      <span className="font-display text-2xl sm:text-[1.65rem] leading-none">{L.t(f)}</span>
                       <sup className="ml-1.5 text-sm tabular-nums">{counts[f] ?? 0}</sup>
                     </button>
                   </li>
@@ -141,7 +142,7 @@ export default function BlogContent() {
             </ul>
           </nav>
           <p className="mt-6 text-lg text-muted max-w-2xl" aria-live="polite">
-            {CATEGORY_LEAD(L)[filter]}
+            {L.t(CATEGORY_LEAD(L)[filter])}
           </p>
 
           {posts.length > 0 ? (

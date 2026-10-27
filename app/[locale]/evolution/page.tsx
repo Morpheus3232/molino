@@ -129,24 +129,24 @@ export default function EvolutionPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
                     <div className="bg-background p-8 lg:p-10">
                       <p className="label-micro mb-3">{L(<>Año anterior · {cycleArc.previous.year}</>, <>Previous year · {cycleArc.previous.year}</>)}</p>
-                      <p className="font-display text-4xl text-muted mb-3">{cycleArc.previous.cycle}</p>
-                      <p className="text-sm text-muted leading-relaxed">{L(<>Fue {cycleArc.previous.theme}.</>, <>It was {cycleArc.previous.theme}.</>)}</p>
+                      <p className="font-display text-4xl text-muted mb-3">{L.t(cycleArc.previous.cycle)}</p>
+                      <p className="text-sm text-muted leading-relaxed">{L(<>Fue {L.t(cycleArc.previous.theme)}.</>, <>It was {L.t(cycleArc.previous.theme)}.</>)}</p>
                     </div>
                     <div className="bg-background p-8 lg:p-10">
                       <p className="label-micro mb-3 text-accent">{L(<>Este año · {cycleArc.current.year}</>, <>This year · {cycleArc.current.year}</>)}</p>
-                      <p className="font-display text-4xl text-foreground mb-3">{cycleArc.current.cycle}</p>
-                      <p className="text-sm text-foreground leading-relaxed">{L(<>Es {cycleArc.current.theme}.</>, <>It is {cycleArc.current.theme}.</>)}</p>
+                      <p className="font-display text-4xl text-foreground mb-3">{L.t(cycleArc.current.cycle)}</p>
+                      <p className="text-sm text-foreground leading-relaxed">{L(<>Es {L.t(cycleArc.current.theme)}.</>, <>It is {L.t(cycleArc.current.theme)}.</>)}</p>
                     </div>
                     <div className="bg-background p-8 lg:p-10">
                       <p className="label-micro mb-3">{L(<>Próximo año · {cycleArc.next.year}</>, <>Next year · {cycleArc.next.year}</>)}</p>
-                      <p className="font-display text-4xl text-muted mb-3">{cycleArc.next.cycle}</p>
-                      <p className="text-sm text-muted leading-relaxed">{L(<>Va a ser {cycleArc.next.theme}.</>, <>It will be {cycleArc.next.theme}.</>)}</p>
+                      <p className="font-display text-4xl text-muted mb-3">{L.t(cycleArc.next.cycle)}</p>
+                      <p className="text-sm text-muted leading-relaxed">{L(<>Va a ser {L.t(cycleArc.next.theme)}.</>, <>It will be {L.t(cycleArc.next.theme)}.</>)}</p>
                     </div>
                   </div>
                   <p className="text-xs text-muted mt-4">
                     {cycleArc.current.cycle === cycleArc.next.cycle
-                      ? L(`Tu ciclo personal se mantiene en ${cycleArc.current.cycle} el próximo año.`, `Your personal cycle stays at ${cycleArc.current.cycle} next year.`)
-                      : L(`Tu ciclo personal pasa de ${cycleArc.current.cycle} a ${cycleArc.next.cycle} el próximo año.`, `Your personal cycle moves from ${cycleArc.current.cycle} to ${cycleArc.next.cycle} next year.`)}
+                      ? L(`Tu ciclo personal se mantiene en ${cycleArc.current.cycle} el próximo año.`, `Your personal cycle stays at ${L.t(cycleArc.current.cycle)} next year.`)
+                      : L(`Tu ciclo personal pasa de ${cycleArc.current.cycle} a ${cycleArc.next.cycle} el próximo año.`, `Your personal cycle moves from ${L.t(cycleArc.current.cycle)} to ${L.t(cycleArc.next.cycle)} next year.`)}
                   </p>
                 </motion.div>
               )}
@@ -209,13 +209,13 @@ export default function EvolutionPage() {
                           className="block rounded-lg border border-ink/10 bg-card p-4 hover:border-accent/40 transition-colors"
                         >
                           <div className="flex items-center gap-2 mb-1.5">
-                            <span>{cfg.emoji}</span>
-                            <span className="text-xs font-mono text-muted">{entry.date}</span>
+                            <span>{L.t(cfg.emoji)}</span>
+                            <span className="text-xs font-mono text-muted">{L.t(entry.date)}</span>
                             {entry.cycleContext?.dayEnergy?.theme && (
-                              <span className="text-xs font-mono text-accent">· {entry.cycleContext.dayEnergy.theme}</span>
+                              <span className="text-xs font-mono text-accent">· {L.t(entry.cycleContext.dayEnergy.theme)}</span>
                             )}
                           </div>
-                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{plainText(entry.content)}</p>
+                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{L.t(plainText(entry.content))}</p>
                         </Link>
                       );
                     })}

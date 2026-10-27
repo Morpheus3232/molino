@@ -1,4 +1,4 @@
-import { useL } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import type { LightweightEntity } from "@/types/atlas";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
@@ -17,8 +17,9 @@ export const generateMetadata = metadataFor({
   noIndex: true,
 });
 
-export default function BrandsRecommendationPage() {
-  const L = useL();
+export default async function BrandsRecommendationPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <RecommendationContent
       entityType="brand"

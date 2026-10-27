@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import AcademyContent from "./AcademyContent";
 import { metadataFor } from "@/lib/seo";
 
@@ -9,6 +10,7 @@ export const generateMetadata = metadataFor({
   ogDescription: ["La historia de las tradiciones simbólicas que alimentan tu mapa personal.", "The history of the symbolic traditions that feed your personal map."],
 });
 
-export default function AcademyPage() {
+export default async function AcademyPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <AcademyContent />;
 }

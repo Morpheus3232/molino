@@ -58,20 +58,20 @@ export function PersonCard({
           <span
             className={`text-sm px-2.5 py-0.5 rounded-full font-bold label-caps ${accentBg}`}
           >
-            {badgeLabel}
+            {L.t(badgeLabel)}
           </span>
           {profile.birthDate && (
             <span className="font-mono text-xs text-muted">
-              {profile.birthDate}
+              {L.t(profile.birthDate)}
             </span>
           )}
         </div>
 
         <h3 className="section-title text-foreground">
-          {name}
+          {L.t(name)}
         </h3>
         <p className="text-xs text-muted mt-0.5 italic">
-          {archetype.quote || archetype.description}
+          {L.t(archetype.quote || archetype.description)}
         </p>
 
         {/* 3 Pillars Grid */}
@@ -82,9 +82,9 @@ export function PersonCard({
               Camino
             </span>
             <span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>
-              {lifePath}
+              {L.t(lifePath)}
             </span>
-          </>, <><span className="text-sm text-muted block label-caps">Path</span><span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>{lifePath}</span></>)}</div>
+          </>, <><span className="text-sm text-muted block label-caps">Path</span><span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>{L.t(lifePath)}</span></>)}</div>
 
           {/* Sun Sign */}
           <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">{L(<>
@@ -92,9 +92,9 @@ export function PersonCard({
               Solar
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
-              {sunSymbol} {sunSign}
+              {L.t(sunSymbol)} {L.t(sunSign)}
             </span>
-          </>, <><span className="text-sm text-muted block label-caps">Sun</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{sunSymbol} {sunSign}</span></>)}</div>
+          </>, <><span className="text-sm text-muted block label-caps">Sun</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{L.t(sunSymbol)} {L.t(sunSign)}</span></>)}</div>
 
           {/* Chinese Zodiac */}
           <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">{L(<>
@@ -102,16 +102,16 @@ export function PersonCard({
               Zodíaco
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">
-              {zodiacDisplay.emoji} {zodiacDisplay.name}
+              {L.t(zodiacDisplay.emoji)} {L.t(zodiacDisplay.name)}
             </span>
-          </>, <><span className="text-sm text-muted block label-caps">Zodiac</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{zodiacDisplay.emoji} {zodiacDisplay.name}</span></>)}</div>
+          </>, <><span className="text-sm text-muted block label-caps">Zodiac</span><span className="font-mono text-xs sm:text-sm font-bold text-foreground block truncate">{L.t(zodiacDisplay.emoji)} {L.t(zodiacDisplay.name)}</span></>)}</div>
         </div>
       </div>
 
       <div className="mt-4 pt-3 border-t border-ink/5 text-[11px] font-mono text-muted flex items-center justify-between">{L(<>
-        <span>Elemento {element}</span>
-        <span>Arquetipo #{lifePath}</span>
-      </>, <><span>{element} element</span><span>Archetype #{lifePath}</span></>)}</div>
+        <span>Elemento {L.t(element)}</span>
+        <span>Arquetipo #{L.t(lifePath)}</span>
+      </>, <><span>{L.t(element)} element</span><span>Archetype #{L.t(lifePath)}</span></>)}</div>
     </div>
   );
 }
@@ -145,12 +145,12 @@ export default function CoupleComparison({
         {/* Level Display — sin número crudo, el nivel ya es descriptivo */}
         <div className="my-4 flex flex-col items-center justify-center">
           <div className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground max-w-lg leading-tight">
-            {result.level}
+            {L.t(result.level)}
           </div>
         </div>
 
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
-          {result.summary}
+          {L.t(result.summary)}
         </p>
 
         {/* Sello de Sinergia y Patrón de Interferencia */}
@@ -200,7 +200,7 @@ export default function CoupleComparison({
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm text-accent font-semibold label-caps">
-                    {c.system}
+                    {L.t(c.system)}
                   </span>
                   {c.score && (
                     <span className="font-mono text-xs font-bold text-foreground bg-ink/5 px-2 py-0.5 rounded">
@@ -209,10 +209,10 @@ export default function CoupleComparison({
                   )}
                 </div>
                 <h4 className="font-heading text-sm sm:text-base font-bold text-foreground">
-                  {c.title}
+                  {L.t(c.title)}
                 </h4>
                 <p className="text-xs text-muted mt-2 leading-relaxed">
-                  {c.description}
+                  {L.t(c.description)}
                 </p>
               </div>
             </div>
@@ -247,16 +247,16 @@ export default function CoupleComparison({
             >
               <div className="flex items-center justify-between gap-2">{L(<>
                 <span className="text-sm text-warning font-semibold label-caps">
-                  Área: {ch.area}
+                  Área: {L.t(ch.area)}
                 </span>
-              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {ch.area}</span></>)}</div>
+              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {L.t(ch.area)}</span></>)}</div>
               <p className="text-xs sm:text-sm text-foreground leading-relaxed">
-                {ch.description}
+                {L.t(ch.description)}
               </p>
               <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">{L(<>
                 <span className="text-accent font-bold">💡 Consejo:</span>
-                <span>{ch.recommendation}</span>
-              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{ch.recommendation}</span></>)}</div>
+                <span>{L.t(ch.recommendation)}</span>
+              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{L.t(ch.recommendation)}</span></>)}</div>
             </div>
           ))}
         </div>
@@ -274,7 +274,7 @@ export default function CoupleComparison({
           <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L("Síntesis para la Dinámica Cotidiana", "Synthesis for Everyday Dynamics")}</h3>
         </div>
         <blockquote className="text-sm sm:text-base text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-4 py-1">
-          &ldquo;{result.dailyAdvice}&rdquo;
+          &ldquo;{L.t(result.dailyAdvice)}&rdquo;
         </blockquote>
       </motion.section>
 
@@ -288,7 +288,7 @@ export default function CoupleComparison({
         <button
           type="button"
           onClick={() => {
-            const text = L(`Comparativa de Molino: ${profileA.name} + ${profileB.name}`, `Molino comparison: ${profileA.name} + ${profileB.name}`);
+            const text = L(`Comparativa de Molino: ${profileA.name} + ${profileB.name}`, `Molino comparison: ${L.t(profileA.name)} + ${L.t(profileB.name)}`);
             if (navigator.share) {
               navigator.share({ title: text, text }).catch(() => {});
             } else {

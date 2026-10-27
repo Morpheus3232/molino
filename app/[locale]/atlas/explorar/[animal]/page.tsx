@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AnimalExplorerPage({ params, searchParams }: Props) {
+  await initLocale(params);
   const L = await getL();
   const { animal } = await params;
   const decoded = decodeURIComponent(animal);
@@ -55,8 +56,8 @@ export default async function AnimalExplorerPage({ params, searchParams }: Props
       <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
         <div className="mx-auto max-w-6xl px-4 sm:px-8 text-center py-24">
           <p className="text-muted">{L(<>
-            No hay entidades registradas para {decoded} en este momento.
-          </>, <>There are no entities recorded for {decoded} right now.</>)}</p>
+            No hay entidades registradas para {L.t(decoded)} en este momento.
+          </>, <>There are no entities recorded for {L.t(decoded)} right now.</>)}</p>
         </div>
       </main>
     );

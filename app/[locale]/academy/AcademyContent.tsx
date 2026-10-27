@@ -254,14 +254,14 @@ function KnowledgeNode({
   return (
     <li className="border-b border-ink/15">
       <div className="grid grid-cols-1 md:grid-cols-[11rem_1fr_auto] gap-x-10 gap-y-1 py-8 items-baseline">
-        <p className="text-base text-muted">{node.era}</p>
+        <p className="text-base text-muted">{L.t(node.era)}</p>
         <div>
           <h3 className="font-display text-[clamp(1.75rem,3vw,2.4rem)] leading-tight text-foreground">
             <Link href={`/academy/${node.slug}`} className="hover:underline underline-offset-[6px]">
-              {node.title}
+              {L.t(node.title)}
             </Link>
           </h3>
-          <p className="mt-2 text-lg text-foreground/80 leading-relaxed max-w-2xl">{node.idea}</p>
+          <p className="mt-2 text-lg text-foreground/80 leading-relaxed max-w-2xl">{L.t(node.idea)}</p>
         </div>
         <button
           type="button"
@@ -270,19 +270,19 @@ function KnowledgeNode({
           aria-controls={panelId}
           className="justify-self-start md:justify-self-end text-base underline underline-offset-4 hover:no-underline min-h-[44px]"
         >
-          {isExpanded ? L("Cerrar", "Close") : L("Qué tomó Molino", "What Molino took")}
+          {L.t(isExpanded ? L("Cerrar", "Close") : L("Qué tomó Molino", "What Molino took"))}
         </button>
       </div>
       {isExpanded && (
         <dl id={panelId} className="md:ml-[13.5rem] mb-8 border-t-2 border-ink divide-y divide-ink/15 max-w-3xl">
           {[
             [L("Origen", "Origin"), node.origin],
-            [L("Influencia", "Influence"), node.influence.join(", ")],
+            [L("Influencia", "Influence"), node.influence.map(L.t).join(", ")],
             [L("Cómo se usa", "How it's used"), node.molino],
           ].map(([k, v]) => (
             <div key={k} className="grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-1 py-4">
-              <dt className="font-display text-xl text-foreground">{k}</dt>
-              <dd className="text-lg text-foreground/85 leading-relaxed">{v}</dd>
+              <dt className="font-display text-xl text-foreground">{L.t(k)}</dt>
+              <dd className="text-lg text-foreground/85 leading-relaxed">{L.t(v)}</dd>
             </div>
           ))}
         </dl>
@@ -310,10 +310,10 @@ export default function AcademyContent() {
           {ACADEMY_GUIDES.map((guide, idx) => (
             <li key={guide.slug} className="bg-background">
               <Link href={`/academy/${guide.slug}`} className="group grid grid-cols-[3rem_1fr] gap-x-4 h-full p-7 sm:p-8 hover:bg-paper-alt/70 transition-colors">
-                <span className="font-display text-4xl leading-none text-muted tabular-nums">{idx + 1}</span>
+                <span className="font-display text-4xl leading-none text-muted tabular-nums">{L.t(idx + 1)}</span>
                 <span>
-                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{guide.title}</span>
-                  <span className="mt-2 block text-lg text-foreground/80 leading-relaxed">{guide.subtitle}</span>
+                  <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{L.t(guide.title)}</span>
+                  <span className="mt-2 block text-lg text-foreground/80 leading-relaxed">{L.t(guide.subtitle)}</span>
                 </span>
               </Link>
             </li>
@@ -348,13 +348,13 @@ export default function AcademyContent() {
                 <p className="text-base text-muted">{L(<>
                   {course.pieces.length} capítulo{course.pieces.length !== 1 ? "s" : ""}
                 </>, <>{course.pieces.length} chapter{course.pieces.length !== 1 ? "s" : ""}</>)}</p>
-                <h3 className="mt-2 font-display text-3xl leading-tight text-foreground">{course.title}</h3>
-                <p className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{course.description}</p>
+                <h3 className="mt-2 font-display text-3xl leading-tight text-foreground">{L.t(course.title)}</h3>
+                <p className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{L.t(course.description)}</p>
                 <ol className="mt-5 border-t border-ink/15 divide-y divide-ink/10 text-base">
                   {course.pieces.map((p) => (
                     <li key={p.slug}>
                       <Link href={`/academy/${p.slug}`} className="block py-2.5 hover:underline underline-offset-4">
-                        {p.title}
+                        {L.t(p.title)}
                       </Link>
                     </li>
                   ))}
@@ -377,10 +377,10 @@ export default function AcademyContent() {
         <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/15 border border-ink/15">
           {HOW_IT_WORKS(L).map((item) => (
             <li key={item.step} className="bg-background p-7 sm:p-8">
-              <span className="font-display text-5xl leading-none text-foreground tabular-nums">{item.step}</span>
-              <h3 className="mt-4 font-display text-2xl text-foreground">{item.title}</h3>
-              <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{item.description}</p>
-              <p className="mt-4 text-base text-muted">{item.items.join(" · ")}</p>
+              <span className="font-display text-5xl leading-none text-foreground tabular-nums">{L.t(item.step)}</span>
+              <h3 className="mt-4 font-display text-2xl text-foreground">{L.t(item.title)}</h3>
+              <p className="mt-2 text-lg text-foreground/80 leading-relaxed">{L.t(item.description)}</p>
+              <p className="mt-4 text-base text-muted">{L.t(item.items.map(L.t).join(" · "))}</p>
             </li>
           ))}
         </ol>

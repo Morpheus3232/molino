@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GuiaLayout({ children }: { children: React.ReactNode }) {
+export default async function GuiaLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

@@ -29,6 +29,7 @@ interface FamousMatchProps {
  * la cara casi siempre está en el tercio superior y un `center` la recorta.
  */
 function Portrait({ name, id, className = "" }: { name: string; id: string; className?: string }) {
+  const L = useL();
   const [errored, setErrored] = useState(false);
   const src = PERSON_IMAGE_URLS[id];
 
@@ -37,7 +38,7 @@ function Portrait({ name, id, className = "" }: { name: string; id: string; clas
       {src && !errored ? (
         <Image
           src={src}
-          alt={name}
+          alt={L.t(name)}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover object-top"
@@ -45,7 +46,7 @@ function Portrait({ name, id, className = "" }: { name: string; id: string; clas
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-foreground/25">
-          <EntityIcon kind="person" size={56} title={name} />
+          <EntityIcon kind="person" size={56} title={L.t(name)} />
         </div>
       )}
     </div>
@@ -81,24 +82,24 @@ function Coordinates({
       <span
         className={`inline-flex items-center gap-1 whitespace-nowrap ${matchChineseZodiac ? "" : "text-muted/70"}`}
         style={on(matchChineseZodiac)}
-        title={L(`Zodíaco chino: ${zodiacDisplay.name}`, `Chinese zodiac: ${zodiacDisplay.name}`)}
+        title={L(`Zodíaco chino: ${zodiacDisplay.name}`, `Chinese zodiac: ${L.t(zodiacDisplay.name)}`)}
       >
         <ZodiacAnimalIcon animal={person.chineseZodiac} size={13} className="shrink-0" />
-        {zodiacDisplay.name}
+        {L.t(zodiacDisplay.name)}
       </span>
       <span
         className={`whitespace-nowrap ${matchLifePath ? "" : "text-muted/70"}`}
         style={on(matchLifePath)}
         title={`Camino de vida: ${person.lifePath}`}
       >{L(<>
-        Camino {person.lifePath}
-      </>, <>Path {person.lifePath}</>)}</span>
+        Camino {L.t(person.lifePath)}
+      </>, <>Path {L.t(person.lifePath)}</>)}</span>
       <span
         className={`whitespace-nowrap ${matchSunSign ? "" : "text-muted/70"}`}
         style={on(matchSunSign)}
-        title={L(`Signo solar: ${person.sunSign}`, `Sun sign: ${person.sunSign}`)}
+        title={L(`Signo solar: ${person.sunSign}`, `Sun sign: ${L.t(person.sunSign)}`)}
       >
-        {sunSymbol} {person.sunSign}
+        {L.t(sunSymbol)} {L.t(person.sunSign)}
       </span>
     </div>
   );
@@ -148,30 +149,30 @@ function MatchCard({
           {badge && (
             <span className="absolute top-0 left-0 inline-flex items-center gap-1 text-sm px-2.5 py-1 rounded-br-lg bg-accent text-background font-bold shadow-sm label-caps">
               <badge.Icon className="w-3 h-3" />
-              {badge.label}
+              {L.t(badge.label)}
             </span>
           )}
         </div>
 
         <div className="flex-1 min-w-0 p-5 flex flex-col">
           <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight">
-            {person.name}
+            {L.t(person.name)}
           </h3>
           <p className="text-sm text-muted mt-1.5 label-caps">
-            {person.field} · {person.country}
+            {L.t(person.field)} · {person.country}
             {birthYear ? ` · ${birthYear}` : ""}
           </p>
 
           <p className="text-sm font-medium text-foreground leading-snug flex items-start gap-1.5 mt-3.5">
             <Star className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
-            <span>{headline}</span>
+            <span>{L.t(headline)}</span>
           </p>
 
-          <p className="text-sm text-muted mt-2.5 leading-relaxed">{person.shortBio}</p>
+          <p className="text-sm text-muted mt-2.5 leading-relaxed">{L.t(person.shortBio)}</p>
 
           {person.quote && (
             <blockquote className="mt-3 text-sm italic text-foreground/80 border-l-2 border-accent/40 pl-2.5 py-0.5">
-              &ldquo;{person.quote}&rdquo;
+              &ldquo;{L.t(person.quote)}&rdquo;
             </blockquote>
           )}
 
@@ -199,27 +200,27 @@ function MatchCard({
         {badge && (
           <span className="absolute top-0 left-0 inline-flex items-center gap-1 text-sm px-2 py-0.5 rounded-br-lg bg-accent text-background font-bold shadow-sm label-caps">
             <badge.Icon className="w-2.5 h-2.5" />
-            {badge.label}
+            {L.t(badge.label)}
           </span>
         )}
       </div>
 
       <div className="p-4 flex flex-col flex-1">
         <h3 className="font-heading text-base font-bold text-foreground leading-tight">
-          {person.name}
+          {L.t(person.name)}
         </h3>
         <p className="text-sm text-muted mt-1 label-caps">
-          {person.field} · {person.country}
+          {L.t(person.field)} · {person.country}
           {birthYear ? ` · ${birthYear}` : ""}
         </p>
 
         <p className="text-xs font-medium text-foreground leading-snug flex items-start gap-1.5 mt-3">
           <Star className="w-3 h-3 text-accent mt-0.5 shrink-0" />
-          <span>{headline}</span>
+          <span>{L.t(headline)}</span>
         </p>
 
         <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-3">
-          {person.shortBio}
+          {L.t(person.shortBio)}
         </p>
 
         <div className="mt-auto">
@@ -267,7 +268,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
 
           <div className="flex items-center gap-2 text-xs font-mono text-muted bg-ink/5 border border-ink/10 px-3.5 py-1.5 rounded-full self-start sm:self-auto">
             <Users className="w-3.5 h-3.5 text-accent" />
-            <span>{L(<>{totalMatchesAvailable} resonancias destacadas</>, <>{totalMatchesAvailable} notable resonances</>)}</span>
+            <span>{L(<>{L.t(totalMatchesAvailable)} resonancias destacadas</>, <>{L.t(totalMatchesAvailable)} notable resonances</>)}</span>
           </div>
         </div>
 

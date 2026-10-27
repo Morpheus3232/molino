@@ -32,8 +32,8 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
     return (
       <div className="max-w-2xl">
         <p className="text-sm text-muted leading-relaxed max-w-xl">{L(<>
-          Los ciclos anuales {START_YEAR}–{END_YEAR} forman parte de tu síntesis completa — desbloqueala arriba para acceder.
-        </>, <>The annual cycles {START_YEAR}–{END_YEAR} are part of your complete synthesis — unlock it above to access them.</>)}</p>
+          Los ciclos anuales {L.t(START_YEAR)}–{L.t(END_YEAR)} forman parte de tu síntesis completa — desbloqueala arriba para acceder.
+        </>, <>The annual cycles {L.t(START_YEAR)}–{L.t(END_YEAR)} are part of your complete synthesis — unlock it above to access them.</>)}</p>
       </div>
     );
   }
@@ -50,8 +50,8 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
         </div>
         <div>
           <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L(<>
-            Ciclos Anuales {START_YEAR}–{END_YEAR}
-          </>, <>Annual Cycles {START_YEAR}–{END_YEAR}</>)}</h3>
+            Ciclos Anuales {L.t(START_YEAR)}–{L.t(END_YEAR)}
+          </>, <>Annual Cycles {L.t(START_YEAR)}–{L.t(END_YEAR)}</>)}</h3>
           <p className="text-xs text-muted">{L("Tu año personal y el animal de cada año, cinco años hacia adelante.", "Your personal year and the animal of each year, five years ahead.")}</p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
             <div>
               <div className="flex items-center justify-between text-xs text-muted font-mono mb-2">
                 <span className="font-bold text-foreground">{c.year}</span>
-                <span aria-hidden="true">{ANIMAL_EMOJIS[c.yearAnimal as ChineseAnimal] || "*"}</span>
+                <span aria-hidden="true">{L.t(ANIMAL_EMOJIS[c.yearAnimal as ChineseAnimal] || "*")}</span>
               </div>
 
               <div className="flex items-baseline gap-1.5 my-1">{L(<>
@@ -77,7 +77,7 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
             </div>
 
             <p className="mt-3 pt-2.5 border-t border-ink/5 text-xs text-muted leading-snug">
-              {c.cycleLabel}
+              {L.t(c.cycleLabel)}
             </p>
           </div>
         ))}

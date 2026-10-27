@@ -1,4 +1,4 @@
-import { getL } from "@/lib/i18n/server";
+import { getL, initLocale } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -62,6 +62,7 @@ export default async function AffinityTypePage({
   params: Promise<{ type: string }>;
   searchParams: Promise<{ animal?: string }>;
 }) {
+  await initLocale(params);
   const L = await getL();
   const { type } = await params;
   const { animal } = await searchParams;
@@ -84,20 +85,20 @@ export default async function AffinityTypePage({
       {bySign.length > 0 && (
         <nav aria-labelledby="indice-por-signo" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-24">
           <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">{L(<>
-            {meta.plural} por signo chino
-          </>, <>{meta.plural} by Chinese sign</>)}</h2>
+            {L.t(meta.plural)} por signo chino
+          </>, <>{L.t(meta.plural)} by Chinese sign</>)}</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {bySign.map((g) => (
               <section key={g.animal}>
                 <h3 className="text-sm font-semibold text-foreground mb-2">{L(<>
                   <Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">
-                    Signo {g.animal}
+                    Signo {L.t(g.animal)}
                   </Link>
-                </>, <><Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">{g.animal} sign</Link></>)}</h3>
+                </>, <><Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">{L.t(g.animal)} sign</Link></>)}</h3>
                 <ul className="text-sm text-muted space-y-1">
                   {g.items.map((e) => (
                     <li key={e.id}>
-                      <Link href={`/affinity/${e.type}/${e.id}`} className="hover:text-accent">{e.name}</Link>
+                      <Link href={`/affinity/${e.type}/${e.id}`} className="hover:text-accent">{L.t(e.name)}</Link>
                     </li>
                   ))}
                 </ul>

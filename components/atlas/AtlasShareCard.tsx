@@ -39,7 +39,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
   const [copied, setCopied] = useState(false);
 
   const shareText = [
-    headline ?? L(`Mi afinidad simbólica con ${entity.name}`, `My symbolic affinity with ${entity.name}`),
+    headline ?? L(`Mi afinidad simbólica con ${entity.name}`, `My symbolic affinity with ${L.t(entity.name)}`),
     subline,
   ]
     .filter(Boolean)
@@ -68,7 +68,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         const file = new File([blob], `molino-${sanitizeFilenamePart(entity.name) || "atlas"}.png`, { type: "image/png" });
         try {
           await navigator.share({
-            title: headline ?? L(`Afinidad con ${entity.name}`, `Affinity with ${entity.name}`),
+            title: headline ?? L(`Afinidad con ${entity.name}`, `Affinity with ${L.t(entity.name)}`),
             text: shareText,
             url: shareUrl,
             files: [file],
@@ -131,10 +131,10 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
             />
             <div>
               <p className="font-heading text-2xl sm:text-3xl font-bold text-foreground leading-tight">
-                {entity.name}
+                {L.t(entity.name)}
               </p>
-              {headline && <p className="text-sm text-accent mt-2 font-medium">{headline}</p>}
-              {subline && <p className="text-sm text-muted mt-1">{subline}</p>}
+              {headline && <p className="text-sm text-accent mt-2 font-medium">{L.t(headline)}</p>}
+              {subline && <p className="text-sm text-muted mt-1">{L.t(subline)}</p>}
             </div>
           </div>
 

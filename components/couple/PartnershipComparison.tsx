@@ -50,12 +50,12 @@ export default function PartnershipComparison({
 
         <div className="my-4 flex flex-col items-center justify-center">
           <div className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground max-w-lg leading-tight">
-            {result.level}
+            {L.t(result.level)}
           </div>
         </div>
 
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
-          {result.summary}
+          {L.t(result.summary)}
         </p>
       </motion.div>
 
@@ -90,7 +90,7 @@ export default function PartnershipComparison({
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-sm text-accent font-semibold label-caps">
-                    {c.system}
+                    {L.t(c.system)}
                   </span>
                   {c.score && (
                     <span className="font-mono text-xs font-bold text-foreground bg-ink/5 px-2 py-0.5 rounded">
@@ -98,8 +98,8 @@ export default function PartnershipComparison({
                     </span>
                   )}
                 </div>
-                <h4 className="font-heading text-sm sm:text-base font-bold text-foreground">{c.title}</h4>
-                <p className="text-xs text-muted mt-2 leading-relaxed">{c.description}</p>
+                <h4 className="font-heading text-sm sm:text-base font-bold text-foreground">{L.t(c.title)}</h4>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{L.t(c.description)}</p>
               </div>
             </div>
           ))}
@@ -130,14 +130,14 @@ export default function PartnershipComparison({
             <div key={ch.id} className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2">
               <div className="flex items-center justify-between gap-2">{L(<>
                 <span className="text-sm text-warning font-semibold label-caps">
-                  Área: {ch.area}
+                  Área: {L.t(ch.area)}
                 </span>
-              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {ch.area}</span></>)}</div>
-              <p className="text-xs sm:text-sm text-foreground leading-relaxed">{ch.description}</p>
+              </>, <><span className="text-sm text-warning font-semibold label-caps">Area: {L.t(ch.area)}</span></>)}</div>
+              <p className="text-xs sm:text-sm text-foreground leading-relaxed">{L.t(ch.description)}</p>
               <div className="mt-3 pt-2 border-t border-ink/5 text-xs text-muted flex items-start gap-2">{L(<>
                 <span className="text-accent font-bold">💡 Consejo:</span>
-                <span>{ch.recommendation}</span>
-              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{ch.recommendation}</span></>)}</div>
+                <span>{L.t(ch.recommendation)}</span>
+              </>, <><span className="text-accent font-bold">💡 Tip:</span><span>{L.t(ch.recommendation)}</span></>)}</div>
             </div>
           ))}
         </div>
@@ -155,7 +155,7 @@ export default function PartnershipComparison({
           <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">{L("Síntesis para Trabajar Juntos", "Synthesis for Working Together")}</h3>
         </div>
         <blockquote className="text-sm sm:text-base text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-4 py-1">
-          &ldquo;{result.workingAdvice}&rdquo;
+          &ldquo;{L.t(result.workingAdvice)}&rdquo;
         </blockquote>
       </motion.section>
     </div>

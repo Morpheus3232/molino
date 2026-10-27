@@ -61,16 +61,16 @@ export default function TeamComparison({ profiles, labels }: TeamComparisonProps
                   className="w-full text-left flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 group"
                 >{L(<>
                   <span className="font-display text-xl text-foreground sm:w-64 shrink-0">
-                    {labels[i]} <span className="italic text-muted">y</span> {labels[j]}
+                    {L.t(labels[i])} <span className="italic text-muted">y</span> {L.t(labels[j])}
                   </span>
                   <span className="flex-1">
-                    <span className="block text-sm text-foreground font-semibold label-caps">{result.level}</span>
-                    <span className="block text-sm text-muted leading-relaxed mt-1">{result.summary}</span>
+                    <span className="block text-sm text-foreground font-semibold label-caps">{L.t(result.level)}</span>
+                    <span className="block text-sm text-muted leading-relaxed mt-1">{L.t(result.summary)}</span>
                   </span>
                   <span className="text-sm text-muted group-hover:text-foreground transition-colors">
-                    {isOpen ? "Cerrar" : "Ver detalle"}
+                    {L.t(isOpen ? "Cerrar" : "Ver detalle")}
                   </span>
-                </>, <><span className="font-display text-xl text-foreground sm:w-64 shrink-0">{labels[i]} <span className="italic text-muted">and</span> {labels[j]}</span><span className="flex-1"><span className="block text-sm text-foreground font-semibold label-caps">{result.level}</span><span className="block text-sm text-muted leading-relaxed mt-1">{result.summary}</span></span><span className="text-sm text-muted group-hover:text-foreground transition-colors">{isOpen ? "Close" : "See detail"}</span></>)}</button>
+                </>, <><span className="font-display text-xl text-foreground sm:w-64 shrink-0">{L.t(labels[i])} <span className="italic text-muted">and</span> {L.t(labels[j])}</span><span className="flex-1"><span className="block text-sm text-foreground font-semibold label-caps">{L.t(result.level)}</span><span className="block text-sm text-muted leading-relaxed mt-1">{L.t(result.summary)}</span></span><span className="text-sm text-muted group-hover:text-foreground transition-colors">{L.t(isOpen ? "Close" : "See detail")}</span></>)}</button>
                 {isOpen && (
                   <div className="mt-6">
                     <PartnershipComparison profileA={profiles[i]} profileB={profiles[j]} labelA={labels[i]} labelB={labels[j]} />

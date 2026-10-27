@@ -209,7 +209,7 @@ export default function PersonalSynergySigil({
           fontFamily: "'JetBrains Mono', 'Space Grotesk', monospace",
         }}
         role="img"
-        aria-label={L(`Sello de sinergia entre ${nameA || "Persona A"} y ${nameB || "Persona B"}`, `Synergy seal between ${nameA || "Person A"} and ${nameB || "Person B"}`)}
+        aria-label={L(`Sello de sinergia entre ${nameA || "Persona A"} y ${nameB || "Persona B"}`, `Synergy seal between ${L.t(nameA || "Person A")} and ${L.t(nameB || "Person B")}`)}
       >
         <defs>
           <filter id="sigilGlow" x="-20%" y="-20%" width="140%" height="140%">

@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import type { ReactNode } from "react";
 
 /**
@@ -46,6 +47,7 @@ export default function RelationWheel({
   ariaLabel: string;
   className?: string;
 }) {
+  const L = useL();
   const n = items.length;
   const step = 360 / n;
   const trine = [active, (active + 4) % n, (active + 8) % n];
@@ -56,7 +58,7 @@ export default function RelationWheel({
   const pO = polar(R_IN - 4, mid(opposite));
 
   return (
-    <svg viewBox="0 0 600 600" role="img" aria-label={ariaLabel} className={`w-full h-auto text-foreground ${className}`}>
+    <svg viewBox="0 0 600 600" role="img" aria-label={L.t(ariaLabel)} className={`w-full h-auto text-foreground ${className}`}>
       <g className="map-wheel-ring">
         <circle cx={C} cy={C} r={R_OUT} fill="none" stroke="currentColor" strokeOpacity={0.35} />
         {items.map((it, i) => {
@@ -74,7 +76,7 @@ export default function RelationWheel({
                 transform={`translate(${iconPos.x - 20},${iconPos.y - 20})`}
                 className={mine ? "text-paper" : friend ? "text-vermilion" : "text-muted"}
               >
-                {it.icon}
+                {L.t(it.icon)}
               </g>
               <text
                 x={labelPos.x}
@@ -84,7 +86,7 @@ export default function RelationWheel({
                 className={mine ? "fill-paper" : friend ? "fill-vermilion" : "fill-current"}
                 style={{ fontSize: it.label.length > 9 ? 11.5 : 13.5, opacity: mine || friend ? 1 : 0.7 }}
               >
-                {it.label}
+                {L.t(it.label)}
               </text>
             </g>
           );
@@ -94,7 +96,7 @@ export default function RelationWheel({
 
       <line x1={pA.x} y1={pA.y} x2={pO.x} y2={pO.y} stroke="currentColor" strokeWidth={1.5} strokeDasharray="4 6" strokeOpacity={0.7} />
       <polygon
-        points={tri.map((p) => `${p.x},${p.y}`).join(" ")}
+        points={tri.map((p) => `${p.x},${p.y}`).map(L.t).join(" ")}
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -103,7 +105,7 @@ export default function RelationWheel({
       />
 
       <circle cx={C} cy={C} r={R_CORE} className="fill-paper" stroke="currentColor" strokeOpacity={0.35} />
-      <g transform={`translate(${C - 32},${C - 32})`}>{center}</g>
+      <g transform={`translate(${C - 32},${C - 32})`}>{L.t(center)}</g>
     </svg>
   );
 }

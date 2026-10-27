@@ -54,9 +54,9 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flex: 1 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 72 }}>{entity.emoji}</span>
+          <span style={{ fontSize: 72 }}>{L.t(entity.emoji)}</span>
           <span style={{ color: "#0A0A0A", fontSize: 36, fontWeight: 700, fontFamily: "sans-serif" }}>
-            {entity.name}
+            {L.t(entity.name)}
           </span>
         </div>
 

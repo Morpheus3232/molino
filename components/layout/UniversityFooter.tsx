@@ -92,8 +92,8 @@ export default async function UniversityFooter() {
           </div>
 
           {FOOTER_COLUMNS(L).map((col) => (
-            <nav key={col.title} aria-label={col.title} className="lg:col-span-2">
-              <h2 className="text-sm text-paper/60 mb-2 label-caps">{col.title}</h2>
+            <nav key={col.title} aria-label={L.t(col.title)} className="lg:col-span-2">
+              <h2 className="text-sm text-paper/60 mb-2 label-caps">{L.t(col.title)}</h2>
               <ul className="list-none">
                 {col.links.map((link) => (
                   <li key={link.href}>
@@ -101,7 +101,7 @@ export default async function UniversityFooter() {
                       href={link.href}
                       className="flex items-center min-h-[40px] lg:min-h-[34px] text-sm text-paper/85 hover:text-accent-light transition-colors"
                     >
-                      {link.label}
+                      {L.t(link.label)}
                     </Link>
                   </li>
                 ))}
@@ -119,7 +119,7 @@ export default async function UniversityFooter() {
               className="inline-flex items-center gap-1.5 min-h-[40px] text-paper/70 hover:text-accent-light transition-colors"
             >
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-              {CONTACT_EMAIL}
+              {L.t(CONTACT_EMAIL)}
             </a>
             <a
               href="https://github.com/Morpheus3232/molino"

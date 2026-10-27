@@ -105,11 +105,11 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
           <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">{L(<>
             <Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</Link>
             <span>›</span>
-            <span className="text-foreground font-medium">{meta.plural}</span>
-          </>, <><Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Affinity</Link><span>›</span><span className="text-foreground font-medium">{meta.plural}</span></>)}</nav>
+            <span className="text-foreground font-medium">{L.t(meta.plural)}</span>
+          </>, <><Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Affinity</Link><span>›</span><span className="text-foreground font-medium">{L.t(meta.plural)}</span></>)}</nav>
           <h1 className="page-title text-foreground">{L(<>
-            Cómo resuena cada {meta.label.toLowerCase()}
-          </>, <>How each {meta.label.toLowerCase()} resonates</>)}</h1>
+            Cómo resuena cada {L.t(meta.label.toLowerCase())}
+          </>, <>How each {L.t(meta.label.toLowerCase())} resonates</>)}</h1>
           <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">{L("Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.", "Each entity has a sign based on its date of origin. It's compared sign to sign with yours: your own sign, your two friends, your enemy or the rest of the cycle. A symbolic reading, not a prediction.")}</p>
         </div>
 
@@ -151,7 +151,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                         type="button"
                         onClick={() => setSelectedAnimal(animal)}
                         aria-pressed={isActive}
-                        aria-label={`${display.name}${isMine ? L(", tu signo", ", your sign") : ""}${rel === "amigo" ? L(`, amigo de ${activeAnimal}`, `, friend of ${activeAnimal}`) : rel === "enemigo" ? L(`, enemigo de ${activeAnimal}`, `, enemy of ${activeAnimal}`) : ""}`}
+                        aria-label={`${display.name}${isMine ? L(", tu signo", ", your sign") : ""}${rel === "amigo" ? L(`, amigo de ${activeAnimal}`, `, friend of ${L.t(activeAnimal)}`) : rel === "enemigo" ? L(`, enemigo de ${activeAnimal}`, `, enemy of ${L.t(activeAnimal)}`) : ""}`}
                         className={`group relative flex flex-col items-center justify-center gap-1.5 px-1 pt-4 pb-3 min-h-[96px] border-r border-b border-ink/15 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
                           isActive
                             ? "bg-ink text-paper"
@@ -175,33 +175,33 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                           size={38}
                           className={isActive ? "text-paper" : "text-foreground/80 group-hover:text-foreground"}
                         />
-                        <span className="text-sm leading-tight">{display.name}</span>
+                        <span className="text-sm leading-tight">{L.t(display.name)}</span>
                         <span
                           className={`h-3 text-[10px] leading-3 label-caps ${isActive ? "text-paper/70" : "text-vermilion"}`}
                           aria-hidden="true"
                         >
-                          {isMine ? "tuyo" : ""}
+                          {L.t(isMine ? "tuyo" : "")}
                         </span>
                       </button>
                     );
                   })}
                 </div>
                 <p className="text-sm text-muted mt-4 leading-relaxed" aria-live="polite">
-                  {(() => {
+                  {L.t((() => {
                     const kinds = animalsByKind(activeAnimal);
                     const amigos = kinds.amigo;
                     const enemigo = kinds.enemigo[0];
                     return (
                       <>
                         <span className="text-foreground font-medium">
-                          {profile?.chineseZodiac === activeAnimal ? L("Tu signo, ", "Your sign,") : ""}
-                          {activeAnimal}
+                          {L.t(profile?.chineseZodiac === activeAnimal ? L("Tu signo, ", "Your sign, ") : "")}
+                          {L.t(activeAnimal)}
                         </span>
-                        {amigos.length > 0 && <>{L(<> · amigos: {amigos.join(" y ")}</>, <>· friends: {amigos.join(" and ")}</>)}</>}
-                        {enemigo && <>{L(<> · enemigo: {enemigo}</>, <>· enemy: {enemigo}</>)}</>}.
+                        {amigos.length > 0 && <>{L(<> · amigos: {L.t(amigos.map(L.t).join(" y "))}</>, <>· friends: {L.t(amigos.map(L.t).join(" and "))}</>)}</>}
+                        {enemigo && <>{L(<> · enemigo: {L.t(enemigo)}</>, <>· enemy: {L.t(enemigo)}</>)}</>}.
                       </>
                     );
-                  })()}
+                  })())}
                 </p>
               </div>
 
@@ -210,22 +210,22 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                 <p className="label-micro mb-4">{L("Buscar", "Search")}</p>
                 <input
                   type="search"
-                  placeholder={L(`Buscar ${meta.plural.toLowerCase()}...`, `Search ${meta.plural.toLowerCase()}...`)}
+                  placeholder={L(`Buscar ${meta.plural.toLowerCase()}...`, `Search ${L.t(meta.plural.toLowerCase())}...`)}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent rounded-lg"
-                  aria-label={L(`Buscar ${meta.plural.toLowerCase()}`, `Search ${meta.plural.toLowerCase()}`)}
+                  aria-label={L(`Buscar ${meta.plural.toLowerCase()}`, `Search ${L.t(meta.plural.toLowerCase())}`)}
                 />
-                {searchQuery && (() => {
+                {L.t(searchQuery && (() => {
                   const shown = groups.mismo.length + groups.amigo.length + groups.enemigo.length;
                   return (
                     <p className="text-sm text-muted mt-2">
-                      {shown > 0
-                        ? L(`${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`, `${shown} result${shown !== 1 ? "s" : ""} for "${searchQuery}" among your sign, your friends and your enemy`)
-                        : L(`Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`, `No results for "${searchQuery}" among your sign, your friends and your enemy.`)}
+                      {L.t(shown > 0
+                        ? L(`${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`, `${L.t(shown)} result${L.t(shown !== 1 ? "s" : "")} for "${L.t(searchQuery)}" among your sign, your friends and your enemy`)
+                        : L(`Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`, `No results for "${L.t(searchQuery)}" among your sign, your friends and your enemy.`))}
                     </p>
                   );
-                })()}
+                })())}
               </div>
 
               {/* RESULTADOS AGRUPADOS POR CASILLA: tu signo, tus dos amigos y tu
@@ -248,11 +248,11 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                       <div key={group.key} className="py-8 border-b border-ink/10 last:border-b-0">
                         <div className="mb-4">
                           <h2 className="font-heading text-lg font-semibold text-foreground">
-                            {group.label}
-                            {group.chinese && <span className="text-sm font-normal text-muted"> · {group.chinese}</span>}
+                            {L.t(group.label)}
+                            {group.chinese && <span className="text-sm font-normal text-muted"> · {L.t(group.chinese)}</span>}
                             <span className="text-sm font-normal text-muted"> · {all.length}</span>
                           </h2>
-                          {group.note && <p className="text-sm text-muted mt-1">{group.note}</p>}
+                          {group.note && <p className="text-sm text-muted mt-1">{L.t(group.note)}</p>}
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
@@ -286,6 +286,7 @@ function ResultRow({
   result: LightAffinityResult;
   href: string;
 }) {
+  const L = useL();
   // Tonos de marca (accent/muted) — nunca semáforo verde/rojo.
   const { color: tierColor, label: tierLabel } = TIER_META[result.tier];
 
@@ -309,14 +310,14 @@ function ResultRow({
         <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
           <div className="flex-1 min-w-0">
             <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors sm:truncate">
-              {result.name}
+              {L.t(result.name)}
             </p>
             <p className="text-xs text-muted mt-0.5">
-              {formatAnimalSimple(result.animal)}
+              {L.t(formatAnimalSimple(result.animal))}
             </p>
           </div>
           <div className="text-left sm:text-right shrink-0">
-            <p className="text-sm font-display font-semibold label-caps" style={{ color: tierColor }}>{tierLabel}</p>
+            <p className="text-sm font-display font-semibold label-caps" style={{ color: tierColor }}>{L.t(tierLabel)}</p>
           </div>
         </div>
       </div>

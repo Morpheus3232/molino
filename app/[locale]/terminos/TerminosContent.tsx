@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 import LegalText from "@/components/legal/LegalText";
 
 const CONTACTO = "versionlimitada@proton.me";
@@ -73,6 +74,7 @@ El uso continuado después de la publicación implica aceptación. Si no estás 
 ];
 
 export default function TerminosContent() {
+  const L = useL();
   return (
     <main id="main-content" className="min-h-screen bg-background">
       <div className="container-content py-16 sm:py-24 max-w-3xl mx-auto">
@@ -97,7 +99,7 @@ export default function TerminosContent() {
                 className={`border border-ink/10 p-6 sm:p-8 animate-fade-in-up ${i < 6 ? `stagger-${i + 3}` : ""}`}
               >
                 <h2 className="font-heading text-xl font-semibold text-foreground mb-4">
-                  {section.title}
+                  {L.t(section.title)}
                 </h2>
                 <div className="text-foreground/70 leading-relaxed text-sm">
                   <LegalText body={section.body} />

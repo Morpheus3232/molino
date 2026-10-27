@@ -25,13 +25,14 @@ const AREAS = (L: Pick2): { key: "work" | "relationships" | "creativity" | "deci
 ]);
 
 function Chapter({ numeral, title, id }: { numeral: string; title: string; id: string }) {
+  const L = useL();
   return (
     <header className="text-center mb-6">
       <p className="text-sm text-muted label-caps" aria-hidden="true">
-        {numeral}
+        {L.t(numeral)}
       </p>
       <h3 id={id} className="mt-1 font-display italic font-normal text-2xl sm:text-3xl text-foreground">
-        {title}
+        {L.t(title)}
       </h3>
     </header>
   );
@@ -39,11 +40,12 @@ function Chapter({ numeral, title, id }: { numeral: string; title: string; id: s
 
 /** Renglón de índice: "Trabajo ········ neutral", como la tabla de contenidos de un libro. */
 function Leader({ left, right }: { left: React.ReactNode; right: React.ReactNode }) {
+  const L = useL();
   return (
     <li className="flex items-baseline gap-2">
-      <span className="shrink-0">{left}</span>
+      <span className="shrink-0">{L.t(left)}</span>
       <span className="flex-1 min-w-4 border-b border-dotted border-ink/40 translate-y-[-0.3em]" aria-hidden="true" />
-      <span className="shrink-0 italic text-right">{right}</span>
+      <span className="shrink-0 italic text-right">{L.t(right)}</span>
     </li>
   );
 }
@@ -78,8 +80,8 @@ export default function HomeBook() {
     <article className="mx-auto max-w-[38rem] text-lg leading-[1.75] text-foreground">
       {/* Epígrafe: el consejo del momento, como abren los capítulos. */}
       <blockquote className="mx-auto max-w-[28rem] text-center italic text-muted">
-        <p>&laquo;{daily.dailyAdvice}&raquo;</p>
-        <footer className="mt-2 text-sm not-italic label-caps">{L(<>— consejo del día · luna {daily.moonPhase.phase.toLowerCase()}</>, <>— advice of the day · {daily.moonPhase.phase.toLowerCase()} moon</>)}</footer>
+        <p>&laquo;{L.t(daily.dailyAdvice)}&raquo;</p>
+        <footer className="mt-2 text-sm not-italic label-caps">{L(<>— consejo del día · luna {L.t(daily.moonPhase.phase.toLowerCase())}</>, <>— advice of the day · {L.t(daily.moonPhase.phase.toLowerCase())} moon</>)}</footer>
       </blockquote>
 
       <Asterism />
@@ -88,15 +90,15 @@ export default function HomeBook() {
         <Chapter numeral="I" title={L("El número del día", "The number of the day")} id="cap-numero" />
         <HomePlate imageKey={`numerologia/${dayContent.number}`} className="mb-8" />
         <p className="sm:text-justify hyphens-auto first-letter:float-left first-letter:font-display first-letter:text-[3.6em] first-letter:leading-[0.78] first-letter:mr-2 first-letter:mt-1">
-          {L("Hoy es día ", "Today is day")} {dayContent.number}{L(", el de ", ", the day of")} <em>{dayContent.title.toLowerCase().replace(/^\w|^./, (c) => c.toUpperCase())}</em>.{" "}
-          {dayContent.description}
+          {L("Hoy es día ", "Today is day ")} {dayContent.number}{L(", el de ", ", the day of ")} <em>{L.t(dayContent.title.toLowerCase().replace(/^\w|^./, (c) => c.toUpperCase()))}</em>.{" "}
+          {L.t(dayContent.description)}
         </p>
         <p className="mt-4 text-sm text-muted">{L(<>
-          <span className="italic">La cuenta:</span> <span className="font-mono">{breakdown}</span>.{" "}
+          <span className="italic">La cuenta:</span> <span className="font-mono">{L.t(breakdown)}</span>.{" "}
           <Link href="/calendario" className="underline underline-offset-4 hover:no-underline">
             Ver el calendario del mes
           </Link>
-        </>, <><span className="italic">The math:</span> <span className="font-mono">{breakdown}</span>.{" "}<Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the month's calendar</Link></>)}</p>
+        </>, <><span className="italic">The math:</span> <span className="font-mono">{L.t(breakdown)}</span>.{" "}<Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the month's calendar</Link></>)}</p>
       </section>
 
       <Asterism />
@@ -105,16 +107,16 @@ export default function HomeBook() {
         <Chapter numeral="II" title={L("Lo que trae", "What it brings")} id="cap-trae" />
         {moonKey && <HomePlate imageKey={moonKey} className="mb-8" />}
         <p className="sm:text-justify hyphens-auto">
-          <em>{daily.theme}.</em> {daily.description}
+          <em>{L.t(daily.theme)}.</em> {L.t(daily.description)}
         </p>
         <p className="mt-4 sm:text-justify hyphens-auto">{L(<>
-          <em>Conviene</em> {daily.focusAction.charAt(0).toLowerCase() + daily.focusAction.slice(1)}{" "}
-          <em>Mejor evitar</em> {daily.avoidAction.charAt(0).toLowerCase() + daily.avoidAction.slice(1)}
-        </>, <><em>Good for</em> {daily.focusAction.charAt(0).toLowerCase() + daily.focusAction.slice(1)}{" "}<em>Best avoided</em> {daily.avoidAction.charAt(0).toLowerCase() + daily.avoidAction.slice(1)}</>)}</p>
+          <em>Conviene</em> {L.t(daily.focusAction.charAt(0).toLowerCase() + daily.focusAction.slice(1))}{" "}
+          <em>Mejor evitar</em> {L.t(daily.avoidAction.charAt(0).toLowerCase() + daily.avoidAction.slice(1))}
+        </>, <><em>Good for</em> {L.t(daily.focusAction.charAt(0).toLowerCase() + daily.focusAction.slice(1))}{" "}<em>Best avoided</em> {L.t(daily.avoidAction.charAt(0).toLowerCase() + daily.avoidAction.slice(1))}</>)}</p>
         {daily.isPersonalized && (
           <p className="mt-4 text-base italic text-muted">{L(<>
-            En tu mapa: año personal {daily.personalYear}, mes {daily.personalMonth}, día {daily.personalDay}.
-          </>, <>In your map: personal year {daily.personalYear}, month {daily.personalMonth}, day {daily.personalDay}.</>)}</p>
+            En tu mapa: año personal {daily.personalYear}, mes {L.t(daily.personalMonth)}, día {L.t(daily.personalDay)}.
+          </>, <>In your map: personal year {daily.personalYear}, month {L.t(daily.personalMonth)}, day {L.t(daily.personalDay)}.</>)}</p>
         )}
         <ul className="mt-6 space-y-1 text-base" aria-label={L("Cómo viene cada área", "How each area looks")}>
           {AREAS(L).map(({ key, name }) => (
@@ -134,10 +136,10 @@ export default function HomeBook() {
                   key={d.date}
                   left={
                     <>
-                      {d.dayName} {d.dayNumber}
+                      {L.t(d.dayName)} {d.dayNumber}
                     </>
                   }
-                  right={L(`día ${d.personalDay}, ${d.theme.toLowerCase()}`, `day ${d.personalDay}, ${d.theme.toLowerCase()}`)}
+                  right={L(`día ${d.personalDay}, ${d.theme.toLowerCase()}`, `day ${L.t(d.personalDay)}, ${L.t(d.theme.toLowerCase())}`)}
                 />
               ))}
             </ul>

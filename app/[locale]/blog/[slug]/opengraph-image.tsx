@@ -80,7 +80,7 @@ export default async function OgImage({ params }: Props) {
           }}
         >
           <div style={{ fontSize: 24, letterSpacing: "0.3em", color: "#F4F4F4", fontWeight: 700, marginBottom: 22 }}>
-            {post?.category?.toUpperCase() ?? "MOLINO"}
+            {L.t(post?.category?.toUpperCase() ?? "MOLINO")}
           </div>
           <div
             style={{
@@ -92,7 +92,7 @@ export default async function OgImage({ params }: Props) {
               maxWidth: 1000,
             }}
           >
-            {post?.title ?? L("Artículo de Molino", "A Molino article")}
+            {L.t(post?.title ?? L("Artículo de Molino", "A Molino article"))}
           </div>
           <div style={{ fontSize: 22, color: "#CFCFCF", letterSpacing: "0.15em", marginTop: 32 }}>{L("MOLINO — AUTOCONOCIMIENTO", "MOLINO — SELF-KNOWLEDGE")}</div>
         </div>

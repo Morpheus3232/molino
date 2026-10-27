@@ -1,4 +1,4 @@
-import { useL } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
 import { Link } from "@/lib/i18n/navigation";
 import Image from "next/image";
 import CalendarioClient from "@/components/calendario/CalendarioClient";
@@ -15,8 +15,9 @@ export const generateMetadata = metadataFor({
   ogDescription: ["Cada día del mes reducido a su número y su propósito.", "Every day of the month reduced to its number and its purpose."],
 });
 
-export default function CalendarioPage() {
-  const L = useL();
+export default async function CalendarioPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   const cover = getSectionImage("paginas/calendario");
   return (
     <main id="main-content" className="bg-background">
@@ -41,7 +42,7 @@ export default function CalendarioPage() {
           cover ? (
             <figure>
               <div className="relative aspect-[4/3] overflow-hidden border border-ink/15 bg-paper-alt">
-                <Image src={cover.src} alt={cover.alt} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
+                <Image src={cover.src} alt={L.t(cover.alt)} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
               </div>
               <SectionCredit img={cover} />
             </figure>

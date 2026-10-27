@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slugA: st
 }
 
 export default async function ComparePage({ params }: { params: Promise<{ slugA: string; slugB: string }> }) {
+  await initLocale(params);
   const { slugA, slugB } = await params;
 
   if (slugA === slugB) notFound();

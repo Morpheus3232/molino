@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 
@@ -201,6 +202,7 @@ export default function EntityIcon({
   className = "",
   title,
 }: EntityIconProps) {
+  const L = useL();
   const label = title || kind;
 
   const renderPath = () => {
@@ -366,9 +368,9 @@ export default function EntityIcon({
       height={size}
       className={`inline-block shrink-0 align-middle ${className}`}
       role="img"
-      aria-label={label}
+      aria-label={L.t(label)}
     >
-      {renderPath()}
+      {L.t(renderPath())}
     </svg>
   );
 }

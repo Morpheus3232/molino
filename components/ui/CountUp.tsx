@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
@@ -24,6 +25,7 @@ export default function CountUp({
   suffix?: string;
   format?: (n: number) => string;
 }) {
+  const L = useL();
   const ref = useRef<HTMLSpanElement>(null);
   const reducedMotion = useReducedMotion();
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -64,7 +66,7 @@ export default function CountUp({
       transition={{ duration: reducedMotion ? 0 : 0.4, ease: [0.34, 1.56, 0.64, 1] }}
       className={className}
     >
-      {prefix}{format(count)}{suffix}
+      {L.t(prefix)}{format(count)}{L.t(suffix)}
     </motion.span>
   );
 }

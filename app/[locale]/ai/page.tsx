@@ -79,7 +79,7 @@ export default function AiPage() {
             <ul className="border-t border-ink/15">
               {EJEMPLOS(L).map((q) => (
                 <li key={q} className="py-4 border-b border-ink/15 font-display text-xl sm:text-2xl leading-snug text-foreground">
-                  {q}
+                  {L.t(q)}
                 </li>
               ))}
             </ul>

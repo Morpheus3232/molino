@@ -200,8 +200,8 @@ export default function AffinityAnalyticsPage() {
                   Affinity Experiment
                 </h1>
                 <p className="text-sm text-muted">{L(<>
-                  P4-A: {totalEvents} eventos de Affinity en total.
-                </>, <>P4-A: {totalEvents} Affinity events in total.</>)}</p>
+                  P4-A: {L.t(totalEvents)} eventos de Affinity en total.
+                </>, <>P4-A: {L.t(totalEvents)} Affinity events in total.</>)}</p>
               </div>
 
               {/* Event counts */}
@@ -223,16 +223,16 @@ export default function AffinityAnalyticsPage() {
                       transition={{ duration: 0.3, delay: i * 0.04 }}
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
-                      <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
+                      <div className="font-heading text-2xl font-bold text-foreground">{L.t(value)}</div>
                       <div className="text-sm text-muted mt-1 label-caps">
-                        {EVENT_LABELS(L)[
+                        {L.t(EVENT_LABELS(L)[
                           key === "profile_cta" ? "affinity_profile_cta_clicked"
                           : key === "recommendation_clicked" ? "affinity_recommendation_clicked"
                           : key === "date_entered" ? "affinity_date_entered"
                           : key === "result_viewed" ? "affinity_result_viewed"
                           : key === "shared" ? "affinity_shared"
                           : "affinity_save_clicked"
-                        ]}
+                        ])}
                       </div>
                     </motion.div>
                   ))}
@@ -269,7 +269,7 @@ export default function AffinityAnalyticsPage() {
                       transition={{ duration: 0.3, delay: i * 0.04 }}
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
-                      <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
+                      <div className="font-heading text-2xl font-bold text-foreground">{L.t(value)}</div>
                       <div className="text-sm text-muted mt-1 label-caps">{L("usuarios", "users")}</div>
                     </motion.div>
                   ))}
@@ -296,13 +296,13 @@ export default function AffinityAnalyticsPage() {
                       <tbody>
                         {daily.map(({ date, counts: c }) => (
                           <tr key={date} className="border-b border-border/50">
-                            <td className="py-2 text-foreground font-medium">{date}</td>
-                            <td className="py-2 text-right text-muted">{c.date_entered}</td>
-                            <td className="py-2 text-right text-muted">{c.result_viewed}</td>
-                            <td className="py-2 text-right text-accent font-medium">{c.save_clicked}</td>
-                            <td className="py-2 text-right text-muted">{c.shared}</td>
-                            <td className="py-2 text-right text-muted">{c.recommendation_clicked}</td>
-                            <td className="py-2 text-right text-muted">{c.profile_cta}</td>
+                            <td className="py-2 text-foreground font-medium">{L.t(date)}</td>
+                            <td className="py-2 text-right text-muted">{L.t(c.date_entered)}</td>
+                            <td className="py-2 text-right text-muted">{L.t(c.result_viewed)}</td>
+                            <td className="py-2 text-right text-accent font-medium">{L.t(c.save_clicked)}</td>
+                            <td className="py-2 text-right text-muted">{L.t(c.shared)}</td>
+                            <td className="py-2 text-right text-muted">{L.t(c.recommendation_clicked)}</td>
+                            <td className="py-2 text-right text-muted">{L.t(c.profile_cta)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -329,11 +329,12 @@ export default function AffinityAnalyticsPage() {
 }
 
 function RatioCard({ label, value, desc }: { label: string; value: string; desc: string }) {
+  const L = useL();
   return (
     <div className="p-4 rounded-md border border-border bg-card shadow-sm text-center">
-      <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-      <div className="text-sm text-muted mt-1 label-caps">{label}</div>
-      <div className="text-xs text-muted mt-0.5">{desc}</div>
+      <div className="font-heading text-2xl font-bold text-foreground">{L.t(value)}</div>
+      <div className="text-sm text-muted mt-1 label-caps">{L.t(label)}</div>
+      <div className="text-xs text-muted mt-0.5">{L.t(desc)}</div>
     </div>
   );
 }

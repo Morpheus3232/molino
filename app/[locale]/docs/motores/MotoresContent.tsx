@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
@@ -96,6 +97,7 @@ function chineseYearInfo(year: number) {
 ];
 
 export default function MotoresContent() {
+  const L = useL();
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -132,9 +134,9 @@ export default function MotoresContent() {
                 </div>
                 <div>
                   <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground">
-                    {engine.title}
+                    {L.t(engine.title)}
                   </h2>
-                  <p className="text-muted mt-2 max-w-xl leading-relaxed">{engine.description}</p>
+                  <p className="text-muted mt-2 max-w-xl leading-relaxed">{L.t(engine.description)}</p>
                 </div>
               </div>
 
@@ -148,9 +150,9 @@ export default function MotoresContent() {
                 </div>
                 {engine.formulas.map((f) => (
                   <div key={f.name} className="py-4 border-b border-border sm:grid sm:grid-cols-[10rem_1fr_14rem] sm:gap-6">
-                    <p className="text-sm font-semibold text-foreground">{f.name}</p>
-                    <p className="text-sm text-muted mt-1 sm:mt-0">{f.formula}</p>
-                    <p className="font-mono text-[0.8rem] text-foreground mt-2 sm:mt-0 break-words">{f.example}</p>
+                    <p className="text-sm font-semibold text-foreground">{L.t(f.name)}</p>
+                    <p className="text-sm text-muted mt-1 sm:mt-0">{L.t(f.formula)}</p>
+                    <p className="font-mono text-[0.8rem] text-foreground mt-2 sm:mt-0 break-words">{L.t(f.example)}</p>
                   </div>
                 ))}
               </div>
@@ -161,7 +163,7 @@ export default function MotoresContent() {
                   <Code className="w-4 h-4 text-foreground" aria-hidden="true" />
                   <span className="text-sm text-foreground label-caps">TypeScript — Implementación de referencia</span>
                 </div>
-                <pre className="p-4 overflow-x-auto text-sm"><code className="text-foreground">{engine.codeExample}</code></pre>
+                <pre className="p-4 overflow-x-auto text-sm"><code className="text-foreground">{L.t(engine.codeExample)}</code></pre>
               </div>
 
               {/* Links */}

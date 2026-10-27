@@ -66,7 +66,7 @@ export default function ChatInputBox({
           value={input}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={isExhausted ? L("Te quedaste sin preguntas. Recargá tu saldo para continuar.", "You're out of questions. Top up your balance to continue.") : placeholder}
+          placeholder={L.t(isExhausted ? L("Te quedaste sin preguntas. Recargá tu saldo para continuar.", "You're out of questions. Top up your balance to continue.") : placeholder)}
           disabled={isLoading || isExhausted}
           className="w-full resize-none bg-transparent px-3 py-2 text-lg sm:text-xl text-foreground placeholder:text-muted/70 focus:outline-none disabled:opacity-50 min-h-[48px] max-h-[180px] font-display leading-relaxed"
           aria-label={L("Escribí tu pregunta para Molino", "Write your question for Molino")}

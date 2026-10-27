@@ -22,13 +22,13 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
         {forecast.map((f, idx) => (
           <div key={f.date} className="bg-background p-6 sm:p-8 flex flex-col">
             <div className="flex items-baseline justify-between text-base text-muted">
-              <span className="capitalize text-foreground">{idx === 0 ? L("Mañana", "Tomorrow") : f.dayName}</span>
-              <span aria-hidden="true">{f.moonEmoji}</span>
+              <span className="capitalize text-foreground">{L.t(idx === 0 ? L("Mañana", "Tomorrow") : f.dayName)}</span>
+              <span aria-hidden="true">{L.t(f.moonEmoji)}</span>
             </div>
             <p className="mt-4 font-display text-6xl leading-none text-foreground tabular-nums">{f.dayNumber}</p>
-            <p className="mt-4 font-display text-2xl text-foreground">{f.theme}</p>
-            <p className="mt-1 text-base text-muted">{L(<>Día personal {f.personalDay}</>, <>Personal day {f.personalDay}</>)}</p>
-            <p className="mt-6 pt-4 border-t border-ink/15 text-sm text-muted">{L(<>Energía {getScoreLabel(f.score).toLowerCase()}</>, <>{getScoreLabel(f.score).toLowerCase()} energy</>)}</p>
+            <p className="mt-4 font-display text-2xl text-foreground">{L.t(f.theme)}</p>
+            <p className="mt-1 text-base text-muted">{L(<>Día personal {L.t(f.personalDay)}</>, <>Personal day {L.t(f.personalDay)}</>)}</p>
+            <p className="mt-6 pt-4 border-t border-ink/15 text-sm text-muted">{L(<>Energía {L.t(getScoreLabel(f.score).toLowerCase())}</>, <>{L.t(getScoreLabel(f.score).toLowerCase())} energy</>)}</p>
           </div>
         ))}
       </div>

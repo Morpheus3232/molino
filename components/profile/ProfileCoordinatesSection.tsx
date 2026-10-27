@@ -85,12 +85,12 @@ function Pillar({
     >
       <header className="lg:col-span-4 flex lg:flex-col items-center lg:items-start gap-5 lg:sticky lg:top-28 lg:self-start">
         <span className="shrink-0 inline-flex items-center justify-center w-20 h-20 lg:w-28 lg:h-28 border border-ink/15 bg-paper-alt text-foreground">
-          {glyph}
+          {L.t(glyph)}
         </span>
         <div>
           <p className="text-sm text-muted label-caps">{L(<>Pieza {index} de 4</>, <>Piece {index} of 4</>)}</p>
-          <p className="mt-1 font-display text-2xl text-foreground leading-tight">{system}</p>
-          <p className="mt-1 text-base text-muted leading-snug">{measures}</p>
+          <p className="mt-1 font-display text-2xl text-foreground leading-tight">{L.t(system)}</p>
+          <p className="mt-1 text-base text-muted leading-snug">{L.t(measures)}</p>
         </div>
       </header>
       <div className="lg:col-span-8 min-w-0">{children}</div>
@@ -100,9 +100,10 @@ function Pillar({
 
 /** El recuadro con la cuenta hecha con los números de la persona. */
 function Cuenta({ title = "Cómo se calcula", children }: { title?: string; children: React.ReactNode }) {
+  const L = useL();
   return (
     <div className="mt-8 border border-ink/15 bg-paper-alt/70 p-5 sm:p-6">
-      <p className="text-sm text-muted label-caps mb-3">{title}</p>
+      <p className="text-sm text-muted label-caps mb-3">{L.t(title)}</p>
       <div className="space-y-3 text-base sm:text-lg leading-relaxed text-foreground">{children}</div>
     </div>
   );
@@ -110,11 +111,12 @@ function Cuenta({ title = "Cómo se calcula", children }: { title?: string; chil
 
 /** Una operación: etiqueta corta + cuenta en cifras tabulares. */
 function Operacion({ label, text, note }: { label?: string; text: string; note?: React.ReactNode }) {
+  const L = useL();
   return (
     <div>
-      {label && <p className="text-sm text-muted">{label}</p>}
-      <p className="font-mono tabular-nums tracking-wide break-words">{text}</p>
-      {note && <p className="mt-1 text-sm text-muted">{note}</p>}
+      {label && <p className="text-sm text-muted">{L.t(label)}</p>}
+      <p className="font-mono tabular-nums tracking-wide break-words">{L.t(text)}</p>
+      {note && <p className="mt-1 text-sm text-muted">{L.t(note)}</p>}
     </div>
   );
 }
@@ -202,14 +204,14 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         measures={L("Tu Camino de Vida: la dirección de fondo.", "Your Life Path: the underlying direction.")}
         glyph={<LifePathGlyph value={lifePath} size={64} />}
       >
-        <p className="text-sm text-muted label-caps">{L(<>Camino de Vida {lifePath}</>, <>Life Path {lifePath}</>)}</p>
-        <h3 className="mt-2 section-title text-foreground">{archetypeName}</h3>
+        <p className="text-sm text-muted label-caps">{L(<>Camino de Vida {L.t(lifePath)}</>, <>Life Path {L.t(lifePath)}</>)}</p>
+        <h3 className="mt-2 section-title text-foreground">{L.t(archetypeName)}</h3>
         <p className="mt-4 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-2xl">
-          {archetype.essence || archetype.description}
+          {L.t(archetype.essence || archetype.description)}
         </p>
         {archetype.quote && (
           <blockquote className="mt-5 italic text-lg text-muted border-l-2 border-ink/20 pl-4 max-w-xl">
-            &laquo;{archetype.quote}&raquo;
+            &laquo;{L.t(archetype.quote)}&raquo;
           </blockquote>
         )}
         {masterHits.length > 0 && (
@@ -221,9 +223,9 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               >{L(<>
                 <span className="font-semibold text-vermilion">Número maestro {hit.number}</span>
                 <span className="text-muted">
-                  en {hit.position === "lifePath" ? "Camino de Vida" : hit.position === "expression" ? "Expresión" : "Personalidad"}
+                  en {L.t(hit.position === "lifePath" ? "Camino de Vida" : hit.position === "expression" ? "Expresión" : "Personalidad")}
                 </span>
-              </>, <><span className="font-semibold text-vermilion">Master number {hit.number}</span><span className="text-muted"> in {hit.position === "lifePath" ? "Life Path" : hit.position === "expression" ? "Expression" : "Personality"}</span></>)}</span>
+              </>, <><span className="font-semibold text-vermilion">Master number {hit.number}</span><span className="text-muted"> in {L.t(hit.position === "lifePath" ? "Life Path" : hit.position === "expression" ? "Expression" : "Personality")}</span></>)}</span>
             ))}
           </div>
         )}
@@ -239,12 +241,12 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
 
         <Cuenta>
           <Operacion
-            label={L(`Los dígitos de ${fechaLarga(birthDate)}`, `The digits of ${fechaLarga(birthDate)}`)}
+            label={L(`Los dígitos de ${fechaLarga(birthDate)}`, `The digits of ${L.t(fechaLarga(birthDate))}`)}
             text={lp.text}
             note={
               lp.master
-                ? L(`${lp.result} es un número maestro: la cuenta se detiene ahí.`, `${lp.result} is a master number: the math stops there.`)
-                : L(`Tu Camino de Vida es ${lp.result}.`, `Your Life Path is ${lp.result}.`)
+                ? L(`${lp.result} es un número maestro: la cuenta se detiene ahí.`, `${L.t(lp.result)} is a master number: the math stops there.`)
+                : L(`Tu Camino de Vida es ${lp.result}.`, `Your Life Path is ${L.t(lp.result)}.`)
             }
           />
         </Cuenta>
@@ -262,8 +264,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
           href={`/conocimiento/numerologia/${lifePath}`}
           className="mt-6 inline-flex text-base underline underline-offset-4 hover:no-underline"
         >{L(<>
-          Todo sobre el {lifePath} →
-        </>, <>All about {lifePath} →</>)}</Link>
+          Todo sobre el {L.t(lifePath)} →
+        </>, <>All about {L.t(lifePath)} →</>)}</Link>
       </Pillar>
 
       {/* ── 2 · Astrología ──────────────────────────────────────────── */}
@@ -274,27 +276,27 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         measures={L("Tu signo solar: dónde estaba el Sol.", "Your sun sign: where the Sun was.")}
         glyph={<AstrologySignIcon sign={profile.sunSign || ""} size={64} className="text-foreground" />}
       >
-        <p className="text-sm text-muted label-caps">{astroInfo?.archetype || L("Signo solar", "Sun sign")}</p>
-        <h3 className="mt-2 section-title text-foreground">{L(<>Sol en {profile.sunSign}</>, <>Sun in {profile.sunSign}</>)}</h3>
+        <p className="text-sm text-muted label-caps">{L.t(astroInfo?.archetype || L("Signo solar", "Sun sign"))}</p>
+        <h3 className="mt-2 section-title text-foreground">{L(<>Sol en {L.t(profile.sunSign)}</>, <>Sun in {L.t(profile.sunSign)}</>)}</h3>
         <p className="mt-4 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-2xl">
-          {astroInfo?.description ||
-            L(`Tu energía solar en ${profile.sunSign} combina el elemento ${element.toLowerCase()} con el ritmo ${modality.toLowerCase()}.`, `Your solar energy in ${profile.sunSign} combines the ${element.toLowerCase()} element with the ${modality.toLowerCase()} rhythm.`)}
+          {L.t(astroInfo?.description ||
+            L(`Tu energía solar en ${profile.sunSign} combina el elemento ${element.toLowerCase()} con el ritmo ${modality.toLowerCase()}.`, `Your solar energy in ${L.t(profile.sunSign)} combines the ${L.t(element.toLowerCase())} element with the ${L.t(modality.toLowerCase())} rhythm.`))}
         </p>
 
         <dl className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-2xl">
           <div className="bg-background p-4">
             <dt className="text-sm text-muted label-caps">{L("Elemento", "Element")}</dt>
-            <dd className="mt-1 font-display text-2xl text-foreground">{element}</dd>
-            {ELEMENT_NOTE(L)[element] && <dd className="mt-1 text-sm text-muted">{ELEMENT_NOTE(L)[element]}</dd>}
+            <dd className="mt-1 font-display text-2xl text-foreground">{L.t(element)}</dd>
+            {ELEMENT_NOTE(L)[element] && <dd className="mt-1 text-sm text-muted">{L.t(ELEMENT_NOTE(L)[element])}</dd>}
           </div>
           <div className="bg-background p-4">
             <dt className="text-sm text-muted label-caps">{L("Modalidad", "Modality")}</dt>
-            <dd className="mt-1 font-display text-2xl text-foreground">{modality}</dd>
-            {MODALITY_NOTE(L)[modality] && <dd className="mt-1 text-sm text-muted">{MODALITY_NOTE(L)[modality]}</dd>}
+            <dd className="mt-1 font-display text-2xl text-foreground">{L.t(modality)}</dd>
+            {MODALITY_NOTE(L)[modality] && <dd className="mt-1 text-sm text-muted">{L.t(MODALITY_NOTE(L)[modality])}</dd>}
           </div>
         </dl>
         {astroInfo?.keywords && (
-          <p className="mt-4 text-base text-muted">{L(<>Rasgos que la tradición le asigna: {astroInfo.keywords.join(", ").toLowerCase()}.</>, <>Traits tradition assigns to it: {astroInfo.keywords.join(", ").toLowerCase()}.</>)}</p>
+          <p className="mt-4 text-base text-muted">{L(<>Rasgos que la tradición le asigna: {L.t(astroInfo.keywords.map(L.t).join(", ").toLowerCase())}.</>, <>Traits tradition assigns to it: {L.t(astroInfo.keywords.map(L.t).join(", ").toLowerCase())}.</>)}</p>
         )}
 
         <QueEs>{L("El tramo del zodíaco que el Sol atravesaba el día que naciste. Son doce tramos de unos treinta días; por eso alcanza con la fecha. La Luna y el ascendente necesitan además la hora y el lugar, y acá no se calculan.", "The stretch of the zodiac the Sun was crossing on the day you were born. There are twelve stretches of about thirty days each; that's why the date is enough. The Moon and the ascendant also need the time and place of birth, and they aren't calculated here.")}</QueEs>
@@ -303,8 +305,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
           <Cuenta>
             <Operacion
               label={L("El calendario solar", "The solar calendar")}
-              text={L(`${sunSign}: del ${signFact.startDay} de ${MESES[signFact.startMonth - 1]} al ${signFact.endDay} de ${MESES[signFact.endMonth - 1]}`, `${sunSign}: from ${MESES[signFact.startMonth - 1]} ${signFact.startDay} to ${MESES[signFact.endMonth - 1]} ${signFact.endDay}`)}
-              note={L(`Naciste el ${birthD} de ${MESES[birthM - 1]}, dentro de ese tramo. Cerca del cambio de signo, un día puede variar según el año.`, `You were born on ${MESES[birthM - 1]} ${birthD}, within that stretch. Close to a change of sign, the day can vary depending on the year.`)}
+              text={L(`${sunSign}: del ${signFact.startDay} de ${MESES[signFact.startMonth - 1]} al ${signFact.endDay} de ${MESES[signFact.endMonth - 1]}`, `${L.t(sunSign)}: from ${L.t(MESES[signFact.startMonth - 1])} ${L.t(signFact.startDay)} to ${L.t(MESES[signFact.endMonth - 1])} ${L.t(signFact.endDay)}`)}
+              note={L(`Naciste el ${birthD} de ${MESES[birthM - 1]}, dentro de ese tramo. Cerca del cambio de signo, un día puede variar según el año.`, `You were born on ${L.t(MESES[birthM - 1])} ${L.t(birthD)}, within that stretch. Close to a change of sign, the day can vary depending on the year.`)}
             />
           </Cuenta>
         )}
@@ -312,8 +314,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
           href={`/conocimiento/astrologia/${sunSign.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()}`}
           className="mt-6 inline-flex text-base underline underline-offset-4 hover:no-underline"
         >{L(<>
-          Todo sobre {sunSign} →
-        </>, <>All about {sunSign} →</>)}</Link>
+          Todo sobre {L.t(sunSign)} →
+        </>, <>All about {L.t(sunSign)} →</>)}</Link>
       </Pillar>
 
       {/* ── 3 · Zodíaco chino ───────────────────────────────────────── */}
@@ -325,27 +327,27 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         glyph={<ZodiacAnimalIcon animal={userAnimal} size={64} />}
       >
         <p className="text-sm text-muted label-caps">{L(<>
-          Polaridad {polarity} · elemento {chineseElement}
-        </>, <>{polarity} polarity · {chineseElement} element</>)}</p>
+          Polaridad {L.t(polarity)} · elemento {L.t(chineseElement)}
+        </>, <>{L.t(polarity)} polarity · {L.t(chineseElement)} element</>)}</p>
         <h3 className="mt-2 section-title text-foreground">{L(<>
-          {display.name} de {chineseElement}
-        </>, <>{chineseElement} {display.name}</>)}</h3>
+          {L.t(display.name)} de {L.t(chineseElement)}
+        </>, <>{L.t(chineseElement)} {L.t(display.name)}</>)}</h3>
         <p className="mt-4 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-2xl">
-          {animalInfo?.description ||
-            L(`Nacido bajo la influencia de ${display.name}, integrás la energía del elemento ${chineseElement} en polaridad ${polarity}.`, `Born under the influence of the ${display.name}, you carry the energy of the ${chineseElement} element in ${polarity} polarity.`)}
+          {L.t(animalInfo?.description ||
+            L(`Nacido bajo la influencia de ${display.name}, integrás la energía del elemento ${chineseElement} en polaridad ${polarity}.`, `Born under the influence of the ${L.t(display.name)}, you carry the energy of the ${L.t(chineseElement)} element in ${L.t(polarity)} polarity.`))}
         </p>
 
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-2xl">
           <div className="bg-background p-4">
             <p className="text-sm text-muted label-caps">{L("Tus dos amigos · 三合", "Your two friends · 三合")}</p>
             <p className="mt-1 font-display text-2xl text-foreground">
-              {allies.length > 0 ? allies.join(" y ") : "—"}
+              {allies.length > 0 ? allies.map(L.t).join(" y ") : "—"}
             </p>
             <p className="mt-1 text-sm text-muted">{L("A cuatro casillas de distancia: forman un triángulo en la rueda.", "Four slots apart: they form a triangle on the wheel.")}</p>
           </div>
           <div className="bg-background p-4">
             <p className="text-sm text-muted label-caps">{L("Tu opuesto · 六冲", "Your opposite · 六冲")}</p>
-            <p className="mt-1 font-display text-2xl text-foreground">{enemy || "—"}</p>
+            <p className="mt-1 font-display text-2xl text-foreground">{L.t(enemy || "—")}</p>
             <p className="mt-1 text-sm text-muted">{L("Enfrente en la rueda, a seis casillas: la tensión del ciclo.", "Across the wheel, six slots away: the tension of the cycle.")}</p>
           </div>
         </div>
@@ -359,7 +361,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               text={`${fechaLarga(cnyStart)} → ${fechaLarga(diaAnterior(cnyNext))}`}
               note={L(`Ese año fue de ${display.name} de ${chineseElement}, y tu fecha (${fechaLarga(birthDate)}) cae adentro.${
                 lunarYear !== birthY ? ` Ojo: naciste antes del Año Nuevo chino, así que tu signo es el del año ${lunarYear}.` : ""
-              }`, `That year was a ${chineseElement} ${display.name} year, and your date (${fechaLarga(birthDate)}) falls inside it.${lunarYear !== birthY ? ` Note: you were born before Chinese New Year, so your sign is that of the year ${lunarYear}.` : ""}`)}
+              }`, `That year was a ${L.t(chineseElement)} ${L.t(display.name)} year, and your date (${L.t(fechaLarga(birthDate))}) falls inside it.${L.t(lunarYear !== birthY ? ` Note: you were born before Chinese New Year, so your sign is that of the year ${lunarYear}.` : "")}`)}
             />
           </Cuenta>
         )}
@@ -367,8 +369,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
           href={`/conocimiento/zodiaco-chino/${encodeURIComponent(display.name.toLowerCase())}`}
           className="mt-6 inline-flex text-base underline underline-offset-4 hover:no-underline"
         >{L(<>
-          Todo sobre el {display.name} →
-        </>, <>All about the {display.name} →</>)}</Link>
+          Todo sobre el {L.t(display.name)} →
+        </>, <>All about the {L.t(display.name)} →</>)}</Link>
       </Pillar>
 
       {/* ── 4 · Ciclos ──────────────────────────────────────────────── */}
@@ -380,7 +382,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         glyph={<span className="font-display text-6xl lg:text-7xl leading-none tabular-nums">{personalYear}</span>}
       >
         <p className="text-sm text-muted label-caps">{L(<>Año personal {personalYear}</>, <>Personal year {personalYear}</>)}</p>
-        <h3 className="mt-2 section-title text-foreground">{yearTheme ? yearTheme.charAt(0).toUpperCase() + yearTheme.slice(1) : L(`Año ${personalYear}`, `Year ${personalYear}`)}</h3>
+        <h3 className="mt-2 section-title text-foreground">{L.t(yearTheme ? yearTheme.charAt(0).toUpperCase() + yearTheme.slice(1) : L(`Año ${personalYear}`, `Year ${personalYear}`))}</h3>
 
         <div className="mt-6 grid grid-cols-3 gap-px bg-ink/15 border border-ink/15 max-w-2xl">
           {[
@@ -389,9 +391,9 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
             { label: L("Día", "Day"), value: personalDay, note: L("la vibración de hoy", "today's vibration") },
           ].map((c) => (
             <div key={c.label} className="bg-background p-4 text-center">
-              <p className="text-sm text-muted label-caps">{c.label}</p>
-              <p className="mt-1 font-display text-4xl sm:text-5xl text-foreground tabular-nums">{c.value}</p>
-              <p className="mt-1 text-sm text-muted leading-snug">{c.note}</p>
+              <p className="text-sm text-muted label-caps">{L.t(c.label)}</p>
+              <p className="mt-1 font-display text-4xl sm:text-5xl text-foreground tabular-nums">{L.t(c.value)}</p>
+              <p className="mt-1 text-sm text-muted leading-snug">{L.t(c.note)}</p>
             </div>
           ))}
         </div>

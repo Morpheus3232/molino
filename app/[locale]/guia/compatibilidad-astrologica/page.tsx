@@ -1,4 +1,5 @@
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { initLocale, getL } from "@/lib/i18n/server";
+import { type Pick2 } from "@/lib/i18n/useL";
 import { Link } from "@/lib/i18n/navigation";
 import { metadataFor } from "@/lib/seo";
 import { SIGN_FACTS, WESTERN_SIGNS, type WesternSign } from "@/lib/data/facts/astrology-facts";
@@ -34,8 +35,9 @@ const slugOf = (s: WesternSign) => SIGN_SLUGS[WESTERN_SIGNS.indexOf(s)];
 const ELEMENT_PAIRS: [ElementName, ElementName][] = [];
 ELEMENTS.forEach((a, i) => ELEMENTS.slice(i).forEach((b) => ELEMENT_PAIRS.push([a, b])));
 
-export default function CompatibilidadAstrologicaPage() {
-  const L = useL();
+export default async function CompatibilidadAstrologicaPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
+  const L = await getL();
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[760px] px-6 sm:px-8 py-16 sm:py-24" id="main-content">
@@ -58,9 +60,9 @@ export default function CompatibilidadAstrologicaPage() {
             <dl className="border-t border-ink/15">
               {ELEMENTS.map((el) => (
                 <div key={el} className="grid grid-cols-[6rem_1fr] sm:grid-cols-[7rem_1fr_auto] gap-x-4 gap-y-1 py-3 border-b border-ink/15">
-                  <dt className="font-heading text-lg text-foreground">{el}</dt>
-                  <dd className="text-foreground">{signsOf((s) => SIGN_FACTS[s].element === el).join(", ")}</dd>
-                  <dd className="col-start-2 sm:col-start-3 text-sm text-muted">{ELEMENT_NOTE(L)[el]}</dd>
+                  <dt className="font-heading text-lg text-foreground">{L.t(el)}</dt>
+                  <dd className="text-foreground">{L.t(signsOf((s) => SIGN_FACTS[s].element === el).map(L.t).join(", "))}</dd>
+                  <dd className="col-start-2 sm:col-start-3 text-sm text-muted">{L.t(ELEMENT_NOTE(L)[el])}</dd>
                 </div>
               ))}
             </dl>
@@ -75,10 +77,10 @@ export default function CompatibilidadAstrologicaPage() {
                 return (
                   <div key={`${a}-${b}`} className="py-4 border-b border-ink/15 sm:grid sm:grid-cols-[11rem_1fr] sm:gap-6">
                     <p className="text-foreground">
-                      {a === b ? L(`${a} con ${a}`, `${a} with ${a}`) : `${a} y ${b}`}
-                      <span className="block text-sm text-muted">{level}</span>
+                      {L.t(a === b ? L(`${a} con ${a}`, `${L.t(a)} with ${L.t(a)}`) : `${a} y ${b}`)}
+                      <span className="block text-sm text-muted">{L.t(level)}</span>
                     </p>
-                    <p className="mt-1 sm:mt-0 text-[0.95rem]">{desc}</p>
+                    <p className="mt-1 sm:mt-0 text-[0.95rem]">{L.t(desc)}</p>
                   </div>
                 );
               })}
@@ -91,11 +93,11 @@ export default function CompatibilidadAstrologicaPage() {
             <div className="grid gap-px bg-ink/15 border border-ink/15 sm:grid-cols-3">
               {MODALITIES(L).map((m) => (
                 <div key={m.name} className="bg-background p-5">
-                  <p className="text-sm text-muted label-caps">{m.role}</p>
-                  <p className="font-heading text-xl text-foreground mt-1">{m.name}</p>
-                  <p className="text-sm mt-2">{m.text}</p>
+                  <p className="text-sm text-muted label-caps">{L.t(m.role)}</p>
+                  <p className="font-heading text-xl text-foreground mt-1">{L.t(m.name)}</p>
+                  <p className="text-sm mt-2">{L.t(m.text)}</p>
                   <p className="text-sm text-foreground mt-3">
-                    {signsOf((s) => SIGN_FACTS[s].modality === m.name).join(", ")}
+                    {L.t(signsOf((s) => SIGN_FACTS[s].modality === m.name).map(L.t).join(", "))}
                   </p>
                 </div>
               ))}
@@ -109,12 +111,12 @@ export default function CompatibilidadAstrologicaPage() {
               {ASPECT_BY_DISTANCE.map((a, i) => (
                 <div key={a.name} className="py-4 border-b border-ink/15 sm:grid sm:grid-cols-[11rem_1fr] sm:gap-6">
                   <p className="text-foreground">
-                    <span className="capitalize">{a.name}</span>
+                    <span className="capitalize">{L.t(a.name)}</span>
                     <span className="block text-sm text-muted tabular-nums">
-                      {i === 0 ? L("mismo signo", "same sign") : `${i} ${i === 1 ? "signo" : "signos"} · ${a.angle}°`} · {a.verdict}
+                      {L.t(i === 0 ? L("mismo signo", "same sign") : `${i} ${i === 1 ? "signo" : "signos"} · ${a.angle}°`)} · {L.t(a.verdict)}
                     </span>
                   </p>
-                  <p className="mt-1 sm:mt-0 text-[0.95rem]">{L(<>Los dos {a.answer}</>, <>Both {a.answer}</>)}</p>
+                  <p className="mt-1 sm:mt-0 text-[0.95rem]">{L(<>Los dos {L.t(a.answer)}</>, <>Both {L.t(a.answer)}</>)}</p>
                 </div>
               ))}
             </div>
@@ -126,7 +128,7 @@ export default function CompatibilidadAstrologicaPage() {
             <div className="space-y-5">
               {WESTERN_SIGNS.map((a) => (
                 <div key={a}>
-                  <p className="text-sm text-muted label-caps mb-1.5">{a}</p>
+                  <p className="text-sm text-muted label-caps mb-1.5">{L.t(a)}</p>
                   <p className="text-sm leading-7">
                     {WESTERN_SIGNS.map((b, j) => (
                       <span key={b}>
@@ -134,7 +136,7 @@ export default function CompatibilidadAstrologicaPage() {
                           href={`/compatibilidad/${canonicalPairSlug(slugOf(a), slugOf(b))}`}
                           className="text-foreground underline decoration-ink/25 underline-offset-4 hover:decoration-ink"
                         >
-                          {b}
+                          {L.t(b)}
                         </Link>
                         {j < WESTERN_SIGNS.length - 1 && <span className="text-muted"> · </span>}
                       </span>

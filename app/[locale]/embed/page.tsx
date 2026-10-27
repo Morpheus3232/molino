@@ -95,7 +95,7 @@ export default function EmbedWidgetPage() {
             title={L("Personalizar e incrustar", "Customize and embed")}
           >
             {showConfig ? <Code2 className="w-3.5 h-3.5" /> : <Sliders className="w-3.5 h-3.5" />}
-            <span>{showConfig ? L("Ver Calculadora", "View Calculator") : L("Incrustar", "Embed")}</span>
+            <span>{L.t(showConfig ? L("Ver Calculadora", "View Calculator") : L("Incrustar", "Embed"))}</span>
           </button>
         </div>
 
@@ -138,7 +138,7 @@ export default function EmbedWidgetPage() {
                       : "border-ink/10 text-muted"
                   }`}
                 >
-                  {isCompact ? L("Compacto ✓", "Compact ✓") : L("Estándar", "Standard")}
+                  {L.t(isCompact ? L("Compacto ✓", "Compact ✓") : L("Estándar", "Standard"))}
                 </button>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function EmbedWidgetPage() {
                   className="text-xs font-mono text-accent inline-flex items-center gap-1 hover:underline font-bold"
                 >
                   {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? L("¡Copiado!", "Copied!") : L("Copiar código", "Copy code")}</span>
+                  <span>{L.t(copied ? L("¡Copiado!", "Copied!") : L("Copiar código", "Copy code"))}</span>
                 </button>
               </div>
               <textarea

@@ -64,41 +64,41 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
             { label: animal.name },
           ]}
           eyebrow={L(`Zodíaco chino · signo ${currentIndex + 1} de 12`, `Chinese zodiac · sign ${currentIndex + 1} of 12`)}
-          title={animal.name}
+          title={L.t(animal.name)}
           lead={animal.meaning}
           meta={
             <>
-              {L("Años: ", "Years:")} {years.map((y) => y.year).join(", ")}
+              {L("Años: ", "Years: ")} {years.map((y) => y.year).map(L.t).join(", ")}
               {current ? (
                 <span className="block mt-1 text-foreground">{L(<>
-                  Ahora mismo es año {delAnimal(animal.name)} de {current.element}, hasta el {fechaCorta(current.end)}.
-                </>, <>Right now it's a {current.element} {animal.name} year, until {fechaCorta(current.end)}.</>)}</span>
+                  Ahora mismo es año {L.t(delAnimal(animal.name))} de {L.t(current.element)}, hasta el {L.t(fechaCorta(current.end))}.
+                </>, <>Right now it's a {L.t(current.element)} {L.t(animal.name)} year, until {L.t(fechaCorta(current.end))}.</>)}</span>
               ) : upcoming ? (
                 <span className="block mt-1 text-foreground">{L(<>
-                  El próximo año {delAnimal(animal.name)} empieza el {fechaCorta(upcoming.start)} ({upcoming.element}).
-                </>, <>The next {animal.name} year starts on {fechaCorta(upcoming.start)} ({upcoming.element}).</>)}</span>
+                  El próximo año {L.t(delAnimal(animal.name))} empieza el {L.t(fechaCorta(upcoming.start))} ({L.t(upcoming.element)}).
+                </>, <>The next {L.t(animal.name)} year starts on {L.t(fechaCorta(upcoming.start))} ({L.t(upcoming.element)}).</>)}</span>
               ) : null}
             </>
           }
           legend={[
-            { mark: MARKS.ink, text: <>{L(<>En la rueda de los doce animales, en negro: <span className="text-foreground">{animal.name}</span>.</>, <>On the wheel of the twelve animals, in black: <span className="text-foreground">{animal.name}</span>.</>)}</> },
-            { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos <span className="whitespace-nowrap">(三合)</span>: <span className="text-foreground">{friends.join(" y ")}</span>.</>, <>The red triangle links it with its two friends <span className="whitespace-nowrap">(三合)</span>: <span className="text-foreground">{friends.join(" and ")}</span>.</>)}</> },
-            ...(enemy ? [{ mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto <span className="whitespace-nowrap">(六冲)</span>: <span className="text-foreground">{enemy}</span>.</>, <>The dotted line crosses to its opposite <span className="whitespace-nowrap">(六冲)</span>: <span className="text-foreground">{enemy}</span>.</>)}</> }] : []),
+            { mark: MARKS.ink, text: <>{L(<>En la rueda de los doce animales, en negro: <span className="text-foreground">{L.t(animal.name)}</span>.</>, <>On the wheel of the twelve animals, in black: <span className="text-foreground">{L.t(animal.name)}</span>.</>)}</> },
+            { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos <span className="whitespace-nowrap">(三合)</span>: <span className="text-foreground">{L.t(friends.map(L.t).join(" y "))}</span>.</>, <>The red triangle links it with its two friends <span className="whitespace-nowrap">(三合)</span>: <span className="text-foreground">{L.t(friends.map(L.t).join(" and "))}</span>.</>)}</> },
+            ...(enemy ? [{ mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto <span className="whitespace-nowrap">(六冲)</span>: <span className="text-foreground">{L.t(enemy)}</span>.</>, <>The dotted line crosses to its opposite <span className="whitespace-nowrap">(六冲)</span>: <span className="text-foreground">{L.t(enemy)}</span>.</>)}</> }] : []),
           ]}
           aside={
             <RelationWheel
               items={CHINESE_ANIMALS.map((a) => ({ key: a.name, label: a.name, icon: <ZodiacAnimalIcon animal={a.name} size={40} /> }))}
               active={currentIndex}
               center={<ZodiacAnimalIcon animal={animal.name} size={64} />}
-              ariaLabel={L(`Rueda del zodíaco chino: ${animal.name}, con ${friends.join(" y ")} como amigos y ${enemy} como opuesto.`, `Chinese zodiac wheel: ${animal.name}, with ${friends.join(" and ")} as friends and ${enemy} as its opposite.`)}
+              ariaLabel={L(`Rueda del zodíaco chino: ${animal.name}, con ${friends.map(L.t).join(" y ")} como amigos y ${enemy} como opuesto.`, `Chinese zodiac wheel: ${L.t(animal.name)}, with ${friends.map(L.t).join(" and ")} as friends and ${L.t(enemy)} as its opposite.`)}
               className="mx-auto max-w-[34rem]"
             />
           }
         />
 
-        <KnowledgeSection label={L("Historia y simbolismo", "History and symbolism")} title={<>{L(<>El {animal.name} en la tradición china</>, <>The {animal.name} in the Chinese tradition</>)}</>}>
+        <KnowledgeSection label={L("Historia y simbolismo", "History and symbolism")} title={<>{L(<>El {L.t(animal.name)} en la tradición china</>, <>The {L.t(animal.name)} in the Chinese tradition</>)}</>}>
           <TextWithFigure figure={<SectionCover imageKey={animalImageKey(animal.name)} priority />}>
-            <p>{animal.history}</p>
+            <p>{L.t(animal.history)}</p>
           </TextWithFigure>
         </KnowledgeSection>
 
@@ -113,8 +113,8 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         </KnowledgeSection>
 
         <KnowledgeSection
-          label={L(`Años ${delAnimal(animal.name)}`, `${animal.name} years`)}
-          title={<>{L(<>¿Naciste en un año {animal.name}?</>, <>Were you born in a {animal.name} year?</>)}</>}
+          label={L(`Años ${delAnimal(animal.name)}`, `${L.t(animal.name)} years`)}
+          title={<>{L(<>¿Naciste en un año {L.t(animal.name)}?</>, <>Were you born in a {L.t(animal.name)} year?</>)}</>}
           intro={L("El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior.", "The Chinese year starts with the Lunar New Year, between January 21 and February 21. If you were born in those weeks, check the exact day: your sign may be the previous one.")}
         >
           <div className="max-w-3xl overflow-x-auto">
@@ -131,9 +131,9 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
                 {years.map((y) => (
                   <tr key={y.year} className={`border-b border-ink/15 ${y.year === nextYear?.year ? "bg-ink/[0.04]" : ""}`}>
                     <th scope="row" className="py-3 pr-4 font-display font-normal text-xl">{y.year}</th>
-                    <td className="py-3 pr-4 whitespace-nowrap">{fechaCorta(y.start)}</td>
-                    <td className="py-3 pr-4 whitespace-nowrap">{fechaCorta(y.end)}</td>
-                    <td className="py-3">{y.element}</td>
+                    <td className="py-3 pr-4 whitespace-nowrap">{L.t(fechaCorta(y.start))}</td>
+                    <td className="py-3 pr-4 whitespace-nowrap">{L.t(fechaCorta(y.end))}</td>
+                    <td className="py-3">{L.t(y.element)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -144,7 +144,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
         <KnowledgeSection
           label={L("Los cinco elementos", "The five elements")}
           title={L("Cinco versiones del mismo signo", "Five versions of the same sign")}
-          intro={L(`Cada ${animal.name} nace además con uno de cinco elementos, que cambia cada dos años. La tabla de arriba dice cuál le toca a cada año.`, `Every ${animal.name} is also born with one of five elements, which changes every two years. The table above shows which one belongs to each year.`)}
+          intro={L(`Cada ${animal.name} nace además con uno de cinco elementos, que cambia cada dos años. La tabla de arriba dice cuál le toca a cada año.`, `Every ${L.t(animal.name)} is also born with one of five elements, which changes every two years. The table above shows which one belongs to each year.`)}
           tone="alt"
         >
           <Columns cols={animal.elements.map((el) => ({ title: el.element, body: el.modifier }))} />
@@ -159,8 +159,8 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
               cta={L("Calcular mi animal", "Calculate my animal")}
             />
             <Note>
-              <p>{animal.scientificNote}</p>
-              <p>{CHINESE_ZODIAC_DISCLAIMER}</p>
+              <p>{L.t(animal.scientificNote)}</p>
+              <p>{L.t(CHINESE_ZODIAC_DISCLAIMER)}</p>
             </Note>
             <PrevNext
               label={L("Navegación entre signos", "Navigation between signs")}

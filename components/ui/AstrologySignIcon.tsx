@@ -1,4 +1,5 @@
 "use client";
+import { useL } from "@/lib/i18n/useL";
 
 import React from "react";
 
@@ -59,6 +60,7 @@ export default function AstrologySignIcon({
   className = "",
   title,
 }: AstrologySignIconProps) {
+  const L = useL();
   const canonical = normalizeWesternSign(sign);
   const label = title || canonical || sign;
 
@@ -184,7 +186,7 @@ export default function AstrologySignIcon({
       height={size}
       className={`inline-block shrink-0 align-middle ${className}`}
       role="img"
-      aria-label={label}
+      aria-label={L.t(label)}
     >
       <g
         fill="none"
@@ -193,7 +195,7 @@ export default function AstrologySignIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {renderPath()}
+        {L.t(renderPath())}
       </g>
     </svg>
   );

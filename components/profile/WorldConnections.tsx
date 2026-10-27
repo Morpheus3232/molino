@@ -47,12 +47,12 @@ function EntityCard({ entity, tier }: { entity: LightAffinityResult; tier: Affin
           size={24}
         />
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-foreground truncate">{entity.name}</p>
+          <p className="font-medium text-foreground truncate">{L.t(entity.name)}</p>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-xs" style={{ color: TIER_META[tier].color }}>
-              {TIER_META[tier].label}
+              {L.t(TIER_META[tier].label)}
             </span>
-            <span className="text-xs text-muted">{TYPE_LABEL(L)[entity.type] || entity.type}</span>
+            <span className="text-xs text-muted">{L.t(TYPE_LABEL(L)[entity.type] || entity.type)}</span>
           </div>
         </div>
       </div>
@@ -67,6 +67,7 @@ function EntityRank({
   title: string;
   entities: LightAffinityResult[];
 }) {
+  const L = useL();
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -74,7 +75,7 @@ function EntityRank({
       transition={{ duration: 0.4 }}
       className="space-y-3"
     >
-      <h3 className="label-micro text-accent">{title}</h3>
+      <h3 className="label-micro text-accent">{L.t(title)}</h3>
       <div className="space-y-2">
         {entities.slice(0, 5).map((item, i) => (
           <EntityCard
@@ -122,8 +123,8 @@ export default function WorldConnections({ profile, catalog }: WorldConnectionsP
               href="/affinity"
               className="text-sm font-mono text-accent hover:underline shrink-0"
             >{L(<>
-              Ver todas las {totalConnections} conexiones →
-            </>, <>See all {totalConnections} connections →</>)}</Link>
+              Ver todas las {L.t(totalConnections)} conexiones →
+            </>, <>See all {L.t(totalConnections)} connections →</>)}</Link>
           </div>
         </motion.div>
 

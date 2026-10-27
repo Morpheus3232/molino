@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 import CompradoClient from "./CompradoClient";
 
@@ -7,6 +8,7 @@ export const generateMetadata = metadataFor({
   path: "/regalar/comprado",
 });
 
-export default function CompradoPage() {
+export default async function CompradoPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <CompradoClient />;
 }

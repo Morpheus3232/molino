@@ -77,14 +77,14 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
 
         <header className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8 items-end pb-10 border-b-2 border-ink">
           <div className="lg:col-span-7">
-            <p className="text-sm text-accent mb-4 label-caps">{L(<>Comparar dos entradas · paso {step === "pick-a" ? "1" : "2"} de 2</>, <>Compare two entries · step {step === "pick-a" ? "1" : "2"} of 2</>)}</p>
+            <p className="text-sm text-accent mb-4 label-caps">{L(<>Comparar dos entradas · paso {L.t(step === "pick-a" ? "1" : "2")} de 2</>, <>Compare two entries · step {L.t(step === "pick-a" ? "1" : "2")} of 2</>)}</p>
             <h1 className="font-display font-normal text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] tracking-tight text-foreground">
-              {step === "pick-a" ? L("Elegí la primera", "Pick the first one") : L("Ahora, la segunda", "Now, the second one")}
+              {L.t(step === "pick-a" ? L("Elegí la primera", "Pick the first one") : L("Ahora, la segunda", "Now, the second one"))}
             </h1>
             <p className="mt-5 text-xl text-foreground/85 leading-snug max-w-xl">
-              {step === "pick-a"
+              {L.t(step === "pick-a"
                 ? L("Una marca, un país, una ciudad o una persona del Atlas. Después elegís con quién compararla.", "A brand, a country, a city or a person from the Atlas. Then you choose what to compare it with.")
-                : L(`Con qué querés comparar ${selectedEntityA?.name ?? "la primera"}.`, `What do you want to compare ${selectedEntityA?.name ?? "the first one"} with?`)}
+                : L(`Con qué querés comparar ${selectedEntityA?.name ?? "la primera"}.`, `What do you want to compare ${L.t(selectedEntityA?.name ?? "the first one")} with?`))}
             </p>
           </div>
           <div className="lg:col-span-5">
@@ -102,7 +102,7 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                 />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm text-muted">{L("Primera entrada", "First entry")}</p>
-                  <p className="font-display text-2xl text-foreground truncate">{selectedEntityA.name}</p>
+                  <p className="font-display text-2xl text-foreground truncate">{L.t(selectedEntityA.name)}</p>
                 </div>
                 <button
                   type="button"
@@ -154,10 +154,10 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                 />
                 <div className="flex-1 min-w-0">
                   <p className="font-display text-xl text-foreground group-hover:underline underline-offset-4 truncate">
-                    {entity.name}
+                    {L.t(entity.name)}
                   </p>
                   <p className="text-sm text-muted truncate">
-                    {TYPE_LABEL(L)[entity.type] ?? entity.type} · {entity.country}
+                    {L.t(TYPE_LABEL(L)[entity.type] ?? entity.type)} · {entity.country}
                   </p>
                 </div>
               </button>
@@ -173,8 +173,8 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
               className="inline-flex items-center justify-center min-h-[48px] px-8 border-2 border-ink text-sm text-foreground hover:bg-ink hover:text-paper transition-colors label-caps"
             >{L("Ver más", "See more")}</button>
             <p className="text-base text-muted">{L(<>
-              {visible} de {filtered.length} · o buscá por nombre, país o tipo
-            </>, <>{visible} of {filtered.length} · or search by name, country or type</>)}</p>
+              {L.t(visible)} de {filtered.length} · o buscá por nombre, país o tipo
+            </>, <>{L.t(visible)} of {filtered.length} · or search by name, country or type</>)}</p>
           </div>
         )}
 
@@ -188,8 +188,8 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
           >
             <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] tracking-tight text-foreground mb-4">{L("Sin resultados", "No results")}</h2>
             <p className="text-lg text-muted mb-6 max-w-md mx-auto">{L(<>
-              No se encontraron resultados para &ldquo;{search}&rdquo;.
-            </>, <>No results found for &ldquo;{search}&rdquo;.</>)}</p>
+              No se encontraron resultados para &ldquo;{L.t(search)}&rdquo;.
+            </>, <>No results found for &ldquo;{L.t(search)}&rdquo;.</>)}</p>
             <button
               type="button"
               onClick={() => router.push("/affinity")}

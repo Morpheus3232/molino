@@ -164,11 +164,11 @@ export default function JournalTimeline({
                     className={`w-11 h-11 flex items-center justify-center text-lg transition-colors ${
                       active ? "bg-ink text-paper" : "bg-background hover:bg-paper-alt"
                     }`}
-                    title={cfg.label}
-                    aria-label={L(`Filtrar por estado de ánimo: ${cfg.label}`, `Filter by mood: ${cfg.label}`)}
+                    title={L.t(cfg.label)}
+                    aria-label={L(`Filtrar por estado de ánimo: ${cfg.label}`, `Filter by mood: ${L.t(cfg.label)}`)}
                     aria-pressed={active}
                   >
-                    <span aria-hidden="true" className={active ? "" : "opacity-60"}>{cfg.emoji}</span>
+                    <span aria-hidden="true" className={active ? "" : "opacity-60"}>{L.t(cfg.emoji)}</span>
                   </button>
                 );
               })}
@@ -201,9 +201,9 @@ export default function JournalTimeline({
                     active ? "bg-ink text-paper border-ink" : "bg-background text-muted border-ink/25 hover:border-ink hover:text-foreground"
                   }`}
                   aria-pressed={active}
-                  aria-label={L(`Filtrar por etiqueta ${tag}`, `Filter by tag ${tag}`)}
+                  aria-label={L(`Filtrar por etiqueta ${tag}`, `Filter by tag ${L.t(tag)}`)}
                 >
-                  #{tag}
+                  #{L.t(tag)}
                 </button>
               );
             })}
@@ -223,16 +223,16 @@ export default function JournalTimeline({
             return (
               <article
                 key={entry.id}
-                aria-label={formatDate(entry.date)}
+                aria-label={L.t(formatDate(entry.date))}
                 className="group grid grid-cols-1 md:grid-cols-[13rem_1fr] gap-x-10 gap-y-3 py-8 border-b border-ink/15"
               >
                 <div>
-                  <p className="font-display text-5xl leading-none text-foreground tabular-nums">{d.getDate()}</p>
+                  <p className="font-display text-5xl leading-none text-foreground tabular-nums">{L.t(d.getDate())}</p>
                   <p className="mt-1 text-base text-foreground first-letter:uppercase">
                     {d.toLocaleDateString("es-AR", { weekday: "long" })}, {d.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}
                   </p>
                   <p className="mt-2 text-base text-muted">
-                    <span aria-hidden="true">{moodCfg.emoji}</span> {moodCfg.label.toLowerCase()}
+                    <span aria-hidden="true">{L.t(moodCfg.emoji)}</span> {L.t(moodCfg.label.toLowerCase())}
                   </p>
                 </div>
 
@@ -242,7 +242,7 @@ export default function JournalTimeline({
                   {entry.tags && entry.tags.length > 0 && (
                     <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-base text-muted">
                       {entry.tags.map((t) => (
-                        <span key={t}>#{t}</span>
+                        <span key={t}>#{L.t(t)}</span>
                       ))}
                     </p>
                   )}
@@ -250,14 +250,14 @@ export default function JournalTimeline({
                   <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                     {cycle && (cycle.dayEnergy || cycle.yearCycle) ? (
                       <p className="text-sm text-muted">
-                        {[
-                          cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${cycle.dayEnergy.personalDay}`),
+                        {L.t([
+                          cycle.dayEnergy?.personalDay && L(`Día personal ${cycle.dayEnergy.personalDay}`, `Personal day ${L.t(cycle.dayEnergy.personalDay)}`),
                           cycle.dayEnergy?.theme,
                           cycle.dayEnergy?.moonPhase && `luna ${cycle.dayEnergy.moonPhase.toLowerCase().replace(/^luna\s+/, "")}`,
                           cycle.yearCycle?.personalYear && L(`año ${cycle.yearCycle.personalYear}`, `year ${cycle.yearCycle.personalYear}`),
                         ]
-                          .filter(Boolean)
-                          .join(" · ")}
+                          .filter(Boolean).map(L.t)
+                          .join(" · "))}
                       </p>
                     ) : (
                       <span />

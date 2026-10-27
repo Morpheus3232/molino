@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HerramientasLayout({ children }: { children: React.ReactNode }) {
+export default async function HerramientasLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

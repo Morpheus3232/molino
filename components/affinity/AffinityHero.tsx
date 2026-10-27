@@ -26,14 +26,14 @@ export default function AffinityHero({
   const L = useL();
   // La historia solo necesita tu animal: sirve igual sin perfil guardado.
   const story = buildEntityConnectionStory({ chineseZodiac: result.userAnimal } as UserProfile, entity);
-  const headline = story?.headline ?? L(`${entity.name} y vos: ${result.relationship}.`, `${entity.name} and you: ${result.relationship}.`);
+  const headline = story?.headline ?? L(`${entity.name} y vos: ${result.relationship}.`, `${L.t(entity.name)} and you: ${L.t(result.relationship)}.`);
 
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <h3 className="font-display font-normal text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.05] tracking-tight text-foreground max-w-3xl">
-        {headline}
+        {L.t(headline)}
       </h3>
-      {story?.subtitle && <p className="mt-4 text-lg sm:text-xl text-muted max-w-2xl">{story.subtitle}</p>}
+      {story?.subtitle && <p className="mt-4 text-lg sm:text-xl text-muted max-w-2xl">{L.t(story.subtitle)}</p>}
 
       {/* La cuenta: dos años, dos animales */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/15 border border-ink/15 max-w-3xl">
@@ -44,26 +44,26 @@ export default function AffinityHero({
           <div key={c.label} className="bg-background p-6 flex items-center gap-5">
             <ZodiacAnimalIcon animal={c.animal} size={56} className="text-foreground shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm text-muted leading-snug">{c.label}</p>
+              <p className="text-sm text-muted leading-snug">{L.t(c.label)}</p>
               <p className="mt-1 font-display text-4xl leading-none text-foreground tabular-nums">{c.year}</p>
-              <p className="mt-1 text-lg text-foreground">{c.animal}</p>
+              <p className="mt-1 text-lg text-foreground">{L.t(c.animal)}</p>
             </div>
           </div>
         ))}
       </div>
 
       {story?.explanation && (
-        <p className="mt-8 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-3xl">{story.explanation}</p>
+        <p className="mt-8 text-lg sm:text-xl text-foreground/85 leading-relaxed max-w-3xl">{L.t(story.explanation)}</p>
       )}
 
       <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-base">{L(<>
         <Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">
-          Comparar {entity.name} con otra entrada
+          Comparar {L.t(entity.name)} con otra entrada
         </Link>
         <Link href="/lectura" className="underline underline-offset-4 hover:no-underline">
           Abrir mi lectura completa
         </Link>
-      </>, <><Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">Compare {entity.name} with another entry</Link><Link href="/lectura" className="underline underline-offset-4 hover:no-underline">Open my complete reading</Link></>)}</div>
+      </>, <><Link href={`/affinity/compare?from=${entity.id}`} className="underline underline-offset-4 hover:no-underline">Compare {L.t(entity.name)} with another entry</Link><Link href="/lectura" className="underline underline-offset-4 hover:no-underline">Open my complete reading</Link></>)}</div>
     </motion.div>
   );
 }

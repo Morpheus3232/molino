@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
@@ -6,6 +7,7 @@ export const metadata = createRouteMetadata({
   noFollow: true,
 });
 
-export default function AnalyticsLayout({ children }: { children: React.ReactNode }) {
+export default async function AnalyticsLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

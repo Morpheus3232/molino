@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { createRouteMetadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const metadata: Metadata = createRouteMetadata({
   noIndex: true,
 });
 
-export default function PremiumClaimLayout({ children }: { children: React.ReactNode }) {
+export default async function PremiumClaimLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return children;
 }

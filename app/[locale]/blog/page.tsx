@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import BlogContent from "./BlogContent";
 import { metadataFor } from "@/lib/seo";
 
@@ -10,6 +11,7 @@ export const generateMetadata = metadataFor({
   ogDescription: ["Numerología, astrología y zodíaco chino explicados con claridad. Aprendé a leer tu mapa personal de autoconocimiento.", "Numerology, astrology and the Chinese zodiac explained clearly. Learn to read your personal self-knowledge map."],
 });
 
-export default function BlogPage() {
+export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <BlogContent />;
 }

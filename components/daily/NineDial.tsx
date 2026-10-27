@@ -1,3 +1,4 @@
+import { useL } from "@/lib/i18n/useL";
 /**
  * El ciclo de nueve como un cuadrante: los números del 1 al 9 alrededor, el
  * del día en tinta y, si hay mapa, tu Día Personal marcado con un punto
@@ -47,6 +48,7 @@ export default function NineDial({
   ariaLabel: string;
   className?: string;
 }) {
+  const L = useL();
   const active = toDigit(day);
   const pd = personalDay ? toDigit(personalDay) : null;
   const py = personalYear ? toDigit(personalYear) : null;
@@ -54,7 +56,7 @@ export default function NineDial({
   const pyPos = py ? polar(R_OUT - 15, mid(py)) : null;
 
   return (
-    <svg viewBox="0 0 600 600" role="img" aria-label={ariaLabel} className={`w-full h-auto text-foreground ${className}`}>
+    <svg viewBox="0 0 600 600" role="img" aria-label={L.t(ariaLabel)} className={`w-full h-auto text-foreground ${className}`}>
       <g className="map-wheel-ring">
         <circle cx={C} cy={C} r={R_OUT} fill="none" stroke="currentColor" strokeOpacity={0.35} />
         {Array.from({ length: 9 }, (_, i) => i + 1).map((d) => {
@@ -74,7 +76,7 @@ export default function NineDial({
                 className={`font-display ${mine ? "fill-paper" : "fill-current"}`}
                 style={{ fontSize: 56, opacity: mine ? 1 : 0.45 }}
               >
-                {d}
+                {L.t(d)}
               </text>
             </g>
           );
@@ -98,7 +100,7 @@ export default function NineDial({
         className="fill-current font-display"
         style={{ fontSize: day > 9 ? 120 : 150, letterSpacing: "-0.02em" }}
       >
-        {day}
+        {L.t(day)}
       </text>
     </svg>
   );

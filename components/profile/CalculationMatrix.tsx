@@ -172,7 +172,7 @@ export default function CalculationMatrix({
           className="mt-10 border-t border-ink/10"
           role="status"
           aria-live="polite"
-          aria-label={done ? L("Cálculo completo", "Full calculation") : L("Calculando tu mapa", "Calculating your map")}
+          aria-label={L.t(done ? L("Cálculo completo", "Full calculation") : L("Calculando tu mapa", "Calculating your map"))}
         >
           {rows.slice(0, count).map((row, i) => (
             <div
@@ -180,12 +180,12 @@ export default function CalculationMatrix({
               className="flex items-baseline justify-between gap-4 py-3 border-b border-ink/10"
             >
               <span className="font-mono text-xs sm:text-sm text-muted tabular-nums truncate">
-                {row.label}
+                {L.t(row.label)}
               </span>
               <span className="flex items-baseline gap-3 shrink-0">
                 {row.system && (
                   <span className="text-sm text-ink/30 hidden sm:inline label-caps">
-                    {row.system}
+                    {L.t(row.system)}
                   </span>
                 )}
                 <span
@@ -195,7 +195,7 @@ export default function CalculationMatrix({
                       : "font-mono text-xs sm:text-sm text-foreground tabular-nums"
                   }
                 >
-                  {row.value}
+                  {L.t(row.value)}
                 </span>
               </span>
             </div>
@@ -212,9 +212,9 @@ export default function CalculationMatrix({
             Ver la fórmula en GitHub →
           </a>
           <span className="text-sm text-muted label-caps">
-            {done ? "Abriendo tu mapa" : "Calculando"}
+            {L.t(done ? "Abriendo tu mapa" : "Calculando")}
           </span>
-        </>, <><a href={FORMULA_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline underline-offset-4 label-caps">See the formula on GitHub →</a><span className="text-sm text-muted label-caps">{done ? "Opening your map" : "Calculating"}</span></>)}</div>
+        </>, <><a href={FORMULA_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline underline-offset-4 label-caps">See the formula on GitHub →</a><span className="text-sm text-muted label-caps">{L.t(done ? "Opening your map" : "Calculating")}</span></>)}</div>
       </div>
     </div>
   );

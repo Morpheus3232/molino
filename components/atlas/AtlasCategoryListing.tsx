@@ -82,15 +82,15 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
                   size={18}
                   className={`shrink-0 ${isActive ? "text-accent" : "text-muted"}`}
                 />
-                <span className="font-medium">{display.name}</span>
+                <span className="font-medium">{L.t(display.name)}</span>
               </button>
             );
           })}
         </div>
         <p className="text-xs text-muted mt-3">
-          {mounted && profile?.chineseZodiac === activeAnimal
+          {L.t(mounted && profile?.chineseZodiac === activeAnimal
             ? L("Este es tu animal según tu mapa.", "This is your animal according to your map.")
-            : L("Seleccioná un animal para ver qué resuena y qué tensa en esta categoría.", "Pick an animal to see what resonates and what creates tension in this category.")}
+            : L("Seleccioná un animal para ver qué resuena y qué tensa en esta categoría.", "Pick an animal to see what resonates and what creates tension in this category."))}
         </p>
       </div>
 
@@ -102,8 +102,8 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
         return (
           <section key={bucket} className="mb-10">
             <div className={`border-l-2 pl-4 mb-4 ${meta.accent}`}>
-              <h2 className="font-heading text-lg font-semibold text-foreground">{meta.title}</h2>
-              <p className="text-xs text-muted mt-0.5">{meta.hint}</p>
+              <h2 className="font-heading text-lg font-semibold text-foreground">{L.t(meta.title)}</h2>
+              <p className="text-xs text-muted mt-0.5">{L.t(meta.hint)}</p>
               <p className="text-xs text-muted mt-1 font-mono">
                 {items.length} {items.length === 1 ? "entidad" : "entidades"}
               </p>

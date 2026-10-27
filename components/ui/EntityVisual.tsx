@@ -131,10 +131,10 @@ export default function EntityVisual({
         style={baseStyle}
         className={`inline-flex items-center justify-center shrink-0 overflow-hidden bg-ink/[0.04] border border-ink/10 ${shapeClass} ${className}`}
         role="img"
-        aria-label={L(`Bandera de ${name}`, `Flag of ${name}`)}
+        aria-label={L(`Bandera de ${name}`, `Flag of ${L.t(name)}`)}
       >
         <span style={{ fontSize: size * 0.62 }} className="flag-emoji leading-none select-none">
-          {flag ?? "🌐"}
+          {L.t(flag ?? "🌐")}
         </span>
       </span>
     );
@@ -149,7 +149,7 @@ export default function EntityVisual({
       >
         <Image
           src={imageUrl}
-          alt={name}
+          alt={L.t(name)}
           width={size}
           height={size}
           className="object-cover"
@@ -167,7 +167,7 @@ export default function EntityVisual({
         style={baseStyle}
         className={`inline-flex items-center justify-center shrink-0 overflow-hidden bg-paper-alt border border-ink/10 text-accent ${shapeClass} ${className}`}
         role="img"
-        aria-label={L(`Signo ${zodiacAnimal}`, `${zodiacAnimal} sign`)}
+        aria-label={L(`Signo ${zodiacAnimal}`, `${L.t(zodiacAnimal)} sign`)}
       >
         <ZodiacAnimalIcon animal={zodiacAnimal} size={iconSize} />
       </span>
@@ -183,9 +183,9 @@ export default function EntityVisual({
       transition={{ duration: 0.25, ease: "easeOut" }}
       className={`inline-flex items-center justify-center shrink-0 overflow-hidden bg-gradient-to-br border border-ink/10 ${GRADIENTS[visualType] || "from-ink/10 via-paper-alt to-background"} text-foreground/80 hover:text-accent transition-colors ${shapeClass} ${className}`}
       role="img"
-      aria-label={name}
+      aria-label={L.t(name)}
     >
-      <EntityIcon kind={iconKind} size={iconSize} title={name} />
+      <EntityIcon kind={iconKind} size={iconSize} title={L.t(name)} />
     </motion.span>
   );
 }

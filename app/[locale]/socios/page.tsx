@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import SociosClient from "./SociosClient";
 import { metadataFor } from "@/lib/seo";
 
@@ -11,10 +12,11 @@ export const generateMetadata = metadataFor({
 });
 
 export default async function SociosPage({
-  searchParams,
+  searchParams, params: routeParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+} & { params: Promise<{ locale: string }> }) {
+  await initLocale(routeParams);
   const raw = await searchParams;
   const params = Object.fromEntries(
     Object.entries(raw).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v]),

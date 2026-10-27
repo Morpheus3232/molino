@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import PrivacidadContent from "./PrivacidadContent";
 import { metadataFor } from "@/lib/seo";
 
@@ -10,6 +11,7 @@ export const generateMetadata = metadataFor({
   image: "/opengraph-image",
 });
 
-export default function PrivacidadPage() {
+export default async function PrivacidadPage({ params }: { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <PrivacidadContent />;
 }

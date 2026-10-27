@@ -335,7 +335,7 @@ export default function UniversityHeader() {
                   className={navButtonClass(isActive(NO_PROFILE_LINKS(L).atlas.href))}
                   aria-current={pathname === NO_PROFILE_LINKS(L).atlas.href ? "page" : undefined}
                 >
-                  {NO_PROFILE_LINKS(L).atlas.label}
+                  {L.t(NO_PROFILE_LINKS(L).atlas.label)}
                 </Link>
                 <NavDropdown
                   id="time"
@@ -408,7 +408,7 @@ export default function UniversityHeader() {
                   className={navButtonClass(isActive(PROFILE_LINKS(L).journal.href))}
                   aria-current={pathname === PROFILE_LINKS(L).journal.href ? "page" : undefined}
                 >
-                  {PROFILE_LINKS(L).journal.label}
+                  {L.t(PROFILE_LINKS(L).journal.label)}
                 </Link>
               </>
             )}
@@ -465,7 +465,7 @@ export default function UniversityHeader() {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              aria-label={menuOpen ? L("Cerrar menú", "Close menu") : L("Abrir menú", "Open menu")}
+              aria-label={L.t(menuOpen ? L("Cerrar menú", "Close menu") : L("Abrir menú", "Open menu"))}
             >
               {menuOpen ? <X aria-hidden="true" focusable="false" className="w-5 h-5" /> : <Menu aria-hidden="true" focusable="false" className="w-5 h-5" />}
             </button>
@@ -611,6 +611,7 @@ function NavDropdown({
   onToggle: () => void;
   isActiveLink: (href: string) => boolean;
 }) {
+  const L = useL();
   const menuId = `${id}-menu`;
   const btnRef = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
@@ -652,7 +653,7 @@ function NavDropdown({
             : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
         }`}
       >
-        {label}
+        {L.t(label)}
         <ChevronDown
           aria-hidden="true"
           className={`w-3.5 h-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
@@ -671,7 +672,7 @@ function NavDropdown({
               <div key={group.heading ?? i} className={i > 0 ? "mt-1.5 pt-1.5 border-t border-ink/10" : ""}>
                 {group.heading && (
                   <p className="px-4 pt-1 pb-1 text-sm text-muted/70 label-caps">
-                    {group.heading}
+                    {L.t(group.heading)}
                   </p>
                 )}
                 {group.links.map((link) => (
@@ -685,7 +686,7 @@ function NavDropdown({
                         : "text-foreground hover:bg-ink/[0.04] hover:text-accent"
                     }`}
                   >
-                    {link.label}
+                    {L.t(link.label)}
                   </Link>
                 ))}
               </div>
@@ -706,6 +707,7 @@ function MobileLink({
   isActive: (href: string) => boolean;
   onClick: () => void;
 }) {
+  const L = useL();
   return (
     <Link
       href={link.href}
@@ -715,7 +717,7 @@ function MobileLink({
       }`}
       onClick={onClick}
     >
-      {link.label}
+      {L.t(link.label)}
     </Link>
   );
 }
@@ -731,10 +733,11 @@ function MobileGroups({
   isActive: (href: string) => boolean;
   onNavigate: () => void;
 }) {
+  const L = useL();
   return (
     <>
       <p className="px-3 pt-5 pb-1 text-sm text-foreground font-semibold label-caps border-t border-ink/10 mt-2">
-        {heading}
+        {L.t(heading)}
       </p>
       {groups.flatMap((g) => g.links).map((link) => (
         <Link
@@ -746,7 +749,7 @@ function MobileGroups({
           }`}
           onClick={onNavigate}
         >
-          {link.label}
+          {L.t(link.label)}
         </Link>
       ))}
     </>

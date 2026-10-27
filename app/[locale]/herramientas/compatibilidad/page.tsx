@@ -118,19 +118,19 @@ export default function CompatibilidadCalcPage() {
                 </select>
                 <select value={p1.month} onChange={(e) => setP1({ ...p1, month: e.target.value })} className="input" aria-label={L("Mes persona 1", "Person 1 month")}>
                   <option value="">{L("Mes", "Month")}</option>
-                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{L.t(m.label)}</option>))}
                 </select>
                 <select value={p1.year} onChange={(e) => setP1({ ...p1, year: e.target.value })} className="input" aria-label={L("Año persona 1", "Person 1 year")}>
                   <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
+                    <option key={y} value={String(y)}>{L.t(y)}</option>
                   ))}
                 </select>
               </div>
               {person1 && (
                 <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">{L(<>
-                  {person1.animal} · {person1.sunSign} · Camino de Vida {person1.lifePath}
-                </>, <>{person1.animal} · {person1.sunSign} · Life Path {person1.lifePath}</>)}</div>
+                  {L.t(person1.animal)} · {L.t(person1.sunSign)} · Camino de Vida {L.t(person1.lifePath)}
+                </>, <>{L.t(person1.animal)} · {L.t(person1.sunSign)} · Life Path {L.t(person1.lifePath)}</>)}</div>
               )}
             </div>
 
@@ -146,19 +146,19 @@ export default function CompatibilidadCalcPage() {
                 </select>
                 <select value={p2.month} onChange={(e) => setP2({ ...p2, month: e.target.value })} className="input" aria-label={L("Mes persona 2", "Person 2 month")}>
                   <option value="">{L("Mes", "Month")}</option>
-                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
+                  {MONTHS(L).map((m) => (<option key={m.value} value={m.value}>{L.t(m.label)}</option>))}
                 </select>
                 <select value={p2.year} onChange={(e) => setP2({ ...p2, year: e.target.value })} className="input" aria-label={L("Año persona 2", "Person 2 year")}>
                   <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
+                    <option key={y} value={String(y)}>{L.t(y)}</option>
                   ))}
                 </select>
               </div>
               {person2 && (
                 <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">{L(<>
-                  {person2.animal} · {person2.sunSign} · Camino de Vida {person2.lifePath}
-                </>, <>{person2.animal} · {person2.sunSign} · Life Path {person2.lifePath}</>)}</div>
+                  {L.t(person2.animal)} · {L.t(person2.sunSign)} · Camino de Vida {L.t(person2.lifePath)}
+                </>, <>{L.t(person2.animal)} · {L.t(person2.sunSign)} · Life Path {L.t(person2.lifePath)}</>)}</div>
               )}
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function CompatibilidadCalcPage() {
                       color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
                     }}
                   >
-                    {compatibility.label}
+                    {L.t(compatibility.label)}
                   </motion.p>
                 </div>
 
@@ -207,7 +207,7 @@ export default function CompatibilidadCalcPage() {
                   transition={{ delay: 0.6, duration: 0.4 }}
                   className="max-w-lg mx-auto text-center"
                 >
-                  <p className="text-sm text-muted leading-relaxed">{compatibility.description}</p>
+                  <p className="text-sm text-muted leading-relaxed">{L.t(compatibility.description)}</p>
                 </motion.div>
               </motion.div>
 
@@ -233,7 +233,7 @@ export default function CompatibilidadCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = L(`Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`, `Zodiac compatibility: ${compatibility.label}. Calculate yours on Molino.`);
+                    const text = L(`Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`, `Zodiac compatibility: ${L.t(compatibility.label)}. Calculate yours on Molino.`);
                     if (navigator.share) {
                       navigator.share({ title: L("Compatibilidad", "Compatibility"), text }).catch(() => {});
                     } else {

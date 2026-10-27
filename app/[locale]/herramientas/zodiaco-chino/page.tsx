@@ -96,13 +96,13 @@ export default function ZodiacoChinoCalcPage() {
                 <select value={month} onChange={(e) => setMonth(e.target.value)} className="input flex-1" aria-label={L("Mes", "Month")}>
                   <option value="">{L("Mes", "Month")}</option>
                   {MONTHS(L).map((m) => (
-                    <option key={m.value} value={m.value}>{m.label}</option>
+                    <option key={m.value} value={m.value}>{L.t(m.label)}</option>
                   ))}
                 </select>
                 <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label={L("Año", "Year")}>
                   <option value="">{L("Año", "Year")}</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
+                    <option key={y} value={String(y)}>{L.t(y)}</option>
                   ))}
                 </select>
               </div>
@@ -149,7 +149,7 @@ export default function ZodiacoChinoCalcPage() {
                     transition={{ delay: 0.4, duration: 0.4 }}
                     className="font-heading text-4xl sm:text-5xl font-semibold text-foreground"
                   >
-                    {result.animal}
+                    {L.t(result.animal)}
                   </motion.h2>
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -158,13 +158,13 @@ export default function ZodiacoChinoCalcPage() {
                     className="flex items-center justify-center gap-3 mt-4"
                   >
                     <span className="px-4 py-1.5 rounded-sm text-sm font-medium border border-border transition-colors hover:border-accent/40" style={{ borderColor: ELEMENT_COLORS[result.element] || "var(--element-fire)", color: ELEMENT_COLORS[result.element] || "var(--element-fire)" }}>
-                      {result.element}
+                      {L.t(result.element)}
                     </span>
                   </motion.div>
                 </div>
 
                 {/* Información del animal */}
-                {(() => {
+                {L.t((() => {
                   const animalData = getAnimalData(result.animal);
                   return animalData ? (
                     <div className="max-w-2xl mx-auto space-y-8">
@@ -175,7 +175,7 @@ export default function ZodiacoChinoCalcPage() {
                         transition={{ delay: 0.55, duration: 0.4 }}
                       >
                         <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Significado", "Meaning")}</h3>
-                        <p className="text-sm text-foreground leading-relaxed">{animalData.meaning}</p>
+                        <p className="text-sm text-foreground leading-relaxed">{L.t(animalData.meaning)}</p>
                       </motion.div>
 
                       {/* Historia */}
@@ -185,7 +185,7 @@ export default function ZodiacoChinoCalcPage() {
                         transition={{ delay: 0.6, duration: 0.4 }}
                       >
                         <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Historia y simbolismo", "History and symbolism")}</h3>
-                        <p className="text-sm text-muted leading-relaxed">{animalData.history}</p>
+                        <p className="text-sm text-muted leading-relaxed">{L.t(animalData.history)}</p>
                       </motion.div>
 
                       {/* Características */}
@@ -197,15 +197,15 @@ export default function ZodiacoChinoCalcPage() {
                       >
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
                           <h3 className="font-heading text-lg font-semibold text-accent mb-2">{L("Características", "Characteristics")}</h3>
-                          <p className="text-sm text-foreground">{animalData.traits.join(", ")}</p>
+                          <p className="text-sm text-foreground">{L.t(animalData.traits.map(L.t).join(", "))}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
                           <h3 className="font-heading text-lg font-semibold text-accent mb-2">{L("Fortalezas", "Strengths")}</h3>
-                          <p className="text-sm text-foreground">{animalData.strengths.slice(0, 3).join(", ")}</p>
+                          <p className="text-sm text-foreground">{L.t(animalData.strengths.slice(0, 3).map(L.t).join(", "))}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
                           <h3 className="font-heading text-lg font-semibold text-muted mb-2">{L("Desafíos", "Challenges")}</h3>
-                          <p className="text-sm text-foreground">{animalData.challenges.slice(0, 3).join(", ")}</p>
+                          <p className="text-sm text-foreground">{L.t(animalData.challenges.slice(0, 3).map(L.t).join(", "))}</p>
                         </div>
                       </motion.div>
 
@@ -218,7 +218,7 @@ export default function ZodiacoChinoCalcPage() {
                         <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Tus dos amigos (三合)", "Your two friends (三合)")}</h3>
                         <div className="flex flex-wrap gap-2">
                           {animalData.compatibility.friendly.map(f => (
-                            <span key={f} className="text-sm px-3 py-1 rounded-md border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>
+                            <span key={f} className="text-sm px-3 py-1 rounded-md border border-border text-foreground transition-colors hover:border-accent/40">{L.t(f)}</span>
                           ))}
                         </div>
                       </motion.div>
@@ -231,7 +231,7 @@ export default function ZodiacoChinoCalcPage() {
                           transition={{ delay: 0.75, duration: 0.4 }}
                         >
                           <h3 className="font-heading text-lg font-semibold text-muted mb-3">{L("Años correspondientes", "Corresponding years")}</h3>
-                          <p className="text-sm text-foreground">{getYearRange(animalIndex)}</p>
+                          <p className="text-sm text-foreground">{L.t(getYearRange(animalIndex))}</p>
                         </motion.div>
                       )}
 
@@ -245,8 +245,8 @@ export default function ZodiacoChinoCalcPage() {
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {animalData.elements.map((el) => (
                             <div key={el.element} className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                              <p className="text-sm font-medium text-foreground">{L(<>{result.animal} de {el.element}</>, <>{el.element} {result.animal}</>)}</p>
-                              <p className="text-xs text-muted mt-1">{el.modifier}</p>
+                              <p className="text-sm font-medium text-foreground">{L(<>{L.t(result.animal)} de {L.t(el.element)}</>, <>{L.t(el.element)} {L.t(result.animal)}</>)}</p>
+                              <p className="text-xs text-muted mt-1">{L.t(el.modifier)}</p>
                             </div>
                           ))}
                         </div>
@@ -265,7 +265,7 @@ export default function ZodiacoChinoCalcPage() {
                       </motion.div>
                     </div>
                   ) : null;
-                })()}
+                })())}
               </motion.div>
 
               {/* Disclaimer */}
@@ -290,9 +290,9 @@ export default function ZodiacoChinoCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = L(`Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`, `I'm a ${result.element} ${result.animal}. Read your Chinese zodiac animal on Molino.`);
+                    const text = L(`Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`, `I'm a ${L.t(result.element)} ${L.t(result.animal)}. Read your Chinese zodiac animal on Molino.`);
                     if (navigator.share) {
-                      navigator.share({ title: L(`Mi Zodiaco Chino — ${result.animal}`, `My Chinese Zodiac — ${result.animal}`), text }).catch(() => {});
+                      navigator.share({ title: L(`Mi Zodiaco Chino — ${result.animal}`, `My Chinese Zodiac — ${L.t(result.animal)}`), text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

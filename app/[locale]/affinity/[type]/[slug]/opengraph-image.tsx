@@ -79,12 +79,12 @@ export default async function Image({ params }: { params: Promise<{ type: string
 
           {/* Entity side */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 96 }}>{entity.emoji}</span>
+            <span style={{ fontSize: 96 }}>{L.t(entity.emoji)}</span>
             <span style={{ color: "#0A0A0A", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>
-              {entity.name}
+              {L.t(entity.name)}
             </span>
             <span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600 }}>
-              {entityAnimal}
+              {L.t(entityAnimal)}
             </span>
           </div>
 
@@ -113,8 +113,8 @@ export default async function Image({ params }: { params: Promise<{ type: string
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 32, height: 2, background: "#0A0A0A", borderRadius: 1 }} />
             <span style={{ color: "#5C5C5C", fontSize: 14 }}>{L(<>
-              Descubrí tu afinidad con {entity.name} en
-            </>, <>Discover your affinity with {entity.name} on</>)}</span>
+              Descubrí tu afinidad con {L.t(entity.name)} en
+            </>, <>Discover your affinity with {L.t(entity.name)} on</>)}</span>
             <span style={{ color: "#0A0A0A", fontSize: 14, fontWeight: 600 }}>Molino</span>
           </div>
           <span style={{ color: "#5C5C5C", fontSize: 12 }}>{L("Según el zodíaco chino", "According to the Chinese zodiac")}</span>

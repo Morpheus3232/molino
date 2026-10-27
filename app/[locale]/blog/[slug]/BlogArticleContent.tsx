@@ -61,7 +61,7 @@ function Toc({ post }: { post: BlogPost }) {
                     : "text-muted border-transparent hover:text-foreground"
                 }`}
               >
-                {section.heading}
+                {L.t(section.heading)}
               </a>
             </li>
           );
@@ -90,10 +90,10 @@ function RelatedArticles({ post }: { post: BlogPost }) {
               className="group block p-4 rounded-md border border-border hover:border-accent/50 transition-colors"
             >
               <span className="text-sm text-accent block mb-1 label-caps">
-                {rel.category}
+                {L.t(rel.category)}
               </span>
               <span className="text-sm text-foreground group-hover:text-accent transition-colors font-medium">
-                {rel.title}
+                {L.t(rel.title)}
               </span>
             </Link>
           </li>
@@ -134,8 +134,8 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
             Blog
           </Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">{post.title}</span>
-        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/blog" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Blog</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{post.title}</span></>)}</nav>
+          <span className="text-foreground font-medium" aria-current="page">{L.t(post.title)}</span>
+        </>, <><Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Home</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><Link href="/blog" className="underline decoration-ink/25 underline-offset-2 hover:text-accent transition-colors">Blog</Link><span className="mx-2" aria-hidden="true">&rsaquo;</span><span className="text-foreground font-medium" aria-current="page">{L.t(post.title)}</span></>)}</nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
           {/* Contenido principal (~70%) */}
@@ -143,19 +143,19 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
             {/* Hero — above the fold, dispara al montar (no whileInView, ver fadeUpMount) */}
             <motion.header {...fadeUpMount} className="mb-10">
               <span className="inline-block text-sm text-accent mb-4 label-caps">
-                {post.category}
+                {L.t(post.category)}
               </span>
               <h1 className="page-title text-foreground mb-5">
-                {post.title}
+                {L.t(post.title)}
               </h1>
-              <p className="text-base text-muted leading-relaxed max-w-2xl mb-6">{post.excerpt}</p>
+              <p className="text-base text-muted leading-relaxed max-w-2xl mb-6">{L.t(post.excerpt)}</p>
               <div className="flex items-center gap-4 text-xs text-muted/70">{L(<>
-                <span>{post.author}</span>
+                <span>{L.t(post.author)}</span>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
-                <time dateTime={post.date}>{formatDate(post.date)}</time>
+                <time dateTime={post.date}>{L.t(formatDate(post.date))}</time>
                 <span className="w-px h-3 bg-border" aria-hidden="true" />
-                <span>{readTime} min de lectura</span>
-              </>, <><span>{post.author}</span><span className="w-px h-3 bg-border" aria-hidden="true" /><time dateTime={post.date}>{formatDate(post.date)}</time><span className="w-px h-3 bg-border" aria-hidden="true" /><span>{readTime} min read</span></>)}</div>
+                <span>{L.t(readTime)} min de lectura</span>
+              </>, <><span>{L.t(post.author)}</span><span className="w-px h-3 bg-border" aria-hidden="true" /><time dateTime={post.date}>{L.t(formatDate(post.date))}</time><span className="w-px h-3 bg-border" aria-hidden="true" /><span>{L.t(readTime)} min read</span></>)}</div>
             </motion.header>
 
             {/* Portada — above the fold, dispara al montar */}
@@ -163,7 +163,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               <div className="relative aspect-[16/9] overflow-hidden rounded-md border border-border bg-paper-alt">
                 <Image
                   src={post.image}
-                  alt={post.imageAlt ?? post.title}
+                  alt={L.t(post.imageAlt ?? post.title)}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 70vw"
@@ -179,7 +179,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                     rel="noopener noreferrer"
                     className="underline underline-offset-2 hover:text-foreground"
                   >
-                    {post.imageCredit.name}
+                    {L.t(post.imageCredit.name)}
                   </a>{" "}
                   en{" "}
                   <a
@@ -190,7 +190,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                   >
                     Unsplash
                   </a>
-                </>, <>Photo:{" "}<a href={`${post.imageCredit.url}?utm_source=molino&utm_medium=referral`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{post.imageCredit.name}</a>{" "}on{" "}<a href="https://unsplash.com/?utm_source=molino&utm_medium=referral" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
+                </>, <>Photo:{" "}<a href={`${post.imageCredit.url}?utm_source=molino&utm_medium=referral`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">{L.t(post.imageCredit.name)}</a>{" "}on{" "}<a href="https://unsplash.com/?utm_source=molino&utm_medium=referral" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-foreground">Unsplash</a></>)}</figcaption>
               )}
             </motion.figure>
 
@@ -199,7 +199,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               <div className="space-y-4 mb-10">
                 {post.intro.map((p) => (
                   <p key={p.slice(0, 40)} className="text-base sm:text-lg text-foreground leading-relaxed">
-                    {p}
+                    {L.t(p)}
                   </p>
                 ))}
               </div>
@@ -208,12 +208,12 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               {post.sections.map((section) => (
                 <motion.section key={section.id} {...fadeUp} id={section.id} className="mb-12 scroll-mt-24">
                   <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
-                    {section.heading}
+                    {L.t(section.heading)}
                   </h2>
                   <div className="space-y-4">
                     {section.paragraphs.map((p) => (
                       <p key={p.slice(0, 40)} className="text-base text-muted leading-relaxed">
-                        {p}
+                        {L.t(p)}
                       </p>
                     ))}
                   </div>
@@ -222,7 +222,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                       {section.list.map((item) => (
                         <li key={item} className="flex items-start gap-3 text-base text-foreground leading-relaxed">
                           <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                          {item}
+                          {L.t(item)}
                         </li>
                       ))}
                     </ul>
@@ -238,10 +238,10 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                     {post.faq.map((faq) => (
                       <details key={faq.q} className="group rounded-md border border-border p-5">
                         <summary className="cursor-pointer text-sm font-medium text-foreground list-none flex items-center justify-between gap-3">
-                          {faq.q}
+                          {L.t(faq.q)}
                           <span aria-hidden="true" className="text-accent transition-transform group-open:rotate-45 text-lg leading-none">+</span>
                         </summary>
-                        <p className="text-sm text-muted leading-relaxed mt-3">{faq.a}</p>
+                        <p className="text-sm text-muted leading-relaxed mt-3">{L.t(faq.a)}</p>
                       </details>
                     ))}
                   </div>
@@ -262,7 +262,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                         href={post.featureLink.href}
                         className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
                       >
-                        <span>{post.featureLink.label}</span>
+                        <span>{L.t(post.featureLink.label)}</span>
                         <span className="group-hover:translate-x-1 transition-transform">→</span>
                       </Link>
                     </div>

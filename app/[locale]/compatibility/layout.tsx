@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CompatibilityLayout({ children }: { children: React.ReactNode }) {
+export default async function CompatibilityLayout({ children, params }: { children: React.ReactNode } & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   return <>{children}</>;
 }

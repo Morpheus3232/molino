@@ -28,7 +28,7 @@ export default function ZodiacoChinoContent() {
 
         <Reveal tag="section" delay={0.05} className="mb-12">
           <div className="py-2 pl-5 border-l-2 border-ink">
-            <p className="text-sm text-muted leading-relaxed">{CHINESE_ZODIAC_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(CHINESE_ZODIAC_DISCLAIMER)}</p>
           </div>
         </Reveal>
 
@@ -64,8 +64,8 @@ export default function ZodiacoChinoContent() {
                 <Link href={`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`} className="group relative flex h-full flex-col gap-3 p-5 sm:p-6 hover:bg-ink/[0.03] transition-colors">
                   <span className="absolute top-3 right-4 text-sm text-muted/60 tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <ZodiacAnimalIcon animal={animal.name} size={44} className="text-foreground" />
-                  <span className="font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{animal.name}</span>
-                  <span className="text-sm text-muted leading-snug">{animal.traits.slice(0, 3).join(", ").toLowerCase()}</span>
+                  <span className="font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{L.t(animal.name)}</span>
+                  <span className="text-sm text-muted leading-snug">{L.t(animal.traits.slice(0, 3).map(L.t).join(", ").toLowerCase())}</span>
                 </Link>
               </li>
             ))}
@@ -84,10 +84,10 @@ export default function ZodiacoChinoContent() {
               <p key={y.year} className="grid grid-cols-[3rem_1fr_auto] items-baseline gap-3 py-1.5 border-b border-ink/10 break-inside-avoid">{L(<>
                 <span className="font-semibold tabular-nums">{y.year}</span>
                 <Link href={`/conocimiento/zodiaco-chino/${y.animal.toLowerCase()}`} className="whitespace-nowrap hover:underline underline-offset-4">
-                  {y.animal} de {y.element}
+                  {L.t(y.animal)} de {L.t(y.element)}
                 </Link>
-                <span className="text-muted tabular-nums whitespace-nowrap">{y.start}</span>
-              </>, <><span className="font-semibold tabular-nums">{y.year}</span><Link href={`/conocimiento/zodiaco-chino/${y.animal.toLowerCase()}`} className="whitespace-nowrap hover:underline underline-offset-4">{y.element} {y.animal}</Link><span className="text-muted tabular-nums whitespace-nowrap">{y.start}</span></>)}</p>
+                <span className="text-muted tabular-nums whitespace-nowrap">{L.t(y.start)}</span>
+              </>, <><span className="font-semibold tabular-nums">{y.year}</span><Link href={`/conocimiento/zodiaco-chino/${y.animal.toLowerCase()}`} className="whitespace-nowrap hover:underline underline-offset-4">{L.t(y.element)} {L.t(y.animal)}</Link><span className="text-muted tabular-nums whitespace-nowrap">{L.t(y.start)}</span></>)}</p>
             ))}
           </div>
         </Reveal>
@@ -99,8 +99,8 @@ export default function ZodiacoChinoContent() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {CHINESE_ELEMENTS.map((el) => (
               <div key={el.name} className="p-5 border border-ink/10">
-                <p className="font-heading text-xl font-semibold text-foreground mb-2">{el.name}</p>
-                <p className="text-sm text-muted">{el.qualities.join(" · ")}</p>
+                <p className="font-heading text-xl font-semibold text-foreground mb-2">{L.t(el.name)}</p>
+                <p className="text-sm text-muted">{L.t(el.qualities.map(L.t).join(" · "))}</p>
               </div>
             ))}
           </div>
@@ -118,9 +118,9 @@ export default function ZodiacoChinoContent() {
               <div key={src.title} className="flex items-start gap-3 py-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" />
                 <div>
-                  <p className="text-sm text-foreground">{src.title}</p>
+                  <p className="text-sm text-foreground">{L.t(src.title)}</p>
                   <p className="text-sm text-muted">
-                    {src.author}
+                    {L.t(src.author)}
                     {src.url && (
                       <>
                         {" · "}
@@ -154,7 +154,7 @@ export default function ZodiacoChinoContent() {
 
         <Reveal tag="section" delay={0.3}>
           <div className="p-6 border border-ink/10">
-            <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(MOLINO_DISCLAIMER)}</p>
           </div>
         </Reveal>
         </div>

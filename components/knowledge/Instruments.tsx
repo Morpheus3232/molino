@@ -64,7 +64,7 @@ function DateField({ value, onChange, id, resetLabel = "Volver a hoy" }: { value
             onClick={() => onChange("")}
             className="px-4 text-sm text-muted hover:text-foreground border-l border-ink/20"
           >
-            {resetLabel}
+            {L.t(resetLabel)}
           </button>
         )}
       </div>
@@ -99,7 +99,7 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
     <KnowledgeHero
       crumbs={crumbs}
       eyebrow={L("Zodíaco chino · el calendario de doce animales", "Chinese zodiac · the calendar of twelve animals")}
-      title={title}
+      title={L.t(title)}
       lead={lead}
       meta={
         <>
@@ -107,28 +107,28 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
           <Result>
             {usingDate ? (
               <>{L(<>
-                El {fechaLarga(date)} corría el año lunar {lunar}:{" "}
+                El {L.t(fechaLarga(date))} corría el año lunar {L.t(lunar)}:{" "}
                 <Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">
-                  {animal} de {element}
+                  {L.t(animal)} de {L.t(element)}
                 </Link>
                 .{lunar !== Number(date.slice(0, 4)) && " Ojo: es anterior al Año Nuevo chino, así que cuenta el año anterior."}
-              </>, <>On {fechaLarga(date)} it was lunar year {lunar}:{" "}<Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">{element} {animal}</Link>.{lunar !== Number(date.slice(0, 4)) && " Note: it's before Chinese New Year, so the previous year counts."}</>)}</>
+              </>, <>On {L.t(fechaLarga(date))} it was lunar year {L.t(lunar)}:{" "}<Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">{L.t(element)} {L.t(animal)}</Link>.{lunar !== Number(date.slice(0, 4)) && " Note: it's before Chinese New Year, so the previous year counts."}</>)}</>
             ) : (
               <>
                 {L("Hoy corre el año del", "This is the year of the")}{" "}
                 <Link href={`/conocimiento/zodiaco-chino/${slug(animal)}`} className="underline underline-offset-4 hover:no-underline">{L(<>
-                  {animal} de {element}
-                </>, <>{element} {animal}</>)}</Link>
-                {start && <>{L(<>, que empezó el {fechaLarga(start)}</>, <>, which began on {fechaLarga(start)}</>)}</>}.
+                  {L.t(animal)} de {L.t(element)}
+                </>, <>{L.t(element)} {L.t(animal)}</>)}</Link>
+                {start && <>{L(<>, que empezó el {L.t(fechaLarga(start))}</>, <>, which began on {L.t(fechaLarga(start))}</>)}</>}.
               </>
             )}
           </Result>
         </>
       }
       legend={[
-        { mark: MARKS.ink, text: <>{L(<>En negro, el animal de esa fecha: <span className="text-foreground">{animal}</span>.</>, <>In black, the animal of that date: <span className="text-foreground">{animal}</span>.</>)}</> },
-        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{kinds.amigo.join(" y ")}</span>.</>, <>The red triangle links it with its two friends: <span className="text-foreground">{kinds.amigo.join(" and ")}</span>.</>)}</> },
-        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{kinds.enemigo[0]}</span>.</>)}</> },
+        { mark: MARKS.ink, text: <>{L(<>En negro, el animal de esa fecha: <span className="text-foreground">{L.t(animal)}</span>.</>, <>In black, the animal of that date: <span className="text-foreground">{L.t(animal)}</span>.</>)}</> },
+        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo lo une con sus dos amigos: <span className="text-foreground">{L.t(kinds.amigo.map(L.t).join(" y "))}</span>.</>, <>The red triangle links it with its two friends: <span className="text-foreground">{L.t(kinds.amigo.map(L.t).join(" and "))}</span>.</>)}</> },
+        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{L.t(kinds.enemigo[0])}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{L.t(kinds.enemigo[0])}</span>.</>)}</> },
       ]}
       aside={
         <RelationWheel
@@ -136,7 +136,7 @@ export function ChineseYearInstrument({ crumbs, title, lead }: { crumbs: { href?
           items={CHINESE_ANIMALS.map((a) => ({ key: a.name, label: a.name, icon: <ZodiacAnimalIcon animal={a.name} size={40} /> }))}
           active={index}
           center={<ZodiacAnimalIcon animal={animal} size={64} />}
-          ariaLabel={L(`Rueda del zodíaco chino con ${animal} marcado.`, `Chinese zodiac wheel with ${animal} marked.`)}
+          ariaLabel={L(`Rueda del zodíaco chino con ${animal} marcado.`, `Chinese zodiac wheel with ${L.t(animal)} marked.`)}
           className="mx-auto max-w-[34rem]"
         />
       }
@@ -159,7 +159,7 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
   const usingDate = isValidDate(date);
   const link = (
     <Link href={`/conocimiento/astrologia/${slug(info.name)}`} className="underline underline-offset-4 hover:no-underline">
-      {info.name}
+      {L.t(info.name)}
     </Link>
   );
 
@@ -167,20 +167,20 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
     <KnowledgeHero
       crumbs={crumbs}
       eyebrow={L("Astrología · el recorrido del Sol en doce tramos", "Astrology · the path of the Sun in twelve stretches")}
-      title={title}
+      title={L.t(title)}
       lead={lead}
       meta={
         <>
           <DateField id="as-fecha" value={date} onChange={setDate} />
           <Result>
-            {usingDate ? <>{L(<>El {fechaLarga(date)} el Sol estaba en {link} ({info.dates}).</>, <>On {fechaLarga(date)} the Sun was in {link} ({info.dates}).</>)}</> : <>{L(<>Hoy el Sol está en {link}: {info.dates}.</>, <>Today the Sun is in {link}: {info.dates}.</>)}</>}
+            {usingDate ? <>{L(<>El {L.t(fechaLarga(date))} el Sol estaba en {L.t(link)} ({L.t(info.dates)}).</>, <>On {L.t(fechaLarga(date))} the Sun was in {L.t(link)} ({L.t(info.dates)}).</>)}</> : <>{L(<>Hoy el Sol está en {L.t(link)}: {L.t(info.dates)}.</>, <>Today the Sun is in {L.t(link)}: {L.t(info.dates)}.</>)}</>}
           </Result>
         </>
       }
       legend={[
-        { mark: MARKS.ink, text: <>{L(<>En negro, el signo de esa fecha: <span className="text-foreground">{info.name}</span>.</>, <>In black, the sign of that date: <span className="text-foreground">{info.name}</span>.</>)}</> },
-        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo une los tres signos de {info.element}: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " y $1")}</span>.</>, <>The red triangle links the three {info.element} signs: <span className="text-foreground">{trine.join(", ").replace(/, ([^,]*)$/, " and $1")}</span>.</>)}</> },
-        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{opposite}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{opposite}</span>.</>)}</> },
+        { mark: MARKS.ink, text: <>{L(<>En negro, el signo de esa fecha: <span className="text-foreground">{L.t(info.name)}</span>.</>, <>In black, the sign of that date: <span className="text-foreground">{L.t(info.name)}</span>.</>)}</> },
+        { mark: MARKS.trine, text: <>{L(<>El triángulo rojo une los tres signos de {L.t(info.element)}: <span className="text-foreground">{L.t(trine.map(L.t).join(", ").replace(/, ([^,]*)$/, " y $1"))}</span>.</>, <>The red triangle links the three {L.t(info.element)} signs: <span className="text-foreground">{L.t(trine.map(L.t).join(", ").replace(/, ([^,]*)$/, " and $1"))}</span>.</>)}</> },
+        { mark: MARKS.dashed, text: <>{L(<>La línea punteada cruza hasta su opuesto: <span className="text-foreground">{L.t(opposite)}</span>.</>, <>The dotted line crosses to its opposite: <span className="text-foreground">{L.t(opposite)}</span>.</>)}</> },
       ]}
       aside={
         <RelationWheel
@@ -188,7 +188,7 @@ export function SunSignInstrument({ crumbs, title, lead }: { crumbs: { href?: st
           items={ZODIAC_SIGNS.map((s) => ({ key: s.name, label: s.name, icon: <AstrologySignIcon sign={s.name} size={40} /> }))}
           active={index}
           center={<AstrologySignIcon sign={info.name} size={64} />}
-          ariaLabel={L(`Rueda del zodíaco con ${info.name} marcado.`, `Zodiac wheel with ${info.name} marked.`)}
+          ariaLabel={L(`Rueda del zodíaco con ${info.name} marcado.`, `Zodiac wheel with ${L.t(info.name)} marked.`)}
           className="mx-auto max-w-[34rem]"
         />
       }
@@ -211,20 +211,20 @@ export function LifePathInstrument({ crumbs, title, lead }: { crumbs: { href?: s
     <KnowledgeHero
       crumbs={crumbs}
       eyebrow={L("Numerología · la cuenta con tu fecha", "Numerology · the math with your date")}
-      title={title}
+      title={L.t(title)}
       lead={lead}
       meta={
         <>
           <DateField id="nu-fecha" value={date} onChange={setDate} resetLabel={L("Ver el ejemplo", "See the example")} />
           <div className="mt-6 max-w-xl border-l-2 border-ink pl-5" aria-live="polite">
             <p className="text-sm text-muted">
-              {usingDate ? L(`Los dígitos de ${fechaLarga(date)}`, `The digits of ${fechaLarga(date)}`) : L(`Un ejemplo: los dígitos de ${fechaLarga(example)}`, `An example: the digits of ${fechaLarga(example)}`)}
+              {L.t(usingDate ? L(`Los dígitos de ${fechaLarga(date)}`, `The digits of ${L.t(fechaLarga(date))}`) : L(`Un ejemplo: los dígitos de ${fechaLarga(example)}`, `An example: the digits of ${L.t(fechaLarga(example))}`))}
             </p>
-            <p className="mt-1 font-mono tabular-nums text-lg sm:text-xl text-foreground break-words">{steps.text}</p>
+            <p className="mt-1 font-mono tabular-nums text-lg sm:text-xl text-foreground break-words">{L.t(steps.text)}</p>
             <p className="mt-2 text-lg text-foreground">
               {L("Camino de Vida", "Life Path")}{" "}
               <Link href={`/conocimiento/numerologia/${steps.result}`} className="underline underline-offset-4 hover:no-underline">
-                {steps.result}{num ? ` · ${num.title}` : ""}
+                {L.t(steps.result)}{L.t(num ? ` · ${num.title}` : "")}
               </Link>
               {steps.master && <span className="text-muted">{L(": número maestro, no se reduce.", ": master number, not reduced.")}</span>}
             </p>

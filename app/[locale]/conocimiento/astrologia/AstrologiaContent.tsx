@@ -31,7 +31,7 @@ export default function AstrologiaContent() {
 
         <Reveal tag="section" delay={0.05} className="mb-12">
           <div className="py-2 pl-5 border-l-2 border-ink">
-            <p className="text-sm text-muted leading-relaxed">{ASTROLOGY_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(ASTROLOGY_DISCLAIMER)}</p>
           </div>
         </Reveal>
 
@@ -77,10 +77,10 @@ export default function AstrologiaContent() {
                 <div key={el.name} className="p-4 border border-ink/10">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: el.color }} />
-                    <p className="text-sm font-medium text-foreground">{el.name}</p>
+                    <p className="text-sm font-medium text-foreground">{L.t(el.name)}</p>
                   </div>
-                  <p className="text-sm text-muted">{el.signs}</p>
-                  <p className="text-sm text-muted mt-1">{el.traits.join(" · ")}</p>
+                  <p className="text-sm text-muted">{L.t(el.signs)}</p>
+                  <p className="text-sm text-muted mt-1">{L.t(el.traits.map(L.t).join(" · "))}</p>
                 </div>
               ))}
             </div>
@@ -88,9 +88,9 @@ export default function AstrologiaContent() {
               <h3 className="font-heading text-lg font-semibold text-foreground">{L("Modalidades", "Modalities")}</h3>
               {MODALITIES(L).map((mod) => (
                 <div key={mod.name} className="p-4 border border-ink/10">
-                  <p className="text-sm font-medium text-foreground mb-1">{mod.name}</p>
-                  <p className="text-sm text-muted">{mod.signs}</p>
-                  <p className="text-sm text-muted mt-1">{mod.traits.join(" · ")}</p>
+                  <p className="text-sm font-medium text-foreground mb-1">{L.t(mod.name)}</p>
+                  <p className="text-sm text-muted">{L.t(mod.signs)}</p>
+                  <p className="text-sm text-muted mt-1">{L.t(mod.traits.map(L.t).join(" · "))}</p>
                 </div>
               ))}
             </div>
@@ -107,8 +107,8 @@ export default function AstrologiaContent() {
                 <Link href={`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} className="group relative flex h-full flex-col gap-3 p-5 sm:p-6 hover:bg-ink/[0.03] transition-colors">
                   <span className="absolute top-3 right-4 text-sm text-muted/60 tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                   <AstrologySignIcon sign={sign.name} size={40} className="text-foreground" />
-                  <span className="font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{sign.name}</span>
-                  <span className="text-sm text-muted leading-snug">{sign.dates}<br />{sign.element} · {sign.modality}</span>
+                  <span className="font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">{L.t(sign.name)}</span>
+                  <span className="text-sm text-muted leading-snug">{L.t(sign.dates)}<br />{L.t(sign.element)} · {L.t(sign.modality)}</span>
                 </Link>
               </li>
             ))}
@@ -145,8 +145,8 @@ export default function AstrologiaContent() {
               <div key={src.title} className="flex items-start gap-3 py-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" />
                 <div>
-                  <p className="text-sm text-foreground">{src.title}</p>
-                  <p className="text-sm text-muted">{src.author}{src.url ? ` · ${src.url}` : ""}</p>
+                  <p className="text-sm text-foreground">{L.t(src.title)}</p>
+                  <p className="text-sm text-muted">{L.t(src.author)}{L.t(src.url ? ` · ${src.url}` : "")}</p>
                 </div>
               </div>
             ))}
@@ -164,7 +164,7 @@ export default function AstrologiaContent() {
 
         <Reveal tag="section" delay={0.24}>
           <div className="p-6 border border-ink/10">
-            <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
+            <p className="text-sm text-muted leading-relaxed">{L.t(MOLINO_DISCLAIMER)}</p>
           </div>
         </Reveal>
         </div>

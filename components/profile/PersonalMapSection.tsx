@@ -159,33 +159,33 @@ function EntityRow({
           />
           <span className="min-w-0 flex-1">
             <span className="block font-heading text-base font-bold text-foreground group-hover:text-accent transition-colors truncate">
-              {entity.name}
+              {L.t(entity.name)}
             </span>
             {(entity.country && entity.country !== entity.name) || local ? (
               <span className="block font-mono text-sm text-muted truncate mt-0.5">
-                {entity.country !== entity.name ? entity.country : ""}
+                {L.t(entity.country !== entity.name ? entity.country : "")}
                 {local && (
                   <span className="text-accent font-semibold ml-1">{L(<>
-                    {entity.country && entity.country !== entity.name ? "· " : ""}tu país
-                  </>, <>{entity.country && entity.country !== entity.name ? "· " : ""}your country</>)}</span>
+                    {L.t(entity.country && entity.country !== entity.name ? "· " : "")}tu país
+                  </>, <>{L.t(entity.country && entity.country !== entity.name ? "· " : "")}your country</>)}</span>
                 )}
               </span>
             ) : null}
           </span>
           <span className="shrink-0 text-right font-mono text-sm tabular-nums">{L(<>
             <span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span>
-            <span className="block text-accent">año {animal}</span>
-          </>, <><span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span><span className="block text-accent">{animal} year</span></>)}</span>
+            <span className="block text-accent">año {L.t(animal)}</span>
+          </>, <><span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span><span className="block text-accent">{L.t(animal)} year</span></>)}</span>
         </span>
 
         {entity.originNote && (
           <span className="mt-2 block pl-12 sm:pl-13 text-sm sm:text-base text-muted leading-relaxed font-serif">
             {entity.originLabel && (
               <span className="text-muted/70 text-sm label-caps">
-                {entity.originLabel} ·{" "}
+                {L.t(entity.originLabel)} ·{" "}
               </span>
             )}
-            {entity.originNote}
+            {L.t(entity.originNote)}
           </span>
         )}
       </Link>
@@ -218,20 +218,20 @@ function GroupBlock({
       <div className="flex items-baseline gap-3 flex-wrap">
         <span className={`h-2.5 w-2.5 shrink-0 self-center ${tone.bar}`} aria-hidden="true" />
         <h4 className="font-heading text-base sm:text-lg font-bold text-foreground label-caps">
-          {group.title}
+          {L.t(group.title)}
         </h4>
         {group.chinese && (
-          <span className={`font-mono text-sm ${tone.accent}`}>{group.chinese}</span>
+          <span className={`font-mono text-sm ${tone.accent}`}>{L.t(group.chinese)}</span>
         )}
         {group.kind === "enemigo" && (
           <span className="ml-2 text-sm bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold label-caps">{L("Evitar", "Avoid")}</span>
         )}
         <span className="font-mono text-sm text-muted tabular-nums ml-auto">
-          {group.total} {group.total === 1 ? "entrada" : "entradas"}
+          {L.t(group.total)} {L.t(group.total === 1 ? "entrada" : "entradas")}
         </span>
       </div>
 
-      <p className="mt-2 max-w-2xl font-mono text-sm text-muted/80 leading-relaxed">{group.rule}</p>
+      <p className="mt-2 max-w-2xl font-mono text-sm text-muted/80 leading-relaxed">{L.t(group.rule)}</p>
 
       <ul className="mt-4 border-t border-border">
         {visibleEntities.map((e) => (
@@ -260,7 +260,7 @@ function GroupBlock({
             href={domainHref}
             className="font-mono text-sm text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1 inline-flex items-center gap-1"
           >
-            <span>{L(<>+ {restantesAtlas} más en el Atlas</>, <>+ {restantesAtlas} more in the Atlas</>)}</span>
+            <span>{L(<>+ {L.t(restantesAtlas)} más en el Atlas</>, <>+ {L.t(restantesAtlas)} more in the Atlas</>)}</span>
             <ArrowRight className="w-3 h-3" />
           </Link>
         )}
@@ -300,7 +300,7 @@ function DomainBlock({
           className="text-sm text-accent font-semibold label-caps"
           aria-hidden="true"
         >
-          {numeral} / {domain.label}
+          {L.t(numeral)} / {L.t(domain.label)}
         </span>
 
         {/* Links directos a la sección del Atlas con el animal preseleccionado */}
@@ -311,7 +311,7 @@ function DomainBlock({
               href={link.href}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] text-sm font-mono font-medium border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
             >
-              <span>{link.label}</span>
+              <span>{L.t(link.label)}</span>
               <ExternalLink className="w-3 h-3 opacity-70" />
             </Link>
           ))}
@@ -322,26 +322,26 @@ function DomainBlock({
         id={`dominio-${domain.id}`}
         className="section-title mt-3 text-foreground"
       >
-        {domain.question}
+        {L.t(domain.question)}
       </h3>
 
       <p className="mt-4 max-w-3xl text-base sm:text-lg text-muted leading-relaxed font-serif">
-        {domain.reading}
+        {L.t(domain.reading)}
       </p>
 
       <p className="mt-2 max-w-3xl font-mono text-sm text-muted/80 leading-relaxed">
-        {domain.scope}
+        {L.t(domain.scope)}
         {domain.descartadas > 0 && (
           <span className="text-muted/60">{L(<>
-            {" "}{domain.descartadas} quedaron afuera por no tener fecha exacta documentada.
-          </>, <>{" "}{domain.descartadas} were left out because they have no documented exact date.</>)}</span>
+            {" "}{L.t(domain.descartadas)} quedaron afuera por no tener fecha exacta documentada.
+          </>, <>{" "}{L.t(domain.descartadas)} were left out because they have no documented exact date.</>)}</span>
         )}
       </p>
 
       {isSecondary && (
         <p className="mt-3 font-mono text-sm text-muted bg-paper-alt border border-border/80 rounded-[--radius-sm] px-3.5 py-2 inline-block">{L(<>
-          Este dominio cuenta con {domain.evaluated} entradas. Se muestran hasta 3 ejemplos por casilla para mantener la lectura ágil.
-        </>, <>This domain has {domain.evaluated} entries. Up to 3 examples per slot are shown to keep the reading light.</>)}</p>
+          Este dominio cuenta con {L.t(domain.evaluated)} entradas. Se muestran hasta 3 ejemplos por casilla para mantener la lectura ágil.
+        </>, <>This domain has {L.t(domain.evaluated)} entries. Up to 3 examples per slot are shown to keep the reading light.</>)}</p>
       )}
 
       {/* Grilla de entidades afines */}
@@ -378,7 +378,7 @@ function DomainBlock({
           href={`${domain.href}?animal=${encodeURIComponent(userAnimal)}`}
           className="inline-flex items-center gap-2 text-sm text-accent hover:text-foreground transition-colors label-caps"
         >
-          <span>{L(<>Abrir sección completa de {domain.label} en Atlas</>, <>Open the full {domain.label} section in the Atlas</>)}</span>
+          <span>{L(<>Abrir sección completa de {L.t(domain.label)} en Atlas</>, <>Open the full {L.t(domain.label)} section in the Atlas</>)}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -393,8 +393,8 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
     <motion.div {...editorialReveal} className="border-t border-border pt-8 pb-4">
       <div className="max-w-3xl mb-4">
         <h3 className="text-sm text-accent font-semibold mb-2 label-caps">{L(<>
-          El ciclo entero, leído desde {animal}
-        </>, <>The whole cycle, read from {animal}</>)}</h3>
+          El ciclo entero, leído desde {L.t(animal)}
+        </>, <>The whole cycle, read from {L.t(animal)}</>)}</h3>
         <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">{L("Los doce signos del zodíaco chino. Cada entidad del atlas cae en una de estas casillas según su fecha de origen documentada: tu propio signo, tus dos amigos (三合 San He) y tu energía opuesta (六冲 Liu Chong).", "The twelve signs of the Chinese zodiac. Each entity in the Atlas falls into one of these slots according to its documented date of origin: your own sign, your two friends (三合 San He) and your opposite energy (六冲 Liu Chong).")}</p>
       </div>
 
@@ -418,7 +418,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
               <span
                 className={`font-heading text-sm font-bold ${propio ? "text-accent" : "text-foreground"}`}
               >
-                {e.animal}
+                {L.t(e.animal)}
               </span>
               <span
                 className={`ml-auto text-sm shrink-0 label-caps ${
@@ -431,7 +431,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
                         : "text-muted/35"
                 }`}
               >
-                {KIND_SHORT[e.kind]}
+                {L.t(KIND_SHORT[e.kind])}
               </span>
             </div>
           );
@@ -504,8 +504,8 @@ export default function PersonalMapSection({
           >{L("Dónde tu signo toca el mundo", "Where your sign touches the world")}</h2>
 
           <p className="font-serif text-base sm:text-lg mt-5 max-w-3xl leading-relaxed text-muted">
-            {L("Sos ", "Your sign is")} <strong className="font-semibold text-foreground">{map.animal}</strong>
-            {map.element ? L(` de ${map.element}`, `, element ${map.element}`) : ""}{L(". Ahora mirá el mundo con esa clave: cada país, ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —", ". Now look at the world through that key: every country, city, garment, car, university, club, person and movie in the Atlas was also born in some year, and that year gave it its own sign. Crossing your sign with each one's is the whole calculation —")}{" "}
+            {L("Sos ", "Your sign is ")} <strong className="font-semibold text-foreground">{L.t(map.animal)}</strong>
+            {L.t(map.element ? L(` de ${map.element}`, `, element ${L.t(map.element)}`) : "")}{L(". Ahora mirá el mundo con esa clave: cada país, ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —", ". Now look at the world through that key: every country, city, garment, car, university, club, person and movie in the Atlas was also born in some year, and that year gave it its own sign. Crossing your sign with each one's is the whole calculation —")}{" "}
              <strong className="font-semibold text-foreground">{L(<>
                {evaluadas.toLocaleString("es-AR")} entradas con fecha exacta
              </>, <>{evaluadas.toLocaleString("en-US")} entries with an exact date</>)}</strong>{" "}

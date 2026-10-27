@@ -5,19 +5,21 @@ import { useMemo, useState } from "react";
 import type { HistoricalEvent } from "@/lib/data/symbolic-entities";
 
 export function SectionHeader({ title, id }: { title: string; id?: string }) {
+  const L = useL();
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 id={id} className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <h2 id={id} className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{L.t(title)}</h2>
     </div>
   );
 }
 
 export function DataRow({ label, value }: { label: string; value: string }) {
+  const L = useL();
   return (
     <div className="flex items-start gap-3">
-      <span className="text-xs text-muted w-32 shrink-0">{label}</span>
-      <span className="text-xs text-foreground">{value}</span>
+      <span className="text-xs text-muted w-32 shrink-0">{L.t(label)}</span>
+      <span className="text-xs text-foreground">{L.t(value)}</span>
     </div>
   );
 }
@@ -42,16 +44,16 @@ export function OtherEventCard({ event }: { event: HistoricalEvent }) {
     <div className="p-4 rounded-md bg-muted/30 border border-border/50">
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-foreground">{event.label}</span>
+          <span className="text-sm font-medium text-foreground">{L.t(event.label)}</span>
           <span className="text-xs text-muted">({event.year})</span>
         </div>
         {animal && (
-          <span className="text-xs font-medium text-foreground">{animal}</span>
+          <span className="text-xs font-medium text-foreground">{L.t(animal)}</span>
         )}
       </div>
-      <p className="text-xs text-muted leading-relaxed">{event.description}</p>
+      <p className="text-xs text-muted leading-relaxed">{L.t(event.description)}</p>
       <div className="flex items-center gap-3 mt-2">
-        <p className="text-xs text-muted">{L(<>Fuente: {event.source}</>, <>Source: {event.source}</>)}</p>
+        <p className="text-xs text-muted">{L(<>Fuente: {L.t(event.source)}</>, <>Source: {L.t(event.source)}</>)}</p>
         {isApproximate && (
           <p className="text-xs text-muted">{L("· Año documentado", "· Year documented")}</p>
         )}
@@ -75,6 +77,7 @@ export function CollapsibleSection({
   children: React.ReactNode;
   defaultOpen?: boolean;
 }) {
+  const L = useL();
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border border-ink/10 bg-transparent overflow-hidden">
@@ -85,7 +88,7 @@ export function CollapsibleSection({
         aria-expanded={open}
         aria-controls={id}
       >
-        <SectionHeader title={title} id={id} />
+        <SectionHeader title={L.t(title)} id={id} />
         <svg
           className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ml-4 sm:hidden ${open ? "rotate-180" : ""}`}
           fill="none"

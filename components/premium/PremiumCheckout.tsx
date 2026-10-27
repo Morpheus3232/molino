@@ -223,7 +223,7 @@ export default function PremiumCheckout({
 
           {errorMsg && (
             <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
-              {errorMsg}
+              {L.t(errorMsg)}
             </p>
           )}
         </div>
@@ -289,11 +289,11 @@ export default function PremiumCheckout({
                     className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
                   />
                   <Button type="submit" variant="primary" size="sm" disabled={isRecovering}>
-                    {isRecovering ? "..." : L("Verificar", "Verify")}
+                    {L.t(isRecovering ? "..." : L("Verificar", "Verify"))}
                   </Button>
                 </div>
               </div>
-              {recoverError && <p className="text-xs text-red-400">{recoverError}</p>}
+              {recoverError && <p className="text-xs text-red-400">{L.t(recoverError)}</p>}
             </motion.form>
           )}
 
@@ -323,10 +323,10 @@ export default function PremiumCheckout({
                   className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent label-caps"
                 />
                 <Button type="submit" variant="primary" size="sm" disabled={isApplyingCoupon}>
-                  {isApplyingCoupon ? "..." : L("Aplicar", "Apply")}
+                  {L.t(isApplyingCoupon ? "..." : L("Aplicar", "Apply"))}
                 </Button>
               </div>
-              {couponError && <p className="text-xs text-red-400">{couponError}</p>}
+              {couponError && <p className="text-xs text-red-400">{L.t(couponError)}</p>}
             </motion.form>
           )}
         </AnimatePresence>

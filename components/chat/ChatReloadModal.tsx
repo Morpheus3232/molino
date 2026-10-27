@@ -72,12 +72,12 @@ export default function ChatReloadModal({
             <div className="flex items-baseline justify-between gap-4">
               <div>{L(<>
                 <span className="font-display text-xl text-foreground block">
-                  Pack de {RELOAD_PACK_QUESTIONS} preguntas adicionales
+                  Pack de {L.t(RELOAD_PACK_QUESTIONS)} preguntas adicionales
                 </span>
                 <span className="text-sm text-muted block mt-0.5">
                   Precio previsto. Todavía no se puede comprar.
                 </span>
-              </>, <><span className="font-display text-xl text-foreground block">Pack of {RELOAD_PACK_QUESTIONS} extra questions</span><span className="text-sm text-muted block mt-0.5">Planned price. It can't be bought yet.</span></>)}</div>
+              </>, <><span className="font-display text-xl text-foreground block">Pack of {L.t(RELOAD_PACK_QUESTIONS)} extra questions</span><span className="text-sm text-muted block mt-0.5">Planned price. It can't be bought yet.</span></>)}</div>
               <div className="text-right shrink-0">{L(<>
                 <span className="font-display text-3xl text-muted">
                   ${RELOAD_PACK_PRICE_USD.toFixed(2)}

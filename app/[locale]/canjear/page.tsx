@@ -1,3 +1,4 @@
+import { initLocale } from "@/lib/i18n/server";
 import { metadataFor } from "@/lib/seo";
 import CanjearClient from "./CanjearClient";
 
@@ -14,7 +15,8 @@ export const generateMetadata = metadataFor({
   noIndex: true,
 });
 
-export default async function CanjearPage({ searchParams }: Props) {
+export default async function CanjearPage({ searchParams, params }: Props & { params: Promise<{ locale: string }> }) {
+  await initLocale(params);
   const { codigo } = await searchParams;
   return <CanjearClient initialCode={codigo ?? ""} />;
 }

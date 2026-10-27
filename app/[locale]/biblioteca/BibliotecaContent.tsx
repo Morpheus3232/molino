@@ -110,11 +110,11 @@ export default function BibliotecaContent() {
                 onClick={() => pickTag(item.tag)}
                 className="group w-full h-full text-left p-7 sm:p-9 hover:bg-paper-alt/70 transition-colors flex flex-col"
               >{L(<>
-                <span className="font-display text-3xl leading-tight text-foreground group-hover:underline underline-offset-[5px]">{item.title}</span>
-                <span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{item.desc}</span>
-                <span className="mt-5 text-base text-muted">{item.authors}</span>
+                <span className="font-display text-3xl leading-tight text-foreground group-hover:underline underline-offset-[5px]">{L.t(item.title)}</span>
+                <span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{L.t(item.desc)}</span>
+                <span className="mt-5 text-base text-muted">{L.t(item.authors)}</span>
                 <span className="mt-4 text-base text-foreground underline underline-offset-4">Ver las obras</span>
-              </>, <><span className="font-display text-3xl leading-tight text-foreground group-hover:underline underline-offset-[5px]">{item.title}</span><span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{item.desc}</span><span className="mt-5 text-base text-muted">{item.authors}</span><span className="mt-4 text-base text-foreground underline underline-offset-4">See the works</span></>)}</button>
+              </>, <><span className="font-display text-3xl leading-tight text-foreground group-hover:underline underline-offset-[5px]">{L.t(item.title)}</span><span className="mt-3 text-lg text-foreground/80 leading-relaxed flex-1">{L.t(item.desc)}</span><span className="mt-5 text-base text-muted">{L.t(item.authors)}</span><span className="mt-4 text-base text-foreground underline underline-offset-4">See the works</span></>)}</button>
             </li>
           ))}
         </ul>
@@ -146,7 +146,7 @@ export default function BibliotecaContent() {
                     onClick={() => setActiveTag(on && tag ? null : tag)}
                     className={`py-1 border-b-2 transition-colors ${on ? "border-ink text-foreground" : "border-transparent text-muted hover:text-foreground"}`}
                   >
-                    {tag ?? L("Todas", "All")}
+                    {L.t(tag ?? L("Todas", "All"))}
                   </button>
                 );
               })}
@@ -160,7 +160,7 @@ export default function BibliotecaContent() {
               return (
                 <section key={catKey} className="mt-14" aria-labelledby={`cat-${catKey}`}>
                   <h3 id={`cat-${catKey}`} className="flex items-baseline justify-between border-b-2 border-ink pb-3">
-                    <span className="font-display text-3xl text-foreground">{CATEGORY_LABELS[catKey]}</span>
+                    <span className="font-display text-3xl text-foreground">{L.t(CATEGORY_LABELS[catKey])}</span>
                     <span className="text-base text-muted tabular-nums">{sources.length}</span>
                   </h3>
                   <ul className="divide-y divide-ink/15">
@@ -174,14 +174,14 @@ export default function BibliotecaContent() {
                           >
                             <span>
                               <span className="block font-display text-2xl leading-tight text-foreground group-hover:underline underline-offset-4">
-                                {source.title}
+                                {L.t(source.title)}
                               </span>
                               <span className="mt-1 block text-base text-muted">
-                                {source.author}
-                                {source.year ? `, ${source.year}` : ""} · {meta.label}
+                                {L.t(source.author)}
+                                {source.year ? `, ${source.year}` : ""} · {L.t(meta.label)}
                               </span>
                             </span>
-                            <span className="text-lg text-foreground/80 leading-relaxed">{source.description}</span>
+                            <span className="text-lg text-foreground/80 leading-relaxed">{L.t(source.description)}</span>
                           </Link>
                         </li>
                       );

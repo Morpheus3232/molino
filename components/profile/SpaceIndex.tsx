@@ -29,7 +29,7 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
   const items = [
     {
       label: L("Hoy", "Today"),
-      teaser: L(`Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`, `Daily energy and moon phase for your Path ${profile.lifePath}.`),
+      teaser: L(`Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`, `Daily energy and moon phase for your Path ${L.t(profile.lifePath)}.`),
       href: "/hoy",
       icon: Sun,
     },
@@ -41,7 +41,7 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
     },
     {
       label: L("Círculo", "Circle"),
-      teaser: allyName ? L(`${circleName} tiene afinidad con ${allyName}.`, `${circleName} has an affinity with ${allyName}.`) : L("Energías alrededor de tu signo.", "Energies around your sign."),
+      teaser: allyName ? L(`${circleName} tiene afinidad con ${allyName}.`, `${L.t(circleName)} has an affinity with ${L.t(allyName)}.`) : L("Energías alrededor de tu signo.", "Energies around your sign."),
       href: "/circulo",
       icon: Users,
     },
@@ -72,10 +72,10 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
               />
               <span className="min-w-0 flex-1">
                 <span className="block font-heading text-lg sm:text-xl font-bold text-foreground group-hover:text-accent transition-colors">
-                  {item.label}
+                  {L.t(item.label)}
                 </span>
                 <span className="block font-serif text-sm sm:text-base text-muted leading-relaxed mt-1">
-                  {item.teaser}
+                  {L.t(item.teaser)}
                 </span>
               </span>
               <ArrowRight
