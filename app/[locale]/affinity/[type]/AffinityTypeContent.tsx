@@ -32,10 +32,13 @@ type RelationGroupKey = MapRelation;
 
 // Solo las tres casillas que dicen algo: tu propio signo → tus dos amigos →
 // tu enemigo (lo que conviene evitar). El resto del ciclo no se lista.
-const GROUPS = (L: Pick2): { key: RelationGroupKey; label: string; chinese: string; note?: string }[] => ([
+const GROUPS = (L: Pick2): { key: RelationGroupKey; label: string; chinese: string; note?: string; searchOnly?: boolean }[] => ([
   { key: "mismo", label: L("Tu propio signo", "Your own sign"), chinese: "本命" },
   { key: "amigo", label: L("Tus dos amigos", "Your two friends"), chinese: "三合 San He" },
   { key: "enemigo", label: L("Tu enemigo", "Your enemy"), chinese: "六冲 Liu Chong", note: L("Lo que conviene evitar.", "What's best avoided.") },
+  // Solo al buscar: quien escribe "Suiza" tiene que encontrarla aunque caiga
+  // fuera de sus tres casillas. Sin búsqueda, el resto del ciclo no se lista.
+  { key: "otro", label: L("El resto del ciclo", "The rest of the cycle"), chinese: "", note: L("Ni tu signo, ni tus amigos, ni tu enemigo: el ciclo no dice nada especial.", "Not your sign, your friends or your enemy: the cycle says nothing special."), searchOnly: true },
 ]);
 
 const PAGE_SIZE = 8;
@@ -77,15 +80,15 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
   );
 
   // Filter results based on search query
+  // Sin distinguir tildes ni mayúsculas, y también por el nombre en inglés en /en.
   const filteredSorted = useMemo(() => {
     if (!searchQuery.trim()) return sorted;
-    const query = searchQuery.toLowerCase().trim();
-    return sorted.filter(r =>
-      r.name.toLowerCase().includes(query) ||
-      (r.country || "").toLowerCase().includes(query) ||
-      r.animal.toLowerCase().includes(query)
+    const fold = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const query = fold(searchQuery.trim());
+    return sorted.filter((r) =>
+      [r.name, L.t(r.name), r.country || "", L.t(r.country || ""), r.animal, L.t(r.animal)].some((v) => fold(v).includes(query)),
     );
-  }, [sorted, searchQuery]);
+  }, [sorted, searchQuery, L]);
 
   const groups = useMemo(() => groupByRelation(activeAnimal, filteredSorted), [activeAnimal, filteredSorted]);
 
@@ -217,19 +220,19 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   aria-label={L(`Buscar ${meta.plural.toLowerCase()}`, `Search ${L.t(meta.plural.toLowerCase())}`)}
                 />
                 {L.t(searchQuery && (() => {
-                  const shown = groups.mismo.length + groups.amigo.length + groups.enemigo.length;
+                  const shown = groups.mismo.length + groups.amigo.length + groups.enemigo.length + groups.otro.length;
                   return (
                     <p className="text-sm text-muted mt-2">
-                      {L.t(shown > 0
-                        ? L(`${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}" entre tu signo, tus amigos y tu enemigo`, `${L.t(shown)} result${L.t(shown !== 1 ? "s" : "")} for "${L.t(searchQuery)}" among your sign, your friends and your enemy`)
-                        : L(`Ningún resultado para "${searchQuery}" entre tu signo, tus amigos y tu enemigo.`, `No results for "${L.t(searchQuery)}" among your sign, your friends and your enemy.`))}
+                      {shown > 0
+                        ? L(`${shown} resultado${shown !== 1 ? "s" : ""} para "${searchQuery}"`, `${shown} result${shown !== 1 ? "s" : ""} for "${searchQuery}"`)
+                        : L(`Ningún resultado para "${searchQuery}".`, `No results for "${searchQuery}".`)}
                     </p>
                   );
                 })())}
               </div>
 
               {/* RESULTADOS AGRUPADOS POR CASILLA: tu signo, tus dos amigos y tu
-                  enemigo. El resto del ciclo no se muestra. */}
+                  enemigo. El resto del ciclo solo aparece al buscar. */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAnimal}
@@ -241,6 +244,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   {GROUPS(L).map((group) => {
                     const all = groups[group.key];
                     if (all.length === 0) return null;
+                    if (group.searchOnly && !searchQuery.trim()) return null;
                     const visible = visibleCounts[group.key];
                     const items = all.slice(0, visible);
                     const hasMore = all.length > visible;

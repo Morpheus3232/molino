@@ -108,7 +108,20 @@ Consecuencias operativas:
   inventaría uno); si vale la pena, es un campo `month` en el evento, jamás un
   día falso.
 
-  Cobertura global con fecha exacta: territorio 108/311, aula 48/93,
+  **2026-10-31**: +148 ciudades (`lib/data/cities-expansion.ts`) y +20 países
+  que faltaban, Venezuela y Paraguay incluidos (`lib/data/countries-expansion.ts`),
+  con el mismo criterio de dos fuentes (Wikidata con precisión de día +
+  Wikipedia en español; para países sin día en Wikidata, Wikipedia en español
+  e inglés; San Martín de los Andes, Comodoro Rivadavia, Puerto Iguazú y
+  Paraguay con prensa local como segunda fuente). Territorio pasó a 429/516
+  con fecha exacta. En `/affinity/[tipo]` la búsqueda también encuentra el
+  resto del ciclo (sin buscar, sigue sin listarse) y no distingue tildes.
+  Ese día también se corrigió `CHINESE_NEW_YEAR_DATES` para 1886-1899 y 1925
+  (estaban corridas): ahora coinciden con pinyin.info y con el cálculo
+  astronómico. Única entidad que cambió de signo: San Martín de los Andes
+  (1898-02-04, Perro).
+
+  Cobertura global con fecha exacta (antes del 2026-10-31): territorio 108/311, aula 48/93,
   gente 221/234, pantalla 16/16, autos 24/82, vestimenta 4/99
   (2026-10-20: el dedup ahora conserva la categoría del duplicado descartado —
   Toyota tenía la fecha en brands-60 con category "otro" y el rubro en

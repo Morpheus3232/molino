@@ -29,6 +29,8 @@ import { CITIES_ARGENTINA } from "./cities-argentina";
 import { CITIES_ARGENTINA_COMPLETO } from "./cities-argentina-completo";
 import { CITIES_URUGUAY } from "./cities-uruguay";
 import { CITIES_CHILE } from "./cities-chile";
+import { CITIES_EXPANSION } from "./cities-expansion";
+import { COUNTRIES_EXPANSION } from "./countries-expansion";
 import { CITIES_PERU } from "./cities-peru";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
 import { UNIVERSITIES_BUENOS_AIRES } from "./universities-buenos-aires";
@@ -346,6 +348,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...BRANDS_ARGENTINA,
   ...COUNTRIES_60,
   ...COUNTRIES_ATLAS,
+  ...COUNTRIES_EXPANSION,
   ...CITIES_60,
   ...CITIES_ATLAS,
   ...CITIES_ARGENTINA,
@@ -353,6 +356,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...CITIES_URUGUAY,
   ...CITIES_CHILE,
   ...CITIES_PERU,
+  ...CITIES_EXPANSION,
 
   ...UNIVERSITIES_ARGENTINA,
   ...UNIVERSITIES_BUENOS_AIRES,

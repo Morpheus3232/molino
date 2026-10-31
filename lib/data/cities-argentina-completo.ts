@@ -87,7 +87,7 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     description: "Puerto Iguazú es ciudad misionera, sede de las Cataratas del Iguazú, destino turístico internacional.",
     keyThemes: ["Naturaleza", "Turismo", "Cataratas", "Aventura"],
     sourceNote: "Fundada en 1901 como puerto.",
-    events: [{ id: "iguazu-fund", type: "fundacion", label: "Fundación", year: 1901, description: "Se funda Puerto Iguazú como puerto turístico.", source: "Documentación histórica", confidence: "media", primaryForAffinity: true }],
+    events: [{ id: "iguazu-fund", type: "fundacion", label: "Fundación", date: "1901-09-10", year: 1901, description: "Se funda Puerto Iguazú como puerto turístico.", source: "Wikipedia (es): Puerto Iguazú + Misiones Online (aniversario oficial del 10 de septiembre)", confidence: "exacta", primaryForAffinity: true }],
   },
 
   // ────────────────────────────────────────────────────

@@ -103,12 +103,18 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
 
     const search = await screen.findByLabelText(/buscar universidades/i);
-    await user.type(search, "Universidad"); // matchea las 4; se muestran 3
+    await user.type(search, "Universidad"); // matchea las 4: al buscar también aparece el resto del ciclo
 
-    await waitFor(() => expect(screen.getByText(/3 resultados para/i)).toBeInTheDocument());
-    for (const entity of SHOWN) {
+    await waitFor(() => expect(screen.getByText(/4 resultados para/i)).toBeInTheDocument());
+    for (const entity of [...SHOWN, OTHER]) {
       expect(screen.getByText(entity.name)).toBeInTheDocument();
     }
+    expect(screen.getByRole("heading", { name: /el resto del ciclo/i })).toBeInTheDocument();
+  });
+
+  it("sin búsqueda, el resto del ciclo no se lista", async () => {
+    render(<AffinityTypeContent meta={META} entities={ENTITIES} />);
+    for (const entity of SHOWN) expect(await screen.findByText(entity.name)).toBeInTheDocument();
     expect(screen.queryByText(OTHER.name)).not.toBeInTheDocument();
   });
 

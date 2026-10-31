@@ -197,3 +197,16 @@ describe("Chinese Zodiac Engine", () => {
     });
   });
 });
+
+describe("tabla de Año Nuevo chino — fechas verificadas (2026-10-31)", () => {
+  it("1898 empieza el 22 de enero: el 4 de febrero ya es Perro", async () => {
+    const { calculateAnimalFromDate } = await import("../chineseZodiacEngine");
+    expect(calculateAnimalFromDate("1898-02-04").animal).toBe("Perro");
+    expect(calculateAnimalFromDate("1898-01-21").animal).toBe("Gallo");
+  });
+  it("1925 empieza el 24 de enero (Buey)", async () => {
+    const { calculateAnimalFromDate } = await import("../chineseZodiacEngine");
+    expect(calculateAnimalFromDate("1925-01-24").animal).toBe("Buey");
+    expect(calculateAnimalFromDate("1925-01-23").animal).toBe("Rata");
+  });
+});

@@ -384,6 +384,22 @@
     "destination": "/atlas/CA/ropa"
   },
   {
+    "source": "/atlas/CD",
+    "destination": "/affinity/country/country-rd-congo"
+  },
+  {
+    "source": "/atlas/CF",
+    "destination": "/affinity/country/country-republica-centroafricana"
+  },
+  {
+    "source": "/atlas/CI",
+    "destination": "/affinity/country/country-costa-de-marfil"
+  },
+  {
+    "source": "/atlas/CM",
+    "destination": "/affinity/country/country-camerun"
+  },
+  {
     "source": "/atlas/CV",
     "destination": "/affinity/country/country-cabo-verde"
   },
@@ -436,8 +452,16 @@
     "destination": "/atlas/FR/autos"
   },
   {
+    "source": "/atlas/GA",
+    "destination": "/affinity/country/country-gabon"
+  },
+  {
     "source": "/atlas/GD",
     "destination": "/affinity/country/country-granada"
+  },
+  {
+    "source": "/atlas/GE",
+    "destination": "/affinity/country/country-georgia"
   },
   {
     "source": "/atlas/GN",
@@ -488,8 +512,16 @@
     "destination": "/affinity/country/jordania"
   },
   {
+    "source": "/atlas/KG",
+    "destination": "/affinity/country/country-kirguistan"
+  },
+  {
     "source": "/atlas/KH",
     "destination": "/affinity/country/country-camboya"
+  },
+  {
+    "source": "/atlas/KI",
+    "destination": "/affinity/country/country-kiribati"
   },
   {
     "source": "/atlas/KM",
@@ -510,6 +542,14 @@
   {
     "source": "/atlas/LA",
     "destination": "/affinity/country/country-laos"
+  },
+  {
+    "source": "/atlas/LB",
+    "destination": "/affinity/country/country-libano"
+  },
+  {
+    "source": "/atlas/LC",
+    "destination": "/affinity/country/country-santa-lucia"
   },
   {
     "source": "/atlas/LI",
@@ -554,6 +594,10 @@
   {
     "source": "/atlas/MH",
     "destination": "/affinity/country/country-islas-marshall"
+  },
+  {
+    "source": "/atlas/ML",
+    "destination": "/affinity/country/country-mali"
   },
   {
     "source": "/atlas/MM",
@@ -624,6 +668,10 @@
     "destination": "/affinity/country/country-palaos"
   },
   {
+    "source": "/atlas/PY",
+    "destination": "/affinity/country/country-paraguay"
+  },
+  {
     "source": "/atlas/QA",
     "destination": "/affinity/country/country-qatar"
   },
@@ -692,8 +740,24 @@
     "destination": "/affinity/country/country-esuatini"
   },
   {
+    "source": "/atlas/TD",
+    "destination": "/affinity/country/country-chad"
+  },
+  {
+    "source": "/atlas/TG",
+    "destination": "/affinity/country/country-togo"
+  },
+  {
+    "source": "/atlas/TJ",
+    "destination": "/affinity/country/country-tayikistan"
+  },
+  {
     "source": "/atlas/TL",
     "destination": "/affinity/country/country-timor-oriental"
+  },
+  {
+    "source": "/atlas/TM",
+    "destination": "/affinity/country/country-turkmenistan"
   },
   {
     "source": "/atlas/TN",
@@ -706,6 +770,10 @@
   {
     "source": "/atlas/TT",
     "destination": "/affinity/country/country-trinidad-y-tobago"
+  },
+  {
+    "source": "/atlas/TV",
+    "destination": "/affinity/country/country-tuvalu"
   },
   {
     "source": "/atlas/TW",
@@ -724,8 +792,16 @@
     "destination": "/affinity/country/country-vaticano"
   },
   {
+    "source": "/atlas/VE",
+    "destination": "/affinity/country/country-venezuela"
+  },
+  {
     "source": "/atlas/VU",
     "destination": "/affinity/country/country-vanuatu"
+  },
+  {
+    "source": "/atlas/WS",
+    "destination": "/affinity/country/country-samoa"
   },
   {
     "source": "/atlas/XK",
@@ -742,5 +818,9 @@
   {
     "source": "/atlas/ZM",
     "destination": "/affinity/country/country-zambia"
+  },
+  {
+    "source": "/atlas/ZW",
+    "destination": "/affinity/country/country-zimbabue"
   }
 ]

@@ -107,7 +107,8 @@ describe("getPersonalAtlas — casos de prueba obligatorios", () => {
   test("España + Gallo: university/team/artist siguen sin resolver a nivel país", () => {
     const result = getPersonalAtlas({ animal: "Gallo", countryISO: "ES" });
     for (const g of result.groups) {
-      if (g.category === "football_player") continue;
+      // Ciudades: desde 2026-10-31 hay ciudades españolas fechadas (cities-expansion.ts).
+      if (g.category === "football_player" || g.category === "city") continue;
       expect(g.level.startsWith("country-")).toBe(false);
     }
   });
@@ -155,10 +156,10 @@ describe("getPersonalAtlas — city (piloto ampliado)", () => {
     expect(group.level).toBe("country-relation");
   });
 
-  test("España + Gallo: city resuelve en región o mundo, nunca país", () => {
+  test("España + Gallo: city ya resuelve en el país (ciudades españolas cargadas el 2026-10-31)", () => {
     const result = getPersonalAtlas({ animal: "Gallo", countryISO: "ES", category: "city" });
     const [group] = result.groups;
-    expect(group.level.startsWith("country-")).toBe(false);
+    expect(group.level.startsWith("country-")).toBe(true);
   });
 
   test("Brasil + Caballo: city sin datos locales, depende de región", () => {
