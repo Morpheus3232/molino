@@ -1,5 +1,6 @@
 import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
+import LogoMark from "@/components/ui/LogoMark";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -27,27 +28,7 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ loc
           width: 420, height: 420, borderRadius: "50%",
           background: "radial-gradient(circle, rgba(97,97,97,0.18) 0%, transparent 70%)",
         }} />
-        <svg
-          viewBox="0 0 100 100"
-          style={{ width: 140, height: 140, marginBottom: 24 }}
-          fill="none"
-        >
-          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#0A0A0A" />
-          <path d="M44,46 Q50,34 56,46 Z" fill="#0A0A0A" />
-          <g transform="translate(50 38) rotate(45)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
-          </g>
-          <g transform="translate(50 38) rotate(135)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
-          </g>
-          <g transform="translate(50 38) rotate(225)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
-          </g>
-          <g transform="translate(50 38) rotate(315)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
-          </g>
-          <circle cx="50" cy="38" r="3.2" fill="#0A0A0A" />
-        </svg>
+        <LogoMark color="#0A0A0A" paper="#FFFFFF" style={{ width: 140, height: 140, marginBottom: 24 }} />
         <div
           style={{
             fontSize: 48,

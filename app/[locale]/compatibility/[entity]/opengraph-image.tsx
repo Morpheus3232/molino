@@ -1,5 +1,6 @@
 import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
+import LogoMark from "@/components/ui/LogoMark";
 import { ENTITIES } from "@/lib/data/entities";
 
 // Neutro: el mismo archivo sirve las dos versiones del idioma.
@@ -36,15 +37,7 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
       }} />
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 48 }}>
-        <svg viewBox="0 0 100 100" style={{ width: 30, height: 30 }} fill="none">
-          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#0A0A0A" />
-          <path d="M44,46 Q50,34 56,46 Z" fill="#0A0A0A" />
-          <g transform="translate(50 38) rotate(45)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-          <g transform="translate(50 38) rotate(135)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-          <g transform="translate(50 38) rotate(225)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-          <g transform="translate(50 38) rotate(315)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-          <circle cx="50" cy="38" r="3.2" fill="#0A0A0A" />
-        </svg>
+        <LogoMark color="#0A0A0A" paper="#FFFFFF" style={{ width: 30, height: 30 }} />
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>{L(<>
           <span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, fontFamily: "sans-serif" }}>Molino</span>
           <span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>

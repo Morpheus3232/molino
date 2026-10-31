@@ -10,8 +10,7 @@ interface LogoProps {
   wind?: boolean;
 }
 
-const HUB = { x: 50, y: 36 };
-const BLADE_D = "M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z";
+import { LOGO_HUB as HUB, LOGO_BLADE_D as BLADE_D } from "@/components/ui/LogoMark";
 
 function Blade({ angle }: { angle: number }) {
   return (

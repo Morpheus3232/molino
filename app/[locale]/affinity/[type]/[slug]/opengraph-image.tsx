@@ -1,5 +1,6 @@
 import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
+import LogoMark from "@/components/ui/LogoMark";
 import { getEntityById, getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
@@ -58,15 +59,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
         {/* Top bar — Logo + "MI AFINIDAD SIMBÓLICA" */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 48 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <svg viewBox="0 0 100 100" style={{ width: 34, height: 34 }} fill="none">
-              <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#0A0A0A" />
-              <path d="M44,46 Q50,34 56,46 Z" fill="#0A0A0A" />
-              <g transform="translate(50 38) rotate(45)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-              <g transform="translate(50 38) rotate(135)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-              <g transform="translate(50 38) rotate(225)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-              <g transform="translate(50 38) rotate(315)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" /></g>
-              <circle cx="50" cy="38" r="3.2" fill="#0A0A0A" />
-            </svg>
+            <LogoMark color="#0A0A0A" paper="#FFFFFF" style={{ width: 34, height: 34 }} />
             <span style={{ color: "#5C5C5C", fontSize: 15, fontWeight: 500 }}>Molino</span>
           </div>
           <span style={{

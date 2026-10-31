@@ -1,5 +1,6 @@
 import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
+import LogoMark from "@/components/ui/LogoMark";
 import { getAtlasCountries, isoToFlagEmoji } from "@/lib/data/atlas-queries";
 
 // Neutro: el mismo archivo sirve las dos versiones del idioma.
@@ -48,10 +49,10 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>{L(<>
-          <span style={{ fontSize: 34 }}>M</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
+          <LogoMark color="#0A0A0A" paper="#FFFFFF" style={{ width: 40, height: 40 }} />
           <span style={{ color: "#0A0A0A", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
-        </>, <><span style={{ fontSize: 34 }}>M</span><span style={{ color: "#0A0A0A", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span></>).props.children}</div>
+        </div>
 
         <span style={{ fontSize: 140, lineHeight: 1 }}>{L.t(flag)}</span>
         <span style={{ color: "#0A0A0A", fontSize: 56, fontWeight: 700, marginTop: 24 }}>{L.t(name)}</span>
