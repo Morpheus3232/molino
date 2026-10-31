@@ -4,3 +4,8 @@ export function pageLocale(): "es" | "en" {
   const p = window.location.pathname;
   return p === "/en" || p.startsWith("/en/") ? "en" : "es";
 }
+
+/** Ruta interna con el prefijo del idioma actual ("/profile" → "/en/profile" en inglés). */
+export function localePath(path: string): string {
+  return pageLocale() === "en" ? (path === "/" ? "/en" : `/en${path}`) : path;
+}

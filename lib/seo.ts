@@ -9,6 +9,15 @@ export const SITE_DESCRIPTION =
   "Tu mapa personal de autoconocimiento. Pitagórica, astrología y zodiaco chino — gratis, sin registro, 100% local.";
 export const OG_IMAGE = "/og-image.svg";
 
+/**
+ * Imagen para compartir por defecto: el PNG que genera
+ * app/[locale]/opengraph-image.tsx en cada idioma. Las redes no muestran
+ * SVG (og-image.svg queda solo como recurso estático).
+ */
+export function ogImageFor(locale: "es" | "en" = "es"): string {
+  return `/${locale}/opengraph-image`;
+}
+
 export function siteUrl(path: string = ""): string {
   if (path === "") return SITE_URL;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
@@ -91,7 +100,7 @@ export function createRouteMetadata({
   path = "",
   noIndex = false,
   noFollow = false,
-  image = OG_IMAGE,
+  image,
   ogTitle,
   ogDescription,
   locale = "es",
@@ -138,7 +147,7 @@ export function createRouteMetadata({
       description: socialDescription,
       url: canonicalUrl,
       siteName: SITE_NAME,
-      images: [{ url: image }],
+      images: [{ url: image ?? ogImageFor(locale) }],
       locale: OG_LOCALE[locale],
       type: "website",
     },

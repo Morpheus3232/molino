@@ -1,15 +1,16 @@
-import { getL } from "@/lib/i18n/server";
+import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { getEntityById, getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
 
-export const alt = "Mi afinidad simbólica";
+// Neutro: el mismo archivo sirve las dos versiones del idioma.
+export const alt = "Molino";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ type: string; slug: string }> }) {
-  const L = await getL();
+  const L = await metaL(params);
   const { slug } = await params;
   const entity = getEntityById(slug);
 
@@ -94,7 +95,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
               ¿Cuál es tu signo?
             </span>
-          </>, <><span style={{ color: "#0A0A0A", fontSize: 48 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>What's your sign?</span></>)}</div>
+          </>, <><span style={{ color: "#0A0A0A", fontSize: 48 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>What's your sign?</span></>).props.children}</div>
 
           {/* User side — question mark */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>{L(<>
@@ -105,7 +106,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <span style={{ color: "#5C5C5C", fontSize: 18 }}>
               Vos
             </span>
-          </>, <><span style={{ fontSize: 96 }}>🪞</span><span style={{ color: "#0A0A0A", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>?</span><span style={{ color: "#5C5C5C", fontSize: 18 }}>You</span></>)}</div>
+          </>, <><span style={{ fontSize: 96 }}>🪞</span><span style={{ color: "#0A0A0A", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>?</span><span style={{ color: "#5C5C5C", fontSize: 18 }}>You</span></>).props.children}</div>
         </div>
 
         {/* Bottom — CTA + disclaimer */}
@@ -114,7 +115,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <div style={{ width: 32, height: 2, background: "#0A0A0A", borderRadius: 1 }} />
             <span style={{ color: "#5C5C5C", fontSize: 14 }}>{L(<>
               Descubrí tu afinidad con {L.t(entity.name)} en
-            </>, <>Discover your affinity with {L.t(entity.name)} on</>)}</span>
+            </>, <>Discover your affinity with {L.t(entity.name)} on</>).props.children}</span>
             <span style={{ color: "#0A0A0A", fontSize: 14, fontWeight: 600 }}>Molino</span>
           </div>
           <span style={{ color: "#5C5C5C", fontSize: 12 }}>{L("Según el zodíaco chino", "According to the Chinese zodiac")}</span>

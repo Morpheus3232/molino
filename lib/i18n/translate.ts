@@ -62,6 +62,22 @@ function compile(dict: ContentDict): Compiled {
   return compiled;
 }
 
+/**
+ * "a {}" en inglés depende de lo que se inserte: "a Dog year" pero "an Ox
+ * year". Solo se corrige el artículo justo antes de una parte insertada
+ * (marcada con \u0000), nunca el texto fijo de la traducción.
+ */
+export function fixArticles(s: string): string {
+  return s
+    .replace(/\b([Aa]) \u0000(?=[AEIOaeio])(?![Oo]ne\b|[Ee]u)/g, "$1n \u0000")
+    .replace(/\u0000/g, "");
+}
+
+/** Artículo indefinido en inglés para una palabra ya traducida. */
+export function aAn(word: string): string {
+  return fixArticles(`a \u0000${word}`);
+}
+
 const IDENTITY: Translator = { t: (v) => v, tx: (v) => v };
 
 export function makeTranslator(dict: ContentDict | null | undefined): Translator {
@@ -101,7 +117,7 @@ export function makeTranslator(dict: ContentDict | null | undefined): Translator
       if (m) {
         // `{}` toma las partes en orden; `{2}` permite reordenarlas.
         let i = 1;
-        return p.out.replace(/\{(\d*)\}/g, (_, n: string) => str(m[n ? Number(n) : i++] ?? "", depth + 1));
+        return fixArticles(p.out.replace(/\{(\d*)\}/g, (_, n: string) => `\u0000${str(m[n ? Number(n) : i++] ?? "", depth + 1)}`));
       }
     }
     // Enumeraciones ("liderazgo, independencia y coraje"): solo si TODAS las

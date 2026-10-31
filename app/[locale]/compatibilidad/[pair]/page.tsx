@@ -1,4 +1,5 @@
 import { getL, initLocale, metaL } from "@/lib/i18n/server";
+import { aAn } from "@/lib/i18n/translate";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/lib/i18n/navigation";
@@ -84,7 +85,7 @@ export default async function CompatibilidadPage({ params }: Props) {
     {
       q: same ? L(`¿Qué elemento es ${nameA}?`, `What element is ${L.t(nameA)}?`) : L(`¿Qué elemento son ${nameA} y ${nameB}?`, `What elements are ${L.t(nameA)} and ${L.t(nameB)}?`),
       a: same
-        ? L(`${nameA} es un signo de ${factA.element}, de modalidad ${factA.modality.toLowerCase()}.`, `${L.t(nameA)} is a ${L.t(factA.element)} sign, of ${L.t(factA.modality.toLowerCase())} modality.`)
+        ? L(`${nameA} es un signo de ${factA.element}, de modalidad ${factA.modality.toLowerCase()}.`, `${L.t(nameA)} is ${aAn(L.t(factA.element))} sign, of ${L.t(factA.modality.toLowerCase())} modality.`)
         : L(`${nameA} es de ${factA.element} (${factA.modality.toLowerCase()}) y ${nameB} es de ${factB.element} (${factB.modality.toLowerCase()}).`, `${L.t(nameA)} is ${L.t(factA.element)} (${L.t(factA.modality.toLowerCase())}) and ${L.t(nameB)} is ${L.t(factB.element)} (${L.t(factB.modality.toLowerCase())}).`),
     },
   ];

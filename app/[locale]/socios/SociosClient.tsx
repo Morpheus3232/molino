@@ -12,6 +12,7 @@ import Button from "@/components/ui/Button";
 import { ShieldCheck, User, UserPlus, Users } from "lucide-react";
 import TeamComparison from "@/components/couple/TeamComparison";
 import { PageHero } from "@/components/knowledge/Kit";
+import { localePath } from "@/lib/i18n/pageLocale";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -81,7 +82,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
     query.set("d", dateSolo);
     if (nameSolo.trim()) query.set("n", nameSolo.trim());
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", `/socios?${query.toString()}`);
+      window.history.replaceState(null, "", localePath(`/socios?${query.toString()}`));
     }
   };
 
@@ -90,7 +91,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
     setDateSolo("");
     setNameSolo("");
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", "/socios?mode=solo");
+      window.history.replaceState(null, "", localePath("/socios?mode=solo"));
     }
   };
 
@@ -138,7 +139,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
     });
 
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", `/socios?${query.toString()}`);
+      window.history.replaceState(null, "", localePath(`/socios?${query.toString()}`));
     }
   };
 
@@ -146,7 +147,7 @@ export default function SociosClient({ params }: { params: UrlParams }) {
     setIsComparing(false);
     setSocios([{ date: "", name: "" }, { date: "", name: "" }]);
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", "/socios");
+      window.history.replaceState(null, "", localePath("/socios"));
     }
   };
 

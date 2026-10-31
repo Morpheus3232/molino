@@ -1,13 +1,14 @@
-import { getL } from "@/lib/i18n/server";
+import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { ENTITIES } from "@/lib/data/entities";
 
-export const alt = "Análisis de compatibilidad";
+// Neutro: el mismo archivo sirve las dos versiones del idioma.
+export const alt = "Molino";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ entity: string }> }) {
-  const L = await getL();
+  const L = await metaL(params);
   const { entity: entityId } = await params;
   const entity = ENTITIES.find(e => e.id === entityId);
 
@@ -49,7 +50,7 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           <span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>
             Compatibilidad
           </span>
-        </>, <><span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, fontFamily: "sans-serif" }}>Molino</span><span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>Compatibility</span></>)}</div>
+        </>, <><span style={{ color: "#0A0A0A", fontSize: 20, fontWeight: 600, fontFamily: "sans-serif" }}>Molino</span><span style={{ color: "#0A0A0A", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.25em" }}>Compatibility</span></>).props.children}</div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flex: 1 }}>
@@ -65,7 +66,7 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           <span style={{ color: "#5C5C5C", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>
             ¿Qué tan compatible sos?
           </span>
-        </>, <><span style={{ color: "#0A0A0A", fontSize: 40 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>How compatible are you?</span></>)}</div>
+        </>, <><span style={{ color: "#0A0A0A", fontSize: 40 }}>→</span><span style={{ color: "#5C5C5C", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>How compatible are you?</span></>).props.children}</div>
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <div style={{

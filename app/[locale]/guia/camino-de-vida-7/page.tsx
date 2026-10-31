@@ -1,6 +1,6 @@
 import { initLocale, getL } from "@/lib/i18n/server";
 import { type Pick2 } from "@/lib/i18n/useL";
-import { SITE_URL, siteUrl, OG_IMAGE, metadataFor } from "@/lib/seo";
+import { SITE_URL, siteUrl, metadataFor } from "@/lib/seo";
 import GuiaContent from "./GuiaContent";
 
 export const generateMetadata = metadataFor({
@@ -17,7 +17,6 @@ const jsonLd = (L: Pick2) => ([
     "@type": "Article",
     headline: L("Camino de Vida 7 — El buscador de la verdad", "Life Path 7 — The Seeker of Truth"),
     description: L("Guía completa del Camino de Vida 7 en numerología: significado, personalidad, fortalezas y desafíos.", "Complete guide to Life Path 7 in numerology: meaning, personality, strengths and challenges."),
-    image: siteUrl(OG_IMAGE),
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
     datePublished: "2025-01-01",

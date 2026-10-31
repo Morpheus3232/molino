@@ -14,6 +14,7 @@ import ProfileHub from "@/components/profile/ProfileHub";
 import CalculationMatrix from "@/components/profile/CalculationMatrix";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
+import { localePath } from "@/lib/i18n/pageLocale";
 
 function buildFromLocal(): UserProfile | null {
   const stored = loadProfileFromStorage();
@@ -144,7 +145,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
     if (!mounted || !profile) return;
     const encoded = encodeProfileData(profile);
     if (window.location.hash.slice(1) === encoded && !window.location.search) return;
-    window.history.replaceState(null, "", `/profile#${encoded}`);
+    window.history.replaceState(null, "", localePath(`/profile#${encoded}`));
   }, [mounted, profile]);
 
   // La animación matrix con la cuenta real corre una sola vez por sesión, la

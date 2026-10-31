@@ -1,4 +1,5 @@
-import { getL } from "@/lib/i18n/server";
+import { metaL } from "@/lib/i18n/server";
+import { routing } from "@/lib/i18n/routing";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
@@ -6,17 +7,18 @@ import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/data/blog-content";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Artículo de Molino";
+// Neutro: el mismo archivo sirve las dos versiones del idioma.
+export const alt = "Molino · Blog";
 
 // Se genera en el build, una por artículo: la foto de portada vive en
 // public/blog/ y en el build está disponible en disco (en una función
 // serverless de Vercel no está garantizado).
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+  return routing.locales.flatMap((locale) => BLOG_POSTS.map((post) => ({ locale, slug: post.slug })));
 }
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
 async function coverDataUri(imagePath: string): Promise<string | null> {
   if (!/\.(jpe?g|png)$/i.test(imagePath)) return null; // Satori no rasteriza SVG de portada
@@ -30,7 +32,7 @@ async function coverDataUri(imagePath: string): Promise<string | null> {
 }
 
 export default async function OgImage({ params }: Props) {
-  const L = await getL();
+  const L = await metaL(params);
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   const cover = post ? await coverDataUri(post.image) : null;

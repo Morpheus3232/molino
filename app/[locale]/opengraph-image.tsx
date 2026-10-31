@@ -1,12 +1,13 @@
-import { useL } from "@/lib/i18n/useL";
+import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Mapa Personal de Autoconocimiento";
+// Neutro: el mismo archivo sirve las dos versiones del idioma.
+export const alt = "Molino";
 
-export default function OpenGraphImage() {
-  const L = useL();
+export default async function OpenGraphImage({ params }: { params: Promise<{ locale: string }> }) {
+  const L = await metaL(params);
   return new ImageResponse(
     (
       <div

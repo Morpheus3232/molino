@@ -47,8 +47,13 @@ export default function JournalClient() {
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [contextualPrompt, setContextualPrompt] = useState<string | undefined>(undefined);
   const { entries, addEntry, updateEntry, deleteEntry, loading } = useJournal();
+  // La hoja depende del día de hoy en el navegador (fecha, consigna del día):
+  // la página se genera estática en el build, así que se arma recién en el
+  // cliente para no chocar con el HTML de otro día (error de hidratación).
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const user = loadUser();
     if (user) setProfile(user);
 
@@ -152,14 +157,18 @@ export default function JournalClient() {
               {/* La key remonta el editor cuando cambia la página que se corrige:
                   el texto vive en un useState, y sin remontar, "Editar" dejaba la
                   hoja vacía en vez de traer lo escrito. */}
-              <JournalEditor
-                key={editingEntry?.id ?? "nueva"}
-                profile={profile}
-                onSaveEntry={handleSave}
-                editingEntry={editingEntry}
-                onCancelEdit={() => setEditingEntry(null)}
-                contextualPrompt={contextualPrompt}
-              />
+              {mounted ? (
+                <JournalEditor
+                  key={editingEntry?.id ?? "nueva"}
+                  profile={profile}
+                  onSaveEntry={handleSave}
+                  editingEntry={editingEntry}
+                  onCancelEdit={() => setEditingEntry(null)}
+                  contextualPrompt={contextualPrompt}
+                />
+              ) : (
+                <div className="diary-paper min-h-[32rem]" aria-hidden="true" />
+              )}
             </div>
             <aside className="lg:col-span-4 lg:pt-2">
               <div className="lg:sticky lg:top-28 border-t-2 border-ink">

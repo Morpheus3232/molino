@@ -1,4 +1,5 @@
 import { useL } from "@/lib/i18n/useL";
+import { aAn } from "@/lib/i18n/translate";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getPrimaryEvent, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import type { Animal } from "@/lib/data/animalRelations";
@@ -188,7 +189,7 @@ function EntityNeighbors({ entity, animal }: { entity: SymbolicEntity; animal: A
     entity.country && n.sameCountrySign.length > 0 && {
       id: "section-mismo-signo-pais",
       title: L(`También ${animal} en ${entity.country}`, `Also ${L.t(animal)} in ${L.t(entity.country)}`),
-      intro: L(`${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`, `${L.t(n.sameCountrySignTotal === 1 ? "The other entry" : `The ${L.t(n.sameCountrySignTotal)} entries`)} in the Atlas of ${L.t(entity.country)} whose origin falls in a ${L.t(animal)} year, like ${L.t(entity.name)}.`),
+      intro: L(`${n.sameCountrySignTotal === 1 ? "La otra entrada" : `Las ${n.sameCountrySignTotal} entradas`} del Atlas de ${entity.country} cuyo origen cae en un año ${animal}, como ${entity.name}.`, `${L.t(n.sameCountrySignTotal === 1 ? "The other entry" : `The ${L.t(n.sameCountrySignTotal)} entries`)} in the Atlas of ${L.t(entity.country)} whose origin falls in ${aAn(L.t(animal))} year, like ${L.t(entity.name)}.`),
       items: n.sameCountrySign,
       total: n.sameCountrySignTotal,
     },

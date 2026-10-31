@@ -21,6 +21,7 @@ import {
   Check,
 } from "lucide-react";
 import { PageHero } from "@/components/knowledge/Kit";
+import { localePath } from "@/lib/i18n/pageLocale";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -116,7 +117,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
     if (nameB.trim()) query.set("nb", nameB.trim());
 
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", `/pareja?${query.toString()}`);
+      window.history.replaceState(null, "", localePath(`/pareja?${query.toString()}`));
     }
   };
 
@@ -127,7 +128,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
     setNameA("");
     setNameB("");
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", "/pareja");
+      window.history.replaceState(null, "", localePath("/pareja"));
     }
   };
 
@@ -183,7 +184,7 @@ export default function ParejaClient({ params }: { params: UrlParams }) {
                     setDateB("1988-07-22");
                     setIsComparing(true);
                     if (typeof window !== "undefined") {
-                      window.history.replaceState(null, "", "/pareja?a=1990-03-15&b=1988-07-22&na=Ana&nb=Lucas");
+                      window.history.replaceState(null, "", localePath("/pareja?a=1990-03-15&b=1988-07-22&na=Ana&nb=Lucas"));
                     }
                   }}
                   className="px-3 py-1.5 rounded-lg bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"

@@ -22,6 +22,8 @@ export async function GET(req: NextRequest) {
   const lifePath = /^\d{1,2}$/.test(lifePathRaw) ? lifePathRaw : "";
   const name = (searchParams.get("n") || "").slice(0, 40);
   const archetype = (searchParams.get("a") || "").slice(0, 60);
+  // ?lang=en la pide la versión en inglés de /profile (el arquetipo ya llega traducido).
+  const en = searchParams.get("lang") === "en";
 
   return new ImageResponse(
     (
@@ -59,7 +61,7 @@ export async function GET(req: NextRequest) {
             marginBottom: 16,
           }}
         >
-          {name ? `El Camino de Vida de ${name}` : "Camino de Vida"}
+          {en ? (name ? `${name}'s Life Path` : "Life Path") : name ? `El Camino de Vida de ${name}` : "Camino de Vida"}
         </div>
         <div style={{ fontSize: 220, fontWeight: 800, color: "#0A0A0A", lineHeight: 1, display: "flex" }}>
           {lifePath || "?"}

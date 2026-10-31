@@ -1,9 +1,10 @@
 import { type Pick2 } from "@/lib/i18n/useL";
-import { getL } from "@/lib/i18n/server";
+import { metaL } from "@/lib/i18n/server";
 import { ImageResponse } from "next/og";
 import { getCountryName, isoToFlagEmoji } from "@/lib/data/atlas-queries";
 
-export const alt = "Categoría del Atlas";
+// Neutro: el mismo archivo sirve las dos versiones del idioma.
+export const alt = "Molino · Atlas";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -18,7 +19,7 @@ const CATEGORY_LABELS = (L: Pick2): Record<string, string> => ({
 });
 
 export default async function Image({ params }: { params: Promise<{ countryISO: string; category: string }> }) {
-  const L = await getL();
+  const L = await metaL(params);
   const { countryISO, category } = await params;
   const iso = countryISO.toUpperCase();
   const name = getCountryName(iso) || iso;
@@ -63,7 +64,7 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
 
         <span style={{ fontSize: 96, lineHeight: 1 }}>{L.t(isoToFlagEmoji(iso))}</span>
         <span style={{ color: "#0A0A0A", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{L.t(catLabel)}</span>
-        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>{L(<>de {L.t(name)}</>, <>of {L.t(name)}</>)}</span>
+        <span style={{ color: "#0A0A0A", fontSize: 28, fontWeight: 600, marginTop: 8 }}>{L(<>de {L.t(name)}</>, <>of {L.t(name)}</>).props.children}</span>
         <span style={{ color: "#5C5C5C", fontSize: 16, marginTop: 36 }}>{L("Explorá las afinidades simbólicas en Molino", "Explore symbolic affinities on Molino")}</span>
       </div>
     ),

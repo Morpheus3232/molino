@@ -1,5 +1,6 @@
 "use client";
 import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { aAn } from "@/lib/i18n/translate";
 
 import { useMemo } from "react";
 import { useRouter } from "@/lib/i18n/navigation";
@@ -143,7 +144,7 @@ export default function RecommendationContent({ entityType, catalog, title, subt
             <RecommendationGroup
               key="mismo"
               title={L("Tu propio signo · 本命", "Your own sign · 本命")}
-              subtitle={L(`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`, `Its date of origin falls in a ${L.t(userAnimal)} year, like yours.`)}
+              subtitle={L(`Su fecha de origen cae en un año ${userAnimal}, como la tuya.`, `Its date of origin falls in ${aAn(L.t(userAnimal))} year, like yours.`)}
               recommendations={same}
               accentColor="var(--color-accent)"
               router={router}

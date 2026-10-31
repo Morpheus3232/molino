@@ -102,8 +102,8 @@ export async function generateMetadata({ params: routeParams, searchParams }: Pr
   const ogImage = lifePath
     ? siteUrl(
         `/api/og?l=${lifePath}${name ? `&n=${encodeURIComponent(name)}` : ""}${
-          archetype ? `&a=${encodeURIComponent(archetype)}` : ""
-        }`,
+          archetype ? `&a=${encodeURIComponent(L.t(archetype))}` : ""
+        }${L("", "&lang=en")}`,
       )
     : undefined;
 

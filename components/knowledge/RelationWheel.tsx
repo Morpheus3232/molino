@@ -16,7 +16,8 @@ const R_CORE = 74;
 
 function polar(r: number, deg: number) {
   const a = ((deg - 90) * Math.PI) / 180;
-  return { x: C + r * Math.cos(a), y: C + r * Math.sin(a) };
+  // Redondeado para que servidor y navegador generen el mismo SVG (hidratación).
+  return { x: Math.round((C + r * Math.cos(a)) * 1000) / 1000, y: Math.round((C + r * Math.sin(a)) * 1000) / 1000 };
 }
 
 function sector(rIn: number, rOut: number, a0: number, a1: number) {

@@ -27,7 +27,9 @@ const R_CORE = 64;
 /** Punto en el círculo: ángulo 0 = arriba, sentido horario. */
 function polar(r: number, deg: number) {
   const a = ((deg - 90) * Math.PI) / 180;
-  return { x: C + r * Math.cos(a), y: C + r * Math.sin(a) };
+  // Redondeado: el Math.sin de Node y el del navegador difieren en el último
+  // decimal y React marca la diferencia como error de hidratación.
+  return { x: Math.round((C + r * Math.cos(a)) * 1000) / 1000, y: Math.round((C + r * Math.sin(a)) * 1000) / 1000 };
 }
 
 /** Sector anular entre dos radios y dos ángulos. */

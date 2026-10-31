@@ -1,5 +1,6 @@
 "use client";
 import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { aAn } from "@/lib/i18n/translate";
 
 import { useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -290,7 +291,7 @@ export default function ZodiacoChinoCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = L(`Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`, `I'm a ${L.t(result.element)} ${L.t(result.animal)}. Read your Chinese zodiac animal on Molino.`);
+                    const text = L(`Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`, `I'm ${aAn(L.t(result.element))} ${L.t(result.animal)}. Read your Chinese zodiac animal on Molino.`);
                     if (navigator.share) {
                       navigator.share({ title: L(`Mi Zodiaco Chino — ${result.animal}`, `My Chinese Zodiac — ${L.t(result.animal)}`), text }).catch(() => {});
                     } else {

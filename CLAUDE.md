@@ -313,6 +313,12 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   "and" en medio del español. La lógica sigue trabajando con los valores en
   español ("Caballo", "Fuego"). El selector de idioma está en el footer y la
   IA responde en inglés si el request trae `locale: "en"`.
+  Imágenes para compartir: cada `opengraph-image.tsx` toma el idioma de
+  `params` (`metaL`), y `proxy.ts` no intercepta `*opengraph-image` porque
+  Next las publica como `/es/...` y `/en/...`. En Satori no envolver hijos de
+  un `flex` en `L(<>…</>, <>…</>)`: usar `.props.children` o se rompe el layout.
+  En inglés, `aAn()` (lib/i18n/translate.ts) pone "a"/"an" delante de una
+  palabra insertada ("an Ox year").
 - **Línea de diseño (2026-10-17): libro de Penguin + el Quijote de la
   portada.** Base blanco y negro: paper `#FFFFFF`, ink `#0A0A0A`, muted
   `#474747`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son

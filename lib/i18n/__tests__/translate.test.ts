@@ -51,3 +51,11 @@ describe("enumeraciones", () => {
     expect(L.t("liderazgo y algo desconocido")).toBe("liderazgo y algo desconocido");
   });
 });
+
+describe("artículos en inglés", () => {
+  const L = makeTranslator({ Buey: "Ox", Perro: "Dog", "Nacido en un año {w}.": "Born in a {} year." });
+  it("usa 'an' delante de vocal solo en la parte insertada", () => {
+    expect(L.t("Nacido en un año Buey.")).toBe("Born in an Ox year.");
+    expect(L.t("Nacido en un año Perro.")).toBe("Born in a Dog year.");
+  });
+});

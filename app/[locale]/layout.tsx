@@ -14,7 +14,7 @@ import MotionProvider from "@/components/ui/MotionProvider";
 import PWAProvider from "@/components/PWAProvider";
 import ChunkRecovery from "@/components/ChunkRecovery";
 import MotionFailsafe from "@/components/ui/MotionFailsafe";
-import { SITE_URL, SITE_NAME, OG_IMAGE } from "@/lib/seo";
+import { SITE_URL, SITE_NAME, ogImageFor } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       siteName: SITE_NAME,
       title: copy.title,
       description: copy.description,
-      images: [{ url: OG_IMAGE }],
+      images: [{ url: ogImageFor(locale) }],
     },
     twitter: {
       card: "summary_large_image",

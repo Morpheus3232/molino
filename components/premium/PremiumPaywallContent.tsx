@@ -129,7 +129,7 @@ export default function PremiumPaywallContent({
           <p className="mt-5 text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl">
             {L.t(sources.length > 1
               ? L(`Tu ${sources.map(L.t).join(" y tu ").toLowerCase()} se calculan por caminos separados y aterrizan en la misma palabra. Es el rasgo que más cuesta apagar cuando querés pasar desapercibido.`, `Your ${L.t(sources.map(L.t).join(" and your ").toLowerCase())} are calculated along separate paths and land on the same word. It's the trait that's hardest to switch off when you want to go unnoticed.`)
-              : t.premium.hookDescription.replace("{keyword}", keyword).replace("{zodiac}", preview.chineseZodiac).replace(" ({element})", ""))}
+              : t.premium.hookDescription.replace("{keyword}", L.t(keyword)).replace("{zodiac}", L.t(preview.chineseZodiac)).replace(" ({element})", ""))}
           </p>
           {preview.tension && (
             <p className="mt-4 text-base text-muted leading-relaxed max-w-xl">{L(<>

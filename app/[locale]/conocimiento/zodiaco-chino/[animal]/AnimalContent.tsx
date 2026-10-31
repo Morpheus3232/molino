@@ -1,5 +1,6 @@
 "use client";
 import { useL } from "@/lib/i18n/useL";
+import { aAn } from "@/lib/i18n/translate";
 
 import { Link } from "@/lib/i18n/navigation";
 import Button from "@/components/ui/Button";
@@ -72,7 +73,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
               {current ? (
                 <span className="block mt-1 text-foreground">{L(<>
                   Ahora mismo es año {L.t(delAnimal(animal.name))} de {L.t(current.element)}, hasta el {L.t(fechaCorta(current.end))}.
-                </>, <>Right now it's a {L.t(current.element)} {L.t(animal.name)} year, until {L.t(fechaCorta(current.end))}.</>)}</span>
+                </>, <>Right now it's {aAn(L.t(current.element))} {L.t(animal.name)} year, until {L.t(fechaCorta(current.end))}.</>)}</span>
               ) : upcoming ? (
                 <span className="block mt-1 text-foreground">{L(<>
                   El próximo año {L.t(delAnimal(animal.name))} empieza el {L.t(fechaCorta(upcoming.start))} ({L.t(upcoming.element)}).
@@ -114,7 +115,7 @@ export default function AnimalContent({ animal, years }: { animal: ChineseAnimal
 
         <KnowledgeSection
           label={L(`Años ${delAnimal(animal.name)}`, `${L.t(animal.name)} years`)}
-          title={<>{L(<>¿Naciste en un año {L.t(animal.name)}?</>, <>Were you born in a {L.t(animal.name)} year?</>)}</>}
+          title={<>{L(<>¿Naciste en un año {L.t(animal.name)}?</>, <>Were you born in {aAn(L.t(animal.name))} year?</>)}</>}
           intro={L("El año chino empieza con el Año Nuevo lunar, entre el 21 de enero y el 21 de febrero. Si naciste en esas semanas, fijate el día exacto: quizás tu signo es el anterior.", "The Chinese year starts with the Lunar New Year, between January 21 and February 21. If you were born in those weeks, check the exact day: your sign may be the previous one.")}
         >
           <div className="max-w-3xl overflow-x-auto">

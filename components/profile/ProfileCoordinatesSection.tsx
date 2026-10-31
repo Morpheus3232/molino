@@ -1,5 +1,6 @@
 "use client";
 import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { aAn } from "@/lib/i18n/translate";
 
 import { useMemo } from "react";
 import { Link } from "@/lib/i18n/navigation";
@@ -361,7 +362,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               text={`${fechaLarga(cnyStart)} → ${fechaLarga(diaAnterior(cnyNext))}`}
               note={L(`Ese año fue de ${display.name} de ${chineseElement}, y tu fecha (${fechaLarga(birthDate)}) cae adentro.${
                 lunarYear !== birthY ? ` Ojo: naciste antes del Año Nuevo chino, así que tu signo es el del año ${lunarYear}.` : ""
-              }`, `That year was a ${L.t(chineseElement)} ${L.t(display.name)} year, and your date (${L.t(fechaLarga(birthDate))}) falls inside it.${L.t(lunarYear !== birthY ? ` Note: you were born before Chinese New Year, so your sign is that of the year ${lunarYear}.` : "")}`)}
+              }`, `That year was ${aAn(L.t(chineseElement))} ${L.t(display.name)} year, and your date (${L.t(fechaLarga(birthDate))}) falls inside it.${L.t(lunarYear !== birthY ? ` Note: you were born before Chinese New Year, so your sign is that of the year ${lunarYear}.` : "")}`)}
             />
           </Cuenta>
         )}
