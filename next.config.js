@@ -130,7 +130,14 @@ const nextConfig = {
       // no se duplican: solo sumarían reglas.
       .filter((r) => r.destination.startsWith('/') && !/^\/(en|sinastria|compatibility)(\/|$)/.test(r.source))
       .map((r) => ({ ...r, source: withEn(r.source), destination: withEn(r.destination) }));
-    return [...base, ...en];
+    // Imágenes para compartir de antes del sitio bilingüe (sin /es ni /en):
+    // siguen en los previews que WhatsApp y las redes guardaron. Van fuera de
+    // `base` porque no tienen versión /en.
+    const legacyOg = [
+      { source: '/opengraph-image', destination: '/es/opengraph-image', permanent: true },
+      { source: '/:path((?!es/|en/|es$|en$).+)/opengraph-image', destination: '/es/:path/opengraph-image', permanent: true },
+    ];
+    return [...legacyOg, ...base, ...en];
   },
   async headers() {
     return [

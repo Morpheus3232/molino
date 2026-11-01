@@ -77,8 +77,8 @@ export async function getMonthlyMemberCounts(months = 12): Promise<{ month: stri
     if (!kv) return out;
     const now = new Date();
     for (let i = 0; i < months; i++) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const month = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
+      const month = d.toISOString().slice(0, 7);
       const count = (await kv.get<number>(`${MONTH_KEY_PREFIX}${month}`)) || 0;
       out.push({ month, count });
     }

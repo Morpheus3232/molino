@@ -64,8 +64,7 @@ describe('member count metrics', () => {
     const monthly = await getMonthlyMemberCounts(12);
     expect(monthly.length).toBe(12);
     // The current month should have 1 grant.
-    const now = new Date();
-    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const currentMonth = new Date().toISOString().slice(0, 7); // UTC, igual que el bucket
     const current = monthly.find((m) => m.month === currentMonth);
     expect(current?.count).toBe(1);
   });
