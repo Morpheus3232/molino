@@ -108,8 +108,31 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
     setOriginISO(iso && destinations.some((d) => d.iso === iso) ? iso : fallback);
   }, [country, destinations, originISO, L.locale]);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
-  // Cambiar de signo invalida el viaje armado.
-  useEffect(() => setPlan(null), [animal]);
+  // Cambiar de signo invalida el viaje armado (salvo el que viene en la dirección).
+  const restored = useRef(false);
+  useEffect(() => {
+    if (restored.current) setPlan(null);
+  }, [animal]);
+  // Un viaje compartido (?desde=AR&ida=…&vuelta=…) se arma solo al abrir la página.
+  useEffect(() => {
+    if (restored.current || !today || !originISO) return;
+    restored.current = true;
+    const q = new URLSearchParams(window.location.search);
+    const ida = q.get("ida");
+    const vuelta = q.get("vuelta");
+    const desde = q.get("desde");
+    const iso = /^\d{4}-\d{2}-\d{2}$/;
+    if (ida && vuelta && iso.test(ida) && iso.test(vuelta)) {
+      if (desde && destinations.some((d) => d.iso === desde)) setOriginISO(desde);
+      setStart(ida);
+      setEnd(vuelta);
+      arm({ start: ida, end: vuelta, originISO: desde ?? undefined, instant: true });
+    }
+    if (window.location.hash === "#viaje") {
+      requestAnimationFrame(() => document.getElementById("viaje")?.scrollIntoView({ block: "start" }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today, originISO]);
 
   const mine = useMemo(() => sameSignDestinations(animal, destinations), [animal, destinations]);
   const byName = useMemo(
@@ -126,23 +149,62 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
 
   const capName = (d: TravelDestination) => (L.locale === "en" ? d.capital.en : d.capital.es);
 
-  function arm() {
+  // Los mejores meses para el signo: los que tienen más países ideales (sin
+  // contar el de origen). Un clic arma un viaje de dos semanas ese mes.
+  const bestMonthsForSign = useMemo(() => {
+    if (!upcoming || !today) return [];
+    return upcoming.months
+      .map((m) => ({
+        m,
+        ideal: mine.filter((d) => d.iso !== originISO && classifyMonth(d.climate, m.month0).cls === "ideal").length,
+      }))
+      .filter((x) => x.ideal > 0)
+      .sort((a, b) => b.ideal - a.ideal || a.m.ym.localeCompare(b.m.ym))
+      .slice(0, 3)
+      .sort((a, b) => a.m.ym.localeCompare(b.m.ym));
+  }, [upcoming, today, mine, originISO]);
+
+  function quickPick(ym: string) {
+    const first = `${ym}-01`;
+    const s0 = today && today > first ? addDays(today, 1) : first;
+    const e0 = addDays(s0, 14);
+    setStart(s0);
+    setEnd(e0);
+    arm({ start: s0, end: e0 });
+  }
+
+  function arm(over?: { start: string; end: string; originISO?: string; instant?: boolean }) {
     setError(null);
-    if (!origin) return setError(L("Elegí desde dónde salís.", "Choose where you leave from."));
-    if (!start || !end) return setError(L("Poné la fecha de ida y la de vuelta.", "Enter your departure and return dates."));
-    const n = daysBetween(start, end);
+    const o = over?.originISO ? destinations.find((d) => d.iso === over.originISO) ?? origin : origin;
+    const s0 = over?.start ?? start;
+    const e0 = over?.end ?? end;
+    if (!o) return setError(L("Elegí desde dónde salís.", "Choose where you leave from."));
+    if (!s0 || !e0) return setError(L("Poné la fecha de ida y la de vuelta.", "Enter your departure and return dates."));
+    const n = daysBetween(s0, e0);
     if (n < 2) return setError(L("La vuelta tiene que ser al menos dos días después de la ida.", "The return must be at least two days after departure."));
     if (n > 120) return setError(L("Hasta 120 días por viaje.", "Up to 120 days per trip."));
     timers.current.forEach(clearTimeout);
     const result = planTrip({
       userAnimal: animal,
       destinations,
-      origin: { iso: origin.iso, name: origin.name, city: capName(origin), lat: origin.capital.lat, lon: origin.capital.lon },
-      start,
-      end,
+      origin: { iso: o.iso, name: o.name, city: capName(o), lat: o.capital.lat, lon: o.capital.lon },
+      start: s0,
+      end: e0,
     });
+    // El viaje queda en la dirección: se puede guardar o compartir tal cual.
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.set("animal", animal);
+      u.searchParams.set("desde", o.iso);
+      u.searchParams.set("ida", s0);
+      u.searchParams.set("vuelta", e0);
+      u.hash = "viaje";
+      window.history.replaceState(null, "", u.toString());
+    } catch {
+      /* sin URL no pasa nada: el viaje igual se muestra */
+    }
     const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    if (reduce || over?.instant) {
       setPlan(result);
       return;
     }
@@ -256,6 +318,31 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
         </p>
       )}
 
+      {bestMonthsForSign.length > 0 && (
+        <div className="mt-5">
+          <p className="text-sm text-muted">
+            {L(`O elegí uno de los meses con más países ${L.t(animal)} ideales:`, `Or pick one of the months with the most ideal ${L.t(animal)} countries:`)}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {bestMonthsForSign.map(({ m, ideal }) => (
+              <button
+                key={m.ym}
+                type="button"
+                onClick={() => quickPick(m.ym)}
+                disabled={thinking !== null}
+                className="px-4 py-2.5 border border-ink/25 text-base text-foreground hover:border-ink hover:bg-card transition-colors"
+              >
+                <span className="capitalize">{fmtYM(L, m.ym)}</span>
+                <span className="text-muted">
+                  {" · "}
+                  {L(`${ideal} ${ideal === 1 ? "país ideal" : "países ideales"}`, `${ideal} ideal ${ideal === 1 ? "country" : "countries"}`)}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* PENSANDO */}
       <div aria-live="polite">
         {thinking !== null && (
@@ -317,6 +404,63 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
   );
 }
 
+/** Calendario .ics con un evento de día completo por destino (RFC 5545). */
+function buildIcs(L: Pick2, plan: TripPlan, capName: (d: TravelDestination) => string): string {
+  const esc = (t: string) => t.replace(/\\/g, "\\\\").replace(/[,;]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
+  const d8 = (d: string) => d.replace(/-/g, "");
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//molino.app//Viaje por tu signo//ES", "CALSCALE:GREGORIAN"];
+  plan.stops.forEach((s, i) => {
+    const climate = s.months.map((m) => verdictText(L, m.verdict)).join(" / ");
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:${d8(s.arrive)}-${s.dest.iso}-${i}@molino.app`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;VALUE=DATE:${d8(s.arrive)}`,
+      `DTEND;VALUE=DATE:${d8(s.depart)}`,
+      `SUMMARY:${esc(`${L.t(s.dest.name)} · ${capName(s.dest)}`)}`,
+      `DESCRIPTION:${esc(`${climate}. ${s.dest.originLabel ? L.t(s.dest.originLabel) + " · " : ""}${fmtDate(L, s.dest.originDate)}. molino.app`)}`,
+      "END:VEVENT",
+    );
+  });
+  lines.push("END:VCALENDAR");
+  return lines.join("\r\n");
+}
+
+function PlanActions({ plan, capName }: { plan: TripPlan; capName: (d: TravelDestination) => string }) {
+  const L = useL();
+  const [copied, setCopied] = useState(false);
+  function download() {
+    const blob = new Blob([buildIcs(L, plan, capName)], { type: "text/calendar;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `viaje-${plan.start}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      /* el enlace sigue en la barra de direcciones */
+    }
+  }
+  return (
+    <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-base">
+      <button type="button" onClick={copy} className="underline underline-offset-4 hover:no-underline">
+        {copied ? L("Enlace copiado", "Link copied") : L("Copiar el enlace de este viaje", "Copy this trip's link")}
+      </button>
+      <button type="button" onClick={download} className="underline underline-offset-4 hover:no-underline">
+        {L("Agregar a mi calendario (.ics)", "Add to my calendar (.ics)")}
+      </button>
+    </div>
+  );
+}
+
 function PlanView({
   plan,
   animal,
@@ -361,6 +505,7 @@ function PlanView({
         {plan.originIsSameSign &&
           L(" Tu país también es de este signo: no cuenta como destino porque es casa.", " Your country is also of this sign: it doesn't count as a destination because it's home.")}
       </p>
+      <PlanActions plan={plan} capName={capName} />
       {plan.noGoodClimate && (
         <p className="mt-3 text-base text-vermilion">
           {L(

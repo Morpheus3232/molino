@@ -11,6 +11,8 @@ import { getPrimaryEvent } from "@/lib/data/entity-events";
 import { BRAND_LISTINGS, brandListingOf } from "@/lib/data/brand-kinds";
 import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
+import CountryClimateStrip from "@/components/travel/CountryClimateStrip";
+import { getTravelDestinations } from "@/lib/data/travel/destinations";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "movie", "artist", "football_player"];
 
@@ -123,6 +125,8 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   // Una marca vuelve a su listado (autos, ropa u otras), no a un "Marcas" genérico.
   const meta = entity.type === "brand" ? BRAND_LISTINGS[brandListingOf(entity.category)] : ENTITY_TYPES[type as EntityType];
   const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
+  // Países con fecha exacta, capital y clima: "Cuándo ir", con el criterio del viaje por tu signo.
+  const travel = type === "country" ? getTravelDestinations().find((d) => d.entityId === entity.id) : undefined;
 
   return (
     <>
@@ -135,6 +139,7 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
           <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType}>
             <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} />
           </AffinityEditorialContent>
+          {travel && <CountryClimateStrip name={travel.name} animal={travel.animal} capital={travel.capital} climate={travel.climate} />}
         </main>
       </div>
     </>

@@ -379,30 +379,41 @@ export function planTrip(opts: {
   const k = Math.max(1, Math.min(pool.length, maxStops, Math.floor(nights / MIN_NIGHTS_PER_STOP) || 1));
   const nightsSplit = splitNights(nights, k);
 
-  let best: { order: TravelDestination[]; value: number } | null = null;
-  for (const combo of combinations(pool.map((x) => x.d), k)) {
+  // Precálculo: puntos de clima acumulados por noche del viaje para cada
+  // candidato, y distancias entre todos. Así cada orden se evalúa con sumas,
+  // sin recorrer fechas: un viaje de 120 noches pasa de ~1 s a milisegundos.
+  const poolD = pool.map((x) => x.d);
+  const monthOfNight = Array.from({ length: nights }, (_, i) => Number(addDays(start, i).slice(5, 7)) - 1);
+  const prefix = poolD.map((d) => {
+    const acc = new Float64Array(nights + 1);
+    for (let i = 0; i < nights; i++) acc[i + 1] = acc[i] + CLASS_POINTS[classifyMonth(d.climate, monthOfNight[i]).cls];
+    return acc;
+  });
+  const fromOrigin = poolD.map((d) => haversineKm(origin, d.capital));
+  const between = poolD.map((a) => poolD.map((b) => haversineKm(a.capital, b.capital)));
+  const offsets = nightsSplit.reduce<number[]>((acc, n, i) => (acc.push(i === 0 ? 0 : acc[i - 1] + nightsSplit[i - 1]), acc), []);
+
+  let best: { order: number[]; value: number } | null = null;
+  for (const combo of combinations(poolD.map((_, i) => i), k)) {
     for (const order of permutations(combo)) {
-      let km = 0;
-      let prev: { lat: number; lon: number } = origin;
-      let date = start;
+      let km = fromOrigin[order[0]] + fromOrigin[order[order.length - 1]];
       let climate = 0;
-      order.forEach((d, i) => {
-        km += haversineKm(prev, d.capital);
-        climate += stayClimateScore(d.climate, date, nightsSplit[i]) * nightsSplit[i];
-        date = addDays(date, nightsSplit[i]);
-        prev = d.capital;
-      });
-      km += haversineKm(prev, origin);
+      for (let i = 0; i < order.length; i++) {
+        const o = offsets[i];
+        climate += prefix[order[i]][o + nightsSplit[i]] - prefix[order[i]][o];
+        if (i > 0) km += between[order[i - 1]][order[i]];
+      }
       const value = (climate / nights) * KM_PER_CLIMATE_POINT * k - km;
       if (!best || value > best.value + 1e-9) best = { order, value };
     }
   }
+  const bestOrder = best!.order.map((i) => poolD[i]);
 
   const stops: TripStop[] = [];
   const legs: TripLeg[] = [];
   let date = start;
   let prev: LegEnd = { iso: origin.iso, name: origin.city ?? origin.name, lat: origin.lat, lon: origin.lon };
-  best!.order.forEach((d, i) => {
+  bestOrder.forEach((d, i) => {
     const n = nightsSplit[i];
     const depart = addDays(date, n);
     const to: LegEnd = { iso: d.iso, name: d.capital.es, lat: d.capital.lat, lon: d.capital.lon };

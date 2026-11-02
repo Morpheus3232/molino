@@ -47,6 +47,16 @@ describe("classifyMonth", () => {
 });
 
 describe("datos", () => {
+  it("capitales de altura cerca de sus normales oficiales (±2,5 °C)", () => {
+    // [enero, julio] medias oficiales aproximadas
+    const real: Record<string, [number, number]> = {
+      CO: [13.9, 13.8], MX: [14.4, 16.2], AR: [24.7, 11.0], ES: [6.3, 25.6], JO: [8.5, 25.5], LI: [0.4, 19.0], EC: [14.0, 14.2],
+    };
+    for (const [iso, [jan, jul]] of Object.entries(real)) {
+      expect(Math.abs(CLIMATE[iso].t[0] - jan), `${iso} enero`).toBeLessThanOrEqual(2.5);
+      expect(Math.abs(CLIMATE[iso].t[6] - jul), `${iso} julio`).toBeLessThanOrEqual(2.5);
+    }
+  });
   it("todo país con fecha exacta del Atlas tiene capital y clima", () => {
     const all = getTravelDestinations();
     expect(all.length).toBeGreaterThan(170);
