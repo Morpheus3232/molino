@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Link } from "@/lib/i18n/navigation";
 import { Check, Copy, Share2, Gift } from "lucide-react";
 import Button from "@/components/ui/Button";
+import GiftCard from "@/components/gift/GiftCard";
 
 export default function CompradoClient() {
   const L = useL();
@@ -102,6 +103,8 @@ export default function CompradoClient() {
             {L("Compartir enlace", "Share link")}
           </Button>
         </div>
+
+        <GiftCard code={code} url={shareUrl} />
 
         <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-muted font-mono">
           <Gift className="w-3.5 h-3.5" />

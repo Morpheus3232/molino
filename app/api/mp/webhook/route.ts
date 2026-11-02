@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
 import { createRecoveryLinkToken, deleteGiftCode, getGiftCode, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess, storeGiftCode } from '@/lib/kv';
+import { incrementFunnel } from '@/lib/funnel';
 import { incrementMemberCount } from '@/lib/metrics';
 import { sendPremiumConfirmationEmail } from '@/lib/email';
 
@@ -76,7 +77,14 @@ export async function POST(req: NextRequest) {
     // flujo de pago normal queda intacto.
     const giftCode = payment.metadata?.gift_code as string | undefined;
     if (giftCode) {
-      await storeGiftCode(giftCode, paymentId);
+      // MP reintenta los webhooks: si el código ya existe (quizás ya canjeado)
+      // no se pisa, o un reintento lo volvería a dejar "sin canjear" y el
+      // mismo regalo se podría usar dos veces.
+      const existing = await getGiftCode(giftCode);
+      if (!existing) {
+        await storeGiftCode(giftCode, paymentId);
+        await incrementFunnel('gift_purchased');
+      }
       return NextResponse.json({ received: true, gift: true });
     }
 
@@ -101,6 +109,7 @@ export async function POST(req: NextRequest) {
       // Only count on the FIRST successful grant of this payment, so the
       // transparent member counter reflects real, validated purchases.
       await incrementMemberCount(profileHash);
+      await incrementFunnel('premium_unlocked');
 
       // Best-effort confirmation email — never blocks the webhook response.
       if (payment.payerEmail) {

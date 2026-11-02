@@ -23,6 +23,9 @@ import {
   type SignRelation,
 } from "@/lib/engines/travelEngine";
 import WorldRouteMap from "./WorldRouteMap";
+import { ArrowUpRight } from "lucide-react";
+import { countFunnel } from "@/lib/analytics/funnel";
+import { bookingSearchUrl, flightsSearchUrl, hasBookingAffiliate } from "@/lib/travel/links";
 
 const MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -191,6 +194,7 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
       start: s0,
       end: e0,
     });
+    if (!over?.instant) countFunnel("travel_plan_built");
     // El viaje queda en la dirección: se puede guardar o compartir tal cual.
     try {
       const u = new URL(window.location.href);
@@ -386,6 +390,7 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
             const d = destinations.find((x) => x.iso === iso);
             return d ? capName(d) : fallback;
           }}
+          cityEn={(iso, fallback) => destinations.find((x) => x.iso === iso)?.capital.en ?? fallback}
         />
       )}
 
@@ -461,18 +466,36 @@ function PlanActions({ plan, capName }: { plan: TripPlan; capName: (d: TravelDes
   );
 }
 
+function FlightLink({ from, to, date }: { from: string; to: string; date: string }) {
+  const L = useL();
+  return (
+    <a
+      href={flightsSearchUrl({ fromCity: from, toCity: to, date, locale: L.locale === "en" ? "en" : "es" })}
+      target="_blank"
+      rel="noopener"
+      onClick={() => countFunnel("travel_click_flights")}
+      className="underline underline-offset-2 hover:text-vermilion"
+    >
+      {L("buscar vuelo", "find flights")}
+      <ArrowUpRight className="inline w-3.5 h-3.5 ml-0.5 -mt-0.5" aria-hidden="true" />
+    </a>
+  );
+}
+
 function PlanView({
   plan,
   animal,
   originName,
   capName,
   cityOf,
+  cityEn,
 }: {
   plan: TripPlan;
   animal: string;
   originName: string;
   capName: (d: TravelDestination) => string;
   cityOf: (iso: string, fallback: string) => string;
+  cityEn: (iso: string, fallback: string) => string;
 }) {
   const L = useL();
   const MONTHS_LONG = L.locale === "en" ? MONTHS_LONG_EN : MONTHS_LONG_ES;
@@ -522,6 +545,8 @@ function PlanView({
             <li key={s.dest.iso} className="border-b border-ink/15 py-5">
               <p className="text-sm text-muted">
                 ✈ {cityOf(leg.from.iso, leg.from.name)} → {cityOf(leg.to.iso, leg.to.name)} · {fmtKm(L, leg.km)} km · {fmtDate(L, leg.date, false)}
+                {" · "}
+                <FlightLink from={cityEn(leg.from.iso, leg.from.name)} to={cityEn(leg.to.iso, leg.to.name)} date={leg.date} />
               </p>
               <div className="mt-2 flex items-start gap-4">
                 <span className="shrink-0 w-9 h-9 rounded-full bg-vermilion text-white flex items-center justify-center text-lg" aria-hidden="true">
@@ -567,6 +592,22 @@ function PlanView({
                         ` You cross the Chinese New Year: when you leave it's already ${L.t(s.chineseYearOnDepart.animal)}, ${rel[s.chineseYearOnDepart.relation]}.`,
                       )}
                   </p>
+                  <a
+                    href={bookingSearchUrl({
+                      city: capName(s.dest),
+                      country: L.locale === "en" ? L.t(s.dest.name) : s.dest.name,
+                      checkin: s.arrive,
+                      checkout: s.depart,
+                      locale: L.locale === "en" ? "en" : "es",
+                    })}
+                    target="_blank"
+                    rel={hasBookingAffiliate() ? "sponsored noopener" : "noopener"}
+                    onClick={() => countFunnel("travel_click_hotel")}
+                    className="mt-2 inline-flex items-center gap-1.5 text-base text-foreground underline underline-offset-4 hover:text-vermilion"
+                  >
+                    {L(`Buscar alojamiento en ${capName(s.dest)}`, `Find a place to stay in ${capName(s.dest)}`)}
+                    <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                  </a>
                 </div>
               </div>
             </li>
@@ -577,10 +618,23 @@ function PlanView({
           return (
             <li className="py-4 text-sm text-muted">
               ✈ {cityOf(last.from.iso, last.from.name)} → {cityOf(last.to.iso, last.to.name)} · {fmtKm(L, last.km)} km · {fmtDate(L, last.date, false)} · {L("vuelta a casa", "back home")}
+              {" · "}
+              <FlightLink from={cityEn(last.from.iso, last.from.name)} to={cityEn(last.to.iso, last.to.name)} date={last.date} />
             </li>
           );
         })()}
       </ol>
+      <p className="mt-3 text-sm text-muted max-w-2xl">
+        {hasBookingAffiliate()
+          ? L(
+              "Alojamiento: enlace de afiliado de Booking.com. Si reservás desde acá, molino cobra una comisión; a vos no te cuesta más. Vuelos: búsqueda en Google Flights, sin comisión. Los enlaces solo llevan ciudad y fechas.",
+              "Stays: Booking.com affiliate link. If you book from here, molino earns a commission at no extra cost to you. Flights: a Google Flights search, no commission. The links only carry city and dates.",
+            )
+          : L(
+              "Alojamiento en Booking.com y vuelos en Google Flights. Los enlaces solo llevan ciudad y fechas.",
+              "Stays on Booking.com and flights on Google Flights. The links only carry city and dates.",
+            )}
+      </p>
 
       {plan.skipped.length > 0 && (
         <div className="mt-6">

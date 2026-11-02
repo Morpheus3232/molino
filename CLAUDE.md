@@ -209,6 +209,28 @@ Consecuencias operativas:
   mapamundi (`public/geo/world-110m.json`, d3-geo). "Este año y el próximo"
   son años CHINOS: cada mes cuenta para el año de su día 15 y la relación del
   año con tu signo usa las mismas casillas (`relacionCon`).
+- **Monetización sin vender datos (2026-11-02).** Tres piezas:
+  1. **Embudo anónimo** (`lib/funnel.ts`): un contador por evento y por mes en
+     KV (`funnel:<evento>:<YYYY-MM>`), sin IP, hash, perfil ni cookie. El
+     cliente cuenta con `countFunnel()` (`lib/analytics/funnel.ts` →
+     `POST /api/metrics/event`, lista blanca + rate limit); las compras
+     (`premium_unlocked`, `gift_purchased`) las cuenta SOLO el servidor al
+     validar el pago (webhook de MP, `btc/claim` con claim `claimed`). Se lee
+     en `/api/metrics/funnel?token=<METRICS_TOKEN>`; sin esa env var la ruta
+     da 404.
+  2. **Enlaces de reserva en el viaje** (`lib/travel/links.ts`): alojamiento en
+     Booking.com por estadía y vuelo en Google Flights por tramo. Con
+     `NEXT_PUBLIC_BOOKING_AID` (numérico) el de Booking lleva el id de
+     afiliado, `rel="sponsored"` y la aclaración visible de que molino cobra
+     comisión; sin él, el enlace es igual pero sin aid. Los enlaces llevan solo
+     ciudad, país y fechas. El clima y el signo siguen decidiendo el viaje: el
+     afiliado nunca ordena ni filtra destinos.
+  3. **Tarjeta de regalo imprimible** (`components/gift/GiftCard.tsx`, en
+     `/regalar/comprado`): código + QR (paquete `qrcode`, dibujado en el
+     navegador) + "Para"/"De" que no salen del navegador; se imprime en A5 o se
+     guarda en PDF. En noviembre y diciembre `/regalar` suma una nota de fiestas.
+  El webhook de MP ya no re-guarda un código de regalo existente en los
+  reintentos (antes lo volvía a dejar sin canjear).
 - **Atlas = solo tres casillas (2026-11-02).** El hub, los listados por país
   y categoría (`lib/resonance.ts`) y el Atlas personal recomiendan solo tu
   propio signo, tus dos amigos y tu enemigo (como qué evitar). Liu He salió

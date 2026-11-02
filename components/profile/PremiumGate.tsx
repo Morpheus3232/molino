@@ -4,6 +4,7 @@ import { useL } from "@/lib/i18n/useL";
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { analytics } from '@/lib/analytics/analytics';
+import { countFunnel } from '@/lib/analytics/funnel';
 import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient, getOrCreateProfileSalt } from '@/lib/premium';
@@ -236,6 +237,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         analytics.trackPremiumUnlocked();
       } else {
         analytics.trackPaywallViewed();
+        countFunnel('paywall_viewed', { oncePerSession: true });
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

@@ -18,6 +18,7 @@ import {
 import { savePremiumTokenClient } from "@/lib/premium";
 import { invalidatePremiumAccessCache } from "@/lib/hooks/usePremiumAccess";
 import { analytics } from "@/lib/analytics/analytics";
+import { countFunnel } from "@/lib/analytics/funnel";
 import { BtcPayOption } from "./BtcPayment";
 
 const PROFILE_SALT_KEY = "molino-profile-salt";
@@ -68,6 +69,7 @@ export default function PremiumCheckout({
 
     const salt = getOrCreateProfileSalt();
     analytics.trackCheckoutStarted("USD", "mercadopago");
+    countFunnel("checkout_started_mp");
 
     try {
       const res = await fetch("/api/mp/preference", {

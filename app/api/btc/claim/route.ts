@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
 import { grantPremiumAccess, savePremiumToken, saveProfileSalt, claimBtcTxid } from '@/lib/kv';
+import { incrementFunnel } from '@/lib/funnel';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, COUPON_RATE_LIMIT } from '@/lib/rate-limit';
 import { isValidDate } from '@/lib/validation';
 import {
@@ -104,6 +105,7 @@ export async function POST(req: NextRequest) {
 
     // 'claimed' o 'already-yours' (el mismo perfil reintentando) siguen.
     await grantPremiumAccess(profileHash, paymentId);
+    if (claim === 'claimed') await incrementFunnel('premium_unlocked');
     if (salt) await saveProfileSalt(profileHash, salt);
 
     const premiumToken = await savePremiumToken(profileHash);

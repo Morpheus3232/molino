@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { analytics } from '@/lib/analytics/analytics';
+import { countFunnel } from '@/lib/analytics/funnel';
 import { getOrCreateProfileSalt } from '@/lib/premium';
 import type { GateState } from '@/lib/hooks/useCommitPremiumUnlock';
 
@@ -33,6 +34,7 @@ export function usePremiumCheckout({ name, birthDate, currencyId, mercadoPagoEna
     if (!mercadoPagoEnabled) return;
 
     analytics.trackCheckoutStarted('USD', 'mercadopago');
+    countFunnel('checkout_started_mp');
     setCheckoutLoading(true);
     setPayError(null);
     setState('paying');

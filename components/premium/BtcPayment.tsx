@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { savePremiumTokenClient } from "@/lib/premium";
 import { invalidatePremiumAccessCache } from "@/lib/hooks/usePremiumAccess";
 import { analytics } from "@/lib/analytics/analytics";
+import { countFunnel } from "@/lib/analytics/funnel";
 
 interface Quote {
   address: string;
@@ -161,6 +162,7 @@ function BtcPanel({
   useEffect(() => {
     loadQuote();
     analytics.trackCheckoutStarted("BTC", "bitcoin");
+    countFunnel("checkout_started_btc");
   }, [loadQuote]);
 
   const copyAddress = async () => {
