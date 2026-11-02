@@ -197,6 +197,22 @@ Consecuencias operativas:
   `PremiumPaywallContent` → `FeatureComparison`: esa es la fuente única del
   precio (USD 8, pago único) y de la tabla gratis/Pro, no duplicar el
   listado en otro lado.
+- **Viaje por tu signo (2026-11-02, pedido del dueño).** En `/affinity/country`
+  (`components/travel/TravelPlanner.tsx`, motor puro `lib/engines/travelEngine.ts`):
+  destinos SOLO del mismo signo (un Caballo ve países Caballo), con fecha
+  exacta. El clima decide CUÁNDO ir, nunca ADÓNDE: no entra en la afinidad.
+  Clima = promedio mensual 2001–2025 de la capital (NASA POWER, MERRA-2,
+  `lib/data/travel/climate.ts`), con umbrales fijos y a la vista
+  (`CLIMATE_THRESHOLDS`); capitales de Natural Earth (`lib/data/travel/capitals.ts`).
+  Con fechas de ida y vuelta arma la ruta (búsqueda exhaustiva sobre los 8
+  mejores, ida y vuelta desde el país del usuario) y la dibuja en un
+  mapamundi (`public/geo/world-110m.json`, d3-geo). "Este año y el próximo"
+  son años CHINOS: cada mes cuenta para el año de su día 15 y la relación del
+  año con tu signo usa las mismas casillas (`relacionCon`).
+- **Atlas = solo tres casillas (2026-11-02).** El hub, los listados por país
+  y categoría (`lib/resonance.ts`) y el Atlas personal recomiendan solo tu
+  propio signo, tus dos amigos y tu enemigo (como qué evitar). Liu He salió
+  de `getRelatedAnimals`; "neutro" y "par armonioso" ya no existen en el Atlas.
 - **Motor**: `lib/engines/personalMapEngine.ts` (puro, client-safe) es la
   implementación de todo lo anterior. UI: `components/profile/PersonalMapSection.tsx`
   dentro de `/profile` ("Mi Mapa"). Cubre los dominios del Atlas

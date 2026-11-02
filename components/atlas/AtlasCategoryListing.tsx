@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import type { LightweightEntity } from "@/types/atlas";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { bucketEntitiesByResonance, resonanceReasoning, type ResonanceBucket } from "@/lib/resonance";
+import { bucketEntitiesByResonance, resonanceReasoning, ATLAS_BUCKETS } from "@/lib/resonance";
 import { useProfile } from "@/lib/hooks/useProfile";
 import EntityCard from "@/components/atlas/EntityCard";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
@@ -16,21 +16,23 @@ interface AtlasCategoryListingProps {
   category: string;
 }
 
-const SECTION_META = (L: Pick2): Record<ResonanceBucket, { title: string; hint: string; accent: string }> => ({
-  affine: {
-    title: L("Alta y Buena Compatibilidad", "High and Good Compatibility"),
-    hint: L("Mismo animal, animales aliados o par armonioso", "Same animal, allied animals or a harmonious pair"),
-    accent: "border-l-emerald-500/50",
+// Las tres casillas del sitio, en orden: tu propio signo, tus dos amigos y tu
+// enemigo (lo que conviene evitar). El resto del ciclo no se recomienda.
+const SECTION_META = (L: Pick2): Record<"mismo" | "amigo" | "enemigo", { title: string; hint: string; accent: string }> => ({
+  mismo: {
+    title: L("Tu propio signo", "Your own sign"),
+    hint: L("Nacieron o se fundaron en tu mismo signo.", "Born or founded in your same sign."),
+    accent: "border-l-vermilion",
   },
-  tension: {
-    title: L("Energía Opuesta y Tensiones", "Opposite Energy and Tensions"),
-    hint: L("Posición opuesta en el ciclo o relación de atención", "Opposite position in the cycle or a relationship that needs attention"),
-    accent: "border-l-amber-500/50",
+  amigo: {
+    title: L("Tus dos amigos · 三合 San He", "Your two friends · 三合 San He"),
+    hint: L("Los dos signos que completan tu tríada.", "The two signs that complete your triad."),
+    accent: "border-l-ink",
   },
-  neutral: {
-    title: L("Neutras", "Neutral"),
-    hint: L("Sin relación especial según la tradición", "No special relationship according to tradition"),
-    accent: "border-l-ink/20",
+  enemigo: {
+    title: L("Tu enemigo · 六冲 Liu Chong", "Your enemy · 六冲 Liu Chong"),
+    hint: L("El signo de enfrente en el ciclo: lo que conviene evitar.", "The sign across the cycle: what's best avoided."),
+    accent: "border-l-ink/30",
   },
 });
 
@@ -49,12 +51,16 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
   const activeAnimal: Animal =
     selectedAnimal ?? (mounted && profile?.chineseZodiac ? (profile.chineseZodiac as Animal) : "Rata");
 
+  // Fecha exacta o no se muestra: un origen fechado solo por año puede caer
+  // en el signo anterior.
+  const exact = useMemo(() => entities.filter((e) => !e.isApproximate), [entities]);
   const buckets = useMemo(
-    () => bucketEntitiesByResonance(activeAnimal, entities),
-    [activeAnimal, entities]
+    () => bucketEntitiesByResonance(activeAnimal, exact),
+    [activeAnimal, exact]
   );
 
-  const sectionOrder: ResonanceBucket[] = ["affine", "tension", "neutral"];
+  const sectionOrder = ATLAS_BUCKETS as readonly ("mismo" | "amigo" | "enemigo")[];
+  const shown = sectionOrder.reduce((n, k) => n + buckets[k].length, 0);
 
   return (
     <div>
@@ -90,7 +96,7 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
         <p className="text-xs text-muted mt-3">
           {L.t(mounted && profile?.chineseZodiac === activeAnimal
             ? L("Este es tu animal según tu mapa.", "This is your animal according to your map.")
-            : L("Seleccioná un animal para ver qué resuena y qué tensa en esta categoría.", "Pick an animal to see what resonates and what creates tension in this category."))}
+            : L("Elegí un signo: se muestran solo el propio, sus dos amigos y su enemigo.", "Pick a sign: only its own, its two friends and its enemy are shown."))}
         </p>
       </div>
 
@@ -105,7 +111,7 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
               <h2 className="font-heading text-lg font-semibold text-foreground">{L.t(meta.title)}</h2>
               <p className="text-xs text-muted mt-0.5">{L.t(meta.hint)}</p>
               <p className="text-xs text-muted mt-1 font-mono">
-                {items.length} {items.length === 1 ? "entidad" : "entidades"}
+                {L(`${items.length} ${items.length === 1 ? "entidad" : "entidades"}`, `${items.length} ${items.length === 1 ? "entity" : "entities"}`)}
               </p>
             </div>
             <div className="space-y-3">
@@ -123,6 +129,14 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
           </section>
         );
       })}
+      {shown === 0 && (
+        <p className="text-base text-muted">
+          {L(
+            `Para ${activeAnimal} no hay nada de su signo, de sus amigos ni de su enemigo en esta categoría.`,
+            `For ${L.t(activeAnimal)} there's nothing of its sign, its friends or its enemy in this category.`,
+          )}
+        </p>
+      )}
     </div>
   );
 }

@@ -15,11 +15,15 @@ import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay"
 import type { LightweightEntity, VisualType } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
+import TravelPlanner from "@/components/travel/TravelPlanner";
+import type { TravelDestination } from "@/lib/engines/travelEngine";
 
 interface AffinityTypeContentProps {
   meta: { label: string; plural: string; icon: string; description: string };
   entities: LightweightEntity[];
   initialAnimal?: string;
+  /** Solo en Países: destinos con capital y clima para el viaje por tu signo. */
+  travel?: TravelDestination[];
 }
 
 const transitionVariants = {
@@ -54,7 +58,7 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
   return groups;
 }
 
-export default function AffinityTypeContent({ meta, entities, initialAnimal }: AffinityTypeContentProps) {
+export default function AffinityTypeContent({ meta, entities, initialAnimal, travel }: AffinityTypeContentProps) {
   const L = useL();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
@@ -114,6 +118,12 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
             Cómo resuena cada {L.t(meta.label.toLowerCase())}
           </>, <>How each {L.t(meta.label.toLowerCase())} resonates</>)}</h1>
           <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">{L("Cada entidad tiene un signo según su fecha de origen. Se compara signo contra signo con el tuyo: tu propio signo, tus dos amigos, tu enemigo o el resto del ciclo. Una lectura simbólica, no una predicción.", "Each entity has a sign based on its date of origin. It's compared sign to sign with yours: your own sign, your two friends, your enemy or the rest of the cycle. A symbolic reading, not a prediction.")}</p>
+          {travel && (
+            <a href="#viaje" className="mt-5 inline-flex items-center gap-2 text-base text-vermilion underline underline-offset-4 hover:no-underline">
+              {L("Armá un viaje por tu signo, con mapa y fechas", "Plan a trip by your sign, with a map and dates")}
+              <span aria-hidden="true">↓</span>
+            </a>
+          )}
         </div>
 
         <AnimatePresence mode="wait">
@@ -207,6 +217,10 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal }: A
                   })())}
                 </p>
               </div>
+
+              {travel && (
+                <TravelPlanner destinations={travel} animal={activeAnimal} profileAnimal={profile?.chineseZodiac ?? null} />
+              )}
 
               {/* SEARCH — Available for all types, shows before selecting entity */}
               <div className="border-t border-ink/10 py-8">

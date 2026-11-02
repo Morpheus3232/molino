@@ -252,8 +252,8 @@ export function getEntitiesByAnimalAndCategory(animal: string, category: string)
 //
 // País nunca es un requisito de existencia, solo un acelerador de
 // relevancia: la cascada arranca en country cuando hay countryISO y
-// arranca directo en world cuando no lo hay. "Relación" usa exclusivamente
-// triada (San He) + par armonioso (Liu He) — NUNCA neutral/choque/daño.
+// arranca directo en world cuando no lo hay. "Relación" son solo tus dos
+// amigos (San He) — nunca Liu He, Liu Hai, el resto del ciclo ni el enemigo.
 // No hay nivel "world-any": si ni siquiera world+relación alcanza el
 // threshold, la categoría vuelve sin resultados (no se inventa contenido).
 // Piloto de esta fase: university, team, artist únicamente.
@@ -305,10 +305,9 @@ export interface PersonalAtlasResult {
   usedCountry: boolean;
 }
 
-/** Triada (San He) + par armonioso (Liu He) — sin neutral/choque/daño. */
+/** Tus dos amigos (San He). Liu He y Liu Hai quedan fuera del modelo. */
 function getRelatedAnimals(animal: Animal): Animal[] {
-  const profile = getAnimalProfile(animal);
-  return [...profile.harmonyPartners, profile.liuHePartner];
+  return [...getAnimalProfile(animal).harmonyPartners];
 }
 
 function dedupeById(entities: LightweightEntity[]): LightweightEntity[] {

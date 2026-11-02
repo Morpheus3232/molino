@@ -156,10 +156,12 @@ describe("getPersonalAtlas — city (piloto ampliado)", () => {
     expect(group.level).toBe("country-relation");
   });
 
-  test("España + Gallo: city ya resuelve en el país (ciudades españolas cargadas el 2026-10-31)", () => {
+  test("España + Gallo: solo Gallo o sus dos amigos (Buey, Serpiente), nunca Liu He", () => {
+    // Hasta 2026-11-02 resolvía en el país gracias al par Liu He (Dragón),
+    // que quedó fuera del modelo: ahora la cascada sigue a la región.
     const result = getPersonalAtlas({ animal: "Gallo", countryISO: "ES", category: "city" });
     const [group] = result.groups;
-    expect(group.level.startsWith("country-")).toBe(true);
+    for (const e of group.entities) expect(["Gallo", "Buey", "Serpiente"]).toContain(e.animal);
   });
 
   test("Brasil + Caballo: city sin datos locales, depende de región", () => {

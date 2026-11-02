@@ -1,124 +1,47 @@
 /**
- * Resonance classification — Chinese Zodiac buckets for the Atlas.
+ * Resonancia del Atlas: tres casillas (propio, amigos, enemigo) + el resto,
+ * que no se muestra. Liu He y Liu Hai quedan en el resto.
  */
-import { describe, test, expect } from 'vitest';
-import {
-  classifyResonance,
-  bucketEntitiesByResonance,
-  bucketForRelation,
-  resonanceReasoning,
-  type ResonanceBucket,
-} from '@/lib/resonance';
+import { describe, test, expect } from "vitest";
+import { classifyResonance, bucketEntitiesByResonance, resonanceReasoning, ATLAS_BUCKETS } from "@/lib/resonance";
 
-describe('classifyResonance', () => {
-  test('same animal is affine', () => {
-    const r = classifyResonance('Rata', 'Rata');
-    expect(r.bucket).toBe('affine');
-    expect(r.relationType).toBe('same');
+describe("classifyResonance", () => {
+  test("mismo signo", () => expect(classifyResonance("Rata", "Rata").bucket).toBe("mismo"));
+  test("los dos amigos San He", () => {
+    expect(classifyResonance("Rata", "Dragón").bucket).toBe("amigo");
+    expect(classifyResonance("Rata", "Mono").bucket).toBe("amigo");
   });
-
-  test('San He triad partners are affine', () => {
-    // Rata-Dragón-Mono form a triad.
-    expect(classifyResonance('Rata', 'Dragón').bucket).toBe('affine');
-    expect(classifyResonance('Rata', 'Mono').bucket).toBe('affine');
+  test("el enemigo Liu Chong", () => expect(classifyResonance("Rata", "Caballo").bucket).toBe("enemigo"));
+  test("Liu He y Liu Hai quedan fuera del modelo", () => {
+    expect(classifyResonance("Rata", "Buey").bucket).toBe("otro");
+    expect(classifyResonance("Rata", "Cabra").bucket).toBe("otro");
   });
-
-  test('Liu He harmonious pair is affine', () => {
-    // Rata-Buey harmonious pair.
-    expect(classifyResonance('Rata', 'Buey').bucket).toBe('affine');
-  });
-
-  test('direct opposition (Liu Chong) is tension', () => {
-    // Rata-Caballo are direct opposites.
-    const r = classifyResonance('Rata', 'Caballo');
-    expect(r.bucket).toBe('tension');
-    expect(r.relationType).toBe('clash');
-  });
-
-  test('Liu Hai harm is tension', () => {
-    // Rata-Cabra is a harm pair.
-    expect(classifyResonance('Rata', 'Cabra').bucket).toBe('tension');
-  });
-
-  test('unrelated animals are neutral', () => {
-    // Rata-Tigre have no special relation.
-    expect(classifyResonance('Rata', 'Tigre').bucket).toBe('neutral');
-  });
-
-  test('missing animal falls back to neutral', () => {
-    const r = classifyResonance('', 'Rata');
-    expect(r.bucket).toBe('neutral');
-    expect(r.score).toBe(50);
-  });
-
-  test('bucketForRelation maps all relation types', () => {
-    expect(bucketForRelation('same')).toBe('affine');
-    expect(bucketForRelation('triad')).toBe('affine');
-    expect(bucketForRelation('harmonious')).toBe('affine');
-    expect(bucketForRelation('clash')).toBe('tension');
-    expect(bucketForRelation('harm')).toBe('tension');
-    expect(bucketForRelation('neutral')).toBe('neutral');
-  });
+  test("sin animal: resto del ciclo", () => expect(classifyResonance("", "Rata").bucket).toBe("otro"));
 });
 
-describe('bucketEntitiesByResonance', () => {
+describe("bucketEntitiesByResonance", () => {
   const entities = [
-    { id: 'a', name: 'Rata-like', animal: 'Rata' },
-    { id: 'b', name: 'Dragon', animal: 'Dragón' },
-    { id: 'c', name: 'Horse', animal: 'Caballo' },
-    { id: 'd', name: 'Tiger', animal: 'Tigre' },
+    { id: "a", animal: "Rata" },
+    { id: "b", animal: "Dragón" },
+    { id: "c", animal: "Caballo" },
+    { id: "d", animal: "Tigre" },
+    { id: "e", animal: "Buey" },
   ];
-
-  test('splits into affine / tension / neutral for a reference animal', () => {
-    const { affine, tension, neutral } = bucketEntitiesByResonance('Rata', entities);
-    // Rata vs Rata(same), Dragón(triad) → affine; Caballo(clash) → tension; Tigre → neutral.
-    expect(affine.map((e) => e.id)).toContain('a');
-    expect(affine.map((e) => e.id)).toContain('b');
-    expect(tension.map((e) => e.id)).toEqual(['c']);
-    expect(neutral.map((e) => e.id)).toEqual(['d']);
+  test("reparte en las cuatro casillas", () => {
+    const b = bucketEntitiesByResonance("Rata", entities);
+    expect(b.mismo.map((e) => e.id)).toEqual(["a"]);
+    expect(b.amigo.map((e) => e.id)).toEqual(["b"]);
+    expect(b.enemigo.map((e) => e.id)).toEqual(["c"]);
+    expect(b.otro.map((e) => e.id)).toEqual(["d", "e"]);
   });
-
-  test('each result carries a resonance classification', () => {
-    const { affine } = bucketEntitiesByResonance('Rata', entities);
-    expect(affine[0].resonance).toMatchObject({ bucket: 'affine' as ResonanceBucket });
-  });
-
-  test('affine bucket sorts by score descending', () => {
-    // same (95) beats triad (85).
-    const { affine } = bucketEntitiesByResonance('Rata', entities);
-    expect(affine[0].id).toBe('a');
+  test("el Atlas solo muestra propio, amigos y enemigo", () => {
+    expect([...ATLAS_BUCKETS]).toEqual(["mismo", "amigo", "enemigo"]);
   });
 });
 
-describe('resonanceReasoning (voz Molino)', () => {
-  test('produces a specific, refutable observation — not generic validation', () => {
-    const r = resonanceReasoning('Rata', 'Caballo', 'Boca Juniors');
-    // Must reference the crossing specifically, not "this is you".
-    expect(r).toContain('Rata');
-    expect(r).toContain('Boca Juniors');
-    // Must be refutable language (a claim that could be false), not a compliment.
-    expect(r).not.toMatch(/perfecto para vos|sos muy|te va a encantar/i);
-  });
-
-  test('same animal reasoning names alta compatibilidad and shared qualities', () => {
-    const r = resonanceReasoning('Rata', 'Rata', 'X');
-    expect(r).toContain('alta compatibilidad');
-    expect(r).toContain('mismo animal');
-  });
-
-  test('clash reasoning describes an opposition / contrast tension', () => {
-    const r = resonanceReasoning('Rata', 'Caballo', 'X');
-    expect(r).toContain('energía opuesta');
-    expect(r).toMatch(/oposición|contraste|atención/);
-  });
-
-  test('neutral reasoning avoids overclaiming', () => {
-    const r = resonanceReasoning('Rata', 'Tigre', 'X');
-    expect(r).toContain('no es un veredicto');
-  });
-
-  test('missing animal returns an honest no-data line', () => {
-    const r = resonanceReasoning('', 'Rata');
-    expect(r).toContain('No hay suficiente');
+describe("resonanceReasoning", () => {
+  test("nombra el cruce concreto", () => {
+    expect(resonanceReasoning("Rata", "Caballo", "Bogotá")).toContain("enemigo");
+    expect(resonanceReasoning("Rata", "Mono", "X")).toContain("amigos");
   });
 });

@@ -50,8 +50,11 @@ export interface AtlasSection {
 
 export interface AtlasSections {
   sameAnimal: AtlasSection[];
+  /** Tus dos amigos (San He), agrupados por categoría. */
+  friendAnimal: AtlasSection[];
   enemyAnimal: AtlasSection[];
   userAnimal: string | null;
+  friendAnimalNames: string[];
   enemyAnimalName: string | null;
 }
 
@@ -195,12 +198,17 @@ export function buildAtlasSections(
   userCountryISO?: string | null,
 ): AtlasSections {
   if (!userAnimal) {
-    return { sameAnimal: [], enemyAnimal: [], userAnimal: null, enemyAnimalName: null };
+    return { sameAnimal: [], friendAnimal: [], enemyAnimal: [], userAnimal: null, friendAnimalNames: [], enemyAnimalName: null };
   }
 
   const enemy = getEnemyAnimal(userAnimal);
+  const friends: string[] = ANIMALS.includes(userAnimal as Animal)
+    ? getFriends(userAnimal as Animal).map((f) => f.animal)
+    : [];
 
-  const ranked = sortLightEntities(userAnimal, entities);
+  // Fecha exacta o no se muestra: un origen fechado solo por año puede caer
+  // en el signo anterior.
+  const ranked = sortLightEntities(userAnimal, entities).filter((e) => !e.isApproximate);
 
   const sameAnimalEntities = ranked.filter((e) => e.animal === userAnimal);
   const enemyEntities = enemy
@@ -282,7 +290,24 @@ export function buildAtlasSections(
     });
   }
 
-  return { sameAnimal, enemyAnimal, userAnimal, enemyAnimalName: enemy };
+  // Tus dos amigos: misma curación que tu signo (país primero, hasta 3).
+  const friendAnimal: AtlasSection[] = [];
+  const friendSet = new Set(friends);
+  const friendEntities = ranked.filter((e) => friendSet.has(e.animal));
+  for (const { type, label } of CATEGORY_ORDER) {
+    if (type === "university") {
+      if (!userCountryISO) continue;
+      const pool = friendEntities.filter((e) => e.type === "university" && e.countryISO === userCountryISO);
+      if (pool.length === 0) continue;
+      friendAnimal.push({ type, label, entities: sortByCityThenScore(pool).slice(0, PER_CATEGORY_PREVIEW) });
+      continue;
+    }
+    const pool = friendEntities.filter((e) => affinityListingOf(e) === type);
+    if (pool.length === 0) continue;
+    friendAnimal.push({ type, label, entities: curateCategory(pool) });
+  }
+
+  return { sameAnimal, friendAnimal, enemyAnimal, userAnimal, friendAnimalNames: friends, enemyAnimalName: enemy };
 }
 
 /**

@@ -17,11 +17,11 @@ const CATEGORY_LABEL = (L: Pick2): Record<string, string> => ({
 /** Etiqueta honesta del nivel — nunca oculta que un resultado viene de región/mundo. */
 const LEVEL_LABEL = (L: Pick2): Record<FallbackLevel, string> => ({
   "country-animal": L("En tu país", "In your country"),
-  "country-relation": L("En tu país", "In your country"),
+  "country-relation": L("En tu país · de tus dos amigos", "In your country · from your two friends"),
   "region-animal": L("En tu región", "In your region"),
-  "region-relation": L("En tu región", "In your region"),
+  "region-relation": L("En tu región · de tus dos amigos", "In your region · from your two friends"),
   "world-animal": L("En el mundo", "In the world"),
-  "world-relation": L("En el mundo", "In the world"),
+  "world-relation": L("En el mundo · de tus dos amigos", "In the world · from your two friends"),
 });
 
 interface PersonalAtlasPilotProps {

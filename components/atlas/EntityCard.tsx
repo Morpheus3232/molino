@@ -21,9 +21,10 @@ interface EntityCardProps {
 // Sober, analytical tone — no cheap esotericism. Success for harmony,
 // warning for tension, muted for neutral.
 const RESONANCE_STYLE = (L: Pick2): Record<string, { label: string; className: string }> => ({
-  affine: { label: L("Afinidad", "Affinity"), className: "text-success bg-success/10 border-success/30" },
-  tension: { label: L("Tensión", "Tension"), className: "text-warning bg-warning/10 border-warning/30" },
-  neutral: { label: L("Neutro", "Neutral"), className: "text-muted bg-ink/[0.04] border-ink/10" },
+  mismo: { label: L("Tu signo", "Your sign"), className: "text-paper bg-vermilion border-vermilion" },
+  amigo: { label: L("Amigo", "Friend"), className: "text-foreground bg-paper border-ink" },
+  enemigo: { label: L("Enemigo", "Enemy"), className: "text-muted bg-ink/[0.04] border-ink/20" },
+  otro: { label: L("Resto", "Rest"), className: "text-muted bg-ink/[0.04] border-ink/10" },
 });
 
 export default function EntityCard({ entity, countryISO, category, resonance, reasoning }: EntityCardProps) {

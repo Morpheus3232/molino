@@ -286,3 +286,15 @@ describe('countAffinityMatches', () => {
     }
   });
 });
+
+describe('buildAtlasSections — tus dos amigos', () => {
+  test('solo trae los dos amigos San He (nunca Liu He ni el resto)', () => {
+    const mk = (id: string, animal: string) => ({ id, name: id, animal, visualType: 'emoji' as const, type: 'country', isApproximate: false });
+    const entities = [mk('a', 'Tigre'), mk('b', 'Perro'), mk('c', 'Cabra'), mk('d', 'Rata'), mk('e', 'Caballo')];
+    const r = buildAtlasSections('Caballo', entities);
+    expect(r.friendAnimalNames.sort()).toEqual(['Perro', 'Tigre']);
+    const ids = r.friendAnimal.flatMap((s) => s.entities.map((e) => e.id)).sort();
+    expect(ids).toEqual(['a', 'b']);
+    expect(r.enemyAnimal.flatMap((s) => s.entities.map((e) => e.id))).toEqual(['d']);
+  });
+});

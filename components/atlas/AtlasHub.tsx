@@ -36,12 +36,13 @@ function CategoryPreview({
   label,
   entities,
   type,
-  userAnimal,
+  exploreAnimals,
 }: {
   label: string;
   entities: LightAffinityResult[];
   type: string;
-  userAnimal: string;
+  /** Signos a los que lleva "Ver …": el propio, los dos amigos o el enemigo. */
+  exploreAnimals: string[];
 }) {
   const L = useL();
   if (entities.length === 0) return null;
@@ -83,13 +84,22 @@ function CategoryPreview({
         ))}
       </div>
 
-      <Link
-        href={`/atlas/explorar/${userAnimal}/${type}`}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
-      >{L(<>
-        <span>Ver {L.t(label.toLowerCase())}</span>
-        <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
-      </>, <><span>See {L.t(label.toLowerCase())}</span><span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
+      <div className="flex flex-wrap gap-x-5 gap-y-1">
+        {exploreAnimals.map((a) => (
+          <Link
+            key={a}
+            href={`/atlas/explorar/${a}/${type}`}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
+          >
+            <span>
+              {exploreAnimals.length > 1
+                ? L(`Ver ${L.t(label.toLowerCase())} ${a}`, `See ${L.t(a)} ${L.t(label.toLowerCase())}`)
+                : L(`Ver ${L.t(label.toLowerCase())}`, `See ${L.t(label.toLowerCase())}`)}
+            </span>
+            <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+          </Link>
+        ))}
+      </div>
     </motion.div>
   );
 }
@@ -214,7 +224,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
                 completa en dos párrafos, sin vender nada. */}
             <div className="mt-6 max-w-xl space-y-4 text-xl text-foreground/85 leading-snug">
               <p>{L("Cada entrada del Atlas tiene una fecha de origen —el día en que se fundó o nació— y esa fecha le da un signo del zodíaco chino, igual que tu fecha de nacimiento te da el tuyo.", "Every entry in the Atlas has a date of origin — the day it was founded or born — and that date gives it a Chinese zodiac sign, just as your date of birth gives you yours.")}</p>
-              <p className="text-lg text-muted">{L("Primero ves lo que comparte tu signo y, aparte, lo del signo opuesto. Elegí tu signo para empezar, o más abajo recorré todo el Atlas por país.", "First you see what shares your sign and, separately, what belongs to the opposite sign. Pick your sign to start, or browse the whole Atlas by country further down.")}</p>
+              <p className="text-lg text-muted">{L("Solo se recomienda lo de tu propio signo, lo de tus dos amigos y, aparte, lo de tu enemigo como qué conviene evitar. El resto del ciclo no dice nada especial y no se lista.", "Only what shares your own sign and your two friends is recommended, plus, separately, your enemy as what's best avoided. The rest of the cycle says nothing special and isn't listed.")}</p>
             </div>
           </div>
           <div className="lg:col-span-5 w-full">
@@ -240,44 +250,54 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
                 label={section.label}
                 entities={section.entities}
                 type={section.type}
-                userAnimal={userAnimal!}
+                exploreAnimals={[userAnimal!]}
               />
             ))}
           </div>
         </section>
       )}
 
-      {/* ═══════════ ENERGÍA OPUESTA ═══════════ */}
+      {/* ═══════════ TUS DOS AMIGOS ═══════════ */}
+      {sections && sections.friendAnimal.length > 0 && (
+        <motion.section aria-label={L("Tus dos amigos", "Your two friends")} className="relative mb-24" {...fadeUp}>
+          <div className="mb-10 border-t-2 border-ink pt-6">
+            <p className="text-sm text-muted mb-2 label-caps">{L("Tus dos amigos · 三合 San He", "Your two friends · 三合 San He")}</p>
+            <h2 className="section-title text-foreground">{sections.friendAnimalNames.map((a) => L.t(a)).join(L(" y ", " and "))}</h2>
+            <p className="mt-2 text-base text-muted max-w-xl">{L("Los dos signos que completan tu tríada: lo que más conviene después de tu propio signo.", "The two signs that complete your triad: what suits you best after your own sign.")}</p>
+          </div>
+          <div className="sm:pl-10 space-y-14 sm:space-y-16">
+            {sections.friendAnimal.map((section) => (
+              <CategoryPreview
+                key={section.type}
+                label={section.label}
+                entities={section.entities}
+                type={section.type}
+                exploreAnimals={sections.friendAnimalNames}
+              />
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* ═══════════ TU ENEMIGO ═══════════ */}
       {sections && enemyName && sections.enemyAnimal.length > 0 && (
-        <motion.section
-          aria-label={L("Energía opuesta", "Opposite energy")}
-          className="relative mb-24"
-          {...fadeUp}
-        >
-          {/* Editorial divider */}
-          <div className="flex items-center gap-4 mb-10" aria-hidden="true">
-            <div className="h-px flex-1 bg-ink/10" />
-            <div className="w-1.5 h-1.5 rounded-full bg-accent/30" />
-            <div className="h-px flex-1 bg-ink/10" />
+        <motion.section aria-label={L("Tu enemigo", "Your enemy")} className="relative mb-24" {...fadeUp}>
+          <div className="mb-10 border-t border-ink/30 pt-6">
+            <p className="text-sm text-muted mb-2 label-caps">{L("Tu enemigo · 六冲 Liu Chong", "Your enemy · 六冲 Liu Chong")}</p>
+            <h2 className="section-title text-foreground/60">{L.t(enemyName)}</h2>
+            <p className="mt-2 text-base text-muted max-w-xl">{L("El signo de enfrente en el ciclo: lo que conviene evitar.", "The sign across the cycle: what's best avoided.")}</p>
           </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-            <div>
-              <p className="text-sm text-muted font-medium mb-2 label-caps">{L("Energía opuesta", "Opposite energy")}</p>
-              <h2 className="section-title text-foreground/60">
-                {L.t(enemyName)}
-              </h2>
-            </div>
-            <Link
-              href={`/atlas/explorar/${enemyName}?enemy=1`}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-accent transition-colors group shrink-0"
-            >{L(<>
-              <span>Explorar energía opuesta</span>
-              <span className="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
-            </>, <><span>Explore the opposite energy</span><span className="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span></>)}</Link>
+          <div className="sm:pl-10 space-y-14 sm:space-y-16 opacity-80">
+            {sections.enemyAnimal.map((section) => (
+              <CategoryPreview
+                key={section.type}
+                label={section.label}
+                entities={section.entities}
+                type={section.type}
+                exploreAnimals={[enemyName]}
+              />
+            ))}
           </div>
-
-          <p className="text-sm text-muted max-w-lg leading-relaxed">{L("Explorá entidades asociadas al animal opuesto en el ciclo zodiacal. Otra forma de recorrer el Atlas.", "Explore entities associated with the opposite animal in the zodiac cycle. Another way to go through the Atlas.")}</p>
         </motion.section>
       )}
 

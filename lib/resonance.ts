@@ -1,143 +1,68 @@
 /**
- * Resonance classification — Chinese Zodiac relationship buckets for the Atlas.
+ * Resonancia del Atlas — las mismas casillas que Mi Mapa (relacionCon):
+ *   - mismo:   tu propio signo.
+ *   - amigo:   tus dos amigos (三合 San He).
+ *   - enemigo: tu enemigo (六冲 Liu Chong), presentado como qué conviene evitar.
+ *   - otro:    el resto del ciclo. El Atlas NO lo recomienda ni lo lista:
+ *              Liu He y Liu Hai caen acá, fuera del modelo (ver CLAUDE.md).
  *
- * Turns the canonical relation types (lib/data/animalRelations) into the
- * three logical buckets the Atlas surfaces:
- *   - AFFINE (armonía): same animal, San He triad, or Liu He harmonious pair.
- *   - TENSION (desafío): direct opposition (Liu Chong clash) or Liu Hai harm.
- *   - NEUTRAL: everything else.
+ * Puro y client-safe: el Atlas reclasifica al cambiar de signo.
  *
- * Purely algorithmic over the existing engine — no DB, no trackers, no LLM.
- * Client-safe so the Atlas can re-sort/classify on animal selection.
- *
- * VOZ (artículos 20 y 22 del blog): el razonamiento de resonancia debe ser una
- * observación REFUTABLE — "este patrón tuyo se cruza con esta entidad de esta
- * forma" — nunca una validación genérica que aplique a cualquiera (barnum).
- * Si una frase pudiera aplicarse a cualquier usuario, es barnum; si describe
- * un cruce específico que el usuario puede confirmar o refutar, es afinidad.
+ * VOZ: el razonamiento es una observación refutable sobre un cruce concreto
+ * de signos, nunca una validación genérica.
  */
 
-import { getRelation, type Animal, type RelationType } from "@/lib/data/animalRelations";
+import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 
-export type ResonanceBucket = "affine" | "tension" | "neutral";
+export type ResonanceBucket = MapRelation;
+
+/** Las casillas que el Atlas muestra, en orden. "otro" no se muestra. */
+export const ATLAS_BUCKETS: readonly ResonanceBucket[] = ["mismo", "amigo", "enemigo"] as const;
 
 export interface ResonanceInfo {
   bucket: ResonanceBucket;
-  /** Canonical relation type (same/triad/harmonious/neutral/clash/harm). */
-  relationType: RelationType;
-  /** Human label, e.g. "Tríada", "Opuestos", "Armonía". */
   label: string;
-  /** 0-100 canonical score. */
-  score: number;
 }
 
-const RELATION_LABELS: Record<RelationType, string> = {
-  same: "Alta compatibilidad",
-  triad: "Buena compatibilidad",
-  harmonious: "Armonía",
-  neutral: "Neutro",
-  clash: "Energía opuesta",
-  harm: "Tensión",
+const LABELS: Record<ResonanceBucket, string> = {
+  mismo: "Tu propio signo",
+  amigo: "Amigo",
+  enemigo: "Enemigo",
+  otro: "Resto del ciclo",
 };
 
-/** Map a canonical relation type to the Atlas bucket. */
-export function bucketForRelation(type: RelationType): ResonanceBucket {
-  switch (type) {
-    case "same":
-    case "triad":
-    case "harmonious":
-      return "affine";
-    case "clash":
-    case "harm":
-      return "tension";
+export function classifyResonance(referenceAnimal: string, entityAnimal: string): ResonanceInfo {
+  const bucket = relacionCon(referenceAnimal, entityAnimal);
+  return { bucket, label: LABELS[bucket] };
+}
+
+export function resonanceReasoning(referenceAnimal: string, entityAnimal: string, entityName?: string): string {
+  if (!referenceAnimal || !entityAnimal) return "No hay suficiente información para cruzar estos dos puntos.";
+  const who = entityName ?? entityAnimal;
+  switch (relacionCon(referenceAnimal, entityAnimal)) {
+    case "mismo":
+      return `${who} nació en ${entityAnimal}, tu propio signo.`;
+    case "amigo":
+      return `${who} es ${entityAnimal}, uno de los dos amigos (三合) de ${referenceAnimal}.`;
+    case "enemigo":
+      return `${who} es ${entityAnimal}, el enemigo (六冲) de ${referenceAnimal}: lo que conviene evitar.`;
     default:
-      return "neutral";
+      return `${who} es ${entityAnimal}: el resto del ciclo, sin relación especial con ${referenceAnimal}.`;
   }
 }
 
 /**
- * Classify the resonance between a reference animal and an entity's animal.
- * Returns a stable, deterministic classification with display metadata.
- */
-export function classifyResonance(
-  referenceAnimal: string,
-  entityAnimal: string,
-): ResonanceInfo {
-  if (!referenceAnimal || !entityAnimal) {
-    return { bucket: "neutral", relationType: "neutral", label: "Neutro", score: 50 };
-  }
-  const rel = getRelation(referenceAnimal as Animal, entityAnimal as Animal);
-  return {
-    bucket: bucketForRelation(rel.type),
-    relationType: rel.type,
-    label: RELATION_LABELS[rel.type],
-    score: rel.score,
-  };
-}
-
-/**
- * Generate a refutable, observational "why" for a resonance — the Molino voice
- * from articles 20 (refutability) and 22 (pattern crossing entity). The phrase
- * names the crossing between the reference animal and the entity's animal and
- * can be confirmed or refuted by the user. It never validates ("this is you"),
- * it observes a specific dynamic.
- *
- * `entityAnimal` is required so the observation is specific; `entityName`
- * optional to embed the entity in the sentence naturally.
- */
-export function resonanceReasoning(
-  referenceAnimal: string,
-  entityAnimal: string,
-  entityName?: string,
-): string {
-  if (!referenceAnimal || !entityAnimal) {
-    return "No hay suficiente información para cruzar estos dos puntos.";
-  }
-  const info = classifyResonance(referenceAnimal, entityAnimal);
-  const base = (name: string) =>
-    name ? `Tu ${referenceAnimal} se cruza con ${entityName || name}` : `Tu ${referenceAnimal} y su ${entityAnimal}`;
-
-  switch (info.relationType) {
-    case "same":
-      return `${base(entityAnimal)}: alta compatibilidad al compartir el mismo animal, con sintonía de ritmo y cualidades compartidas.`;
-    case "triad":
-      return `${base(entityAnimal)}: buena compatibilidad al pertenecer a la energía de tus animales aliados en el ciclo.`;
-    case "harmonious":
-      return `${base(entityAnimal)} forman un par armonioso según la tradición: cubren lo que el otro tiende a descuidar.`;
-    case "clash":
-      return `${base(entityAnimal)}: energía opuesta en el ciclo, una posición de contraste que conviene observar con atención.`;
-    case "harm":
-      return `${base(entityAnimal)} tienen una relación de atención: no se bloquean, pero exigen cuidado para no rozar un punto sensible.`;
-    default:
-      return `${base(entityAnimal)} no tienen una relación marcada según la tradición: ni se potencian ni se chocan. Eso no es un veredicto, solo ausencia de señal.`;
-  }
-}
-
-/**
- * Split a list of lightweight entities into the three resonance buckets for a
- * given reference animal. Order is preserved within each bucket.
+ * Reparte las entidades en las cuatro casillas. "otro" se devuelve para que
+ * quien llama pueda contarlo, pero el Atlas no lo lista.
  */
 export function bucketEntitiesByResonance<T extends { animal: string }>(
   referenceAnimal: string,
   entities: T[],
-): { affine: (T & { resonance: ResonanceInfo })[]; tension: (T & { resonance: ResonanceInfo })[]; neutral: (T & { resonance: ResonanceInfo })[] } {
-  const affine: (T & { resonance: ResonanceInfo })[] = [];
-  const tension: (T & { resonance: ResonanceInfo })[] = [];
-  const neutral: (T & { resonance: ResonanceInfo })[] = [];
-
+): Record<ResonanceBucket, (T & { resonance: ResonanceInfo })[]> {
+  const out: Record<ResonanceBucket, (T & { resonance: ResonanceInfo })[]> = { mismo: [], amigo: [], enemigo: [], otro: [] };
   for (const entity of entities) {
     const resonance = classifyResonance(referenceAnimal, entity.animal);
-    const entry = { ...entity, resonance };
-    if (resonance.bucket === "affine") affine.push(entry);
-    else if (resonance.bucket === "tension") tension.push(entry);
-    else neutral.push(entry);
+    out[resonance.bucket].push({ ...entity, resonance });
   }
-
-  // Sort each bucket by score descending (most resonant first).
-  const byScore = (a: { resonance: ResonanceInfo }, b: { resonance: ResonanceInfo }) => b.resonance.score - a.resonance.score;
-  affine.sort(byScore);
-  tension.sort(byScore);
-  neutral.sort(byScore);
-
-  return { affine, tension, neutral };
+  return out;
 }

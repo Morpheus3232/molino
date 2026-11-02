@@ -7,6 +7,7 @@ import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType }
 import { ANIMALS } from "@/lib/data/animalRelations";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
 import AffinityTypeContent from "./AffinityTypeContent";
+import { getTravelDestinations } from "@/lib/data/travel/destinations";
 
 // Las marcas se listan en tres: autos, ropa y el resto (/affinity/brand). Las
 // fichas siguen en /affinity/brand/[slug].
@@ -87,7 +88,12 @@ export default async function AffinityTypePage({
 
   return (
     <>
-      <AffinityTypeContent meta={meta} entities={entities} initialAnimal={animal} />
+      <AffinityTypeContent
+        meta={meta}
+        entities={entities}
+        initialAnimal={animal}
+        travel={type === "country" ? getTravelDestinations() : undefined}
+      />
       {bySign.length > 0 && (
         <nav aria-labelledby="indice-por-signo" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-24">
           <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">{L(<>
