@@ -668,155 +668,172 @@ function YearsView({
   windows: ReturnType<typeof destinationWindows>[];
 }) {
   const L = useL();
+  const MONTHS = L.locale === "en" ? MONTHS_EN : MONTHS_ES;
   const rel = RELATION_TEXT(L);
   const years = [upcoming.current, upcoming.next].map((ly) => {
     const a = animalOfLunarYear(ly);
-    return { ly, animal: a, relation: relationToSign(animal, a), span: lunarYearSpan(ly) };
+    return {
+      ly,
+      animal: a,
+      relation: relationToSign(animal, a),
+      span: lunarYearSpan(ly),
+      months: upcoming.months.filter((m) => m.lunarYear === ly),
+    };
   });
   const bestRank = Math.min(...years.map((y) => RELATION_RANK[y.relation]));
   const tie = years.every((y) => RELATION_RANK[y.relation] === bestRank);
+  const isBest = (ly: number) => !tie && RELATION_RANK[years.find((y) => y.ly === ly)!.relation] === bestRank;
+
+  // Una fila por destino: cuántos meses ideales y buenos tiene en los dos años.
+  // Primero los que más meses ideales suman; los que no tienen ninguno, al final.
+  const rows = windows
+    .map((w) => {
+      const verdicts = upcoming.months.map((m) => classifyMonth(w.dest.climate, m.month0));
+      return {
+        d: w.dest,
+        verdicts,
+        ideal: verdicts.filter((v) => v.cls === "ideal").length,
+        bueno: verdicts.filter((v) => v.cls === "bueno").length,
+      };
+    })
+    .sort((a, b) => b.ideal - a.ideal || b.bueno - a.bueno || a.d.name.localeCompare(b.d.name, "es"));
+
+  const firstOfNext = upcoming.months.findIndex((m) => m.lunarYear === upcoming.next);
 
   return (
-    <div className="mt-14">
-      <h3 className="font-display text-3xl text-foreground">{L("Este año chino y el próximo", "This Chinese year and the next")}</h3>
-      <p className="mt-2 text-base text-muted max-w-2xl">
+    <section className="mt-16" aria-labelledby="viaje-anios">
+      <p className="label-caps text-sm text-muted">{L("Cuándo ir", "When to go")}</p>
+      <h3 id="viaje-anios" className="mt-1 font-display text-3xl text-foreground">
+        {L("Este año chino y el próximo", "This Chinese year and the next")}
+      </h3>
+      <p className="mt-2 text-base text-foreground/80 max-w-2xl">
         {L(
-          "Cada año chino tiene su signo, y su relación con el tuyo usa la misma regla del sitio: tu propio signo y tus dos amigos primero, el resto del ciclo después y tu enemigo al final. Debajo, en qué meses conviene ir a cada destino dentro de cada año.",
-          "Each Chinese year has its sign, and its relationship with yours follows the site's rule: your own sign and your two friends first, the rest of the cycle next and your enemy last. Below, which months suit each destination within each year.",
+          `Cada año chino tiene su signo, y se cruza con el tuyo con la misma regla del sitio. Abajo, el clima de cada país ${animal} mes por mes, en los dos años.`,
+          `Each Chinese year has its sign, and it meets yours under the site's same rule. Below, the weather in each ${L.t(animal)} country month by month, across both years.`,
         )}
       </p>
-      <div className="mt-6 grid gap-8 md:grid-cols-2">
-        {years.map((y) => {
-          const marked = !tie && RELATION_RANK[y.relation] === bestRank;
-          const rows = windows
-            .map((w) => ({ d: w.dest, ...(w.byYear[y.ly] ?? { ideal: [], bueno: [] }) }))
-            .filter((r) => r.ideal.length + r.bueno.length > 0)
-            .sort((a, b) => b.ideal.length - a.ideal.length || b.bueno.length - a.bueno.length);
-          const none = windows.filter((w) => {
-            const b = w.byYear[y.ly];
-            return !b || b.ideal.length + b.bueno.length === 0;
-          });
+
+      {/* Los dos años, uno al lado del otro */}
+      <div className="mt-6 grid sm:grid-cols-2 border-t-2 border-ink">
+        {years.map((y, i) => {
+          const best = isBest(y.ly);
           return (
-            <div key={y.ly} className={`border-t-2 pt-4 ${marked ? "border-vermilion" : "border-ink"}`}>
-              <p className="label-caps text-sm text-muted">
+            <div key={y.ly} className={`py-5 ${i === 1 ? "sm:border-l sm:pl-6 border-t sm:border-t-0 border-ink/15" : "sm:pr-6"}`}>
+              <p className="text-sm text-muted">
                 {y.span ? `${fmtDate(L, y.span.start)} – ${fmtDate(L, y.span.end)}` : y.ly}
-                {y.ly === upcoming.current && L(" · en curso", " · current")}
+                {y.ly === upcoming.current && <span className="label-caps ml-2 text-foreground">{L("en curso", "current")}</span>}
               </p>
-              <h4 className="mt-1 text-2xl text-foreground">
+              <h4 className="mt-1 font-display text-2xl text-foreground">
                 {yearOf(L, y.animal)}
-                {marked && <span className="ml-2 text-base text-vermilion">{L("· el más afín", "· the closest")}</span>}
+                {best && <span className="label-caps ml-3 align-middle text-sm text-vermilion">{L("el más afín", "the closest")}</span>}
               </h4>
-              <p className="text-base text-foreground/80">
-                {L(`Para el signo ${animal}: ${rel[y.relation]}.`, `For the ${L.t(animal)} sign: ${rel[y.relation]}.`)}
+              <p className="mt-1 text-base text-foreground/80">
+                {L(`Para tu signo: ${rel[y.relation]}.`, `For your sign: ${rel[y.relation]}.`)}
               </p>
-              <ul className="mt-4 space-y-2">
-                {rows.map((r) => (
-                  <li key={r.d.iso} className="text-base leading-snug">
-                    <Link href={`/affinity/country/${r.d.entityId}`} className="text-foreground hover:text-vermilion">
-                      {r.d.flag && <span className="flag-emoji mr-1">{r.d.flag}</span>}
-                      {L.t(r.d.name)}
-                    </Link>
-                    <span className="block text-sm text-muted">
-                      {r.ideal.length > 0 && (
-                        <>
-                          <Mark cls="ideal" /> {r.ideal.map((ym) => fmtYM(L, ym)).join(", ")}
-                        </>
-                      )}
-                      {r.ideal.length > 0 && r.bueno.length > 0 && <span className="mx-1.5">·</span>}
-                      {r.bueno.length > 0 && (
-                        <>
-                          <Mark cls="bueno" /> {r.bueno.map((ym) => fmtYM(L, ym)).join(", ")}
-                        </>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              {none.length > 0 && (
-                <p className="mt-3 text-sm text-muted">
-                  {L("Sin meses buenos en este tramo: ", "No good months in this stretch: ")}
-                  {none.map((w) => L.t(w.dest.name)).join(", ")}.
-                </p>
-              )}
             </div>
           );
         })}
       </div>
-      <p className="mt-4 text-sm text-muted flex flex-wrap gap-x-4 gap-y-1">
-        <span>
-          <Mark cls="ideal" /> {L("ideal", "ideal")}
-        </span>
-        <span>
-          <Mark cls="bueno" /> {L("bueno", "good")}
-        </span>
-        <span>{L("Cada mes cuenta para el año chino de su día 15.", "Each month counts toward the Chinese year of its 15th day.")}</span>
-      </p>
 
-      <CalendarTable animal={animal} upcoming={upcoming} windows={windows} />
-    </div>
-  );
-}
-
-function CalendarTable({
-  upcoming,
-  windows,
-}: {
-  animal: string;
-  upcoming: ReturnType<typeof upcomingMonths>;
-  windows: ReturnType<typeof destinationWindows>[];
-}) {
-  const L = useL();
-  const MONTHS = L.locale === "en" ? MONTHS_EN : MONTHS_ES;
-  return (
-    <details className="mt-8 border-t border-ink/15 pt-4">
-      <summary className="cursor-pointer text-base text-foreground underline underline-offset-4">
-        {L("Ver el calendario completo, mes por mes", "See the full calendar, month by month")}
-      </summary>
-      <div className="mt-4 overflow-x-auto">
-        <table className="text-sm border-collapse min-w-full">
+      {/* Calendario: países × meses */}
+      <div className="mt-2 overflow-x-auto border-t border-ink/15 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <table className="w-full border-collapse text-sm" aria-describedby="viaje-anios-leyenda">
           <thead>
             <tr>
-              <th className="text-left font-normal text-muted pr-3 pb-2 sticky left-0 bg-background">{L("País", "Country")}</th>
-              {upcoming.months.map((m) => (
+              <th scope="col" className="sticky left-0 z-10 bg-background" />
+              {years.map((y) => (
                 <th
-                  key={m.ym}
-                  className={`font-normal text-muted px-1.5 pb-2 text-center ${m.lunarYear === upcoming.next ? "bg-card" : ""}`}
-                  title={fmtYM(L, m.ym)}
+                  key={y.ly}
+                  scope="colgroup"
+                  colSpan={y.months.length}
+                  className={`pt-4 pb-1 text-left font-normal label-caps text-xs ${y.ly === upcoming.next ? "pl-2 border-l-2 border-ink" : ""} ${isBest(y.ly) ? "text-vermilion" : "text-muted"}`}
                 >
-                  {MONTHS[m.month0]}
-                  <span className="block text-[10px]">{m.ym.slice(2, 4)}</span>
+                  {L.t(y.animal)}
                 </th>
               ))}
+              <th scope="col" className="pt-4 pb-1 pl-3 text-right font-normal label-caps text-xs text-muted">
+                {L("Ideales", "Ideal")}
+              </th>
+            </tr>
+            <tr className="border-b border-ink">
+              <th scope="col" className="sticky left-0 z-10 bg-background pb-2 pr-3 text-left font-normal text-muted">
+                {L("País", "Country")}
+              </th>
+              {upcoming.months.map((m, i) => (
+                <th
+                  key={m.ym}
+                  scope="col"
+                  title={fmtYM(L, m.ym)}
+                  className={`pb-2 px-0.5 text-center font-normal text-muted ${i === firstOfNext ? "border-l-2 border-ink" : ""}`}
+                >
+                  <span className="block leading-tight">{MONTHS[m.month0]}</span>
+                  <span className={`block text-[10px] leading-tight ${m.month0 === 0 || i === 0 ? "text-foreground" : "invisible"}`}>
+                    {m.ym.slice(0, 4)}
+                  </span>
+                </th>
+              ))}
+              <th scope="col" className="sr-only">
+                {L("Meses ideales", "Ideal months")}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {windows.map((w) => (
-              <tr key={w.dest.iso} className="border-t border-ink/10">
-                <td className="pr-3 py-1.5 whitespace-nowrap sticky left-0 bg-background">{L.t(w.dest.name)}</td>
-                {upcoming.months.map((m) => {
-                  const v = classifyMonth(w.dest.climate, m.month0);
+            {rows.map((r) => (
+              <tr key={r.d.iso} className={`border-b border-ink/10 ${r.ideal + r.bueno === 0 ? "text-muted" : ""}`}>
+                <th scope="row" className="sticky left-0 z-10 bg-background py-1.5 pr-3 text-left font-normal whitespace-nowrap">
+                  <Link href={`/affinity/country/${r.d.entityId}`} className="text-base hover:text-vermilion">
+                    {r.d.flag && <span className="flag-emoji mr-1.5">{r.d.flag}</span>}
+                    {L.t(r.d.name)}
+                  </Link>
+                </th>
+                {r.verdicts.map((v, i) => {
+                  const m = upcoming.months[i];
+                  const label = `${fmtYM(L, m.ym)}: ${verdictText(L, v)}`;
                   return (
-                    <td
-                      key={m.ym}
-                      className={`text-center px-1.5 ${m.lunarYear === upcoming.next ? "bg-card" : ""}`}
-                      title={`${fmtYM(L, m.ym)}: ${verdictText(L, v)}`}
-                    >
-                      <Mark cls={v.cls} />
+                    <td key={m.ym} className={`px-0.5 py-1.5 ${i === firstOfNext ? "border-l-2 border-ink" : ""}`} title={label}>
+                      <span
+                        role="img"
+                        aria-label={label}
+                        className={`block mx-auto h-5 w-full min-w-[1.4rem] ${
+                          v.cls === "ideal" ? "bg-ink" : v.cls === "bueno" ? "bg-ink/25" : "bg-ink/[0.04]"
+                        }`}
+                      />
                     </td>
                   );
                 })}
+                <td className="py-1.5 pl-3 text-right tabular-nums text-base">{r.ideal || "—"}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <p className="mt-2 text-xs text-muted">
-          {L(
-            `Con fondo gris, los meses del año chino que viene (${L.t(animalOfLunarYear(upcoming.next))}).`,
-            `Shaded grey, the months of the coming Chinese year (${L.t(animalOfLunarYear(upcoming.next))}).`,
-          )}
-        </p>
       </div>
-    </details>
+
+      <div id="viaje-anios-leyenda" className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
+        <span className="inline-flex items-center gap-2">
+          <span className="inline-block h-3.5 w-5 bg-ink" aria-hidden="true" />
+          {L(
+            `ideal (${CLIMATE_THRESHOLDS.ideal.tMin}–${CLIMATE_THRESHOLDS.ideal.tMax} °C, hasta ${CLIMATE_THRESHOLDS.ideal.pMax} mm)`,
+            `ideal (${CLIMATE_THRESHOLDS.ideal.tMin}–${CLIMATE_THRESHOLDS.ideal.tMax} °C, up to ${CLIMATE_THRESHOLDS.ideal.pMax} mm)`,
+          )}
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <span className="inline-block h-3.5 w-5 bg-ink/25" aria-hidden="true" />
+          {L(
+            `bueno (${CLIMATE_THRESHOLDS.bueno.tMin}–${CLIMATE_THRESHOLDS.bueno.tMax} °C, hasta ${CLIMATE_THRESHOLDS.bueno.pMax} mm)`,
+            `good (${CLIMATE_THRESHOLDS.bueno.tMin}–${CLIMATE_THRESHOLDS.bueno.tMax} °C, up to ${CLIMATE_THRESHOLDS.bueno.pMax} mm)`,
+          )}
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <span className="inline-block h-3.5 w-5 bg-ink/[0.04] border border-ink/10" aria-hidden="true" />
+          {L("mejor evitar", "best avoided")}
+        </span>
+      </div>
+      <p className="mt-2 text-sm text-muted max-w-2xl">
+        {L(
+          "Clima medio de la capital, 2001–2025. La raya separa los dos años chinos; cada mes cuenta para el año de su día 15. En la computadora, pasá el cursor por un mes para ver temperatura y lluvia; la ficha de cada país las muestra todas.",
+          "Average weather in the capital, 2001–2025. The rule separates the two Chinese years; each month counts toward the year of its 15th day. On a computer, hover over a month to see temperature and rainfall; each country page shows them all.",
+        )}
+      </p>
+    </section>
   );
 }
-
