@@ -33,6 +33,7 @@ import {
   type Animal,
 } from "@/lib/data/animalRelations";
 import { brandListingOf } from "@/lib/data/brand-kinds";
+import { byArrivalsDesc } from "@/lib/data/travel/arrivals";
 
 // ════════════════════════════════════════════════════
 // LAS CUATRO CASILLAS: MISMO, AMIGO, ENEMIGO, RESTO
@@ -364,6 +365,12 @@ function byTypeThenYear<E extends MapEntityInput>(a: E, b: E): number {
   const at = TYPE_WEIGHT[a.type] ?? 2;
   const bt = TYPE_WEIGHT[b.type] ?? 2;
   if (at !== bt) return at - bt;
+  // Países: primero los más visitados por turistas (pedido del dueño,
+  // 2026-11-03). No cambia la casilla, solo el orden dentro de ella.
+  if (a.type === "country" && b.type === "country") {
+    const pop = byArrivalsDesc(a.countryISO, b.countryISO);
+    if (pop !== 0) return pop;
+  }
   const ay = a.year ?? Number.MAX_SAFE_INTEGER;
   const by = b.year ?? Number.MAX_SAFE_INTEGER;
   return ay - by || a.id.localeCompare(b.id);

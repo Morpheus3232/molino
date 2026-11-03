@@ -57,6 +57,9 @@ export interface TravelDestination {
   flag?: string;
   capital: Capital;
   climate: ClimateNormals;
+  /** Llegadas de turistas internacionales (ONU Turismo, 2019 o último año previo). Sin dato, va al final. */
+  arrivals?: number;
+  arrivalsYear?: number;
 }
 
 export interface MonthVerdict {
@@ -166,10 +169,23 @@ export function daysBetween(a: string, b: string): number {
 // ════════════════════════════════════════════════════
 
 /** Solo países del mismo signo, con fecha exacta, capital y clima cargados. */
+/** Más visitados primero; sin dato de llegadas, al final y por nombre. */
+export function byPopularity(a: TravelDestination, b: TravelDestination): number {
+  return (b.arrivals ?? -1) - (a.arrivals ?? -1) || a.name.localeCompare(b.name, "es");
+}
+
+/**
+ * Peso de un destino por lo visitado: escala logarítmica desde 100.000
+ * llegadas al año (0) — 1 millón vale 1, 10 millones 2, 100 millones 3.
+ */
+export function popularityPoints(d: TravelDestination): number {
+  return d.arrivals ? Math.max(0, Math.log10(d.arrivals / 1e5)) : 0;
+}
+
 export function sameSignDestinations(userAnimal: string, all: TravelDestination[]): TravelDestination[] {
   return all
     .filter((d) => d.animal === userAnimal && !!d.originDate && !!d.climate && !!d.capital)
-    .sort((a, b) => a.name.localeCompare(b.name, "es"));
+    .sort(byPopularity);
 }
 
 // ════════════════════════════════════════════════════
@@ -295,6 +311,8 @@ export interface SkippedDestination {
   score: number;
   /** Peor mes de la ventana, para explicar por qué quedó afuera. */
   worst: MonthVerdict;
+  /** "noches": estaba entre los más visitados pero no entró en las noches; "menos-visitado": hubo otros más visitados. */
+  reason: "noches" | "menos-visitado";
 }
 
 export interface TripPlan {
@@ -305,7 +323,7 @@ export interface TripPlan {
   legs: TripLeg[];
   totalKm: number;
   skipped: SkippedDestination[];
-  /** Ningún destino del signo tiene buen clima en esas fechas: se eligió lo menos malo. */
+  /** Ninguna parada elegida tiene buen clima en sus fechas. */
   noGoodClimate: boolean;
   /** El origen es del mismo signo: no se cuenta como destino (es casa). */
   originIsSameSign: boolean;
@@ -313,8 +331,15 @@ export interface TripPlan {
 
 export const MAX_STOPS = 6;
 export const MIN_NIGHTS_PER_STOP = 4;
-/** Cuántos kilómetros vale un punto de clima al elegir la ruta. */
-const KM_PER_CLIMATE_POINT = 4000;
+/**
+ * Al elegir la ruta pesan, en este orden: lo visitado del destino, la
+ * distancia y, último, el clima. Los candidatos son los 8 más visitados del
+ * signo; entre ellos, un punto de popularidad (×10 llegadas) vale 6000 km y
+ * un punto de clima por noche, 600 km por parada. El clima no descarta a
+ * nadie: se muestra mes por mes para que la persona decida.
+ */
+const KM_PER_POPULARITY_POINT = 6000;
+const KM_PER_CLIMATE_POINT = 600;
 const POOL = 8;
 
 function combinations<T>(arr: T[], k: number): T[][] {
@@ -343,9 +368,10 @@ function splitNights(total: number, n: number): number[] {
 }
 
 /**
- * Arma el viaje: elige destinos del mismo signo con buen clima en esas
- * fechas, reparte las noches y ordena los vuelos desde el país de origen,
- * con vuelta a casa. Búsqueda exhaustiva sobre los 8 mejores candidatos
+ * Arma el viaje: elige destinos del mismo signo, los más visitados primero
+ * (el clima solo desempata y se informa mes por mes),
+ * reparte las noches y ordena los vuelos desde el país de origen, con vuelta
+ * a casa. Búsqueda exhaustiva sobre los 8 más visitados
  * (como mucho 56 combinaciones × 720 órdenes): determinista y rápida.
  */
 export function planTrip(opts: {
@@ -367,13 +393,11 @@ export function planTrip(opts: {
 
   // Puntaje del clima sobre toda la ventana del viaje (sin importar el orden).
   const windowScore = (d: TravelDestination) => stayClimateScore(d.climate, start, nights);
-  const scored = candidates
-    .map((d) => ({ d, s: windowScore(d), km: haversineKm(origin, d.capital) }))
-    .sort((a, b) => b.s - a.s || a.km - b.km);
+  // Más visitados primero (sameSignDestinations ya viene en ese orden).
+  const scored = candidates.map((d) => ({ d, s: windowScore(d), km: haversineKm(origin, d.capital) }));
 
-  const good = scored.filter((x) => x.s >= 1);
-  const noGoodClimate = good.length === 0;
-  const pool = (noGoodClimate ? scored.slice(0, 3) : good).slice(0, POOL);
+  const pool = scored.slice(0, POOL);
+  const inPool = new Set(pool.map((x) => x.d.iso));
 
   const maxStops = Math.min(opts.maxStops ?? MAX_STOPS, MAX_STOPS);
   const k = Math.max(1, Math.min(pool.length, maxStops, Math.floor(nights / MIN_NIGHTS_PER_STOP) || 1));
@@ -389,6 +413,7 @@ export function planTrip(opts: {
     for (let i = 0; i < nights; i++) acc[i + 1] = acc[i] + CLASS_POINTS[classifyMonth(d.climate, monthOfNight[i]).cls];
     return acc;
   });
+  const pop = poolD.map(popularityPoints);
   const fromOrigin = poolD.map((d) => haversineKm(origin, d.capital));
   const between = poolD.map((a) => poolD.map((b) => haversineKm(a.capital, b.capital)));
   const offsets = nightsSplit.reduce<number[]>((acc, n, i) => (acc.push(i === 0 ? 0 : acc[i - 1] + nightsSplit[i - 1]), acc), []);
@@ -398,12 +423,14 @@ export function planTrip(opts: {
     for (const order of permutations(combo)) {
       let km = fromOrigin[order[0]] + fromOrigin[order[order.length - 1]];
       let climate = 0;
+      let popularity = 0;
       for (let i = 0; i < order.length; i++) {
         const o = offsets[i];
         climate += prefix[order[i]][o + nightsSplit[i]] - prefix[order[i]][o];
+        popularity += pop[order[i]];
         if (i > 0) km += between[order[i - 1]][order[i]];
       }
-      const value = (climate / nights) * KM_PER_CLIMATE_POINT * k - km;
+      const value = popularity * KM_PER_POPULARITY_POINT + (climate / nights) * KM_PER_CLIMATE_POINT * k - km;
       if (!best || value > best.value + 1e-9) best = { order, value };
     }
   }
@@ -446,8 +473,10 @@ export function planTrip(opts: {
         const v = classifyMonth(x.d.climate, m);
         if (!worst || CLASS_POINTS[v.cls] < CLASS_POINTS[worst.cls]) worst = v;
       }
-      return { dest: x.d, score: x.s, worst: worst! };
+      return { dest: x.d, score: x.s, worst: worst!, reason: inPool.has(x.d.iso) ? ("noches" as const) : ("menos-visitado" as const) };
     });
+
+  const noGoodClimate = stops.every((x) => x.climateScore < 1);
 
   return {
     start,

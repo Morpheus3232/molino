@@ -158,6 +158,37 @@ describe("planTrip", () => {
   });
 });
 
+describe("los más visitados primero", () => {
+  const origin = { iso: "AR", name: "Argentina", city: "Buenos Aires", lat: -34.6, lon: -58.4 };
+  const cold: ClimateNormals = { t: [3, 4, 8, 13, 18, 22, 25, 25, 20, 14, 8, 4], p: Array(12).fill(60) };
+  it("sameSignDestinations ordena por llegadas; sin dato, al final", () => {
+    const ds = [
+      { ...dest("AA", "Caballo", 0, 0, flat(22, 50)), arrivals: 2e6 },
+      { ...dest("BB", "Caballo", 0, 0, flat(22, 50)) },
+      { ...dest("CC", "Caballo", 0, 0, flat(22, 50)), arrivals: 80e6 },
+    ];
+    expect(sameSignDestinations("Caballo", ds).map((d) => d.iso)).toEqual(["CC", "AA", "BB"]);
+  });
+  it("prefiere el destino muy visitado aunque el clima sea peor", () => {
+    const ds = [
+      { ...dest("POP", "Caballo", 40.4, -3.7, cold), arrivals: 80e6 },
+      { ...dest("RAR", "Caballo", -22.6, 17.1, flat(22, 50)), arrivals: 2e5 },
+    ];
+    const plan = planTrip({ userAnimal: "Caballo", destinations: ds, origin, start: "2027-01-05", end: "2027-01-10" });
+    expect(plan.stops.map((s) => s.dest.iso)).toEqual(["POP"]);
+    expect(plan.noGoodClimate).toBe(true);
+    expect(plan.skipped[0]).toMatchObject({ reason: "noches" });
+  });
+  it("con datos reales, un Caballo que sale en enero va a México y Europa, no a Namibia", () => {
+    const plan = planTrip({ userAnimal: "Caballo", destinations: getTravelDestinations(), origin, start: "2027-01-05", end: "2027-01-26" });
+    const isos = plan.stops.map((s) => s.dest.iso);
+    expect(isos).toContain("MX");
+    expect(isos).toContain("ES");
+    expect(isos).not.toContain("NA");
+    expect(isos).not.toContain("BW");
+  });
+});
+
 describe("utilidades", () => {
   it("haversine Buenos Aires–Madrid ≈ 10.000 km", () => {
     const km = haversineKm({ lat: -34.6, lon: -58.4 }, { lat: 40.4, lon: -3.7 });

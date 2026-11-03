@@ -6,6 +6,7 @@ import { getEntitiesByType, toLightweightEntity } from "@/lib/data/symbolic-enti
 import type { TravelDestination } from "@/lib/engines/travelEngine";
 import { CAPITALS } from "./capitals";
 import { CLIMATE } from "./climate";
+import { ARRIVALS } from "./arrivals";
 
 export function getTravelDestinations(): TravelDestination[] {
   const seen = new Set<string>();
@@ -28,6 +29,8 @@ export function getTravelDestinations(): TravelDestination[] {
       flag: e.emoji,
       capital,
       climate,
+      arrivals: ARRIVALS[iso]?.[0],
+      arrivalsYear: ARRIVALS[iso]?.[1],
     });
   }
   return out;

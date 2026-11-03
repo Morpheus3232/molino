@@ -209,6 +209,17 @@ Consecuencias operativas:
   mapamundi (`public/geo/world-110m.json`, d3-geo). "Este año y el próximo"
   son años CHINOS: cada mes cuenta para el año de su día 15 y la relación del
   año con tu signo usa las mismas casillas (`relacionCon`).
+  **2026-11-03 (pedido del dueño): los más visitados primero, el clima pesa
+  poco.** Orden por llegadas de turistas internacionales
+  (`lib/data/travel/arrivals.ts`: Banco Mundial ST.INT.ARVL / ONU Turismo,
+  2019 o último año previo; Taiwán de su Administración de Turismo; sin dato,
+  al final). `planTrip` toma los 8 más visitados del signo y elige ruta con
+  popularidad (6000 km por ×10 llegadas) > distancia > clima (600 km por
+  punto): el clima ya no descarta destinos, solo se informa mes por mes. El
+  mismo orden rige la tabla de los dos años, el catálogo de `/affinity/country`
+  (desempate dentro de cada casilla, `sortLightEntities`) y los países del
+  Mapa Personal (`byTypeThenYear`). Las cifras mezclan definiciones (algunos
+  países cuentan excursionistas): sirven para ordenar, no para comparar fino.
 - **Monetización sin vender datos (2026-11-02).** Tres piezas:
   1. **Embudo anónimo** (`lib/funnel.ts`): un contador por evento y por mes en
      KV (`funnel:<evento>:<YYYY-MM>`), sin IP, hash, perfil ni cookie. El

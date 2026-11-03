@@ -17,6 +17,7 @@ import {
   daysBetween,
   addDays,
   CLIMATE_THRESHOLDS,
+  byPopularity,
   type TravelDestination,
   type TripPlan,
   type MonthVerdict,
@@ -47,6 +48,14 @@ function fmtDate(L: Pick2, d: string, withYear = true): string {
 function fmtYM(L: Pick2, ym: string): string {
   const [y, m] = ym.split("-").map(Number);
   return L.locale === "en" ? `${MONTHS_EN[m - 1]} ${y}` : `${MONTHS_ES[m - 1]} ${y}`;
+}
+
+/** "126 M", "1,7 M", "850 mil". */
+function fmtArrivals(L: Pick2, n: number): string {
+  const es = L.locale !== "en";
+  if (n >= 10e6) return `${Math.round(n / 1e6)} M`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1).replace(".", es ? "," : ".")} M`;
+  return es ? `${Math.round(n / 1e3)} mil` : `${Math.round(n / 1e3)}k`;
 }
 
 function fmtKm(L: Pick2, km: number): string {
@@ -227,7 +236,7 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
 
   const thinkingLines = [
     L(`Buscando países ${L.t(animal)} con fecha exacta… ${mine.length}`, `Looking for ${L.t(animal)} countries with an exact date… ${mine.length}`),
-    L("Mirando el clima de cada capital en tus fechas…", "Checking each capital's climate on your dates…"),
+    L("Poniendo primero los más visitados…", "Putting the most visited first…"),
     L(`Ordenando los vuelos desde ${origin ? capName(origin) : ""}…`, `Ordering the flights from ${origin ? capName(origin) : ""}…`),
     L("Repartiendo las noches…", "Splitting the nights…"),
   ];
@@ -253,6 +262,10 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
           )}
         </p>
         <p className="text-base text-muted">
+          {L(
+            "El viaje propone primero los países más visitados del signo (llegadas de turistas internacionales, ONU Turismo, 2019) y después mira la distancia. ",
+            "The trip suggests the sign's most visited countries first (international tourist arrivals, UN Tourism, 2019) and then looks at distance. ",
+          )}
           {L(
             `El cuándo sale del clima de cada capital: temperatura media y lluvia de cada mes, promedio 2001–2025 (NASA POWER). Ideal: entre ${CLIMATE_THRESHOLDS.ideal.tMin} y ${CLIMATE_THRESHOLDS.ideal.tMax} °C y hasta ${CLIMATE_THRESHOLDS.ideal.pMax} mm. Bueno: entre ${CLIMATE_THRESHOLDS.bueno.tMin} y ${CLIMATE_THRESHOLDS.bueno.tMax} °C y hasta ${CLIMATE_THRESHOLDS.bueno.pMax} mm. El resto, mejor evitar.`,
             `The when comes from each capital's climate: average temperature and rainfall per month, 2001–2025 average (NASA POWER). Ideal: between ${CLIMATE_THRESHOLDS.ideal.tMin} and ${CLIMATE_THRESHOLDS.ideal.tMax} °C and up to ${CLIMATE_THRESHOLDS.ideal.pMax} mm. Good: between ${CLIMATE_THRESHOLDS.bueno.tMin} and ${CLIMATE_THRESHOLDS.bueno.tMax} °C and up to ${CLIMATE_THRESHOLDS.bueno.pMax} mm. Otherwise, best avoided.`,
@@ -532,8 +545,8 @@ function PlanView({
       {plan.noGoodClimate && (
         <p className="mt-3 text-base text-vermilion">
           {L(
-            "En esas fechas ningún país de tu signo tiene buen clima en la capital. Te dejo lo menos malo; si podés mover las fechas, mirá más abajo los meses buenos de cada uno.",
-            "On those dates no country of your sign has good weather in its capital. Here's the least bad option; if you can move the dates, see each one's good months below.",
+            "En esas fechas el clima no acompaña en ninguna parada. Si podés mover las fechas, más abajo está, mes por mes, cuándo conviene ir a cada una.",
+            "On those dates the weather isn't great at any stop. If you can move the dates, below you'll find, month by month, when each one is best.",
           )}
         </p>
       )}
@@ -564,6 +577,14 @@ function PlanView({
                     {L(
                       `${fmtDate(L, s.arrive, false)} → ${fmtDate(L, s.depart, false)} · ${s.nights} noches`,
                       `${fmtDate(L, s.arrive, false)} → ${fmtDate(L, s.depart, false)} · ${s.nights} nights`,
+                    )}
+                    {s.dest.arrivals != null && (
+                      <span className="text-muted">
+                        {L(
+                          ` · ${fmtArrivals(L, s.dest.arrivals)} de turistas al año`,
+                          ` · ${fmtArrivals(L, s.dest.arrivals)} tourists a year`,
+                        )}
+                      </span>
                     )}
                   </p>
                   <ul className="mt-1.5 space-y-0.5 text-base">
@@ -645,9 +666,9 @@ function PlanView({
                 {L.t(x.dest.name)}
                 <span className="text-muted">
                   {" — "}
-                  {x.score >= 1
-                    ? L("buen clima, pero no entró en la cantidad de noches", "good weather, but it didn't fit the number of nights")
-                    : verdictText(L, x.worst)}
+                  {x.reason === "noches"
+                    ? L("entre los más visitados, pero no entró en la cantidad de noches o queda lejos de la ruta", "among the most visited, but it didn't fit the nights or is far from the route")
+                    : L("hay otros más visitados", "others are more visited")}
                 </span>
               </li>
             ))}
@@ -684,8 +705,7 @@ function YearsView({
   const tie = years.every((y) => RELATION_RANK[y.relation] === bestRank);
   const isBest = (ly: number) => !tie && RELATION_RANK[years.find((y) => y.ly === ly)!.relation] === bestRank;
 
-  // Una fila por destino: cuántos meses ideales y buenos tiene en los dos años.
-  // Primero los que más meses ideales suman; los que no tienen ninguno, al final.
+  // Una fila por destino, los más visitados primero (el mismo orden del viaje).
   const rows = windows
     .map((w) => {
       const verdicts = upcoming.months.map((m) => classifyMonth(w.dest.climate, m.month0));
@@ -696,7 +716,7 @@ function YearsView({
         bueno: verdicts.filter((v) => v.cls === "bueno").length,
       };
     })
-    .sort((a, b) => b.ideal - a.ideal || b.bueno - a.bueno || a.d.name.localeCompare(b.d.name, "es"));
+    .sort((a, b) => byPopularity(a.d, b.d));
 
   const firstOfNext = upcoming.months.findIndex((m) => m.lunarYear === upcoming.next);
 
@@ -708,8 +728,8 @@ function YearsView({
       </h3>
       <p className="mt-2 text-base text-foreground/80 max-w-2xl">
         {L(
-          `Cada año chino tiene su signo, y se cruza con el tuyo con la misma regla del sitio. Abajo, el clima de cada país ${animal} mes por mes, en los dos años.`,
-          `Each Chinese year has its sign, and it meets yours under the site's same rule. Below, the weather in each ${L.t(animal)} country month by month, across both years.`,
+          `Cada año chino tiene su signo, y se cruza con el tuyo con la misma regla del sitio. Abajo, los países ${animal} de más a menos visitado, con el clima de cada mes en los dos años.`,
+          `Each Chinese year has its sign, and it meets yours under the site's same rule. Below, the ${L.t(animal)} countries from most to least visited, with each month's weather across both years.`,
         )}
       </p>
 
@@ -752,7 +772,7 @@ function YearsView({
                 </th>
               ))}
               <th scope="col" className="pt-4 pb-1 pl-3 text-right font-normal label-caps text-xs text-muted">
-                {L("Ideales", "Ideal")}
+                {L("Turistas al año", "Tourists a year")}
               </th>
             </tr>
             <tr className="border-b border-ink">
@@ -773,13 +793,13 @@ function YearsView({
                 </th>
               ))}
               <th scope="col" className="sr-only">
-                {L("Meses ideales", "Ideal months")}
+                {L("Llegadas de turistas internacionales", "International tourist arrivals")}
               </th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.d.iso} className={`border-b border-ink/10 ${r.ideal + r.bueno === 0 ? "text-muted" : ""}`}>
+              <tr key={r.d.iso} className="border-b border-ink/10">
                 <th scope="row" className="sticky left-0 z-10 bg-background py-1.5 pr-3 text-left font-normal whitespace-nowrap">
                   <Link href={`/affinity/country/${r.d.entityId}`} className="text-base hover:text-vermilion">
                     {r.d.flag && <span className="flag-emoji mr-1.5">{r.d.flag}</span>}
@@ -801,7 +821,9 @@ function YearsView({
                     </td>
                   );
                 })}
-                <td className="py-1.5 pl-3 text-right tabular-nums text-base">{r.ideal || "—"}</td>
+                <td className="py-1.5 pl-3 text-right tabular-nums text-base whitespace-nowrap">
+                  {r.d.arrivals != null ? fmtArrivals(L, r.d.arrivals) : "—"}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -830,8 +852,8 @@ function YearsView({
       </div>
       <p className="mt-2 text-sm text-muted max-w-2xl">
         {L(
-          "Clima medio de la capital, 2001–2025. La raya separa los dos años chinos; cada mes cuenta para el año de su día 15. En la computadora, pasá el cursor por un mes para ver temperatura y lluvia; la ficha de cada país las muestra todas.",
-          "Average weather in the capital, 2001–2025. The rule separates the two Chinese years; each month counts toward the year of its 15th day. On a computer, hover over a month to see temperature and rainfall; each country page shows them all.",
+          "Países ordenados de más a menos visitado (llegadas de turistas internacionales, ONU Turismo vía Banco Mundial, 2019 o último año previo; sin dato, al final). Clima medio de la capital, 2001–2025. La raya separa los dos años chinos; cada mes cuenta para el año de su día 15. En la computadora, pasá el cursor por un mes para ver temperatura y lluvia; la ficha de cada país las muestra todas.",
+          "Countries ordered from most to least visited (international tourist arrivals, UN Tourism via the World Bank, 2019 or latest earlier year; no data, last). Average weather in the capital, 2001–2025. The rule separates the two Chinese years; each month counts toward the year of its 15th day. On a computer, hover over a month to see temperature and rainfall; each country page shows them all.",
         )}
       </p>
     </section>

@@ -17,6 +17,7 @@ import type { VisualType } from "@/types/atlas";
 import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { t } from "@/lib/i18n";
 import { affinityListingOf } from "@/lib/data/brand-kinds";
+import { byArrivalsDesc } from "@/lib/data/travel/arrivals";
 
 /** La casilla del ciclo, igual que AffinityTier en affinityEngine. */
 export type LightTier = MapRelation;
@@ -139,7 +140,10 @@ export function sortLightEntities(
     if (a.isSameAnimal && !b.isSameAnimal) return -1;
     if (!a.isSameAnimal && b.isSameAnimal) return 1;
     // Otherwise sort by boosted score descending
-    return b.score - a.score;
+    if (b.score !== a.score) return b.score - a.score;
+    // Países con el mismo puntaje: los más visitados primero.
+    if (a.type === "country" && b.type === "country") return byArrivalsDesc(a.countryISO, b.countryISO);
+    return 0;
   });
 
   // Remove the isSameAnimal flag before returning (it's internal only)
