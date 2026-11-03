@@ -24,7 +24,12 @@ interface AffinityTypeContentProps {
   initialAnimal?: string;
   /** Solo en Países: destinos con capital y clima para el viaje por tu signo. */
   travel?: TravelDestination[];
+  /** En Famosos: "futbolistas" abre la lista filtrada (llega de /affinity/football_player). */
+  initialKind?: string;
 }
+
+/** Filtro de Famosos: todos, solo futbolistas o el resto. */
+type PeopleKind = "todos" | "futbolistas" | "otros";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -58,7 +63,7 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
   return groups;
 }
 
-export default function AffinityTypeContent({ meta, entities, initialAnimal, travel }: AffinityTypeContentProps) {
+export default function AffinityTypeContent({ meta, entities, initialAnimal, travel, initialKind }: AffinityTypeContentProps) {
   const L = useL();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
@@ -78,9 +83,23 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal, tra
     }
   }, [validInitial]);
 
+  // Famosos trae también a los futbolistas (2026-11-03): si la lista mezcla
+  // los dos, se puede ver todo, solo futbolistas o el resto.
+  const hasPlayers = useMemo(() => entities.some((e) => e.type === "football_player"), [entities]);
+  const hasOthers = useMemo(() => entities.some((e) => e.type !== "football_player"), [entities]);
+  const showKinds = hasPlayers && hasOthers;
+  const [kind, setKind] = useState<PeopleKind>(initialKind === "futbolistas" ? "futbolistas" : "todos");
+  const byKind = useMemo(
+    () =>
+      !showKinds || kind === "todos"
+        ? entities
+        : entities.filter((e) => (kind === "futbolistas" ? e.type === "football_player" : e.type !== "football_player")),
+    [entities, kind, showKinds],
+  );
+
   const sorted = useMemo(
-    () => sortLightEntities(activeAnimal, entities, userCountry),
-    [activeAnimal, entities, userCountry]
+    () => sortLightEntities(activeAnimal, byKind, userCountry),
+    [activeAnimal, byKind, userCountry]
   );
 
   // Filter results based on search query
@@ -99,7 +118,7 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal, tra
   const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ mismo: PAGE_SIZE, amigo: PAGE_SIZE, enemigo: PAGE_SIZE, otro: PAGE_SIZE });
   useEffect(() => {
     setVisibleCounts({ mismo: PAGE_SIZE, amigo: PAGE_SIZE, enemigo: PAGE_SIZE, otro: PAGE_SIZE });
-  }, [activeAnimal, searchQuery]);
+  }, [activeAnimal, searchQuery, kind]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -224,6 +243,27 @@ export default function AffinityTypeContent({ meta, entities, initialAnimal, tra
 
               {/* SEARCH — Available for all types, shows before selecting entity */}
               <div className="border-t border-ink/10 py-8">
+                {showKinds && (
+                  <div role="group" aria-label={L("Qué famosos mostrar", "Which famous people to show")} className="mb-6 flex flex-wrap gap-2">
+                    {([
+                      ["todos", L("Todos", "All")],
+                      ["futbolistas", L("Futbolistas", "Footballers")],
+                      ["otros", L("Artistas y otros", "Artists and others")],
+                    ] as [PeopleKind, string][]).map(([k, label]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => setKind(k)}
+                        aria-pressed={kind === k}
+                        className={`px-4 py-1.5 rounded-full border text-base transition-colors ${
+                          kind === k ? "bg-ink text-paper border-ink" : "border-ink/20 text-foreground hover:border-ink"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <p className="label-micro mb-4">{L("Buscar", "Search")}</p>
                 <input
                   type="search"

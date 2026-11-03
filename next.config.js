@@ -79,6 +79,9 @@ const nextConfig = {
       // Fichas de marcas pedidas bajo el listado (/affinity/autos/x o
       // /affinity/ropa/x): la ficha vive en /affinity/brand/x. El Atlas armaba
       // esos enlaces rotos hasta 2026-10-24.
+      // Los futbolistas se listan dentro de Famosos (2026-11-03); sus fichas
+      // siguen en /affinity/football_player/[id].
+      { source: '/affinity/football_player', destination: '/affinity/artist?tipo=futbolistas', permanent: true },
       { source: '/affinity/autos/:id', destination: '/affinity/brand/:id', permanent: true },
       { source: '/affinity/ropa/:id', destination: '/affinity/brand/:id', permanent: true },
       { source: '/atlas/:iso/team', destination: '/atlas/:iso', permanent: true },

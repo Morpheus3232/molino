@@ -50,7 +50,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Affinity hub + category listings
   const affinityPages = [
     // Las marcas se listan en tres: /affinity/autos, /affinity/ropa y /affinity/brand.
-    ...[...getAvailableTypes(), "autos", "ropa"].map((type) => ({
+    // Los futbolistas se listan dentro de Famosos (/affinity/artist).
+    ...[...getAvailableTypes().filter((t) => t !== "football_player"), "autos", "ropa"].map((type) => ({
       url: `${BASE_URL}/affinity/${type}`,
      
       changeFrequency: "weekly" as const,

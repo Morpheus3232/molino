@@ -133,7 +133,6 @@ const AFFINITY_GROUPS = (L: Pick2): NavGroup[] => ([
       { href: "/affinity/university", label: L("Universidades", "Universities") },
       { href: "/affinity/artist", label: L("Famosos", "Famous people") },
       { href: "/affinity/movie", label: L("Películas", "Movies") },
-      { href: "/affinity/football_player", label: L("Futbolistas", "Footballers") },
     ],
   },
 ]);

@@ -242,6 +242,13 @@ Consecuencias operativas:
      guarda en PDF. En noviembre y diciembre `/regalar` suma una nota de fiestas.
   El webhook de MP ya no re-guarda un código de regalo existente en los
   reintentos (antes lo volvía a dejar sin canjear).
+- **Futbolistas dentro de Famosos (2026-11-03, pedido del dueño).** El tipo
+  `football_player` sigue existiendo (fichas en `/affinity/football_player/[id]`,
+  Atlas personal con su sección "Fútbol"), pero se lista dentro de Famosos:
+  `/affinity/artist` los incluye con un filtro Todos / Futbolistas / Artistas y
+  otros (`?tipo=futbolistas`), `/affinity/football_player` redirige ahí (308),
+  `affinityListingOf` los manda a "artist" (hub del Atlas, explorador por
+  signo, migas de la ficha) y el menú ya no tiene "Futbolistas" aparte.
 - **Atlas = solo tres casillas (2026-11-02).** El hub, los listados por país
   y categoría (`lib/resonance.ts`) y el Atlas personal recomiendan solo tu
   propio signo, tus dos amigos y tu enemigo (como qué evitar). Liu He salió

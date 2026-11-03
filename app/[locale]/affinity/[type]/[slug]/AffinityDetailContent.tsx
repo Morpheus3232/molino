@@ -9,7 +9,7 @@ import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
 import { formatViewAll } from "@/lib/utils/plural";
-import { affinityListingOf } from "@/lib/data/brand-kinds";
+import { affinityListingHref } from "@/lib/data/brand-kinds";
 import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm";
 
 interface AffinityDetailContentProps {
@@ -61,7 +61,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         />
       )}
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-base">
-        <button type="button" onClick={() => router.push(`/affinity/${affinityListingOf(entity)}`)} className="underline underline-offset-4 hover:no-underline">
+        <button type="button" onClick={() => router.push(affinityListingHref(entity))} className="underline underline-offset-4 hover:no-underline">
           {L.t(formatViewAll(type, meta.plural))}
         </button>
         <button type="button" onClick={() => router.push("/conocimiento/zodiaco-chino")} className="underline underline-offset-4 hover:no-underline">{L("Conocé el zodíaco chino", "Get to know the Chinese zodiac")}</button>

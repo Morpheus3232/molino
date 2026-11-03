@@ -29,6 +29,8 @@ function listingMeta(listing: string) {
 }
 
 function listingEntities(listing: string) {
+  // Famosos incluye a los futbolistas (2026-11-03); se filtran en la página.
+  if (listing === "artist") return [...getEntitiesByType("artist"), ...getEntitiesByType("football_player")];
   if (!isBrandListing(listing)) return getEntitiesByType(listing as EntityType);
   return getEntitiesByType("brand").filter((e) => brandListingOf(e.category) === listing);
 }
@@ -67,12 +69,12 @@ export default async function AffinityTypePage({
   searchParams,
 }: {
   params: Promise<{ type: string }>;
-  searchParams: Promise<{ animal?: string }>;
+  searchParams: Promise<{ animal?: string; tipo?: string }>;
 }) {
   await initLocale(params);
   const L = await getL();
   const { type } = await params;
-  const { animal } = await searchParams;
+  const { animal, tipo } = await searchParams;
   if (!VALID_TYPES.includes(type)) notFound();
 
   const meta = listingMeta(type);
@@ -92,6 +94,7 @@ export default async function AffinityTypePage({
         meta={meta}
         entities={entities}
         initialAnimal={animal}
+        initialKind={tipo}
         travel={type === "country" ? getTravelDestinations() : undefined}
       />
       {bySign.length > 0 && (

@@ -16,7 +16,7 @@ import { animalsByKind } from "@/lib/engines/personalMapEngine";
 import { entityLinkRel } from "@/lib/seo/entity-links";
 import { getAllCountryISOs, getAtlasNeighbors } from "@/lib/data/atlas-queries";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import { affinityListingOf } from "@/lib/data/brand-kinds";
+import { affinityListingHref } from "@/lib/data/brand-kinds";
 
 // Solo los países con página en /atlas (los que tienen entidades además de la
 // propia ficha de país). Enlazar al resto daba 404: 26 en Search Console.
@@ -68,7 +68,7 @@ export default function AffinityEditorialContent({
         crumbs={[
           { href: "/", label: L("Inicio", "Home") },
           { href: "/affinity", label: L("Afinidades", "Affinities") },
-          { href: `/affinity/${affinityListingOf(entity)}`, label: meta.plural },
+          { href: affinityListingHref(entity), label: meta.plural },
           { label: entity.name },
         ]}
         eyebrow={`${meta.label}${entity.country ? ` · ${entity.country}` : ""}${entity.city ? ` · ${entity.city}` : ""}`}

@@ -27,6 +27,13 @@ export default async function AffinityPage({ params }: { params: Promise<{ local
   const byType: Record<string, LightweightEntity[]> = {};
   const typeMeta: Record<string, (typeof ENTITY_TYPES)[EntityType]> = {};
   for (const type of getAvailableTypes()) {
+    // Los futbolistas van dentro de Famosos (2026-11-03).
+    if (type === "football_player") continue;
+    if (type === "artist") {
+      byType[type] = [...getEntitiesByType("artist"), ...getEntitiesByType("football_player")].map(toLightweightEntity);
+      typeMeta[type] = ENTITY_TYPES[type];
+      continue;
+    }
     if (type !== "brand") {
       byType[type] = getEntitiesByType(type).map(toLightweightEntity);
       typeMeta[type] = ENTITY_TYPES[type];

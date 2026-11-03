@@ -17,7 +17,15 @@ export function brandListingOf(category?: string): BrandListing {
 
 /** Listado de /affinity al que pertenece una entidad (las marcas, según su familia). */
 export function affinityListingOf(entity: { type: string; category?: string }): string {
+  // Los futbolistas se listan dentro de Famosos (2026-11-03, pedido del dueño).
+  if (entity.type === "football_player") return "artist";
   return entity.type === "brand" ? brandListingOf(entity.category) : entity.type;
+}
+
+/** Enlace al listado de una ficha; un futbolista vuelve a Famosos ya filtrado. */
+export function affinityListingHref(entity: { type: string; category?: string }): string {
+  const base = `/affinity/${affinityListingOf(entity)}`;
+  return entity.type === "football_player" ? `${base}?tipo=futbolistas` : base;
 }
 
 export const BRAND_LISTINGS: Record<BrandListing, { label: string; plural: string; icon: string; description: string }> = {
