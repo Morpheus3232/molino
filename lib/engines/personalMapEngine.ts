@@ -34,6 +34,7 @@ import {
 } from "@/lib/data/animalRelations";
 import { brandListingOf } from "@/lib/data/brand-kinds";
 import { byArrivalsDesc } from "@/lib/data/travel/arrivals";
+import { isFamousEnough, footballFame } from "@/lib/data/football-fame";
 
 // ════════════════════════════════════════════════════
 // LAS CUATRO CASILLAS: MISMO, AMIGO, ENEMIGO, RESTO
@@ -297,7 +298,7 @@ const DOMAIN_SPECS: DomainSpec[] = [
     scope:
       "Personas famosas del atlas — artistas y futbolistas — fechadas por su año de nacimiento, no por una obra.",
     href: "/affinity/artist",
-    matches: (e) => e.type === "artist" || e.type === "football_player",
+    matches: (e) => e.type === "artist" || (e.type === "football_player" && isFamousEnough(e)),
     generational: true,
   },
   {
@@ -367,6 +368,11 @@ function byTypeThenYear<E extends MapEntityInput>(a: E, b: E): number {
   if (at !== bt) return at - bt;
   // Países: primero los más visitados por turistas (pedido del dueño,
   // 2026-11-03). No cambia la casilla, solo el orden dentro de ella.
+  // Futbolistas: primero las figuras (más ediciones de Wikipedia).
+  if (a.type === "football_player" && b.type === "football_player") {
+    const fame = footballFame(b.id) - footballFame(a.id);
+    if (fame !== 0) return fame;
+  }
   if (a.type === "country" && b.type === "country") {
     const pop = byArrivalsDesc(a.countryISO, b.countryISO);
     if (pop !== 0) return pop;

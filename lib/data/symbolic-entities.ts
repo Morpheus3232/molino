@@ -55,6 +55,7 @@ import { FOOTBALL_PLAYERS_PERU } from "./football-players-peru";
 import { FOOTBALL_PLAYERS_MEXICO } from "./football-players-mexico";
 import { FOOTBALL_PLAYERS_COLOMBIA } from "./football-players-colombia";
 import { FOOTBALL_PLAYERS_BRASIL } from "./football-players-brasil";
+import { FOOTBALL_PLAYERS_FIGURAS } from "./football-players-figuras";
 
 export type EntityType =
   | "brand"
@@ -398,6 +399,8 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...FOOTBALL_PLAYERS_MEXICO,
   ...FOOTBALL_PLAYERS_COLOMBIA,
   ...FOOTBALL_PLAYERS_BRASIL,
+  // Figuras del fútbol mundial (2026-11-03): ver football-players-figuras.ts.
+  ...FOOTBALL_PLAYERS_FIGURAS,
 
   // ──── UNIVERSIDADES (3) ────
   {

@@ -392,14 +392,6 @@
     "destination": "/affinity/country/country-republica-centroafricana"
   },
   {
-    "source": "/atlas/CI",
-    "destination": "/affinity/country/country-costa-de-marfil"
-  },
-  {
-    "source": "/atlas/CM",
-    "destination": "/affinity/country/country-camerun"
-  },
-  {
     "source": "/atlas/CV",
     "destination": "/affinity/country/country-cabo-verde"
   },
@@ -486,10 +478,6 @@
   {
     "source": "/atlas/HN",
     "destination": "/affinity/country/country-honduras"
-  },
-  {
-    "source": "/atlas/HR",
-    "destination": "/affinity/country/country-croacia"
   },
   {
     "source": "/atlas/HT",
@@ -782,10 +770,6 @@
   {
     "source": "/atlas/TZ",
     "destination": "/affinity/country/country-tanzania"
-  },
-  {
-    "source": "/atlas/UA",
-    "destination": "/affinity/country/country-ucrania"
   },
   {
     "source": "/atlas/VA",

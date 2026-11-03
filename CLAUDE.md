@@ -249,6 +249,15 @@ Consecuencias operativas:
   otros (`?tipo=futbolistas`), `/affinity/football_player` redirige ahí (308),
   `affinityListingOf` los manda a "artist" (hub del Atlas, explorador por
   signo, migas de la ficha) y el menú ya no tiene "Futbolistas" aparte.
+  **Solo figuras (mismo día):** +128 figuras mundiales y de los 7 países
+  (`lib/data/football-players-figuras.ts`: Wikidata con precisión de día +
+  la misma fecha en Wikipedia en español; Kaká con Wikipedia en inglés), y la
+  medida de "conocido" es en cuántas Wikipedias tiene artículo
+  (`lib/data/football-fame.ts`). En Famosos, el hub, el Atlas y el Mapa
+  Personal no se listan los jugadores actuales con menos de 40 ediciones
+  (`isFamousEnough`; los históricos siempre) y los futbolistas van de más a
+  menos conocido dentro de cada casilla. Los poco conocidos conservan su ficha
+  y su lugar en la sección Fútbol del Atlas personal.
 - **Atlas = solo tres casillas (2026-11-02).** El hub, los listados por país
   y categoría (`lib/resonance.ts`) y el Atlas personal recomiendan solo tu
   propio signo, tus dos amigos y tu enemigo (como qué evitar). Liu He salió

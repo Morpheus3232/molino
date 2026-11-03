@@ -3,6 +3,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import { ENTITY_TYPES, getEntitiesByType, getAvailableTypes, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
 import AffinityClient from "./AffinityClient";
+import { isFamousEnough } from "@/lib/data/football-fame";
 import { metadataFor } from "@/lib/seo";
 
 export const generateMetadata = metadataFor({
@@ -30,7 +31,7 @@ export default async function AffinityPage({ params }: { params: Promise<{ local
     // Los futbolistas van dentro de Famosos (2026-11-03).
     if (type === "football_player") continue;
     if (type === "artist") {
-      byType[type] = [...getEntitiesByType("artist"), ...getEntitiesByType("football_player")].map(toLightweightEntity);
+      byType[type] = [...getEntitiesByType("artist"), ...getEntitiesByType("football_player").filter(isFamousEnough)].map(toLightweightEntity);
       typeMeta[type] = ENTITY_TYPES[type];
       continue;
     }

@@ -18,6 +18,7 @@ import { relacionCon, type MapRelation } from "@/lib/engines/personalMapEngine";
 import { t } from "@/lib/i18n";
 import { affinityListingOf } from "@/lib/data/brand-kinds";
 import { byArrivalsDesc } from "@/lib/data/travel/arrivals";
+import { footballFame } from "@/lib/data/football-fame";
 
 /** La casilla del ciclo, igual que AffinityTier en affinityEngine. */
 export type LightTier = MapRelation;
@@ -143,6 +144,8 @@ export function sortLightEntities(
     if (b.score !== a.score) return b.score - a.score;
     // Países con el mismo puntaje: los más visitados primero.
     if (a.type === "country" && b.type === "country") return byArrivalsDesc(a.countryISO, b.countryISO);
+    // Futbolistas con el mismo puntaje: las figuras primero.
+    if (a.type === "football_player" && b.type === "football_player") return footballFame(b.id) - footballFame(a.id);
     return 0;
   });
 

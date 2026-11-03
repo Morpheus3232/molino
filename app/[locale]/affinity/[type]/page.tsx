@@ -3,6 +3,7 @@ import { Link } from "@/lib/i18n/navigation";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { localeAlternates, localeUrl } from "@/lib/seo";
+import { isFamousEnough } from "@/lib/data/football-fame";
 import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import { ANIMALS } from "@/lib/data/animalRelations";
 import { BRAND_LISTINGS, brandListingOf, type BrandListing } from "@/lib/data/brand-kinds";
@@ -30,7 +31,8 @@ function listingMeta(listing: string) {
 
 function listingEntities(listing: string) {
   // Famosos incluye a los futbolistas (2026-11-03); se filtran en la página.
-  if (listing === "artist") return [...getEntitiesByType("artist"), ...getEntitiesByType("football_player")];
+  // Solo las figuras del fútbol: los actuales poco conocidos no se listan.
+  if (listing === "artist") return [...getEntitiesByType("artist"), ...getEntitiesByType("football_player").filter(isFamousEnough)];
   if (!isBrandListing(listing)) return getEntitiesByType(listing as EntityType);
   return getEntitiesByType("brand").filter((e) => brandListingOf(e.category) === listing);
 }
