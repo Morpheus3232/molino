@@ -59,9 +59,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <main id="main-content" className="relative z-10 min-h-screen bg-paper overflow-hidden pt-16">
-        {/* Apertura: Quijote y Sancho galopando entre molinos. Se lleva la
-            ilustración que antes iba chica al lado de la fecha. */}
-        <HomeOpening />
+        {/* Arriba, el índice de láminas (pedido del dueño, 2026-11-03): lo
+            primero que se ve es adónde se puede ir. */}
+        <HomeGallery />
+
+        <Fleuron />
 
         {/* Hoy — los datos de /hoy contados como un capítulo de libro (la vista
             de detalle sigue en /hoy). Sin mapa es la energía universal del
@@ -89,7 +91,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
         <Fleuron className="mt-12 sm:mt-16" />
 
-        <HomeGallery />
+        {/* Cierre: Quijote y Sancho galopando entre molinos, con el epígrafe
+            de Cervantes. Antes abría la portada; desde 2026-11-03 la cierra. */}
+        <HomeOpening />
       </main>
 
       {/* JSON-LD Schema */}

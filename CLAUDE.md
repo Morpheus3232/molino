@@ -400,6 +400,11 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   `Sparkles`/✨ (donde un ícono es estructural, `Asterisk`). Emoji en Noto
   Emoji monocromo; no usar el selector U+FE0F. Sin gradientes de texto ni
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
+- **Orden de la portada (2026-11-03, pedido del dueño):** arriba el índice de
+  láminas (`HomeGallery`), después el día (`HomeAlmanac` + `HomeBook`), tu mapa
+  (`HeroInstrument`) y, al final, la escena de Cervantes (`HomeOpening`) como
+  cierre. Su parallax corre mientras entra en pantalla (offset
+  `start end`→`end end`) y el epígrafe ya no se desvanece.
 - Portada, apertura (2026-10-26): `HomeOpening` es un travelling de cine —
   Quijote y Sancho galopando hacia la izquierda entre molinos, con el
   epígrafe de Cervantes («Yo sé quién soy», I, V), sin botones. Versión mínima por decisión del dueño
