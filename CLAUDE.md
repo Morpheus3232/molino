@@ -108,6 +108,21 @@ Consecuencias operativas:
   inventaría uno); si vale la pena, es un campo `month` en el evento, jamás un
   día falso.
 
+  **2026-11-03 (pedido del dueño: "que estén las marcas más famosas")**: se
+  consultaron ~290 marcas (las del catálogo sin fecha + ~120 famosas que
+  faltaban) en Wikidata y en las fichas de Wikipedia en español e inglés.
+  Entraron 39 nuevas (`lib/data/brands-figuras.ts`: Facebook, Instagram,
+  YouTube, X/Twitter, Starbucks, Sony, Intel, Nvidia, IKEA, Walmart, Heineken,
+  L'Oréal, Boeing, Victoria's Secret, Tiffany…) y 8 del catálogo ganaron su
+  día (`lib/data/brand-verified-dates.ts`, aplicado después del dedup y solo
+  si coincide el año del registro: FedEx, Domino's, Hyundai, Kia, Arcor…).
+  Con fecha exacta: otras marcas 35→73, autos 32→36, ropa 6→8. Las grandes
+  de moda (Zara, Gucci, Chanel, Louis Vuitton, Levi's) y Ferrari, Porsche,
+  Audi, Pepsi, Visa siguen sin mostrarse: solo hay año, o las fuentes no
+  coinciden en el día. Con el campo `month` (ver arriba) entrarían Uber,
+  Shein, Bershka, Forever 21, Nikon, Asus, Qualcomm, Rivian, Juan Valdez y
+  Buick.
+
   **2026-10-31**: +148 ciudades (`lib/data/cities-expansion.ts`) y +20 países
   que faltaban, Venezuela y Paraguay incluidos (`lib/data/countries-expansion.ts`),
   con el mismo criterio de dos fuentes (Wikidata con precisión de día +

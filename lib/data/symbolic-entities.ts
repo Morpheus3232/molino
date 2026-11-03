@@ -16,6 +16,8 @@ import { getChineseAnimal, getChineseElement, calculateAnimalFromDate } from "@/
 import { getPrimaryEvent } from "./entity-events";
 import type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType } from "@/types/atlas";
 import { BRANDS_60 } from "./brands-60";
+import { BRANDS_FIGURAS } from "./brands-figuras";
+import { VERIFIED_BRAND_DATES } from "./brand-verified-dates";
 import { BRANDS_AUTOS_60 } from "./brands-autos-60";
 import { AUTOS_ATLAS } from "./autos-atlas";
 import { ROPA_ATLAS } from "./ropa-atlas";
@@ -329,6 +331,26 @@ function dedupeAtlasEntities(entities: AtlasEntity[]): AtlasEntity[] {
 }
 
 /**
+ * Fecha exacta verificada para marcas que solo tenían el año
+ * (brand-verified-dates.ts). Solo si el año coincide con el del registro:
+ * el año es dato crítico y una fecha de otro año sería otra fundación.
+ */
+function applyVerifiedBrandDates(entities: AtlasEntity[]): AtlasEntity[] {
+  return entities.map((e) => {
+    const v = VERIFIED_BRAND_DATES[e.id];
+    if (!v || e.type !== "brand") return e;
+    const year = Number(v.date.slice(0, 4));
+    let applied = false;
+    const events = e.events.map((ev) => {
+      if (!ev.primaryForAffinity || ev.year !== year || ev.date) return ev;
+      applied = true;
+      return { ...ev, date: v.date, confidence: "exacta", source: `${ev.source} · ${v.source}` };
+    });
+    return applied ? { ...e, events } : e;
+  });
+}
+
+/**
  * id descartado por el dedup → id que sobrevivió. Cada uno fue en algún
  * momento la URL pública de la entidad (cambia cuál gana cuando cambian los
  * datos o el criterio), y Google los sigue pidiendo: 46 de los 404 de Search
@@ -341,8 +363,10 @@ export const ENTITY_ID_ALIASES: Record<string, string> = {};
 // SAMPLE DATA — Real, verifiable entities
 // ════════════════════════════════════════════════════
 
-export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
+export const SYMBOLIC_ENTITIES: SymbolicEntity[] = applyVerifiedBrandDates(dedupeAtlasEntities([
   ...BRANDS_60,
+  // Marcas muy conocidas que faltaban, con fecha exacta (2026-11-03).
+  ...BRANDS_FIGURAS,
   ...BRANDS_AUTOS_60,
   ...AUTOS_ATLAS,
   ...ROPA_ATLAS,
@@ -636,7 +660,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
       },
     ],
   },
-].map(enrichEntity));
+].map(enrichEntity)));
 
 /** Helper: get all entities of a given type */
 export function getEntitiesByType(type: EntityType): SymbolicEntity[] {

@@ -440,10 +440,6 @@
     "destination": "/affinity/country/country-micronesia"
   },
   {
-    "source": "/atlas/FR/brand",
-    "destination": "/atlas/FR/autos"
-  },
-  {
     "source": "/atlas/GA",
     "destination": "/affinity/country/country-gabon"
   },
@@ -484,16 +480,16 @@
     "destination": "/affinity/country/country-haiti"
   },
   {
+    "source": "/atlas/IN/brand",
+    "destination": "/atlas/IN/autos"
+  },
+  {
     "source": "/atlas/IQ",
     "destination": "/affinity/country/country-irak"
   },
   {
     "source": "/atlas/IS",
     "destination": "/affinity/country/islandia"
-  },
-  {
-    "source": "/atlas/IT/brand",
-    "destination": "/atlas/IT/autos"
   },
   {
     "source": "/atlas/JO",
@@ -658,10 +654,6 @@
   {
     "source": "/atlas/PY",
     "destination": "/affinity/country/country-paraguay"
-  },
-  {
-    "source": "/atlas/QA",
-    "destination": "/affinity/country/country-qatar"
   },
   {
     "source": "/atlas/RO/brand",
