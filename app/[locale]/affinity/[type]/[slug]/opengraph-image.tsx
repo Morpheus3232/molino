@@ -28,7 +28,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
 
   const primaryEvent = getPrimaryEvent(entity);
   const { animal: entityAnimal } = primaryEvent
-    ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year)
+    ? calculateAnimalFromDate(primaryEvent.date ?? primaryEvent.month, primaryEvent.year)
     : { animal: "ícono" };
 
   // Get relationship info for a generic "Descubrí" message

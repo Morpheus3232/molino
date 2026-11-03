@@ -12,6 +12,11 @@
  */
 
 export const ENTITY_IMAGE_URLS: Record<string, string> = {
+  "asus": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/ASUSTeK_Computer_headquarters_20150711.jpg/330px-ASUSTeK_Computer_headquarters_20150711.jpg",
+  "forever-21": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Forever21DenverPavilions2.jpg/330px-Forever21DenverPavilions2.jpg",
+  "nikon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Nikon_HQ2.jpg/330px-Nikon_HQ2.jpg",
+  "pepsi": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Pepsi_2023.svg/330px-Pepsi_2023.svg.png",
+  "qualcomm": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Qualcomm_Headquarters_La_Jolla.jpg/330px-Qualcomm_Headquarters_La_Jolla.jpg",
   // Marcas muy conocidas (2026-11-03): imagen principal del artículo de Wikipedia en español.
   "american-airlines": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/American_Airlines_Boeing_777-300ER_%282-1_crop%29.jpg/330px-American_Airlines_Boeing_777-300ER_%282-1_crop%29.jpg",
   "bic": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/03-BICcristal2008-03-26.jpg/330px-03-BICcristal2008-03-26.jpg",

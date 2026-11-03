@@ -1,6 +1,7 @@
 import { initLocale, metaL } from "@/lib/i18n/server";
 import type { Pick2 } from "@/lib/i18n/useL";
 import { notFound } from "next/navigation";
+import { affirmableDate } from "@/lib/data/entity-events";
 import type { Metadata } from "next";
 import { localeAlternates, localeUrl } from "@/lib/seo";
 import { buildEntityJsonLd } from "@/lib/seo-jsonld";
@@ -69,7 +70,8 @@ const PERSON_TYPES = new Set<EntityType>(["artist", "football_player"]);
  */
 function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: EntityType, L: Pick2) {
   const primary = getPrimaryEvent(entity);
-  if (!primary?.date) {
+  const fechaOrigen = affirmableDate(primary);
+  if (!primary || !fechaOrigen) {
     return {
       title: `${L.t(entity.name)} · ${L.t(ENTITY_TYPES[type].label)}`,
       description: L(
@@ -81,8 +83,10 @@ function entitySeo(entity: NonNullable<ReturnType<typeof getEntityById>>, type: 
   const { animal: animalEs, year } = resolveEntityAnimalData(entity);
   const animal = L.t(animalEs);
   const name = L.t(entity.name);
-  const fecha = new Date(`${primary.date}T12:00:00Z`).toLocaleDateString(L("es-AR", "en-US"), {
-    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  // Con solo mes (desde 2026-11-03) se nombra el mes, nunca un día.
+  const conDia = fechaOrigen.length === 10;
+  const fecha = new Date(`${conDia ? fechaOrigen : `${fechaOrigen}-15`}T12:00:00Z`).toLocaleDateString(L("es-AR", "en-US"), {
+    ...(conDia ? { day: "numeric" as const } : {}), month: "long", year: "numeric", timeZone: "UTC",
   });
   const amigos = amigosDe(animalEs as Animal).map((a) => L.t(a));
   const enemigoEs = enemigoDe(animalEs as Animal);

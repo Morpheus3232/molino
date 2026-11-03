@@ -415,6 +415,8 @@ export function getPersonalAtlas(query: PersonalAtlasQuery): PersonalAtlasResult
  */
 export function lunarYearOfDate(date: string): number | null {
   const year = Number(date.slice(0, 4));
+  // Solo mes ("YYYY-MM", desde marzo): el año chino es el del calendario.
+  if (/^\d{4}-\d{2}$/.test(date)) return Number(date.slice(5, 7)) >= 3 ? year : null;
   if (CHINESE_NEW_YEAR_DATES[year]) return getLunarYear(date);
   const monthDay = date.slice(5);
   if (monthDay > "02-20") return year;

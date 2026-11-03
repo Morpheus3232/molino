@@ -2,6 +2,7 @@ import { useL } from "@/lib/i18n/useL";
 import { aAn } from "@/lib/i18n/translate";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getPrimaryEvent, toLightweightEntity } from "@/lib/data/symbolic-entities";
+import { affirmableDate, fechaDeOrigen } from "@/lib/data/entity-events";
 import type { Animal } from "@/lib/data/animalRelations";
 import EntitySignSection from "@/components/affinity/EntitySignSection";
 import type { LightweightEntity } from "@/types/atlas";
@@ -27,10 +28,8 @@ const ATLAS_ISOS = new Set(getAllCountryISOs());
 // componente. Copia local mínima de la misma lógica pura (mismo formato que
 // usa AffinityDeepDive) para no forzar ese archivo a moverse de boundary.
 function formatDisplayDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-");
-  const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-  const monthIdx = parseInt(month, 10) - 1;
-  return `${parseInt(day, 10)} de ${months[monthIdx]} de ${year}`;
+  // "YYYY-MM-DD" o, con solo mes (desde 2026-11-03), "YYYY-MM".
+  return fechaDeOrigen(dateStr);
 }
 
 /**
@@ -51,8 +50,10 @@ export default function AffinityEditorialContent({
 }) {
   const L = useL();
   const primaryEvent = getPrimaryEvent(entity);
+  // Día exacto o, desde 2026-11-03, mes desde marzo: lo que permite afirmar el signo.
+  const fechaOrigen = affirmableDate(primaryEvent);
   const light = toLightweightEntity(entity);
-  const signo = primaryEvent?.date && light.animal && !light.isApproximate ? (light.animal as Animal) : null;
+  const signo = fechaOrigen && light.animal && !light.isApproximate ? (light.animal as Animal) : null;
 
   const kinds = signo ? animalsByKind(signo) : null;
   const nameSize =
@@ -79,7 +80,7 @@ export default function AffinityEditorialContent({
           <div className="space-y-2">
             {primaryEvent && (
               <p className="text-lg text-foreground">
-                {L.t(primaryEvent.label)}, {primaryEvent.date ? L.t(formatDisplayDate(primaryEvent.date)) : L(`año ${primaryEvent.year}`, `year ${primaryEvent.year}`)}
+                {L.t(primaryEvent.label)}, {fechaOrigen ? L.t(formatDisplayDate(fechaOrigen)) : L(`año ${primaryEvent.year}`, `year ${primaryEvent.year}`)}
                 {signo && <span className="text-muted">{L(<>: año {L.t(signo)}.</>, <>: {L.t(signo)} year.</>)}</span>}
               </p>
             )}
@@ -140,7 +141,7 @@ export default function AffinityEditorialContent({
             {[
               [L("Hito", "Milestone"), primaryEvent.label],
               ...(primaryEvent.description && primaryEvent.description !== entity.sourceNote ? [[L("Qué pasó", "What happened"), primaryEvent.description]] : []),
-              primaryEvent.date ? [L("Fecha", "Date"), formatDisplayDate(primaryEvent.date)] : [L("Año", "Year"), String(primaryEvent.year)],
+              fechaOrigen ? [L("Fecha", "Date"), formatDisplayDate(fechaOrigen)] : [L("Año", "Year"), String(primaryEvent.year)],
               [L("Fuente", "Source"), primaryEvent.source],
               ...(entity.sourceNote ? [[L("Nota", "Note"), entity.sourceNote]] : []),
             ].map(([k, v]) => (
@@ -151,16 +152,16 @@ export default function AffinityEditorialContent({
             ))}
           </dl>
           <p className="mt-4 text-base text-muted">
-            {L.t(primaryEvent.date
+            {L.t(fechaOrigen
               ? L("Registro con fecha exacta: el signo se puede afirmar.", "Record with an exact date: the sign can be stated with certainty.")
               : L("Solo está documentado el año: si cae entre el 21 de enero y el 21 de febrero, el signo podría ser el anterior.", "Only the year is documented: if it falls between January 21 and February 21, the sign could be the previous one."))}
           </p>
         </KnowledgeSection>
       )}
 
-      {signo && primaryEvent?.date && (
+      {signo && fechaOrigen && primaryEvent && (
         <KnowledgeSection label={L("El signo", "The sign")}>
-          <EntitySignSection name={entity.name} animal={signo} eventLabel={primaryEvent.label} eventDate={primaryEvent.date} />
+          <EntitySignSection name={entity.name} animal={signo} eventLabel={primaryEvent.label} eventDate={fechaOrigen} />
         </KnowledgeSection>
       )}
 

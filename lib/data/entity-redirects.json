@@ -756,10 +756,6 @@
     "destination": "/affinity/country/country-tuvalu"
   },
   {
-    "source": "/atlas/TW",
-    "destination": "/affinity/country/taiwan"
-  },
-  {
     "source": "/atlas/TZ",
     "destination": "/affinity/country/country-tanzania"
   },

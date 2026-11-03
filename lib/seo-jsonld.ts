@@ -17,7 +17,7 @@ const SCHEMA_TYPE: Record<EntityType, string> = {
 /** JSON-LD for a single entity's affinity detail page (/affinity/[type]/[slug]). */
 export function buildEntityJsonLd(entity: SymbolicEntity, type: EntityType, path: string) {
   const primaryEvent = getPrimaryEvent(entity);
-  const foundingDate = primaryEvent?.date ?? (primaryEvent ? String(primaryEvent.year) : undefined);
+  const foundingDate = primaryEvent?.date ?? primaryEvent?.month ?? (primaryEvent ? String(primaryEvent.year) : undefined);
 
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",

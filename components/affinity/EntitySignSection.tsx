@@ -6,7 +6,13 @@ import { CHINESE_NEW_YEAR_DATES } from "@/lib/data/chinese-new-year";
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const corta = (iso: string) => {
   const [y, m, d] = iso.split("-").map(Number);
-  return `${d} ${MESES[m - 1]} ${y}`;
+  // Con solo mes (desde 2026-11-03, "YYYY-MM"): "may 1975".
+  return d ? `${d} ${MESES[m - 1]} ${y}` : `${MESES[m - 1]} ${y}`;
+};
+/** "el 5 feb 1985" con día; "en may 1975" con solo mes. */
+const conArticulo = (iso: string, en: boolean) => {
+  const sinDia = iso.split("-").length < 3;
+  return en ? `${sinDia ? "in" : "on"} ${corta(iso)}` : `${sinDia ? "en" : "el"} ${corta(iso)}`;
 };
 const diaAnterior = (iso: string) => {
   const d = new Date(`${iso}T12:00:00Z`);
@@ -62,13 +68,13 @@ export default function EntitySignSection({
         El signo chino de {L.t(name)}: {L.t(animal)}
       </>, <>The Chinese sign of {L.t(name)}: {L.t(animal)}</>)}</h2>
       <p className="text-lg sm:text-xl text-foreground/90 leading-relaxed mb-8 max-w-3xl">{L(<>
-        {L.t(eventLabel)} el {L.t(corta(eventDate))}, en el año del{" "}
+        {L.t(eventLabel)} {L.t(conArticulo(eventDate, false))}, en el año del{" "}
         <Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">
           {L.t(animal)}
         </Link>{" "}
         del calendario chino. En Molino la afinidad se mide signo contra signo: el tuyo, según tu fecha de
         nacimiento, contra el de {L.t(name)}.
-      </>, <>{L.t(eventLabel)} on {L.t(corta(eventDate))}, in the year of the{" "}<Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(animal)}</Link>{" "}in the Chinese calendar. On Molino, affinity is measured sign against sign: yours, according to your date of birth, against that of {L.t(name)}.</>)}</p>
+      </>, <>{L.t(eventLabel)} {L.t(conArticulo(eventDate, true))}, in the year of the{" "}<Link href={signoHref(animal)} className="underline underline-offset-4 decoration-dotted hover:text-accent">{L.t(animal)}</Link>{" "}in the Chinese calendar. On Molino, affinity is measured sign against sign: yours, according to your date of birth, against that of {L.t(name)}.</>)}</p>
 
       <dl className="border-t-2 border-ink max-w-4xl divide-y divide-ink/15">
         <div className="py-5">

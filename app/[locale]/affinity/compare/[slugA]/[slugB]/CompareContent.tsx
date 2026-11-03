@@ -1,4 +1,5 @@
 "use client";
+import { fechaDeOrigen } from "@/lib/data/entity-events";
 import { useL, type Pick2 } from "@/lib/i18n/useL";
 
 import { useMemo } from "react";
@@ -371,11 +372,11 @@ function EntityBaseCard({
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Fecha</span>
           <span className="text-foreground">
-            {result.primaryEvent.date
-              ? formatDisplayDate(result.primaryEvent.date, L.locale)
+            {(result.primaryEvent.date ?? result.primaryEvent.month)
+              ? formatDisplayDate((result.primaryEvent.date ?? result.primaryEvent.month)!, L.locale)
               : String(result.primaryEvent.year)}
           </span>
-        </>, <><span className="text-muted">Date</span><span className="text-foreground">{result.primaryEvent.date ? formatDisplayDate(result.primaryEvent.date, L.locale) : String(result.primaryEvent.year)}</span></>)}</div>
+        </>, <><span className="text-muted">Date</span><span className="text-foreground">{(result.primaryEvent.date ?? result.primaryEvent.month) ? formatDisplayDate((result.primaryEvent.date ?? result.primaryEvent.month)!, L.locale) : String(result.primaryEvent.year)}</span></>)}</div>
         <div className="flex justify-between">{L(<>
           <span className="text-muted">Animal chino</span>
           <span className="font-medium text-foreground">{L.t(result.entityAnimal)}</span>
@@ -462,6 +463,11 @@ function SectionHeader({ title }: { title: string }) {
 
 function formatDisplayDate(dateStr: string, locale: "es" | "en" = "es"): string {
   const [year, month, day] = dateStr.split("-");
+  // Con solo mes ("YYYY-MM", desde 2026-11-03) se nombra el mes, nunca un día.
+  if (!day) {
+    if (locale === "en") return new Date(`${dateStr}-15T12:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+    return fechaDeOrigen(dateStr);
+  }
   if (locale === "en") {
     return new Date(`${dateStr}T12:00:00Z`).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
   }

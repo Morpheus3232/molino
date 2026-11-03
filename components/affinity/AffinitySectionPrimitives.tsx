@@ -1,4 +1,5 @@
 "use client";
+import { fechaDeOrigen } from "@/lib/data/entity-events";
 import { useL } from "@/lib/i18n/useL";
 
 import { useMemo, useState } from "react";
@@ -25,10 +26,8 @@ export function DataRow({ label, value }: { label: string; value: string }) {
 }
 
 export function formatDisplayDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-");
-  const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-  const monthIdx = parseInt(month, 10) - 1;
-  return `${parseInt(day, 10)} de ${months[monthIdx]} de ${year}`;
+  // "YYYY-MM-DD" o, con solo mes (desde 2026-11-03), "YYYY-MM".
+  return fechaDeOrigen(dateStr);
 }
 
 export function OtherEventCard({ event }: { event: HistoricalEvent }) {

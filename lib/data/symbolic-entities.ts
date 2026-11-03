@@ -13,7 +13,7 @@
 import "server-only";
 
 import { getChineseAnimal, getChineseElement, calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
-import { getPrimaryEvent } from "./entity-events";
+import { getPrimaryEvent, affirmableDate } from "./entity-events";
 import type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType } from "@/types/atlas";
 import { BRANDS_60 } from "./brands-60";
 import { BRANDS_FIGURAS } from "./brands-figuras";
@@ -150,7 +150,7 @@ export function resolveEntityAnimalData(input: Pick<AtlasEntityInput, "events">)
 } {
   const primary = getPrimaryEvent(input);
   const { animal, isApproximate } = primary
-    ? calculateAnimalFromDate(primary.date, primary.year)
+    ? calculateAnimalFromDate(primary.date ?? primary.month, primary.year)
     : { animal: "", isApproximate: true };
   return { animal, year: primary?.year ?? 0, isApproximate };
 }
@@ -174,7 +174,10 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
   // types/atlas.ts), así que mandar la prosa igual sería mostrar un respaldo
   // que no respalda nada. Además mantiene el payload del cliente acotado a las
   // entidades que el Mapa Personal puede usar.
-  const hasExactDate = Boolean(primary?.date);
+  // Desde 2026-11-03 también vale el mes sin día si es de marzo en adelante
+  // (affirmableDate): el signo queda igual de determinado.
+  const exact = affirmableDate(primary);
+  const hasExactDate = Boolean(exact);
   // Gama alta según lo que el propio registro declara — nunca inferido de la
   // fama de la marca. Sirve para acotar cuántas marcas caras puede tener una
   // recomendación: el público del sitio es mayoritariamente clase media y una
@@ -199,7 +202,7 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
     ...(premium ? { premium: true } : {}),
     ...(hasExactDate && primary
       ? {
-          originDate: primary.date,
+          originDate: exact,
           originLabel: primary.label,
           originNote: primary.description || input.sourceNote,
         }
@@ -242,7 +245,7 @@ export { getPrimaryEvent } from "./entity-events";
  * Uses real Chinese New Year dates when available (1900-2040).
  */
 export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
-  const { animal, isApproximate } = calculateAnimalFromDate(event.date, event.year);
+  const { animal, isApproximate } = calculateAnimalFromDate(event.date ?? event.month, event.year);
   return { ...event, calculatedAnimal: animal, isApproximate };
 }
 
@@ -252,6 +255,7 @@ export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
 
 const CONFIDENCE_RANK: Record<string, number> = {
   exacta: 5,
+  mes: 4,
   alta: 4,
   media: 3,
   baja: 2,
@@ -339,12 +343,19 @@ function applyVerifiedBrandDates(entities: AtlasEntity[]): AtlasEntity[] {
   return entities.map((e) => {
     const v = VERIFIED_BRAND_DATES[e.id];
     if (!v || e.type !== "brand") return e;
-    const year = Number(v.date.slice(0, 4));
+    const when = v.date ?? v.month;
+    if (!when) return e;
+    const year = Number(when.slice(0, 4));
     let applied = false;
     const events = e.events.map((ev) => {
       if (!ev.primaryForAffinity || ev.year !== year || ev.date) return ev;
       applied = true;
-      return { ...ev, date: v.date, confidence: "exacta", source: `${ev.source} · ${v.source}` };
+      return {
+        ...ev,
+        ...(v.date ? { date: v.date, confidence: "exacta" } : { month: v.month, confidence: "mes" }),
+        ...(v.description ? { description: v.description } : {}),
+        source: `${ev.source} · ${v.source}`,
+      };
     });
     return applied ? { ...e, events } : e;
   });

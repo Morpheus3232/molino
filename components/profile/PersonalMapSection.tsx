@@ -126,8 +126,9 @@ const DOMAIN_EXTRA_META: Record<DomainId, DomainMetaInfo> = {
 function fechaLarga(iso?: string): string | null {
   if (!iso) return null;
   const [y, m, d] = iso.split("-").map(Number);
-  if (!y || !m || !d) return null;
-  return `${d} de ${MESES[m - 1]} de ${y}`;
+  if (!y || !m) return null;
+  // Con solo mes (desde 2026-11-03): "mayo de 1975".
+  return d ? `${d} de ${MESES[m - 1]} de ${y}` : `${MESES[m - 1]} de ${y}`;
 }
 
 /** Fila de entidad: el origen documentado, su fecha exacta y el signo que sale de ahí. */

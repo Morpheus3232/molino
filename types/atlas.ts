@@ -24,6 +24,13 @@ export interface AtlasHistoricalEvent {
   date?: string;
   /** Year — always required. This is the ONLY date used for affinity. */
   year: number;
+  /**
+   * "YYYY-MM" cuando la fuente da mes y año pero no el día (2026-11-03). Desde
+   * marzo el signo queda determinado (el Año Nuevo chino nunca cae después del
+   * 21 de febrero); enero y febrero siguen siendo aproximados. Nunca se
+   * completa con un día inventado.
+   */
+  month?: string;
   description: string;
   source: string;
   confidence: string;

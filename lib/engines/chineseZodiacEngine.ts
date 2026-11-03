@@ -61,6 +61,13 @@ export function calculateAnimalFromDate(
   dateStr?: string,
   year?: number
 ): { animal: Animal | ""; isApproximate: boolean } {
+  // Mes y año sin día ("YYYY-MM"): desde marzo el año chino es el del
+  // calendario, porque el Año Nuevo nunca cae después del 21 de febrero.
+  if (dateStr && /^\d{4}-\d{2}$/.test(dateStr)) {
+    const [y, m] = dateStr.split("-").map(Number);
+    if (m >= 3) return { animal: getChineseAnimal(y), isApproximate: false };
+    return { animal: getRealChineseZodiac(`${y}-06-01`), isApproximate: true };
+  }
   if (dateStr) {
     return {
       animal: getRealChineseZodiac(dateStr),
