@@ -133,8 +133,8 @@ Consecuencias operativas:
   Zara (9-5-1975, apertura de la primera tienda), Audi (16-7-1909), Porsche
   (25-4-1931), Red Bull (1-4-1987, lanzamiento), Land Rover (30-4-1948), Visa
   (18-9-1958, BankAmericard) y Pepsi (28-8-1898, nombre Pepsi-Cola). Quedan
-  sin fecha Gucci, Chanel, Louis Vuitton, Levi's, Lacoste, Prada, Rolex y
-  Ferrari: ninguna fuente da más que el año. Con fecha afirmable: otras
+  sin fecha Gucci, Chanel, Louis Vuitton, Levi's, Lacoste, Prada y Rolex
+  (ninguna fuente da más que el año) y Ferrari (las fuentes no coinciden). Con fecha afirmable: otras
   marcas 81, autos 41, ropa 13.
 
   **2026-10-31**: +148 ciudades (`lib/data/cities-expansion.ts`) y +20 países
