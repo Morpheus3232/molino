@@ -449,7 +449,8 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   láminas (`HomeGallery`), después el día (`HomeAlmanac` + `HomeBook`), tu mapa
   (`HeroInstrument`) y, al final, la escena de Cervantes (`HomeOpening`) como
   cierre. Su parallax corre mientras entra en pantalla (offset
-  `start end`→`end end`) y el epígrafe ya no se desvanece.
+  `start end`→`end end`). Desde 2026-11-03 va sin el epígrafe de Cervantes
+  (pedido del dueño): la escena sola, decorativa (`aria-hidden`).
 - Portada, apertura (2026-10-26): `HomeOpening` es un travelling de cine —
   Quijote y Sancho galopando hacia la izquierda entre molinos, con el
   epígrafe de Cervantes («Yo sé quién soy», I, V), sin botones. Versión mínima por decisión del dueño

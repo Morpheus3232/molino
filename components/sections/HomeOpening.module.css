@@ -296,42 +296,6 @@
   }
 }
 
-/* ── Texto ─────────────────────────────────────────────────────────── */
-
-.copy {
-  position: absolute;
-  z-index: 5;
-  top: 9%;
-  left: clamp(1rem, 6vw, 6rem);
-  width: min(31rem, 38vw);
-}
-
-@media (max-width: 1023px) {
-  .copy {
-    right: clamp(1rem, 6vw, 6rem);
-    width: auto;
-    max-width: 34rem;
-  }
-}
-
-.word {
-  display: inline-block;
-  animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.1, 1) both;
-  animation-delay: calc(0.5s + var(--i) * 90ms);
-}
-
-.late {
-  animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.1, 1) both;
-  animation-delay: var(--d, 1.6s);
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.3em, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .scene *,
   .scene *::before,

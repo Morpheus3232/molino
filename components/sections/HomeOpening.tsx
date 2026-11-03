@@ -1,5 +1,5 @@
 "use client";
-import { useL, type Pick2 } from "@/lib/i18n/useL";
+import { useL } from "@/lib/i18n/useL";
 
 /* eslint-disable @next/next/no-img-element -- capas de una escena animada:
    ya están optimizadas (WebP) y se repiten en fila; next/image no aporta. */
@@ -30,10 +30,6 @@ const MILLS = [
   { x: 47, base: 42.28, h: 0.36, spin: "14s" },
   { x: 78, base: 38.58, h: 0.46, spin: "16s" },
 ];
-
-/** Don Quijote, primera parte, cap. V: la respuesta de don Quijote cuando
- *  el vecino lo quiere convencer de que no es quien dice ser. */
-const LINE = (L: Pick2) => (L("Yo sé quién soy.", "I know who I am."));
 
 /** Cuatro aspas en cruz con su enrejado, como las del original. */
 function Sails() {
@@ -113,7 +109,6 @@ function Rider({ name, w, h }: { name: "quijote" | "sancho"; w: number; h: numbe
 }
 
 export default function HomeOpening() {
-  const L = useL();
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [paused, setPaused] = useState(false);
@@ -128,20 +123,18 @@ export default function HomeOpening() {
 
   // Parallax al llegar: la escena cierra la portada, así que el movimiento va
   // mientras entra en pantalla (de abajo hacia arriba) y se asienta al quedar
-  // entera a la vista. El epígrafe no se desvanece: es lo último que se lee.
+  // entera a la vista. Sin texto desde 2026-11-03: la escena sola cierra la
+  // portada (decorativa, aria-hidden).
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
   const still = (v: string) => (reduce ? v : undefined);
   const lomasY = useTransform(scrollYProgress, [0, 1], ["-12%", "0%"]);
   const ridersY = useTransform(scrollYProgress, [0, 1], ["-5%", "0%"]);
   const zoom = useTransform(scrollYProgress, [0, 1], [1.06, 1]);
-  const copyY = useTransform(scrollYProgress, [0, 1], ["25%", "0%"]);
-
-  const words = LINE(L).split(" ");
 
   return (
     <section
       ref={ref}
-      aria-labelledby="apertura-home"
+      aria-hidden="true"
       className={s.scene}
       data-paused={paused ? "" : undefined}
     >
@@ -166,34 +159,6 @@ export default function HomeOpening() {
           <Strip src="/home/escena/suelo.webp" size={SUELO} duration="34s" />
         </div>
       </motion.div>
-
-      {/* Texto */}
-      <motion.div className={s.copy} style={{ y: still("0%") ?? copyY }}>
-        <p
-          id="apertura-home"
-          className="text-balance font-display italic font-normal text-ink leading-[1.04] tracking-tight text-[clamp(3.2rem,7.5vw,6.5rem)]"
-        >
-          <span className="sr-only">{L.t(LINE(L))}</span>
-          <span aria-hidden="true">
-            {/* Las comillas van pegadas a la primera y la última palabra para
-                que nunca queden solas en un renglón. */}
-            {words.map((w, i) => (
-              <span key={i}>
-                <span className={s.word} style={{ ["--i" as string]: i }}>
-                  {i === 0 ? "«" : ""}
-                  {L.t(w)}
-                  {i === words.length - 1 ? "»" : ""}
-                </span>
-                {i < words.length - 1 ? " " : ""}
-              </span>
-            ))}
-          </span>
-        </p>
-        <p className={`${s.late} mt-5 text-sm text-muted label-caps`} style={{ ["--d" as string]: "1.6s" }}>{L(<>
-          Cervantes · <em className="not-italic">Don Quijote</em>, I, V
-        </>, <>Cervantes · <em className="not-italic">Don Quixote</em>, I, V</>)}</p>
-      </motion.div>
-
     </section>
   );
 }
