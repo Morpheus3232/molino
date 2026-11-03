@@ -86,9 +86,9 @@ export default function HomeBook() {
 
       <Asterism />
 
-      <section aria-labelledby="cap-numero">
+      <section aria-labelledby="cap-numero" className="flow-root">
         <Chapter numeral="I" title={L("El número del día", "The number of the day")} id="cap-numero" />
-        <HomePlate imageKey={`numerologia/${dayContent.number}`} className="mb-8" />
+        <HomePlate imageKey={`numerologia/${dayContent.number}`} />
         <p className="sm:text-justify hyphens-auto first-letter:float-left first-letter:font-display first-letter:text-[3.6em] first-letter:leading-[0.78] first-letter:mr-2 first-letter:mt-1">
           {L("Hoy es día ", "Today is day ")} {dayContent.number}{L(", el de ", ", the day of ")} <em>{L.t(dayContent.title.toLowerCase().replace(/^\w|^./, (c) => c.toUpperCase()))}</em>.{" "}
           {L.t(dayContent.description)}
@@ -98,14 +98,14 @@ export default function HomeBook() {
           <Link href="/calendario" className="underline underline-offset-4 hover:no-underline">
             Ver el calendario del mes
           </Link>
-        </>, <><span className="italic">The math:</span> <span className="font-mono">{L.t(breakdown)}</span>.{" "}<Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the month's calendar</Link></>)}</p>
+        </>, <><span className="italic">The math:</span> <span className="font-mono">{L.t(breakdown)}</span>.{" "}<Link href="/calendario" className="underline underline-offset-4 hover:no-underline">See the month&apos;s calendar</Link></>)}</p>
       </section>
 
       <Asterism />
 
-      <section aria-labelledby="cap-trae">
+      <section aria-labelledby="cap-trae" className="flow-root">
         <Chapter numeral="II" title={L("Lo que trae", "What it brings")} id="cap-trae" />
-        {moonKey && <HomePlate imageKey={moonKey} className="mb-8" />}
+        {moonKey && <HomePlate imageKey={moonKey} />}
         <p className="sm:text-justify hyphens-auto">
           <em>{L.t(daily.theme)}.</em> {L.t(daily.description)}
         </p>

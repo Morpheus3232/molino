@@ -76,8 +76,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               botón. Valores = el día más corto de los 9 números posibles,
               medido por ancho, en rem para que escale con la letra del
               navegador: nunca deja hueco, y el día largo apenas empuja.
-              Incluye las dos láminas (número y Luna) de los capítulos I y II. */}
-          <div className="min-h-[129rem] sm:min-h-[141rem] md:min-h-[137rem]">
+              Incluye las dos láminas (número y Luna) de los capítulos I y II;
+              desde 2026-11-03 son viñetas chicas a la derecha del texto y la
+              reserva se bajó lo mismo que bajó el capítulo, menos 1,5 rem. */}
+          <div className="min-h-[104rem] sm:min-h-[98rem] md:min-h-[96rem]">
             <HomeBook />
           </div>
         </section>

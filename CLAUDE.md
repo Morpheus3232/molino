@@ -417,9 +417,11 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   (`HomeOpening.module.css`), parallax de scroll con framer, pausa fuera de
   pantalla, quieta con "reducir movimiento". Si se regeneran las capas,
   copiar las medidas de `escena.json` al componente. Las láminas de los
-  capítulos (`HomePlate`) son cinemascope 2,35:1 en escritorio con la misma
-  altura que la 16:9 en columna (no tocar la altura reservada), y el índice
-  (`HomeGallery`) es un mosaico de láminas que se tiñen de bermellón al
+  capítulos (`HomePlate`, el número y la Luna) son desde 2026-11-03 viñetas
+  cuadradas chicas flotando a la derecha del texto (8,5rem en celular, 10,5rem
+  desde `sm`; la sección lleva `flow-root`), y el índice
+  (`HomeGallery`, sin título visible desde 2026-11-03: solo un `h2` sr-only)
+  es un mosaico de láminas que se tiñen de bermellón al
   pasar el mouse. Las entradas animadas usan `useReveal`, que nunca deja
   contenido oculto si el observador falla.
 - Integridad de la portada (2026-10-26): las tres partes (el día, tu mapa,

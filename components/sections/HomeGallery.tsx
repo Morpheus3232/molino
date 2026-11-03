@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Link } from "@/lib/i18n/navigation";
 import { getSectionImage } from "@/lib/data/section-images";
 import { useReveal } from "@/lib/hooks/useReveal";
-import { Eyebrow } from "@/components/sections/HomeOrnaments";
 
 /**
  * Índice ilustrado al pie de la portada: cada sección del sitio con su lámina,
@@ -41,12 +40,11 @@ export default function HomeGallery() {
 
   return (
     <section aria-labelledby="indice-home">
-      <div className="mx-auto max-w-6xl px-4 sm:px-8 py-16 sm:py-24">
-        <Eyebrow className="mb-3">{L("Índice de láminas", "Index of plates")}</Eyebrow>
-        <h2 id="indice-home" className="section-title text-center text-foreground">{L("Para seguir leyendo", "Further reading")}</h2>
+      <div className="mx-auto max-w-6xl px-4 sm:px-8 pt-8 pb-16 sm:pt-12 sm:pb-24">
+        <h2 id="indice-home" className="sr-only">{L("Índice de láminas", "Index of plates")}</h2>
         <ul
           ref={ref}
-          className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 auto-rows-[12rem] sm:auto-rows-[15rem] lg:auto-rows-[14.5rem] gap-3 sm:gap-4"
+          className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[12rem] sm:auto-rows-[15rem] lg:auto-rows-[14.5rem] gap-3 sm:gap-4"
         >
           {ENTRIES(L).map((e, i) => {
             const img = getSectionImage(e.image);
