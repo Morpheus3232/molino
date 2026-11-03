@@ -241,8 +241,17 @@ export default function TravelPlanner({ destinations, animal, profileAnimal }: P
     L("Repartiendo las noches…", "Splitting the nights…"),
   ];
 
-  const highlight = mine.map((d) => ({ iso: d.iso, name: d.name, lat: d.capital.lat, lon: d.capital.lon }));
-  const mapStops = plan?.stops.map((s) => ({ iso: s.dest.iso, name: s.dest.name, lat: s.dest.capital.lat, lon: s.dest.capital.lon })) ?? [];
+  const highlight = mine.map((d) => ({
+    iso: d.iso,
+    name: d.name,
+    lat: d.capital.lat,
+    lon: d.capital.lon,
+    capital: capName(d),
+    flag: d.flag,
+    href: `/affinity/country/${d.entityId}`,
+    detail: d.arrivals != null ? L(`${fmtArrivals(L, d.arrivals)} de turistas al año`, `${fmtArrivals(L, d.arrivals)} tourists a year`) : undefined,
+  }));
+  const mapStops = plan?.stops.map((s) => ({ iso: s.dest.iso, name: s.dest.name, lat: s.dest.capital.lat, lon: s.dest.capital.lon, capital: capName(s.dest) })) ?? [];
   const mapLegs = plan?.legs.map((l) => ({ from: [l.from.lon, l.from.lat] as [number, number], to: [l.to.lon, l.to.lat] as [number, number] })) ?? [];
   const mapOrigin = plan && origin ? { iso: origin.iso, name: origin.name, lat: origin.capital.lat, lon: origin.capital.lon } : null;
 
@@ -720,6 +729,24 @@ function YearsView({
 
   const firstOfNext = upcoming.months.findIndex((m) => m.lunarYear === upcoming.next);
 
+  // Cuántos países del signo tienen cada mes ideal o bueno: el pulso del año.
+  const perMonth = upcoming.months.map((_, i) => ({
+    ideal: rows.filter((r) => r.verdicts[i].cls === "ideal").length,
+    bueno: rows.filter((r) => r.verdicts[i].cls === "bueno").length,
+  }));
+  const maxCount = Math.max(1, ...perMonth.map((c) => c.ideal + c.bueno));
+  const bestIdeal = Math.max(...perMonth.map((c) => c.ideal));
+
+  // Mira: la fila y la columna bajo el mouse, y la lectura de esa casilla.
+  const [focus, setFocus] = useState<{ r: number; c: number } | null>(null);
+  const focusText = focus
+    ? (() => {
+        const row = rows[focus.r];
+        const m = upcoming.months[focus.c];
+        return `${L.t(row.d.name)} · ${fmtYM(L, m.ym)}: ${verdictText(L, row.verdicts[focus.c])}`;
+      })()
+    : null;
+
   return (
     <section className="mt-16" aria-labelledby="viaje-anios">
       <p className="label-caps text-sm text-muted">{L("Cuándo ir", "When to go")}</p>
@@ -755,8 +782,17 @@ function YearsView({
         })}
       </div>
 
+      {/* Lectura de la casilla bajo el mouse */}
+      <p className="mt-4 min-h-[1.75rem] text-base text-foreground" aria-live="polite">
+        {focusText ?? (
+          <span className="text-muted">
+            {L("Pasá el mouse por el calendario para leer cada mes.", "Hover over the calendar to read each month.")}
+          </span>
+        )}
+      </p>
+
       {/* Calendario: países × meses */}
-      <div className="mt-2 overflow-x-auto border-t border-ink/15 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="relative mt-1 overflow-x-auto border-t border-ink/15 -mx-4 px-4 sm:mx-0 sm:px-0">
         <table className="w-full border-collapse text-sm" aria-describedby="viaje-anios-leyenda">
           <thead>
             <tr>
@@ -796,11 +832,45 @@ function YearsView({
                 {L("Llegadas de turistas internacionales", "International tourist arrivals")}
               </th>
             </tr>
+            {/* Pulso del año: cuántos países tienen cada mes ideal (tinta) o bueno (gris). */}
+            <tr className="border-b border-ink/15">
+              <th scope="row" className="sticky left-0 z-10 bg-background py-2 pr-3 text-left align-bottom font-normal text-xs text-muted">
+                {L("Países con buen clima", "Countries with good weather")}
+              </th>
+              {perMonth.map((c, i) => {
+                const m = upcoming.months[i];
+                const hIdeal = (c.ideal / maxCount) * 100;
+                const hBueno = (c.bueno / maxCount) * 100;
+                const top = c.ideal === bestIdeal && bestIdeal > 0;
+                return (
+                  <td
+                    key={m.ym}
+                    className={`px-0.5 pt-3 pb-1.5 align-bottom ${i === firstOfNext ? "border-l-2 border-ink" : ""} ${focus?.c === i ? "bg-ink/[0.05]" : ""}`}
+                    title={L(
+                      `${fmtYM(L, m.ym)}: ${c.ideal} ideales y ${c.bueno} buenos de ${rows.length}`,
+                      `${fmtYM(L, m.ym)}: ${c.ideal} ideal and ${c.bueno} good out of ${rows.length}`,
+                    )}
+                  >
+                    <div className="relative mx-auto flex h-16 w-full min-w-[1.4rem] flex-col justify-end" aria-hidden="true">
+                      <span
+                        className="block w-full bg-ink/25 origin-bottom transition-transform duration-700 motion-reduce:transition-none"
+                        style={{ height: `${hBueno}%` }}
+                      />
+                      <span className="block w-full bg-ink origin-bottom" style={{ height: `${hIdeal}%` }} />
+                    </div>
+                    <span className={`mt-1 block text-center text-[11px] tabular-nums leading-none ${top ? "font-semibold text-foreground" : "text-muted"}`}>
+                      {c.ideal || ""}
+                    </span>
+                  </td>
+                );
+              })}
+              <td />
+            </tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
-              <tr key={r.d.iso} className="border-b border-ink/10">
-                <th scope="row" className="sticky left-0 z-10 bg-background py-1.5 pr-3 text-left font-normal whitespace-nowrap">
+            {rows.map((r, ri) => (
+              <tr key={r.d.iso} className={`border-b border-ink/10 transition-colors ${focus?.r === ri ? "bg-ink/[0.04]" : ""}`}>
+                <th scope="row" className={`sticky left-0 z-10 py-1.5 pr-3 text-left font-normal whitespace-nowrap ${focus?.r === ri ? "bg-[#F4F4F4]" : "bg-background"}`}>
                   <Link href={`/affinity/country/${r.d.entityId}`} className="text-base hover:text-vermilion">
                     {r.d.flag && <span className="flag-emoji mr-1.5">{r.d.flag}</span>}
                     {L.t(r.d.name)}
@@ -810,13 +880,19 @@ function YearsView({
                   const m = upcoming.months[i];
                   const label = `${fmtYM(L, m.ym)}: ${verdictText(L, v)}`;
                   return (
-                    <td key={m.ym} className={`px-0.5 py-1.5 ${i === firstOfNext ? "border-l-2 border-ink" : ""}`} title={label}>
+                    <td
+                      key={m.ym}
+                      className={`px-0.5 py-1.5 ${i === firstOfNext ? "border-l-2 border-ink" : ""} ${focus?.c === i ? "bg-ink/[0.05]" : ""}`}
+                      title={label}
+                      onMouseEnter={() => setFocus({ r: ri, c: i })}
+                      onMouseLeave={() => setFocus(null)}
+                    >
                       <span
                         role="img"
                         aria-label={label}
-                        className={`block mx-auto h-5 w-full min-w-[1.4rem] ${
+                        className={`block mx-auto h-5 w-full min-w-[1.4rem] transition-transform duration-150 motion-reduce:transition-none ${
                           v.cls === "ideal" ? "bg-ink" : v.cls === "bueno" ? "bg-ink/25" : "bg-ink/[0.04]"
-                        }`}
+                        } ${focus?.r === ri && focus?.c === i ? "scale-y-[1.35] ring-2 ring-vermilion ring-offset-1 ring-offset-background" : ""}`}
                       />
                     </td>
                   );

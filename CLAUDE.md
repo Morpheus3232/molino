@@ -249,6 +249,17 @@ Consecuencias operativas:
   (desempate dentro de cada casilla, `sortLightEntities`) y los países del
   Mapa Personal (`byTypeThenYear`). Las cifras mezclan definiciones (algunos
   países cuentan excursionistas): sirven para ordenar, no para comparar fino.
+  **2026-11-03 (pedido del dueño: "más lindo y con algo más uau"):** el mapa
+  (`WorldRouteMap`) se acerca solo a la ruta (botón "Ver el mundo"), dibuja
+  los vuelos tramo a tramo con un avioncito que la recorre en vuelta, y los
+  países del signo muestran una tarjeta al pasar el mouse (capital, turistas)
+  y abren su ficha con un clic. Los tamaños se miden en píxeles de pantalla
+  (ancho real con `ResizeObserver`); las paradas que se pisan se separan con
+  un hilo al lugar real y cada nombre busca un lado libre. El calendario de
+  los dos años suma una fila "Países con buen clima" por mes y una cruz de
+  lectura al pasar el mouse. Con "reducir movimiento", todo quieto. Ojo: el
+  `th.sr-only` del calendario es `absolute`; su contenedor con scroll tiene
+  que ser `relative` o en celular ensancha la página entera (pasaba: 680px).
 - **Monetización sin vender datos (2026-11-02).** Tres piezas:
   1. **Embudo anónimo** (`lib/funnel.ts`): un contador por evento y por mes en
      KV (`funnel:<evento>:<YYYY-MM>`), sin IP, hash, perfil ni cookie. El
